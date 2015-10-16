@@ -37,6 +37,10 @@
         </activity>
         <activity android:name=".SettingdActivity" >
         </activity>
+        <activity android:name=".DeliveryMapActivity" >
+        </activity>
+        <activity android:name=".DeliverCommandDetailActivity" >
+        </activity>
     </application>
 
 </manifest>
