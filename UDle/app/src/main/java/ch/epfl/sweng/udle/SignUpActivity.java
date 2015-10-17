@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 
 import com.facebook.AccessToken;
@@ -38,7 +39,7 @@ public class SignUpActivity extends AppCompatActivity {
         FacebookSdk.sdkInitialize(getApplicationContext());
         callbackManager = CallbackManager.Factory.create();
 
-        loginButton = (LoginButton)findViewById(R.id.login_button);
+        loginButton = (LoginButton)findViewById(R.id.login_button2);
         info = (TextView)findViewById(R.id.info);
         profilePictureView = (ProfilePictureView) findViewById(R.id.image);
 
@@ -136,5 +137,12 @@ public class SignUpActivity extends AppCompatActivity {
         callbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
+    /** Called when the user clicks the MapActivity button */
+    public void goToMapActivity(View view) {
+        Intent intent = new Intent(this, MapActivity.class);
+        startActivity(intent);
+
+
+    }
 
 }

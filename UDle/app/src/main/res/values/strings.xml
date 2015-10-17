@@ -4,6 +4,6 @@
     <string name="registerButton">Register</string>
     <string name="facebook_app_id">1483920968589089</string>
     <string name="enterYourNumberPhone">Enter your number phone</string>
-    <string name="Hello">Bonjour Gaspard !</string>
+    <string name="Hello">Hello!</string>
 
 </resources>

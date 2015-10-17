@@ -8,6 +8,7 @@ import android.content.pm.Signature;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -143,5 +144,11 @@ public class LogInActivity extends Activity {
         callbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
+    /** Called when the user clicks the MapActivity button */
+    public void goToMapActivity(View view) {
+        Intent intent = new Intent(this, MapActivity.class);
+        startActivity(intent);
 
+
+    }
 }
