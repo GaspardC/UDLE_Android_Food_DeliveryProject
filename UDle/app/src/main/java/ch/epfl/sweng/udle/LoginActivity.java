@@ -8,6 +8,7 @@ import android.content.pm.Signature;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.facebook.AccessToken;
@@ -20,6 +21,7 @@ import com.facebook.GraphResponse;
 import com.facebook.Profile;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.facebook.login.widget.ProfilePictureView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -29,7 +31,12 @@ public class LogInActivity extends Activity {
 
     private LoginButton loginButton;
     private TextView info;
+    private static ProfilePictureView profilePictureView;
     private CallbackManager callbackManager;
+    private String user = "";
+    private static String id = "";
+    private static String name= "";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,10 +47,19 @@ public class LogInActivity extends Activity {
         setContentView(R.layout.activity_log_in);
         loginButton = (LoginButton)findViewById(R.id.login_button);
         info = (TextView)findViewById(R.id.info);
+        profilePictureView = (ProfilePictureView) findViewById(R.id.image);
+
+        info.setText("Bonjour " + name + "");
+
 
         loginButton.setReadPermissions("user_friends");
         loginButton.setReadPermissions("public_profile");
         loginButton.setReadPermissions("email");
+
+        if(!("id".equals(""))){
+            profilePictureView.setProfileId(id);
+
+        }
 
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
@@ -56,28 +72,56 @@ public class LogInActivity extends Activity {
                                 + loginResult.getAccessToken().getToken()
                 );*/
                 Profile profile = Profile.getCurrentProfile();
-                Log.d("Success", "" +profile);
+                Log.d("Success", "" + profile);
 
                 // Get User Name
-                info.setText(profile.getName() + "");
+                info.setText("Bonjour "+profile.getFirstName() + "");
+                id = profile.getId();
+                name = profile.getName();
+                profilePictureView.setProfileId(id);
 
-                GraphRequest request = GraphRequest.newMeRequest( AccessToken.getCurrentAccessToken(),
+
+
+//                GraphRequest request = GraphRequest.newMeRequest( AccessToken.getCurrentAccessToken(),
+//                        new GraphRequest.GraphJSONObjectCallback() {
+//                            @Override
+//                            public void onCompleted(JSONObject object,GraphResponse response) {
+//                                try {
+//                                    String  email=object.getString("email");
+//                                    Log.d( "user email ", "email");
+//                                } catch (JSONException e) {
+//                                    // TODO Auto-generated catch block
+//                                    e.printStackTrace();
+//                                }
+//
+//                            }
+//
+//                        });
+//
+//                request.executeAsync();
+
+
+                GraphRequest request = GraphRequest.newMeRequest(
+                        AccessToken.getCurrentAccessToken(),
                         new GraphRequest.GraphJSONObjectCallback() {
                             @Override
-                            public void onCompleted(JSONObject object,GraphResponse response) {
+                            public void onCompleted(
+                                    JSONObject object,
+                                    GraphResponse response) {
+                                // Application code
+                                Log.d("response", "response" + object.toString());
                                 try {
-                                    String  email=object.getString("email");
-                                    Log.d( "user email ", "email");
+                                    object.getJSONObject("picture").getJSONObject("data").getString("url");
                                 } catch (JSONException e) {
-                                    // TODO Auto-generated catch block
                                     e.printStackTrace();
                                 }
-
                             }
-
                         });
-
+                Bundle parameters = new Bundle();
+                parameters.putString("fields", "id,name,email,gender,birthday,picture.width(300)");
+                request.setParameters(parameters);
                 request.executeAsync();
+
 
             }
 
