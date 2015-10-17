@@ -21,5 +21,12 @@ public class StartActivity extends AppCompatActivity {
 
     }
 
+    /** Called when the user clicks the Register button */
+    public void goToRegisterActivity(View view) {
+        Intent intent = new Intent(this, SignUpActivity.class);
+        startActivity(intent);
+
+
+    }
 
 }

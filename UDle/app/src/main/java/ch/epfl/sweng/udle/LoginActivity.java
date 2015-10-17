@@ -75,7 +75,7 @@ public class LogInActivity extends Activity {
                 Log.d("Success", "" + profile);
 
                 // Get User Name
-                info.setText("Bonjour "+profile.getFirstName() + "");
+                info.setText("Hello "+profile.getFirstName() + "");
                 id = profile.getId();
                 name = profile.getName();
                 profilePictureView.setProfileId(id);
