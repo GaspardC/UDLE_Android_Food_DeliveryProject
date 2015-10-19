@@ -27,7 +27,7 @@
         android:layout_gravity="center"
         android:textSize="18sp"
         android:layout_below="@+id/image"
-        android:text="Bonjour Gaspard ! "
+        android:text="Welcome :) "
         android:layout_centerInParent="true" />
 
     <com.facebook.login.widget.LoginButton

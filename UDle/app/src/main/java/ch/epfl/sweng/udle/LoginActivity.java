@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.facebook.AccessToken;
+import com.facebook.AccessTokenTracker;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -20,6 +21,8 @@ import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.Profile;
+import com.facebook.ProfileTracker;
+import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.facebook.login.widget.ProfilePictureView;
@@ -37,30 +40,53 @@ public class LogInActivity extends Activity {
     private String user = "";
     private static String id = "";
     private static String name= "";
+    private ProfileTracker profileTracker;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(getApplicationContext());
-        callbackManager = CallbackManager.Factory.create();
 
+
+
+        callbackManager = CallbackManager.Factory.create();
         setContentView(R.layout.activity_log_in);
         loginButton = (LoginButton)findViewById(R.id.login_button);
-        info = (TextView)findViewById(R.id.info);
         profilePictureView = (ProfilePictureView) findViewById(R.id.image);
+        info = (TextView)findViewById(R.id.info);
 
-        info.setText("Bonjour " + name + "");
+
+        new AccessTokenTracker() {
+            @Override
+            protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken, AccessToken newAccessToken) {
+                if (newAccessToken==null){
+                    profilePictureView.setProfileId(null);
+                    info.setText("Welcome :)");
+                }
+
+            }
+        };
+
+        Profile profile = Profile.getCurrentProfile();
+
+        if (profile != null) {
+            info.setText("Hi again " + profile.getFirstName() + "");
+            profilePictureView.setProfileId(profile.getId());
+
+
+        }
+
+
+
+        //info.setText("Welcome :) " + name + "");
 
 
         loginButton.setReadPermissions("user_friends");
         loginButton.setReadPermissions("public_profile");
         loginButton.setReadPermissions("email");
 
-        if(!("id".equals(""))){
-            profilePictureView.setProfileId(id);
 
-        }
 
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
@@ -80,26 +106,6 @@ public class LogInActivity extends Activity {
                 id = profile.getId();
                 name = profile.getName();
                 profilePictureView.setProfileId(id);
-
-
-
-//                GraphRequest request = GraphRequest.newMeRequest( AccessToken.getCurrentAccessToken(),
-//                        new GraphRequest.GraphJSONObjectCallback() {
-//                            @Override
-//                            public void onCompleted(JSONObject object,GraphResponse response) {
-//                                try {
-//                                    String  email=object.getString("email");
-//                                    Log.d( "user email ", "email");
-//                                } catch (JSONException e) {
-//                                    // TODO Auto-generated catch block
-//                                    e.printStackTrace();
-//                                }
-//
-//                            }
-//
-//                        });
-//
-//                request.executeAsync();
 
 
                 GraphRequest request = GraphRequest.newMeRequest(
@@ -137,6 +143,15 @@ public class LogInActivity extends Activity {
                 info.setText("Login attempt failed.");
             }
         });
+
+//        profileTracker = new ProfileTracker() {
+//            @Override
+//            protected void onCurrentProfileChanged(
+//                    Profile oldProfile,
+//                    Profile currentProfile) {
+//                // App code
+//            }
+//        };
     }
 
     @Override
@@ -151,4 +166,10 @@ public class LogInActivity extends Activity {
 
 
     }
+
+//    @Override
+//    public void onDestroy() {
+//        super.onDestroy();
+//        profileTracker.stopTracking();
+//    }
 }
