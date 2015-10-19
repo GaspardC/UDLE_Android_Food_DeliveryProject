@@ -35,8 +35,8 @@ public class SignUpActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sign_up);
         FacebookSdk.sdkInitialize(getApplicationContext());
+        setContentView(R.layout.activity_sign_up);
         callbackManager = CallbackManager.Factory.create();
 
         loginButton = (LoginButton)findViewById(R.id.login_button2);
@@ -54,6 +54,7 @@ public class SignUpActivity extends AppCompatActivity {
             profilePictureView.setProfileId(id);
 
         }
+
 
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
