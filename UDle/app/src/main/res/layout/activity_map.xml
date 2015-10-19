@@ -1,10 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
     tools:context="ch.epfl.sweng.udle.MapActivity">
 
-</RelativeLayout>
+
+    <SearchView
+        android:id="@+id/MenuMap_search"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="7"
+        android:queryHint="@string/MenuMap_SearchHint"
+        android:iconifiedByDefault="false" />
+
+    <TextView
+        android:id="@+id/MenuMap_GoogleMaps"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="83"
+        android:text="GOOGLE MAPS HERE"
+        android:gravity="center_vertical|center_horizontal" />
+
+    <Button
+        android:id="@+id/MenuMap_ValidatePosition"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:text="@string/ValidatePosition"
+        android:layout_weight="10"
+        android:onClick="goToMenuActivity" />
+</LinearLayout>

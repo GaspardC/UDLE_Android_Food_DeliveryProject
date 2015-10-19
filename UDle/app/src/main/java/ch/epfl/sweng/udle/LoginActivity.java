@@ -31,7 +31,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 
-public class LogInActivity extends Activity {
+public class LoginActivity extends Activity {
 
     private LoginButton loginButton;
     private TextView info;
