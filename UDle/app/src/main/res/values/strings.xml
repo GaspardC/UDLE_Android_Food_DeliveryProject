@@ -6,4 +6,6 @@
     <string name="enterYourNumberPhone">Enter your number phone</string>
     <string name="Hello">Hello!</string>
 
+    <string name="MenuMap_SearchHint">Search the desired delivery address</string>
+    <string name="ValidatePosition">Validate Position</string>
 </resources>

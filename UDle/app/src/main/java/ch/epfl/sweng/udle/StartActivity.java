@@ -15,7 +15,7 @@ public class StartActivity extends AppCompatActivity {
     }
     /** Called when the user clicks the LogInButton button */
     public void goToLoginActivity(View view) {
-        Intent intent = new Intent(this, LogInActivity.class);
+        Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
 
 
