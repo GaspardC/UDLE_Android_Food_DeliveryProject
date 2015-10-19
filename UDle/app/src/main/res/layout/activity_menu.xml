@@ -12,57 +12,58 @@
     <LinearLayout
         android:id="@+id/MenuActivity_KebabLayout"
         android:orientation="vertical"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="45">
 
 
         <ImageView
             android:id="@+id/MenuActivity_KebabImage"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="0dp"
             android:src="@drawable/kebab"
             android:layout_weight="80"/>
 
         <LinearLayout
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="0dp"
             android:orientation="horizontal"
             android:layout_weight="20"
             android:layout_marginRight="@dimen/activity_horizontal_margin"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin">
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_gravity="center"
+            android:gravity="center">
 
             <TextView
                 android:id="@+id/MenuActivity_KebabTotalMoney"
-                android:layout_width="0dp"
-                android:layout_height="fill_parent"
-                android:layout_weight="49.98"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
                 android:text="0.00$"
                 android:editable="false"
-                android:gravity="center_vertical" />
+                android:gravity="center_vertical"
+                android:layout_marginRight="100dp" />
 
             <Button
                 android:id="@+id/MenuActivity_KebabMinus"
-                android:layout_width="0dp"
+                android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:layout_weight="5"
                 android:text="-"
                 android:textSize="10dp" />
 
             <TextView
                 android:id="@+id/MenuActivity_KebabNbr"
-                android:layout_width="0dp"
-                android:layout_height="fill_parent"
-                android:layout_weight="5"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
                 android:text="0"
                 android:gravity="center_vertical|center_horizontal"
-                android:inputType="number" />
+                android:inputType="number"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp" />
 
             <Button
                 android:id="@+id/MenuActivity_KebabPlus"
-                android:layout_width="0dp"
+                android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:layout_weight="5"
                 android:text="+"
                 android:textSize="10dp" />
 
@@ -75,57 +76,59 @@
     <LinearLayout
         android:id="@+id/MenuActivity_BurgerLayout"
         android:orientation="vertical"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="45">
 
         <ImageView
             android:id="@+id/MenuActivity_BurgerImage"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="0dp"
             android:src="@drawable/burger"
             android:layout_weight="80"/>
 
         <LinearLayout
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="0dp"
             android:orientation="horizontal"
             android:layout_weight="20"
             android:layout_marginRight="@dimen/activity_horizontal_margin"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin">
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_gravity="center"
+            android:gravity="center">
 
             <TextView
                 android:id="@+id/MenuActivity_BurgerTotalMoney"
-                android:layout_width="0dp"
-                android:layout_height="fill_parent"
-                android:layout_weight="49.98"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
                 android:text="0.00$"
                 android:editable="false"
-                android:gravity="center_vertical" />
+                android:gravity="center_vertical"
+                android:layout_marginRight="100dp" />
 
             <Button
                 android:id="@+id/MenuActivity_BurgerMinus"
-                android:layout_width="0dp"
+                android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:layout_weight="5"
                 android:text="-"
-                android:textSize="10sp" />
+                android:textSize="10dp" />
 
             <TextView
                 android:id="@+id/MenuActivity_BurgerNbr"
-                android:layout_width="0dp"
-                android:layout_height="fill_parent"
-                android:layout_weight="5"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
                 android:text="0"
-                android:gravity="center_vertical|center_horizontal" />
+                android:gravity="center_vertical|center_horizontal"
+                android:inputType="number"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp" />
 
             <Button
                 android:id="@+id/MenuActivity_BurgerPlus"
-                android:layout_width="0dp"
+                android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:layout_weight="5"
                 android:text="+"
-                android:textSize="10sp" />
+                android:textSize="10dp" />
 
         </LinearLayout>
 
