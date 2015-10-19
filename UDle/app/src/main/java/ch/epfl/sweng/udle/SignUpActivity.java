@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.facebook.AccessToken;
+import com.facebook.AccessTokenTracker;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -45,15 +46,30 @@ public class SignUpActivity extends AppCompatActivity {
 
         info.setText("Hello " + name + "");
 
+        new AccessTokenTracker() {
+            @Override
+            protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken, AccessToken newAccessToken) {
+                if (newAccessToken==null){
+                    profilePictureView.setProfileId(null);
+                    info.setText("Welcome :)");
+                }
 
+            }
+        };
+
+        Profile profile = Profile.getCurrentProfile();
+
+        if (profile != null) {
+            info.setText("Hi again " + profile.getFirstName() + "");
+            profilePictureView.setProfileId(profile.getId());
+
+
+        }
+        
         loginButton.setReadPermissions("user_friends");
         loginButton.setReadPermissions("public_profile");
         loginButton.setReadPermissions("email");
 
-        if(!("id".equals(""))){
-            profilePictureView.setProfileId(id);
-
-        }
 
 
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {

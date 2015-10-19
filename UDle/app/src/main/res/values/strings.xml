@@ -5,7 +5,7 @@
     <string name="facebook_app_id">1483920968589089</string>
     <string name="enterYourNumberPhone">Enter your number phone</string>
     <string name="Hello">Hello!</string>
-
+    <string name="Next">Next</string>
     <string name="MenuMap_SearchHint">Search the desired delivery address</string>
     <string name="ValidatePosition">Validate Position</string>
 </resources>

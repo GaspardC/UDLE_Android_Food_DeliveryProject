@@ -1,10 +1,146 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="ch.epfl.sweng.udle.MenuActivity">
+    tools:context="ch.epfl.sweng.udle.MenuActivity"
+    android:orientation="vertical">
 
-</RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/MenuActivity_KebabLayout"
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="45">
+
+
+        <ImageView
+            android:id="@+id/MenuActivity_KebabImage"
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:src="@drawable/kebab"
+            android:layout_weight="80"/>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:orientation="horizontal"
+            android:layout_weight="20"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin">
+
+            <TextView
+                android:id="@+id/MenuActivity_KebabTotalMoney"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="49.98"
+                android:text="0.00$"
+                android:editable="false"
+                android:gravity="center_vertical" />
+
+            <Button
+                android:id="@+id/MenuActivity_KebabMinus"
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:layout_weight="5"
+                android:text="-"
+                android:textSize="10dp" />
+
+            <TextView
+                android:id="@+id/MenuActivity_KebabNbr"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="5"
+                android:text="0"
+                android:gravity="center_vertical|center_horizontal"
+                android:inputType="number" />
+
+            <Button
+                android:id="@+id/MenuActivity_KebabPlus"
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:layout_weight="5"
+                android:text="+"
+                android:textSize="10dp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+
+    <LinearLayout
+        android:id="@+id/MenuActivity_BurgerLayout"
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="45">
+
+        <ImageView
+            android:id="@+id/MenuActivity_BurgerImage"
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:src="@drawable/burger"
+            android:layout_weight="80"/>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:orientation="horizontal"
+            android:layout_weight="20"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin">
+
+            <TextView
+                android:id="@+id/MenuActivity_BurgerTotalMoney"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="49.98"
+                android:text="0.00$"
+                android:editable="false"
+                android:gravity="center_vertical" />
+
+            <Button
+                android:id="@+id/MenuActivity_BurgerMinus"
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:layout_weight="5"
+                android:text="-"
+                android:textSize="10sp" />
+
+            <TextView
+                android:id="@+id/MenuActivity_BurgerNbr"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="5"
+                android:text="0"
+                android:gravity="center_vertical|center_horizontal" />
+
+            <Button
+                android:id="@+id/MenuActivity_BurgerPlus"
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:layout_weight="5"
+                android:text="+"
+                android:textSize="10sp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+
+    <Button
+        android:id="@+id/MenuActivity_NextButton"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:text="@string/Next"
+        android:layout_weight="10"
+        android:onClick="goToOptionsActivity" />
+
+
+
+</LinearLayout>
