@@ -79,9 +79,6 @@ public class LoginActivity extends Activity {
 
 
 
-        //info.setText("Welcome :) " + name + "");
-
-
         loginButton.setReadPermissions("user_friends");
         loginButton.setReadPermissions("public_profile");
         loginButton.setReadPermissions("email");

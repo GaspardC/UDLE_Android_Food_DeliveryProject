@@ -65,7 +65,7 @@ public class SignUpActivity extends AppCompatActivity {
 
 
         }
-        
+
         loginButton.setReadPermissions("user_friends");
         loginButton.setReadPermissions("public_profile");
         loginButton.setReadPermissions("email");
