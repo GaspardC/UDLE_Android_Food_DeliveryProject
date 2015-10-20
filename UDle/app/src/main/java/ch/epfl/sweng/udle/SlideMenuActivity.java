@@ -3,11 +3,11 @@ package ch.epfl.sweng.udle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-public class SettingdActivity extends AppCompatActivity {
+public class SlideMenuActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_settingd);
+        setContentView(R.layout.acitivity_slidemenu);
     }
 }
