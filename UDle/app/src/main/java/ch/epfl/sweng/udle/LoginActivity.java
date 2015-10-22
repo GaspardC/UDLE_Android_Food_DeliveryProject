@@ -40,7 +40,7 @@ public class LoginActivity extends Activity {
     private String user = "";
     private static String id = "";
     private static String name= "";
-    private ProfileTracker profileTracker;
+    private ProfileTracker mProfileTracker;
 
 
     @Override
@@ -73,8 +73,6 @@ public class LoginActivity extends Activity {
         if (profile != null) {
             info.setText("Hi again " + profile.getFirstName() + "");
             profilePictureView.setProfileId(profile.getId());
-
-
         }
 
 
@@ -87,15 +85,37 @@ public class LoginActivity extends Activity {
 
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
-            public void onSuccess(LoginResult loginResult) {
-                /*info.setText(
-                        "User ID: "
-                                + loginResult.getAccessToken().getUserId()
-                                + "\n" +
-                                "Auth Token: "
-                                + loginResult.getAccessToken().getToken()
-                );*/
+            public void onSuccess(final LoginResult loginResult) {
+
+
+                /* Use for the frist connection */
+                mProfileTracker = new ProfileTracker() {
+                    @Override
+                    protected void onCurrentProfileChanged(Profile profile, Profile profile2) {
+
+                       if(profile2!=null){
+                           Log.v("facebook - profile", profile2.getFirstName());
+                           mProfileTracker.stopTracking();
+
+                           AccessToken accessToken = loginResult.getAccessToken();
+
+                           // Get User Name
+                           info.setText("Hello "+profile2.getFirstName() + "");
+                           id = profile2.getId();
+                           name = profile2.getName();
+                           profilePictureView.setProfileId(id);
+                       }
+
+                    }
+                };
+                mProfileTracker.startTracking();
+
+
+                /*Use for 2nd and next connections*/
                 Profile profile = Profile.getCurrentProfile();
+                if(profile == null){
+                    return ;
+                }
                 Log.d("Success", "" + profile);
 
                 // Get User Name
@@ -140,15 +160,6 @@ public class LoginActivity extends Activity {
                 info.setText("Login attempt failed.");
             }
         });
-
-//        profileTracker = new ProfileTracker() {
-//            @Override
-//            protected void onCurrentProfileChanged(
-//                    Profile oldProfile,
-//                    Profile currentProfile) {
-//                // App code
-//            }
-//        };
     }
 
     @Override
