@@ -16,7 +16,8 @@ public class MapActivity extends AppCompatActivity {
 
     /** Called when the user clicks the MenuMap_ValidatePosition button */
     public void goToMenuActivity(View view) {
-        Intent intent = new Intent(this, MenuActivity.class);
+        //Intent intent = new Intent(this, MenuActivity.class);
+        Intent intent = new Intent(this, PaymentActivity.class);
         startActivity(intent);
     }
 
