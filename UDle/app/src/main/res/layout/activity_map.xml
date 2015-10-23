@@ -19,13 +19,15 @@
         android:layout_weight="7"
         android:queryHint="@string/MenuMap_SearchHint" />
 
-    <TextView
-        android:id="@+id/MenuMap_GoogleMaps"
-        android:layout_width="fill_parent"
+    <fragment
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="83"
-        android:text="GOOGLE MAPS HERE"
-        android:gravity="center_vertical|center_horizontal" />
+        android:id="@+id/MenuMap_GoogleMaps"
+        tools:context="ch.epfl.sweng.udle.MapActivity"
+        android:name="com.google.android.gms.maps.SupportMapFragment" />
 
     <Button
         android:id="@+id/MenuMap_ValidatePosition"
