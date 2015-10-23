@@ -13,9 +13,9 @@ public class PaymentActivity extends AppCompatActivity {
         setContentView(R.layout.activity_payment);
     }
 
-    public void goToPaymentActivity1(View view) {
-        //Intent intent =  new Intent(this, );
-        //startActivity(intent);
+    public void payment_button_click(View view) {
+        Intent intent =  new Intent(this, WaitingActivity.class);
+        startActivity(intent);
     }
     public void goToPaymentActivity2(View view) {
         //Intent intent = new Intent(this, );
