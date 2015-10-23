@@ -9,13 +9,10 @@ public class Menu {
 
     private FoodTypes food;
     private ArrayList<OptionsTypes> options;
-    private ArrayList<DrinkTypes> drinks;
-
 
     public Menu(){
         this.food = null;
         this.options = new ArrayList<>();
-        this.drinks = new ArrayList<>();
     }
 
 
@@ -33,19 +30,4 @@ public class Menu {
     public void addToOptions(OptionsTypes options){
         this.options.add(options);
     }
-    public void removeFromOptions(OptionsTypes options){
-        this.options.remove(options);
-    }
-
-
-    public ArrayList<DrinkTypes> getDrinks(){
-        return drinks;
-    }
-    public void addToDrinks(DrinkTypes drink){
-        this.drinks.add(drink);
-    }
-    public void removeFromDrinks(DrinkTypes drink){
-        this.drinks.remove(drink);
-    }
-
 }

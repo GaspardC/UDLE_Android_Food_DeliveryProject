@@ -7,18 +7,20 @@ import java.util.ArrayList;
 /**
  * Created by rodri on 23/10/2015.
  */
-public class Order {
+public class OrderElement {
 
     private ArrayList<Menu> orderList;
+    private ArrayList<DrinkTypes> drinks;
 
     private Location deliveryLocation;
     private String deliveryAddress;
 
 
-    public Order(){
+    public OrderElement(){
         this.orderList = new ArrayList<>();
         this.deliveryLocation = null;
         this.deliveryAddress = "";
+        this.drinks = new ArrayList<>();
     }
 
 
@@ -48,6 +50,11 @@ public class Order {
         return deliveryAddress;
     }
 
-
+    public ArrayList<DrinkTypes> getDrinks(){
+        return drinks;
+    }
+    public void addToDrinks(DrinkTypes drink){
+        this.drinks.add(drink);
+    }
 
 }
