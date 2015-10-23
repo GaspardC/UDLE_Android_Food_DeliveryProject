@@ -1,5 +1,6 @@
 package ch.epfl.sweng.udle.Food;
 
+import java.security.InvalidParameterException;
 import java.util.ArrayList;
 
 
@@ -18,6 +19,9 @@ public class Orders {
         return activeOrder;
     }
     public static void setActiveOrder(OrderElement orderElement){
+        if (orderElement == null){
+            throw new IllegalArgumentException("Try to set the activeOrder to a null object");
+        }
         activeOrder = orderElement;
     }
 
@@ -26,7 +30,7 @@ public class Orders {
     }
     public static void activeOrderToCurrentOrder(OrderElement orderElement){
         if (activeOrder != orderElement){
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("The orderElement pass is not the activeOrder.");
         }
         activeOrder = null;
         currentOrders.add(orderElement);
@@ -34,7 +38,7 @@ public class Orders {
 
     public static void currentOrderFinished(OrderElement orderElement){
         if (! currentOrders.contains(orderElement)){
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("The orderElement pass is not present in the currentOrder list.");
         }
         currentOrders.remove(orderElement);
         oldOrders.add(orderElement);

@@ -2,6 +2,7 @@ package ch.epfl.sweng.udle.Food;
 
 import android.location.Location;
 
+import java.security.InvalidParameterException;
 import java.util.ArrayList;
 
 /**
@@ -37,6 +38,9 @@ public class OrderElement {
     }
 
     public void setDeliveryLocation(Location location){
+        if (location == null){
+            throw new IllegalArgumentException("Location is null.");
+        }
         this.deliveryLocation = location;
     }
     public Location getDeliveryLocation(){
@@ -44,6 +48,9 @@ public class OrderElement {
     }
 
     public void setDeliveryAddress(String address){
+        if ("".equals(address)){
+            throw new IllegalArgumentException("Address is empty or null.");
+        }
         this.deliveryAddress = address;
     }
     public String getDeliveryAddress(){
