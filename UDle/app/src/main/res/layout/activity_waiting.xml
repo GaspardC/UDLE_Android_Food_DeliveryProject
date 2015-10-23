@@ -5,9 +5,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
-<<<<<<< HEAD
     tools:context="ch.epfl.sweng.udle.activities.WaitingActivity">
-=======
     tools:context="ch.epfl.sweng.udle.WaitingActivity"
     android:id="@+id/FirstLayout">
 
