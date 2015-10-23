@@ -1,4 +1,4 @@
-package ch.epfl.sweng.udle;
+package ch.epfl.sweng.udle.activities;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -6,16 +6,16 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import ch.epfl.sweng.udle.Food.FoodTypes;
+import ch.epfl.sweng.udle.Food.MoneyDevise;
+import ch.epfl.sweng.udle.R;
 
 public class MenuActivity extends AppCompatActivity {
 
-    private final double KEBABPRICE = 10.00;
-    private final int MAXNBRKEBAB = 10;
-    private final double BURGERPRICE = 10.00;
-    private final int MAXNBRBURGER = 10;
-    private final String MONEYDEVISE = " CHF";
-    private int nbr = 0;
 
+    private int nbrMenus = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,21 +28,22 @@ public class MenuActivity extends AppCompatActivity {
 
     private void kebabInit(){
         final TextView kebabNbr = (TextView) findViewById(R.id.MenuActivity_KebabNbr);
-        kebabNbr.setText("" + nbr);
+        kebabNbr.setText("" + 0);
         computeKebabPrice(0);
 
         TextView kebabPlus = (TextView) findViewById(R.id.MenuActivity_KebabPlus);
         kebabPlus.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
+                int maxNbr = FoodTypes.KEBAB.getMaxNbr();
+
                 String value = kebabNbr.getText().toString();
                 int actualValue = Integer.parseInt(value);
                 int newNbrValue = actualValue + 1;
-                if (newNbrValue > MAXNBRKEBAB) {
-                    newNbrValue = MAXNBRKEBAB;
+                if (newNbrValue <= maxNbr) {
+                    kebabNbr.setText(Integer.toString(newNbrValue));
+                    computeKebabPrice(newNbrValue);
+                    nbrMenus ++;
                 }
-                kebabNbr.setText(Integer.toString(newNbrValue));
-
-                computeKebabPrice(newNbrValue);
             }
         });
 
@@ -52,20 +53,20 @@ public class MenuActivity extends AppCompatActivity {
                 String value = kebabNbr.getText().toString();
                 int actualValue = Integer.parseInt(value);
                 int newNbrValue = actualValue - 1;
-                if (newNbrValue < 0) {
-                    newNbrValue = 0;
+                if (newNbrValue >= 0) {
+                    kebabNbr.setText(Integer.toString(newNbrValue));
+                    computeKebabPrice(newNbrValue);
+                    nbrMenus --;
                 }
-                kebabNbr.setText(Integer.toString(newNbrValue));
-
-                computeKebabPrice(newNbrValue);
             }
         });
     }
 
     private void computeKebabPrice(int nbr){
-        double price = nbr*KEBABPRICE;
-        TextView kebabPrice = (TextView)findViewById(R.id.MenuActivity_KebabTotalMoney);
-        kebabPrice.setText(Double.toString(price) + MONEYDEVISE);
+        double kebabPrice = FoodTypes.KEBAB.getPrice();
+        double price = nbr*kebabPrice;
+        TextView kebabPriceText = (TextView)findViewById(R.id.MenuActivity_KebabTotalMoney);
+        kebabPriceText.setText(Double.toString(price) +" "+ MoneyDevise.CHF.getSymbol());
     }
 
 
@@ -73,21 +74,22 @@ public class MenuActivity extends AppCompatActivity {
 
     private void burgerInit(){
         final TextView burgerNbr = (TextView) findViewById(R.id.MenuActivity_BurgerNbr);
-        burgerNbr.setText("" + nbr);
+        burgerNbr.setText("" + 0);
         computeBurgerPrice(0);
 
         TextView burgerPlus = (TextView) findViewById(R.id.MenuActivity_BurgerPlus);
         burgerPlus.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
+                int maxNbr = FoodTypes.BURGER.getMaxNbr();
                 String value = burgerNbr.getText().toString();
                 int actualValue = Integer.parseInt(value);
                 int newNbrValue = actualValue + 1;
-                if (newNbrValue > MAXNBRBURGER) {
-                    newNbrValue = MAXNBRBURGER;
-                }
-                burgerNbr.setText(Integer.toString(newNbrValue));
+                if (newNbrValue <= maxNbr) {
+                    burgerNbr.setText(Integer.toString(newNbrValue));
 
-                computeBurgerPrice(newNbrValue);
+                    computeBurgerPrice(newNbrValue);
+                    nbrMenus++;
+                }
             }
         });
 
@@ -97,20 +99,21 @@ public class MenuActivity extends AppCompatActivity {
                 String value = burgerNbr.getText().toString();
                 int actualValue = Integer.parseInt(value);
                 int newNbrValue = actualValue - 1;
-                if (newNbrValue < 0) {
-                    newNbrValue = 0;
-                }
-                burgerNbr.setText(Integer.toString(newNbrValue));
+                if (newNbrValue >= 0) {
+                    burgerNbr.setText(Integer.toString(newNbrValue));
 
-                computeBurgerPrice(newNbrValue);
+                    computeBurgerPrice(newNbrValue);
+                    nbrMenus --;
+                }
             }
         });
     }
 
     private void computeBurgerPrice(int nbr){
-        double price = nbr*BURGERPRICE;
-        TextView burgerPrice = (TextView)findViewById(R.id.MenuActivity_BurgerTotalMoney);
-        burgerPrice.setText(Double.toString(price) + MONEYDEVISE);
+        double burgerPrice = FoodTypes.BURGER.getPrice();
+        double price = nbr*burgerPrice;
+        TextView burgerPriceText = (TextView)findViewById(R.id.MenuActivity_BurgerTotalMoney);
+        burgerPriceText.setText(Double.toString(price) +" "+ MoneyDevise.CHF.getSymbol());
     }
 
 
@@ -119,8 +122,14 @@ public class MenuActivity extends AppCompatActivity {
 
     /** Called when the user clicks the MapActivity button */
     public void goToOptionsActivity(View view) {
-        Intent intent = new Intent(this, OptionsActivity.class);
-        startActivity(intent);
+        if(nbrMenus < 1){
+            Toast.makeText(getApplicationContext(), getString(R.string.NoMenuSelected),
+                    Toast.LENGTH_SHORT).show();
+        }
+        else{
+            Intent intent = new Intent(this, OptionsActivity.class);
+            startActivity(intent);
+        }
     }
 
 

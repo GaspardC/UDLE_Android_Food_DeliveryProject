@@ -1,4 +1,4 @@
-package ch.epfl.sweng.udle;
+package ch.epfl.sweng.udle.activities;
 
 import android.app.Activity;
 import android.content.Context;
@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
-import android.view.View;
 import android.widget.TextView;
 import com.facebook.AccessToken;
 import com.facebook.AccessTokenTracker;
@@ -24,6 +23,8 @@ import com.facebook.login.widget.ProfilePictureView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import ch.epfl.sweng.udle.R;
 
 
 public class LoginActivity extends Activity {

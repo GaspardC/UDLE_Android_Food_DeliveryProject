@@ -8,7 +8,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme" >
-        <activity android:name=".LoginActivity" >
+        <activity android:name=".activities.LoginActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -23,27 +23,27 @@
                 "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:label="@string/app_name" />
-        <activity android:name=".MapActivity" >
+        <activity android:name=".activities.MapActivity" >
         </activity>
-        <activity android:name=".MenuActivity" >
+        <activity android:name=".activities.MenuActivity" >
         </activity>
-        <activity android:name=".OptionsActivity" >
+        <activity android:name=".activities.OptionsActivity" >
         </activity>
-        <activity android:name=".DrinkActivity" >
+        <activity android:name=".activities.DrinkActivity" >
         </activity>
-        <activity android:name=".RecapActivity" >
+        <activity android:name=".activities.RecapActivity" >
         </activity>
-        <activity android:name=".WaitingActivity" >
+        <activity android:name=".activities.WaitingActivity" >
         </activity>
-        <activity android:name=".PaymentActivity" >
+        <activity android:name=".activities.PaymentActivity" >
         </activity>
-        <activity android:name=".DeliveryActivity" >
+        <activity android:name=".activities.DeliveryActivity" >
         </activity>
-        <activity android:name=".SlideMenuActivity" >
+        <activity android:name=".activities.SlideMenuActivity" >
         </activity>
-        <activity android:name=".DeliveryMapActivity" >
+        <activity android:name=".activities.DeliveryMapActivity" >
         </activity>
-        <activity android:name=".DeliverCommandDetailActivity" >
+        <activity android:name=".activities.DeliverCommandDetailActivity" >
         </activity>
     </application>
 

@@ -1,9 +1,11 @@
-package ch.epfl.sweng.udle;
+package ch.epfl.sweng.udle.activities;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+
+import ch.epfl.sweng.udle.R;
 
 public class OptionsActivity extends AppCompatActivity {
 

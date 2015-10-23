@@ -1,13 +1,15 @@
-package ch.epfl.sweng.udle;
+package ch.epfl.sweng.udle.activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-public class WaitingActivity extends AppCompatActivity {
+import ch.epfl.sweng.udle.R;
+
+public class DrinkActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_waiting);
+        setContentView(R.layout.activity_drink);
     }
 }

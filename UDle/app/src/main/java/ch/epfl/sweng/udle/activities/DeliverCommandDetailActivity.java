@@ -1,7 +1,9 @@
-package ch.epfl.sweng.udle;
+package ch.epfl.sweng.udle.activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import ch.epfl.sweng.udle.R;
 
 public class DeliverCommandDetailActivity extends AppCompatActivity {
 

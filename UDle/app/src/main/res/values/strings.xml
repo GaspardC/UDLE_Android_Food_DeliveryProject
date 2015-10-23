@@ -8,4 +8,5 @@
     <string name="Next">Next</string>
     <string name="MenuMap_SearchHint">Search the desired delivery address</string>
     <string name="ValidatePosition">Validate Position</string>
+    <string name="NoMenuSelected">You need to select at least one menu</string>
 </resources>
