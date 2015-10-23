@@ -28,6 +28,9 @@ public class DataManager {
     public void getOrderStatus(){
         //TODO
     }
+    public void setOrderStatus(){
+        //TODO
+    }
 
 
 }

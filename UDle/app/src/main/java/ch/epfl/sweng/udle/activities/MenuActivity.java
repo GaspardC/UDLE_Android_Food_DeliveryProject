@@ -9,13 +9,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import ch.epfl.sweng.udle.Food.FoodTypes;
-import ch.epfl.sweng.udle.Food.MoneyDevise;
+import ch.epfl.sweng.udle.Food.Menu;
+import ch.epfl.sweng.udle.Food.Order;
 import ch.epfl.sweng.udle.R;
 
 public class MenuActivity extends AppCompatActivity {
 
 
-    private int nbrMenus = 0;
+    private int nbrKebabs = 0;
+    private int nbrBurgers = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +44,7 @@ public class MenuActivity extends AppCompatActivity {
                 if (newNbrValue <= maxNbr) {
                     kebabNbr.setText(Integer.toString(newNbrValue));
                     computeKebabPrice(newNbrValue);
-                    nbrMenus ++;
+                    nbrKebabs++;
                 }
             }
         });
@@ -56,7 +58,7 @@ public class MenuActivity extends AppCompatActivity {
                 if (newNbrValue >= 0) {
                     kebabNbr.setText(Integer.toString(newNbrValue));
                     computeKebabPrice(newNbrValue);
-                    nbrMenus --;
+                    nbrKebabs --;
                 }
             }
         });
@@ -66,7 +68,7 @@ public class MenuActivity extends AppCompatActivity {
         double kebabPrice = FoodTypes.KEBAB.getPrice();
         double price = nbr*kebabPrice;
         TextView kebabPriceText = (TextView)findViewById(R.id.MenuActivity_KebabTotalMoney);
-        kebabPriceText.setText(Double.toString(price) +" "+ MoneyDevise.CHF.getSymbol());
+        kebabPriceText.setText(Double.toString(price) +" CHF");
     }
 
 
@@ -88,7 +90,7 @@ public class MenuActivity extends AppCompatActivity {
                     burgerNbr.setText(Integer.toString(newNbrValue));
 
                     computeBurgerPrice(newNbrValue);
-                    nbrMenus++;
+                    nbrBurgers++;
                 }
             }
         });
@@ -103,7 +105,7 @@ public class MenuActivity extends AppCompatActivity {
                     burgerNbr.setText(Integer.toString(newNbrValue));
 
                     computeBurgerPrice(newNbrValue);
-                    nbrMenus --;
+                    nbrBurgers --;
                 }
             }
         });
@@ -113,7 +115,7 @@ public class MenuActivity extends AppCompatActivity {
         double burgerPrice = FoodTypes.BURGER.getPrice();
         double price = nbr*burgerPrice;
         TextView burgerPriceText = (TextView)findViewById(R.id.MenuActivity_BurgerTotalMoney);
-        burgerPriceText.setText(Double.toString(price) +" "+ MoneyDevise.CHF.getSymbol());
+        burgerPriceText.setText(Double.toString(price) +"  CHF");
     }
 
 
@@ -122,12 +124,29 @@ public class MenuActivity extends AppCompatActivity {
 
     /** Called when the user clicks the MapActivity button */
     public void goToOptionsActivity(View view) {
+        int nbrMenus = nbrKebabs + nbrBurgers;
         if(nbrMenus < 1){
             Toast.makeText(getApplicationContext(), getString(R.string.NoMenuSelected),
                     Toast.LENGTH_SHORT).show();
         }
         else{
+
+            //TODO: the order must be the one send by previous activity
+            Order order = new Order();
+
+            for (int i=0; i<nbrKebabs; i++){
+                Menu menu = new Menu();
+                menu.setFood(FoodTypes.KEBAB);
+                order.addMenu(menu);
+            }
+            for (int i=0; i<nbrBurgers; i++){
+                Menu menu = new Menu();
+                menu.setFood(FoodTypes.BURGER);
+                order.addMenu(menu);
+            }
+
             Intent intent = new Intent(this, OptionsActivity.class);
+            //TODO: send object Order to the next activity
             startActivity(intent);
         }
     }
