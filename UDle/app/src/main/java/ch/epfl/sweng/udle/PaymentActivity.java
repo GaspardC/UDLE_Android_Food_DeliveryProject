@@ -17,8 +17,4 @@ public class PaymentActivity extends AppCompatActivity {
         Intent intent =  new Intent(this, WaitingActivity.class);
         startActivity(intent);
     }
-    public void goToPaymentActivity2(View view) {
-        //Intent intent = new Intent(this, );
-        //startActivity(intent);
-    }
 }
