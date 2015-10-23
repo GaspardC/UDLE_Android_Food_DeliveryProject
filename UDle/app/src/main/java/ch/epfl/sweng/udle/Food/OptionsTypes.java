@@ -5,7 +5,7 @@ package ch.epfl.sweng.udle.Food;
  */
 public enum OptionsTypes {
 
-    SALAT("Salat"),
+    SALAD("Salad"),
     TOMATO("Tomato"),
     OIGNON("Oignon");
 
