@@ -53,7 +53,7 @@
         </activity>
         <activity android:name=".activities.SlideMenuActivity" >
         </activity>
-        <activity android:name=".activities.DeliveryMapActivity" >
+        <activity android:name=".activities.DeliveryRestaurantMapActivity" >
         </activity>
         <activity android:name=".activities.DeliverCommandDetailActivity" >
         </activity>

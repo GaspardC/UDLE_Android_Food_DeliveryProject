@@ -19,7 +19,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import ch.epfl.sweng.udle.R;
 
-public class DeliveryMapActivity extends AppCompatActivity {
+public class DeliveryRestaurantMapActivity extends AppCompatActivity {
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
 

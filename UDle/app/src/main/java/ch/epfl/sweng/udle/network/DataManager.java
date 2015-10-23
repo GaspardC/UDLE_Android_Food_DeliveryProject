@@ -31,6 +31,12 @@ public class DataManager {
     public void setOrderStatus(){
         //TODO
     }
-
+    public String getDeliveryGuyNumber(){
+        //TODO
+        return "";
+    }
+    public void setDeliveryGuyNumber(){
+        //TODO
+    }
 
 }
