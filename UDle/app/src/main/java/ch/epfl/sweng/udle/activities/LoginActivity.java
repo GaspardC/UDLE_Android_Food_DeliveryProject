@@ -20,6 +20,8 @@ import com.facebook.ProfileTracker;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.facebook.login.widget.ProfilePictureView;
+import com.parse.Parse;
+import com.parse.ParseObject;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -46,6 +48,14 @@ public class LoginActivity extends Activity {
         super.onCreate(savedInstanceState);
         context = getApplication();
 
+        // Enable Local Datastore.
+        Parse.enableLocalDatastore(this);
+
+        Parse.initialize(this, "9owjl8GmUsbfyoKtXhd5hK7QX8CUJVfuAvSLNoaY", "xd6XKHd9NxLfzFPbHQ5xaMHVzU1gfeLen0qCyI4F");
+
+        ParseObject testObject = new ParseObject("TestObject");
+        testObject.put("foo", "bar");
+        testObject.saveInBackground();
         FacebookSdk.sdkInitialize(getApplicationContext());
 
 
