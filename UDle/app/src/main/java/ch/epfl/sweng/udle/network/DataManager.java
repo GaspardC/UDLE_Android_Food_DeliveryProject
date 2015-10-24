@@ -17,8 +17,9 @@ public class DataManager {
         //TODO
     }
 
-    public void getOrder(int userId, int restaurantId){
+    public Order getOrder(int userId, int restaurantId){
         //TODO
+        return null;
     }
 
     public void setOrder(int userId, int restaurantId, Order order){
@@ -28,14 +29,17 @@ public class DataManager {
     public void getOrderStatus(){
         //TODO
     }
+
     public void setOrderStatus(){
         //TODO
     }
-    public String getDeliveryGuyNumber(){
+
+    public static String getDeliveryGuyNumber(){
         //TODO
-        return "";
+        return "+41766796729";
     }
-    public void setDeliveryGuyNumber(){
+
+    public void setDeliveryGuyNumber(String phoneNumber){
         //TODO
     }
 
