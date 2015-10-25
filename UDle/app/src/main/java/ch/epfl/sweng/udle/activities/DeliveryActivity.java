@@ -69,32 +69,31 @@ public class DeliveryActivity extends AppCompatActivity {
         // Get the name of the best provider
         String provider = locationManager.getBestProvider(criteria, true);
 
+        // set map type
+        mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+
         Location myLocation;
         try {
             // Get Current Location
             myLocation = locationManager.getLastKnownLocation(provider);
+
+            // Get latitude/ longitude of the current location
+            double latitude = myLocation.getLatitude();
+            double longitude = myLocation.getLongitude();
+            LatLng latLng = new LatLng(latitude, longitude);
+
+            // Show the current location in Google Map
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+
+            // Zoom in the Google Map
+            //mMap.animateCamera(CameraUpdateFactory.zoomTo(14));
+            mMap.addMarker(new MarkerOptions().position(new LatLng(latitude + .001, longitude + .001)).title("Restaurant Location").snippet("ETA 5min"));
+            LatLng myCoordinates = new LatLng(latitude, longitude);
+            CameraUpdate yourLocation = CameraUpdateFactory.newLatLngZoom(myCoordinates, 15);
+            mMap.animateCamera(yourLocation);
         }catch(SecurityException e){
             Toast.makeText(getApplicationContext(), "You need to enable localisation" + e.getMessage(), Toast.LENGTH_LONG).show();
             return;
         }
-
-        // set map type
-        mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-
-        // Get latitude/ longitude of the current location
-        double latitude = myLocation.getLatitude();
-        double longitude = myLocation.getLongitude();
-        LatLng latLng = new LatLng(latitude, longitude);
-
-        // Show the current location in Google Map
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-
-        // Zoom in the Google Map
-        //mMap.animateCamera(CameraUpdateFactory.zoomTo(14));
-        mMap.addMarker(new MarkerOptions().position(new LatLng(latitude + .001, longitude + .001)).title("Restaurant Location").snippet("ETA 5min"));
-        LatLng myCoordinates = new LatLng(latitude, longitude);
-        CameraUpdate yourLocation = CameraUpdateFactory.newLatLngZoom(myCoordinates, 15);
-        mMap.animateCamera(yourLocation);
-
     }
 }

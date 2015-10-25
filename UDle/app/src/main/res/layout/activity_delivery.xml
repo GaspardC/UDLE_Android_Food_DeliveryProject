@@ -22,10 +22,9 @@
         android:name="com.google.android.gms.maps.SupportMapFragment" />
 
     <Button
-        android:id="@+id/Delivery_ValidatePosition"
+        android:id="@+id/Delivery_CallDeliveryGuy"
         android:layout_width="fill_parent"
         android:layout_height="0dp"
-        android:layout_weight="10"
         android:text="@string/buttonCallDeliveryGuy"
         android:onClick="callDeliveryGuy" />
 
