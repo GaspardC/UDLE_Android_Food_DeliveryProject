@@ -2,7 +2,6 @@ package ch.epfl.sweng.udle.Food;
 
 import android.location.Location;
 
-import java.security.InvalidParameterException;
 import java.util.ArrayList;
 
 /**
@@ -62,6 +61,19 @@ public class OrderElement {
     }
     public void addToDrinks(DrinkTypes drink){
         this.drinks.add(drink);
+    }
+
+    public double getTotalCost(){
+        double cost = 2.00; //Delivery Cost
+
+        for (Menu menu : orderList){
+            cost += menu.getFood().getPrice();
+        }
+        for(DrinkTypes drinkTypes : drinks){
+            cost += drinkTypes.getPrice();
+        }
+
+        return cost;
     }
 
 }

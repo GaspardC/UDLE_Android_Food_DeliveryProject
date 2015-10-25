@@ -1,6 +1,5 @@
 package ch.epfl.sweng.udle.Food;
 
-import java.security.InvalidParameterException;
 import java.util.ArrayList;
 
 
@@ -12,6 +11,7 @@ public class Orders {
     private static ArrayList<OrderElement> oldOrders = new ArrayList<>();
     private static ArrayList<OrderElement> currentOrders = new ArrayList<>();
     private static OrderElement            activeOrder = null;
+    private static String                  moneyDevise = " CHF";
 
 
 
@@ -47,4 +47,7 @@ public class Orders {
         return oldOrders;
     }
 
+    public static String getMoneyDevise(){
+        return moneyDevise;
+    }
 }
