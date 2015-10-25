@@ -28,9 +28,8 @@ public class Menu {
         return options;
     }
     public void addToOptions(OptionsTypes option){
-        if (this.options.contains(option)){
-            throw new IllegalArgumentException("Option is already present in the options list.");
+        if (! this.options.contains(option)){
+            this.options.add(option);
         }
-        this.options.add(option);
     }
 }

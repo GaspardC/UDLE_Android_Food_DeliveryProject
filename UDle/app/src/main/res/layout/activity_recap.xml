@@ -1,91 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="ch.epfl.sweng.udle.RecapActivity">
+    tools:context="ch.epfl.sweng.udle.RecapActivity"
+    android:orientation="vertical">
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Recap of the command :"
+        android:text="@string/recapOfCommand"
         android:id="@+id/RecapActivity_recapTitle"
-        android:layout_alignParentTop="true"
-        android:layout_alignEnd="@+id/RecapActivity_recapConfirm"
-        android:layout_alignRight="@+id/RecapActivity_recapConfirm"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="false"
-        android:layout_alignParentRight="true"
-        android:textAlignment="center" />
-
-    <TextView
-        android:id="@+id/RecapActivity_deliveryAdd"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Delivery Address: "
-        android:layout_below="@+id/RecapActivity_recapTitle"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="30dp"
-        android:textSize="15sp"/>
-
-    <TextView
-        android:id="@+id/RecapActivity_deliveryAddress"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/RecapActivity_recapTitle"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp"
-        android:textStyle="bold"
-        android:textSize="18sp"/>
-
-    <ListView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/RecapActivity_recapListView"
-        android:layout_below="@+id/RecapActivity_deliveryAdd"
-        android:choiceMode="none"
-        android:layout_marginTop="30dp" />
+        android:textAlignment="center"
+        android:gravity="center"
+        android:layout_weight="5"/>
 
     <LinearLayout
-        android:id="@+id/RecapActivity_deliveryCost"
+        android:id="@+id/RecapActivity_deliveryAdd"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/RecapActivity_recapListView">
+        android:layout_height="0dp"
+        android:layout_marginTop="30dp"
+        android:layout_weight="5">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Delivery Cost: "
-            android:textSize="15sp"
-            android:gravity="left"
-            android:layout_weight="1"/>
-
+            android:text="@string/deliveryAddress"
+            android:textSize="15sp"/>
         <TextView
+            android:id="@+id/RecapActivity_deliveryAddress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="15sp"
-            android:text="2.00 CHF"
-            android:gravity="right"
-            android:layout_weight="1"/>
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"/>
     </LinearLayout>
 
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/RecapActivity_deliveryCost"
-        android:layout_marginTop="50dp">
+        android:layout_height="0dp"
+        android:layout_weight="75"
+        android:orientation="vertical">
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="90"
+            android:id="@+id/RecapActivity_recapListView"
+            android:layout_marginTop="30dp" />
+
+        <LinearLayout
+            android:id="@+id/RecapActivity_deliveryCost"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="10">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/deliveryCost"
+                android:textSize="15sp"
+                android:gravity="start"
+                android:layout_weight="1"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:text="@string/deliveryCostPrice"
+                android:gravity="end"
+                android:layout_weight="1"/>
+        </LinearLayout>
+    </LinearLayout>
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="50dp"
+        android:layout_weight="5">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Total: "
+            android:text="@string/total"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:gravity="left"
+            android:gravity="start"
             android:layout_weight="1"/>
 
         <TextView
@@ -94,24 +100,19 @@
             android:layout_height="wrap_content"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:gravity="right"
+            android:gravity="end"
             android:layout_weight="1"/>
     </LinearLayout>
 
 
-
     <Button
         android:id="@+id/RecapActivity_recapConfirm"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Confirm"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:onClick="gotToPaymentActivity"/>
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:text="@string/confirm"
+        android:onClick="gotToPaymentActivity"
+        android:layout_weight="10"/>
 
 
 
-</RelativeLayout>
+</LinearLayout>

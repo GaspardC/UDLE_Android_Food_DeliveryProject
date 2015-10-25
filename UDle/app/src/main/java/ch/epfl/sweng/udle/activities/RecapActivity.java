@@ -50,7 +50,7 @@ public class RecapActivity extends AppCompatActivity {
         TextView priceTextView = (TextView) findViewById(R.id.RecapActivity_totalCost);
         priceTextView.setText(String.format("%.2f", order.getTotalCost()) + moneyDevise);
 
-        
+
 
         List<HashMap<String, String>> list = new ArrayList<>();
         HashMap<String, String> element;

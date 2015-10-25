@@ -132,6 +132,7 @@ public class MenuActivity extends AppCompatActivity {
         }
         else{
             OrderElement orderElement = Orders.getActiveOrder();
+            orderElement.empty();
 
             for (int i=0; i<nbrKebabs; i++){
                 Menu menu = new Menu();

@@ -24,6 +24,9 @@ public class OrderElement {
     }
 
 
+    public void empty(){
+        this.orderList = new ArrayList<>();
+    }
 
     public void addMenu (Menu menu){
         orderList.add(menu);
