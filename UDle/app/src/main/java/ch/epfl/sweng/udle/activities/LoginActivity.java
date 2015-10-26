@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.facebook.AccessToken;
 import com.facebook.AccessTokenTracker;
 import com.facebook.CallbackManager;
@@ -20,11 +22,20 @@ import com.facebook.ProfileTracker;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.facebook.login.widget.ProfilePictureView;
+import com.parse.LogInCallback;
 import com.parse.Parse;
+import com.parse.ParseException;
+import com.parse.ParseFacebookUtils;
 import com.parse.ParseObject;
+import com.parse.ParseUser;
+import com.parse.SignUpCallback;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 import ch.epfl.sweng.udle.R;
 
@@ -40,7 +51,7 @@ public class LoginActivity extends Activity {
     private static String name= "";
     private ProfileTracker mProfileTracker;
     private Context context = null;
-
+    private ArrayList<String> permissions;
 
 
     @Override
@@ -48,14 +59,10 @@ public class LoginActivity extends Activity {
         super.onCreate(savedInstanceState);
         context = getApplication();
 
-        // Enable Local Datastore.
-        Parse.enableLocalDatastore(this);
+        parseStuf();
 
-        Parse.initialize(this, "9owjl8GmUsbfyoKtXhd5hK7QX8CUJVfuAvSLNoaY", "xd6XKHd9NxLfzFPbHQ5xaMHVzU1gfeLen0qCyI4F");
 
-        ParseObject testObject = new ParseObject("TestObject");
-        testObject.put("foo", "bar");
-        testObject.saveInBackground();
+
         FacebookSdk.sdkInitialize(getApplicationContext());
 
 
@@ -92,6 +99,11 @@ public class LoginActivity extends Activity {
         loginButton.setReadPermissions("user_friends");
         loginButton.setReadPermissions("public_profile");
         loginButton.setReadPermissions("email");
+        permissions = new ArrayList<String>();
+        permissions.add("user_friends");
+        permissions.add("public_profile");
+        permissions.add("email");
+
 
 
 
@@ -117,6 +129,60 @@ public class LoginActivity extends Activity {
             }
         });
     }
+
+    private void parseStuf() {
+
+//        Parse.initialize(this);
+//        ParseFacebookUtils.initialize(this);
+
+
+//        // Enable Local Datastore.
+//        Parse.enableLocalDatastore(this);
+        Parse.initialize(this, "9owjl8GmUsbfyoKtXhd5hK7QX8CUJVfuAvSLNoaY", "xd6XKHd9NxLfzFPbHQ5xaMHVzU1gfeLen0qCyI4F");
+
+        //To create a nex user without facebook api
+//        ParseUser user = new ParseUser();
+//        user.setUsername("Gaspard");
+//        user.setPassword("333333");
+//        user.setEmail("chevassusgaspard@gmail.com");
+//
+//// other fields can be set just like with ParseObject
+//        user.put("phone", "0677913331");
+//
+//        user.signUpInBackground(new SignUpCallback() {
+//            public void done(ParseException e) {
+//                if (e == null) {
+//                    // Hooray! Let them use the app now.
+//                    Toast.makeText(getApplicationContext(), "succes", Toast.LENGTH_LONG);
+//                } else {
+//                    // Sign up didn't succeed. Look at the ParseException
+//                    // to figure out what went wrong
+//                    Toast.makeText(getApplicationContext(), "echec", Toast.LENGTH_LONG);
+//
+//                }
+//            }
+//        });
+        ParseFacebookUtils.initialize(getApplicationContext());
+
+
+        ParseFacebookUtils.logInWithReadPermissionsInBackground(this, permissions, new LogInCallback() {
+            @Override
+            public void done(ParseUser user, ParseException err) {
+                if (user == null) {
+                    Log.d("MyApp", "Uh oh. The user cancelled the Facebook login.");
+                } else if (user.isNew()) {
+                    Log.d("MyApp", "User signed up and logged in through Facebook!");
+                } else {
+                    Log.d("MyApp", "User logged in through Facebook!");
+                }
+            }
+        });
+
+
+
+    }
+
+
 
     private void goToMapActivityIn(int i) {
 
@@ -198,7 +264,13 @@ public class LoginActivity extends Activity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         callbackManager.onActivityResult(requestCode, resultCode, data);
+//        super.onActivityResult(requestCode, resultCode, data);
+        ParseFacebookUtils.onActivityResult(requestCode, resultCode, data);
+
+
     }
+
+
 
 
     @Override
