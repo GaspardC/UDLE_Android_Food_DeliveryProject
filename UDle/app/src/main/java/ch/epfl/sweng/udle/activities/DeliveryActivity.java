@@ -40,6 +40,8 @@ public class DeliveryActivity extends AppCompatActivity {
             startActivity(my_callIntent);
         } catch (ActivityNotFoundException e) {
             Toast.makeText(getApplicationContext(), "Error in your phone call" + e.getMessage(), Toast.LENGTH_LONG).show();
+        } catch (SecurityException e){
+            Toast.makeText(getApplicationContext(), "UDle doesn't have the right to pass phone call" + e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
 
@@ -47,7 +49,7 @@ public class DeliveryActivity extends AppCompatActivity {
         // Do a null check to confirm that we have not already instantiated the map.
         if (mMap == null) {
             // Try to obtain the map from the SupportMapFragment.
-            mMap = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.DeliveryMap_GoogleMaps))
+            mMap = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.Delivery_GoogleMaps))
                     .getMap();
             // Check if we were successful in obtaining the map.
             if (mMap != null) {
