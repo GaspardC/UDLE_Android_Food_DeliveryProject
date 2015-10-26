@@ -34,10 +34,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
 import ch.epfl.sweng.udle.R;
+import ch.epfl.sweng.udle.network.ParseUserInformations;
 
 
 public class LoginActivity extends Activity {
@@ -51,7 +53,7 @@ public class LoginActivity extends Activity {
     private static String name= "";
     private ProfileTracker mProfileTracker;
     private Context context = null;
-    private ArrayList<String> permissions;
+    private  List<String> permissions;
 
 
     @Override
@@ -59,7 +61,6 @@ public class LoginActivity extends Activity {
         super.onCreate(savedInstanceState);
         context = getApplication();
 
-        parseStuf();
 
 
 
@@ -90,7 +91,7 @@ public class LoginActivity extends Activity {
         if (profile != null) {
             setUserInformation(profile);
             info.setText("Hi again " + profile.getFirstName() + "");
-            goToMapActivityIn(2000);
+            goToMapActivityIn(5000);
 
         }
 
@@ -99,10 +100,8 @@ public class LoginActivity extends Activity {
         loginButton.setReadPermissions("user_friends");
         loginButton.setReadPermissions("public_profile");
         loginButton.setReadPermissions("email");
-        permissions = new ArrayList<String>();
-        permissions.add("user_friends");
-        permissions.add("public_profile");
-        permissions.add("email");
+        permissions = new ArrayList<>();
+        permissions = Arrays.asList("user_friends","public_profile", "email");
 
 
 
@@ -128,6 +127,9 @@ public class LoginActivity extends Activity {
                 info.setText("Login attempt failed.");
             }
         });
+
+        parseStuf();
+
     }
 
     private void parseStuf() {
@@ -163,6 +165,7 @@ public class LoginActivity extends Activity {
 //            }
 //        });
         ParseFacebookUtils.initialize(getApplicationContext());
+//        ParseFacebookUtils.initialize(getApplicationContext(), 100)
 
 
         ParseFacebookUtils.logInWithReadPermissionsInBackground(this, permissions, new LogInCallback() {
@@ -172,8 +175,13 @@ public class LoginActivity extends Activity {
                     Log.d("MyApp", "Uh oh. The user cancelled the Facebook login.");
                 } else if (user.isNew()) {
                     Log.d("MyApp", "User signed up and logged in through Facebook!");
+                    ParseUserInformations userInf = new ParseUserInformations();
+                    userInf.fetcUserInfomation();
+
                 } else {
                     Log.d("MyApp", "User logged in through Facebook!");
+                    ParseUserInformations userInf = new ParseUserInformations();
+                    userInf.fetcUserInfomation();
                 }
             }
         });
@@ -263,8 +271,8 @@ public class LoginActivity extends Activity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        callbackManager.onActivityResult(requestCode, resultCode, data);
 //        super.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode, resultCode, data);
         ParseFacebookUtils.onActivityResult(requestCode, resultCode, data);
 
 
