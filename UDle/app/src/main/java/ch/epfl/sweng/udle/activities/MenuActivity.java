@@ -69,7 +69,7 @@ public class MenuActivity extends AppCompatActivity {
         double kebabPrice = FoodTypes.KEBAB.getPrice();
         double price = nbr*kebabPrice;
         TextView kebabPriceText = (TextView)findViewById(R.id.MenuActivity_KebabTotalMoney);
-        kebabPriceText.setText(Double.toString(price) +" CHF");
+        kebabPriceText.setText(Double.toString(price) + Orders.getMoneyDevise());
     }
 
 
@@ -116,7 +116,7 @@ public class MenuActivity extends AppCompatActivity {
         double burgerPrice = FoodTypes.BURGER.getPrice();
         double price = nbr*burgerPrice;
         TextView burgerPriceText = (TextView)findViewById(R.id.MenuActivity_BurgerTotalMoney);
-        burgerPriceText.setText(Double.toString(price) +"  CHF");
+        burgerPriceText.setText(Double.toString(price) + Orders.getMoneyDevise());
     }
 
 
@@ -132,6 +132,7 @@ public class MenuActivity extends AppCompatActivity {
         }
         else{
             OrderElement orderElement = Orders.getActiveOrder();
+            orderElement.empty();
 
             for (int i=0; i<nbrKebabs; i++){
                 Menu menu = new Menu();
