@@ -16,6 +16,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 
@@ -39,14 +40,6 @@ public class DeliveryRestaurantMapActivity extends AppCompatActivity {
         setUpMapIfNeeded();
         showWaitingOrders();
 }
-
-    /** Called when the user clicks the MenuMap_ValidatePosition button */
-    public void goToMenuActivity(View view) {
-        Intent intent = new Intent(this, MenuActivity.class);
-        startActivity(intent);
-    }
-
-
     /**
      * Sets up the map if it is possible to do so (i.e., the Google Play services APK is correctly
      * installed) and the map has not already been instantiated.. This will ensure that we only ever
@@ -117,7 +110,7 @@ public class DeliveryRestaurantMapActivity extends AppCompatActivity {
     }
 
     private void showWaitingOrders(){
-        ArrayList<OrderElement> orders = new ArrayList<>();
+        final ArrayList<OrderElement> orders = new ArrayList<>();
 
         //BASIC DATA FOR TESTS ---- START
 
@@ -160,6 +153,25 @@ public class DeliveryRestaurantMapActivity extends AppCompatActivity {
             LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
             mMap.addMarker(new MarkerOptions().position(latLng).title("Waiting Order").snippet(deliveryAddress).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
         }
+
+        mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+            @Override
+            public void onInfoWindowClick(Marker marker) {
+                for (OrderElement order : orders) {
+                    if (order.getDeliveryAddress().equals(marker.getSnippet())) {
+                        Log.i("AAAAAAAAAAAAAAAAAA", "COOOOOOOOOOOOOOOOOOOOOOOOOOOOL");
+
+                    }
+                }
+            }
+        });
+    }
+
+    /** Called when the user clicks the MenuMap_ValidatePosition button */
+    public void goToDeliveryCommandDetail(OrderElement orderElement) {
+        Intent intent = new Intent(this, DeliverCommandDetailActivity.class);
+        //TODO: send orderElement to the next activity
+        startActivity(intent);
     }
 }
 
