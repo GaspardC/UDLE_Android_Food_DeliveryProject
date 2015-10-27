@@ -7,16 +7,25 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 
+import java.util.ArrayList;
+
+import ch.epfl.sweng.udle.Food.DrinkTypes;
+import ch.epfl.sweng.udle.Food.FoodTypes;
+import ch.epfl.sweng.udle.Food.Menu;
+import ch.epfl.sweng.udle.Food.OptionsTypes;
+import ch.epfl.sweng.udle.Food.OrderElement;
 import ch.epfl.sweng.udle.R;
 
 public class DeliveryRestaurantMapActivity extends AppCompatActivity {
@@ -26,9 +35,10 @@ public class DeliveryRestaurantMapActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_delivery_map);
+        setContentView(R.layout.activity_delivery_restaurant_map);
         setUpMapIfNeeded();
-    }
+        showWaitingOrders();
+}
 
     /** Called when the user clicks the MenuMap_ValidatePosition button */
     public void goToMenuActivity(View view) {
@@ -99,12 +109,57 @@ public class DeliveryRestaurantMapActivity extends AppCompatActivity {
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
 
         // Zoom in the Google Map
-        //mMap.animateCamera(CameraUpdateFactory.zoomTo(14));
-        mMap.addMarker(new MarkerOptions().position(new LatLng(latitude + .001, longitude + .001)).title("Restaurant Location").snippet("ETA 5min"));
+
         LatLng myCoordinates = new LatLng(latitude, longitude);
-        CameraUpdate yourLocation = CameraUpdateFactory.newLatLngZoom(myCoordinates, 15);
+        CameraUpdate yourLocation = CameraUpdateFactory.newLatLngZoom(myCoordinates, 12);
         mMap.animateCamera(yourLocation);
 
+    }
+
+    private void showWaitingOrders(){
+        ArrayList<OrderElement> orders = new ArrayList<>();
+
+        //BASIC DATA FOR TESTS ---- START
+
+        Menu menu1 = new Menu();
+        menu1.setFood(FoodTypes.KEBAB);
+        menu1.addToOptions(OptionsTypes.KETCHUP);
+        menu1.addToOptions(OptionsTypes.SALAD);
+        OrderElement orderElement1 = new OrderElement();
+        orderElement1.addMenu(menu1);
+        orderElement1.addToDrinks(DrinkTypes.BEER);
+        Location location1 = new Location("");
+        location1.setLatitude(46.519);
+        location1.setLongitude(6.566);
+        orderElement1.setDeliveryLocation(location1);
+        orderElement1.setDeliveryAddress("Address for the deliver 1, 1002 SwEng");
+        orders.add(orderElement1);
+
+        Menu menu2 = new Menu();
+        menu2.setFood(FoodTypes.BURGER);
+        menu2.addToOptions(OptionsTypes.OIGNON);
+        menu2.addToOptions(OptionsTypes.TOMATO);
+        OrderElement orderElement2 = new OrderElement();
+        orderElement2.addMenu(menu2);
+        orderElement2.addToDrinks(DrinkTypes.COCA);
+        orderElement2.addToDrinks(DrinkTypes.WATER);
+        Location location2 = new Location("");
+        location2.setLatitude(46.539);
+        location2.setLongitude(6.556);
+        orderElement2.setDeliveryLocation(location2);
+        orderElement2.setDeliveryAddress("Address for the deliver 2, 1002 SwEng");
+        orders.add(orderElement2);
+
+
+
+        //BASIC DATA FOT TESTS ---- END
+
+        for(OrderElement order : orders) {
+            Location location = order.getDeliveryLocation();
+            String deliveryAddress = order.getDeliveryAddress();
+            LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+            mMap.addMarker(new MarkerOptions().position(latLng).title("Waiting Order").snippet(deliveryAddress).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
+        }
     }
 }
 
