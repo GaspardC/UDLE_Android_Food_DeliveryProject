@@ -7,7 +7,11 @@ public enum OptionsTypes {
 
     SALAD("Salad"),
     TOMATO("Tomato"),
-    OIGNON("Oignon");
+    OIGNON("Oignon"),
+    KETCHUP("Ketchup"),
+    MAYO("Mayo"),
+    MUSTARD("Mustard"),
+    ALGERIENNE("Sauce Algerienne");
 
     private String name = "";
 

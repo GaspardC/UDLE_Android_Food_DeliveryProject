@@ -9,13 +9,10 @@ public class Menu {
 
     private FoodTypes food;
     private ArrayList<OptionsTypes> options;
-    private ArrayList<DrinkTypes> drinks;
-
 
     public Menu(){
         this.food = null;
         this.options = new ArrayList<>();
-        this.drinks = new ArrayList<>();
     }
 
 
@@ -30,22 +27,10 @@ public class Menu {
     public ArrayList<OptionsTypes> getOptions(){
         return options;
     }
-    public void addToOptions(OptionsTypes options){
-        this.options.add(options);
+    public void addToOptions(OptionsTypes option){
+        if (this.options.contains(option)){
+            throw new IllegalArgumentException("Option is already present in the options list.");
+        }
+        this.options.add(option);
     }
-    public void removeFromOptions(OptionsTypes options){
-        this.options.remove(options);
-    }
-
-
-    public ArrayList<DrinkTypes> getDrinks(){
-        return drinks;
-    }
-    public void addToDrinks(DrinkTypes drink){
-        this.drinks.add(drink);
-    }
-    public void removeFromDrinks(DrinkTypes drink){
-        this.drinks.remove(drink);
-    }
-
 }

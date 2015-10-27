@@ -21,7 +21,7 @@ public enum FoodTypes {
     public double getPrice(){
         return price;
     }
-    public  String toString(){
+    public String toString(){
         return name;
     }
     public int getMaxNbr(){
