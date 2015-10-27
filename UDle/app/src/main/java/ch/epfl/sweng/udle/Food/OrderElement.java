@@ -1,6 +1,8 @@
 package ch.epfl.sweng.udle.Food;
 
 import android.location.Location;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import java.util.ArrayList;
 
@@ -14,6 +16,7 @@ public class OrderElement {
 
     private Location deliveryLocation;
     private String deliveryAddress;
+
 
 
     public OrderElement(){
@@ -78,5 +81,4 @@ public class OrderElement {
 
         return cost;
     }
-
 }

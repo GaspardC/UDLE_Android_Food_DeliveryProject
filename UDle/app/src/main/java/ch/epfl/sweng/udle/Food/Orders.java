@@ -19,9 +19,6 @@ public class Orders {
         return activeOrder;
     }
     public static void setActiveOrder(OrderElement orderElement){
-        if (orderElement == null){
-            throw new IllegalArgumentException("Try to set the activeOrder to a null object");
-        }
         activeOrder = orderElement;
     }
 

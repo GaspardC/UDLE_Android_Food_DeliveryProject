@@ -27,6 +27,7 @@ import ch.epfl.sweng.udle.Food.FoodTypes;
 import ch.epfl.sweng.udle.Food.Menu;
 import ch.epfl.sweng.udle.Food.OptionsTypes;
 import ch.epfl.sweng.udle.Food.OrderElement;
+import ch.epfl.sweng.udle.Food.Orders;
 import ch.epfl.sweng.udle.R;
 
 public class DeliveryRestaurantMapActivity extends AppCompatActivity {
@@ -110,10 +111,58 @@ public class DeliveryRestaurantMapActivity extends AppCompatActivity {
     }
 
     private void showWaitingOrders(){
-        final ArrayList<OrderElement> orders = new ArrayList<>();
+        final ArrayList<OrderElement> waitingOrders = getWaitingOrders(new ArrayList<OrderElement>());
+        final ArrayList<OrderElement> currentOrders = getCurrentOrders(new ArrayList<OrderElement>());
 
-        //BASIC DATA FOR TESTS ---- START
 
+        for(OrderElement order : waitingOrders) {
+            Location location = order.getDeliveryLocation();
+            String deliveryAddress = order.getDeliveryAddress();
+            LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+            mMap.addMarker(new MarkerOptions().position(latLng).title("Waiting Order").snippet(deliveryAddress).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
+        }
+        for(OrderElement order : currentOrders) {
+            Location location = order.getDeliveryLocation();
+            String deliveryAddress = order.getDeliveryAddress();
+            LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+            mMap.addMarker(new MarkerOptions().position(latLng).title("Confirmed Order").snippet(deliveryAddress).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+        }
+
+        mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+            @Override
+            public void onInfoWindowClick(Marker marker) {
+                for (OrderElement order : waitingOrders) {
+                    if (order.getDeliveryAddress().equals(marker.getSnippet())) { //TODO: Instead of compare with the address, compare with the id of the command for example.
+                        Orders.setActiveOrder(order);
+                        goToDeliveryCommandDetail(null);
+                    }
+                }
+                for (OrderElement order : currentOrders) {
+                    if (order.getDeliveryAddress().equals(marker.getSnippet())) { //TODO: Instead of compare with the address, compare with the id of the command for example.
+                        Orders.setActiveOrder(null);
+                        goToDeliveryCommandDetail(order);
+                    }
+                }
+            }
+        });
+    }
+
+
+
+    /** Called when the user clicks the MenuMap_ValidatePosition button */
+    public void goToDeliveryCommandDetail(OrderElement order) {
+        Intent intent = new Intent(this, DeliverCommandDetailActivity.class);
+        if (order != null){
+            intent.putExtra("Address", order.getDeliveryAddress());//TODO: Instead of compare with the address, compare with the id of the command for example.
+        }
+        startActivity(intent);
+    }
+
+
+
+    /** JUST FOR TEST**/
+    public ArrayList<OrderElement> getWaitingOrders(ArrayList<OrderElement> orders){
+        //BASIC DATA FOR TESTS
         Menu menu1 = new Menu();
         menu1.setFood(FoodTypes.KEBAB);
         menu1.addToOptions(OptionsTypes.KETCHUP);
@@ -143,35 +192,49 @@ public class DeliveryRestaurantMapActivity extends AppCompatActivity {
         orderElement2.setDeliveryAddress("Address for the deliver 2, 1002 SwEng");
         orders.add(orderElement2);
 
+        Menu menu3 = new Menu();
+        menu3.setFood(FoodTypes.BURGER);
+        menu3.addToOptions(OptionsTypes.OIGNON);
+        menu3.addToOptions(OptionsTypes.TOMATO);
+        Menu menu3b = new Menu();
+        menu3b.setFood(FoodTypes.KEBAB);
+        menu3b.addToOptions(OptionsTypes.OIGNON);
+        menu3b.addToOptions(OptionsTypes.TOMATO);
+        menu3b.addToOptions(OptionsTypes.ALGERIENNE);
+        OrderElement orderElement3 = new OrderElement();
+        orderElement3.addMenu(menu3);
+        orderElement3.addMenu(menu3b);
+        orderElement3.addToDrinks(DrinkTypes.BEER);
+        orderElement3.addToDrinks(DrinkTypes.WATER);
+        Location location3 = new Location("");
+        location3.setLatitude(46.639);
+        location3.setLongitude(6.496);
+        orderElement3.setDeliveryLocation(location3);
+        orderElement3.setDeliveryAddress("Address for the deliver 3, 1002 SwEng");
+        orders.add(orderElement3);
 
-
-        //BASIC DATA FOT TESTS ---- END
-
-        for(OrderElement order : orders) {
-            Location location = order.getDeliveryLocation();
-            String deliveryAddress = order.getDeliveryAddress();
-            LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-            mMap.addMarker(new MarkerOptions().position(latLng).title("Waiting Order").snippet(deliveryAddress).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
-        }
-
-        mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
-            @Override
-            public void onInfoWindowClick(Marker marker) {
-                for (OrderElement order : orders) {
-                    if (order.getDeliveryAddress().equals(marker.getSnippet())) {
-                        Log.i("AAAAAAAAAAAAAAAAAA", "COOOOOOOOOOOOOOOOOOOOOOOOOOOOL");
-                        goToDeliveryCommandDetail(order);
-                    }
-                }
-            }
-        });
+        return orders;
     }
 
-    /** Called when the user clicks the MenuMap_ValidatePosition button */
-    public void goToDeliveryCommandDetail(OrderElement orderElement) {
-        Intent intent = new Intent(this, DeliverCommandDetailActivity.class);
-        //TODO: send orderElement to the next activity
-        startActivity(intent);
+    private ArrayList<OrderElement> getCurrentOrders(ArrayList<OrderElement> orders) {
+        Menu menu1 = new Menu();
+        menu1.setFood(FoodTypes.KEBAB);
+        menu1.addToOptions(OptionsTypes.KETCHUP);
+        menu1.addToOptions(OptionsTypes.SALAD);
+        OrderElement orderElement1 = new OrderElement();
+        orderElement1.addMenu(menu1);
+        orderElement1.addToDrinks(DrinkTypes.BEER);
+        Location location1 = new Location("");
+        location1.setLatitude(46.519);
+        location1.setLongitude(6.666);
+        orderElement1.setDeliveryLocation(location1);
+        orderElement1.setDeliveryAddress("Address for the deliver 1, 1002 SwEng");
+        orders.add(orderElement1);
+
+        Orders.setActiveOrder(orderElement1);
+        Orders.activeOrderToCurrentOrder(orderElement1);
+
+        return orders;
     }
 }
 
