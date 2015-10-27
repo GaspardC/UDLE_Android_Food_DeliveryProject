@@ -14,14 +14,15 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 
-import ch.epfl.sweng.udle.Food.Order;
+import ch.epfl.sweng.udle.Food.OrderElement;
+import ch.epfl.sweng.udle.Food.Orders;
 import ch.epfl.sweng.udle.R;
 
 public class MapActivity extends AppCompatActivity {
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
+    private Location location;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,11 +33,13 @@ public class MapActivity extends AppCompatActivity {
 
     /** Called when the user clicks the MenuMap_ValidatePosition button */
     public void goToMenuActivity(View view) {
-        Order order = new Order();
-        //TODO: set orderDeliveryLocation and orderDeliverAddress
+        OrderElement orderElement = new OrderElement();
+        orderElement.setDeliveryLocation(location); //TODO: here I take the current location, need to take the location added (Might be the one set via the address searchView
+        orderElement.setDeliveryAddress("Rue du test de la mort, 1069 SwEng"); //TODO: Take a real location
+
+        Orders.setActiveOrder(orderElement);
 
         Intent intent = new Intent(this, MenuActivity.class);
-        //TODO: send the order object to the next activity
         startActivity(intent);
     }
 
@@ -91,7 +94,7 @@ public class MapActivity extends AppCompatActivity {
 
         // Get Current Location
         Location myLocation = locationManager.getLastKnownLocation(provider);
-
+        location = myLocation;
         // set map type
         mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 

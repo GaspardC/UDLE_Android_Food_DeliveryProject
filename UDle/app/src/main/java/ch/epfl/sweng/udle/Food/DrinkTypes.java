@@ -5,9 +5,10 @@ package ch.epfl.sweng.udle.Food;
  */
 public enum DrinkTypes {
 
-    WATER("Water",5.00),
+    WATER("Water", 5.00),
     COCA("Coca", 5.00),
-    BEER("Beer", 5.00);
+    BEER("Beer", 5.00),
+    ORANGINA("Orangina", 5.00);
 
     private String name = "";
     private double price = -1;

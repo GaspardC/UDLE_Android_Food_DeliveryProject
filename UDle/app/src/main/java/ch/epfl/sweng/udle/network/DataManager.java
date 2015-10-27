@@ -2,9 +2,10 @@ package ch.epfl.sweng.udle.network;
 
 import android.location.Location;
 
-import com.parse.ParseUser;
 
-import ch.epfl.sweng.udle.Food.Order;
+import com.parse.ParseUser;
+import ch.epfl.sweng.udle.Food.OrderElement;
+
 
 /**
  * Created by rodri on 23/10/2015.
@@ -32,7 +33,7 @@ public class DataManager {
         //TODO
     }
 
-    public void setOrder(int userId, int restaurantId, Order order){
+    public void setOrder(int userId, int restaurantId, OrderElement orderElement){
         //TODO
     }
 

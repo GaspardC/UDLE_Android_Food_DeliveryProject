@@ -10,7 +10,8 @@ import android.widget.Toast;
 
 import ch.epfl.sweng.udle.Food.FoodTypes;
 import ch.epfl.sweng.udle.Food.Menu;
-import ch.epfl.sweng.udle.Food.Order;
+import ch.epfl.sweng.udle.Food.OrderElement;
+import ch.epfl.sweng.udle.Food.Orders;
 import ch.epfl.sweng.udle.R;
 
 public class MenuActivity extends AppCompatActivity {
@@ -68,7 +69,7 @@ public class MenuActivity extends AppCompatActivity {
         double kebabPrice = FoodTypes.KEBAB.getPrice();
         double price = nbr*kebabPrice;
         TextView kebabPriceText = (TextView)findViewById(R.id.MenuActivity_KebabTotalMoney);
-        kebabPriceText.setText(Double.toString(price) +" CHF");
+        kebabPriceText.setText(Double.toString(price) + Orders.getMoneyDevise());
     }
 
 
@@ -115,7 +116,7 @@ public class MenuActivity extends AppCompatActivity {
         double burgerPrice = FoodTypes.BURGER.getPrice();
         double price = nbr*burgerPrice;
         TextView burgerPriceText = (TextView)findViewById(R.id.MenuActivity_BurgerTotalMoney);
-        burgerPriceText.setText(Double.toString(price) +"  CHF");
+        burgerPriceText.setText(Double.toString(price) + Orders.getMoneyDevise());
     }
 
 
@@ -130,23 +131,21 @@ public class MenuActivity extends AppCompatActivity {
                     Toast.LENGTH_SHORT).show();
         }
         else{
-
-            //TODO: the order must be the one send by previous activity
-            Order order = new Order();
+            OrderElement orderElement = Orders.getActiveOrder();
+            orderElement.empty();
 
             for (int i=0; i<nbrKebabs; i++){
                 Menu menu = new Menu();
                 menu.setFood(FoodTypes.KEBAB);
-                order.addMenu(menu);
+                orderElement.addMenu(menu);
             }
             for (int i=0; i<nbrBurgers; i++){
                 Menu menu = new Menu();
                 menu.setFood(FoodTypes.BURGER);
-                order.addMenu(menu);
+                orderElement.addMenu(menu);
             }
 
             Intent intent = new Intent(this, OptionsActivity.class);
-            //TODO: send object Order to the next activity
             startActivity(intent);
         }
     }
