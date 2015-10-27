@@ -2,12 +2,23 @@ package ch.epfl.sweng.udle.network;
 
 import android.location.Location;
 
+import com.parse.ParseUser;
+
 import ch.epfl.sweng.udle.Food.Order;
 
 /**
  * Created by rodri on 23/10/2015.
  */
 public class DataManager {
+
+    public ParseUser getCurrentParseUser() {
+
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        if ((currentUser != null)) {
+            return currentUser;
+        }
+        else return null;
+    }
 
 
 
@@ -39,7 +50,11 @@ public class DataManager {
         //TODO
     }
 
+
     public void getOrdersForARestaurantOwner(){
+
+    }
+    public void setUserStatusRestaurantOwner(){
 
     }
 
