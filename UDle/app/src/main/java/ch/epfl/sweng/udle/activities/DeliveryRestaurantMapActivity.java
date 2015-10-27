@@ -160,7 +160,7 @@ public class DeliveryRestaurantMapActivity extends AppCompatActivity {
                 for (OrderElement order : orders) {
                     if (order.getDeliveryAddress().equals(marker.getSnippet())) {
                         Log.i("AAAAAAAAAAAAAAAAAA", "COOOOOOOOOOOOOOOOOOOOOOOOOOOOL");
-
+                        goToDeliveryCommandDetail(order);
                     }
                 }
             }
