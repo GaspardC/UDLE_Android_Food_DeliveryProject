@@ -104,22 +104,18 @@ public class LoginActivity extends Activity {
         permissions = Arrays.asList("user_friends","public_profile", "email");
 
 
-
-
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(final LoginResult loginResult) {
 
                 retrieveFacebookInfoFirstConnection(loginResult);
                 retrieveFacebookInfoSecondAndAfterConnections();
-
                 goToMapActivityIn(2000);
             }
 
             @Override
             public void onCancel() {
                 info.setText("Login attempt canceled.");
-
             }
 
             @Override
@@ -129,41 +125,18 @@ public class LoginActivity extends Activity {
         });
 
         parseStuf();
+        ParseUserInformations testNewUser = new ParseUserInformations();
+        testNewUser.createNewUserWithoutFb("UserTest","0000","test@mail.com","0607080910");
 
     }
 
     private void parseStuf() {
 
-//        Parse.initialize(this);
-//        ParseFacebookUtils.initialize(this);
-
-
 //        // Enable Local Datastore.
 //        Parse.enableLocalDatastore(this);
         Parse.initialize(this, "9owjl8GmUsbfyoKtXhd5hK7QX8CUJVfuAvSLNoaY", "xd6XKHd9NxLfzFPbHQ5xaMHVzU1gfeLen0qCyI4F");
 
-        //To create a nex user without facebook api
-//        ParseUser user = new ParseUser();
-//        user.setUsername("Gaspard");
-//        user.setPassword("333333");
-//        user.setEmail("chevassusgaspard@gmail.com");
-//
-//// other fields can be set just like with ParseObject
-//        user.put("phone", "0677913331");
-//
-//        user.signUpInBackground(new SignUpCallback() {
-//            public void done(ParseException e) {
-//                if (e == null) {
-//                    // Hooray! Let them use the app now.
-//                    Toast.makeText(getApplicationContext(), "succes", Toast.LENGTH_LONG);
-//                } else {
-//                    // Sign up didn't succeed. Look at the ParseException
-//                    // to figure out what went wrong
-//                    Toast.makeText(getApplicationContext(), "echec", Toast.LENGTH_LONG);
-//
-//                }
-//            }
-//        });
+
         ParseFacebookUtils.initialize(getApplicationContext());
 //        ParseFacebookUtils.initialize(getApplicationContext(), 100)
 
@@ -180,8 +153,8 @@ public class LoginActivity extends Activity {
 
                 } else {
                     Log.d("MyApp", "User logged in through Facebook!");
-                    ParseUserInformations userInf = new ParseUserInformations();
-                    userInf.fetcUserInfomation();
+//                    ParseUserInformations userInf = new ParseUserInformations();
+//                    userInf.fetcUserInfomation();
                 }
             }
         });

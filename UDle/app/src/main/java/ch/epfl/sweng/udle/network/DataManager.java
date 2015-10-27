@@ -11,10 +11,8 @@ public class DataManager {
 
 
 
-    public void setFacebookId(int id){
-        //TODO
-    }
-
+    //info all restaurant around the user location
+    //get all restaurant locations, return all restaurant in a perimeter of 5km
     public void getRestaurantLocations(Location currLocation){
         //TODO
     }
@@ -40,5 +38,10 @@ public class DataManager {
     public void setDeliveryGuyNumber(){
         //TODO
     }
+
+    public void getOrdersForARestaurantOwner(){
+
+    }
+
 
 }

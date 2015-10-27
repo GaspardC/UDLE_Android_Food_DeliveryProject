@@ -2,11 +2,14 @@ package ch.epfl.sweng.udle.network;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
+import com.parse.ParseException;
 import com.parse.ParseUser;
+import com.parse.SignUpCallback;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -22,7 +25,7 @@ public class ParseUserInformations {
     long id = 0;
 
     public void ParseUserInformations(){
-        fetcUserInfomation();
+//        fetcUserInfomation();
     }
 
     public void fetcUserInfomation(){
@@ -68,6 +71,8 @@ public class ParseUserInformations {
                                 ParseUser currentUser = ParseUser.getCurrentUser();
                                 currentUser.put("profile", userProfile);
                                 currentUser.setUsername(jsonObject.getString("name"));
+                                currentUser.put("RestaurantOwner", "NO");
+
                                 currentUser.saveInBackground();
 
                                 // Show the user info
@@ -100,6 +105,30 @@ public class ParseUserInformations {
         parameters.putString("fields", "id,email,gender,name");
         request.setParameters(parameters);
         request.executeAsync();
+    }
+
+
+    public void createNewUserWithoutFb(String username, String password, String mail, String numberPhone){
+
+        //To create a nex user without facebook api
+        ParseUser user = new ParseUser();
+        user.setUsername(username);
+        user.setPassword(password);
+        user.setEmail(mail);
+
+// other fields can be set just like with ParseObject
+        user.put("phone", numberPhone);
+
+        user.signUpInBackground(new SignUpCallback() {
+            public void done(ParseException e) {
+                if (e == null) {
+                    // Hooray! Let them use the app now.
+                } else {
+                    // Sign up didn't succeed. Look at the ParseException
+                    // to figure out what went wrong
+                }
+            }
+        });
     }
 
 
