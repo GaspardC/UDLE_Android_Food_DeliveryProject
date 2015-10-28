@@ -8,6 +8,9 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AutoCompleteTextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -19,7 +22,7 @@ import ch.epfl.sweng.udle.Food.OrderElement;
 import ch.epfl.sweng.udle.Food.Orders;
 import ch.epfl.sweng.udle.R;
 
-public class MapActivity extends AppCompatActivity {
+public class MapActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
     private Location location;
@@ -29,6 +32,15 @@ public class MapActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
         setUpMapIfNeeded();
+
+        AutoCompleteTextView autoCompView = (AutoCompleteTextView) findViewById(R.id.autoCompleteTextView2);
+        autoCompView.setAdapter(new GooglePlacesAutocompleteAdapter(this, R.layout.list_item));
+        autoCompView.setOnItemClickListener(this);
+    }
+
+    public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+        String str = (String) adapterView.getItemAtPosition(position);
+        Toast.makeText(this, str, Toast.LENGTH_SHORT).show();
     }
 
     /** Called when the user clicks the MenuMap_ValidatePosition button */
@@ -38,7 +50,6 @@ public class MapActivity extends AppCompatActivity {
         orderElement.setDeliveryAddress("Rue du test de la mort, 1069 SwEng"); //TODO: Take a real location
 
         Orders.setActiveOrder(orderElement);
-
         Intent intent = new Intent(this, MenuActivity.class);
         startActivity(intent);
     }
