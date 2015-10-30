@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.facebook.AccessToken;
 import com.facebook.AccessTokenTracker;
 import com.facebook.CallbackManager;
@@ -20,11 +22,24 @@ import com.facebook.ProfileTracker;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.facebook.login.widget.ProfilePictureView;
+import com.parse.LogInCallback;
+import com.parse.Parse;
+import com.parse.ParseException;
+import com.parse.ParseFacebookUtils;
+import com.parse.ParseObject;
+import com.parse.ParseUser;
+import com.parse.SignUpCallback;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+
 import ch.epfl.sweng.udle.R;
+import ch.epfl.sweng.udle.network.ParseUserInformations;
 
 
 public class LoginActivity extends Activity {
@@ -38,13 +53,16 @@ public class LoginActivity extends Activity {
     private static String name= "";
     private ProfileTracker mProfileTracker;
     private Context context = null;
-
+    private  List<String> permissions;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context = getApplication();
+
+
+
 
         FacebookSdk.sdkInitialize(getApplicationContext());
 
@@ -73,7 +91,7 @@ public class LoginActivity extends Activity {
         if (profile != null) {
             setUserInformation(profile);
             info.setText("Hi again " + profile.getFirstName() + "");
-            goToMapActivityIn(2000);
+            goToMapActivityIn(5000);
 
         }
 
@@ -82,7 +100,8 @@ public class LoginActivity extends Activity {
         loginButton.setReadPermissions("user_friends");
         loginButton.setReadPermissions("public_profile");
         loginButton.setReadPermissions("email");
-
+        permissions = new ArrayList<>();
+        permissions = Arrays.asList("user_friends","public_profile", "email");
 
 
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
@@ -91,14 +110,12 @@ public class LoginActivity extends Activity {
 
                 retrieveFacebookInfoFirstConnection(loginResult);
                 retrieveFacebookInfoSecondAndAfterConnections();
-
                 goToMapActivityIn(2000);
             }
 
             @Override
             public void onCancel() {
                 info.setText("Login attempt canceled.");
-
             }
 
             @Override
@@ -106,7 +123,47 @@ public class LoginActivity extends Activity {
                 info.setText("Login attempt failed.");
             }
         });
+
+        parseStuf();
+        ParseUserInformations testNewUser = new ParseUserInformations();
+        testNewUser.createNewUserWithoutFb("UserTest","0000","test@mail.com","0607080910");
+
     }
+
+    private void parseStuf() {
+
+//        // Enable Local Datastore.
+//        Parse.enableLocalDatastore(this);
+        Parse.initialize(this, "9owjl8GmUsbfyoKtXhd5hK7QX8CUJVfuAvSLNoaY", "xd6XKHd9NxLfzFPbHQ5xaMHVzU1gfeLen0qCyI4F");
+
+
+        ParseFacebookUtils.initialize(getApplicationContext());
+//        ParseFacebookUtils.initialize(getApplicationContext(), 100)
+
+
+        ParseFacebookUtils.logInWithReadPermissionsInBackground(this, permissions, new LogInCallback() {
+            @Override
+            public void done(ParseUser user, ParseException err) {
+                if (user == null) {
+                    Log.d("MyApp", "Uh oh. The user cancelled the Facebook login.");
+                } else if (user.isNew()) {
+                    Log.d("MyApp", "User signed up and logged in through Facebook!");
+                    ParseUserInformations userInf = new ParseUserInformations();
+                    userInf.fetcUserInfomation();
+
+                } else {
+                    Log.d("MyApp", "User logged in through Facebook!");
+//                    ParseUserInformations userInf = new ParseUserInformations();
+//                    userInf.fetcUserInfomation();
+                }
+            }
+        });
+
+
+
+    }
+
+
 
     private void goToMapActivityIn(int i) {
 
@@ -187,8 +244,14 @@ public class LoginActivity extends Activity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         callbackManager.onActivityResult(requestCode, resultCode, data);
+        ParseFacebookUtils.onActivityResult(requestCode, resultCode, data);
+
+
     }
+
+
 
 
     @Override
