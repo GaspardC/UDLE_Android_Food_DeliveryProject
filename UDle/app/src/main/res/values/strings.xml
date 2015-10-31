@@ -11,4 +11,10 @@
     <string name="NoMenuSelected">You need to select at least one menu</string>
     <string name="title_activity_maps">Map</string>
     <string name="buttonCallDeliveryGuy">Call Delivery Guy</string>
+    <string name="recapOfCommand">Recap of the command:</string>
+    <string name="deliveryAddress">Delivery Address:</string>
+    <string name="deliveryCost">Delivery Cost:</string>
+    <string name="deliveryCostPrice">2.00 CHF</string>
+    <string name="total">Total:</string>
+    <string name="confirm">Confirm</string>
 </resources>
