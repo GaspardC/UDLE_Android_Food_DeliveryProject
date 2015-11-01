@@ -22,7 +22,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import ch.epfl.sweng.udle.R;
 import ch.epfl.sweng.udle.network.DataManager;
 
-public class DeliveryActivity extends AppCompatActivity {
+public class DeliveryActivity extends SlideMenuActivity {
 
     private GoogleMap mMap;
 
