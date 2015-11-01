@@ -29,9 +29,8 @@ public class DataManager {
         //TODO
     }
 
-    public Order getOrder(int userId, int restaurantId){
+    public void getOrder(int userId, int restaurantId){
         //TODO
-        return null;
     }
 
     public void setOrder(int userId, int restaurantId, OrderElement orderElement){
