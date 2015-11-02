@@ -34,7 +34,10 @@ public class MapActivity extends AppCompatActivity {
     /** Called when the user clicks the MenuMap_ValidatePosition button */
     public void goToMenuActivity(View view) {
         OrderElement orderElement = new OrderElement();
-        orderElement.setDeliveryLocation(location); //TODO: here I take the current location, need to take the location added (Might be the one set via the address searchView
+        if(location != null){
+            orderElement.setDeliveryLocation(location); //TODO: here I take the current location, need to take the location added (Might be the one set via the address searchView
+
+        }
         orderElement.setDeliveryAddress("Rue du test de la mort, 1069 SwEng"); //TODO: Take a real location
 
         Orders.setActiveOrder(orderElement);
@@ -97,6 +100,8 @@ public class MapActivity extends AppCompatActivity {
         location = myLocation;
         // set map type
         mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+        if( location == null) return ;
+
 
         // Get latitude/ longitude of the current location
         double latitude = myLocation.getLatitude();

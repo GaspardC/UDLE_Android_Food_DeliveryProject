@@ -63,7 +63,6 @@ public class LoginActivity extends Activity {
 
 
 
-
         FacebookSdk.sdkInitialize(getApplicationContext());
 
 
