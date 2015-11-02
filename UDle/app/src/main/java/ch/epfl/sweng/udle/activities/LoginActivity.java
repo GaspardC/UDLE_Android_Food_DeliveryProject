@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.facebook.AccessToken;
 import com.facebook.AccessTokenTracker;
@@ -26,18 +25,12 @@ import com.parse.LogInCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseFacebookUtils;
-import com.parse.ParseObject;
 import com.parse.ParseUser;
-import com.parse.SignUpCallback;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
-
 import ch.epfl.sweng.udle.R;
 import ch.epfl.sweng.udle.network.ParseUserInformations;
 
@@ -54,47 +47,34 @@ public class LoginActivity extends Activity {
     private ProfileTracker mProfileTracker;
     private Context context = null;
     private  List<String> permissions;
+    private AccessTokenTracker accessTokenTracker;
+    private ProfileTracker profileTracker;
+    private boolean stopTracking = false;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context = getApplication();
-
-
-
         FacebookSdk.sdkInitialize(getApplicationContext());
-
-
-
         callbackManager = CallbackManager.Factory.create();
-        setContentView(R.layout.activity_log_in);
-        loginButton = (LoginButton)findViewById(R.id.login_button);
-        profilePictureView = (ProfilePictureView) findViewById(R.id.image);
-        info = (TextView)findViewById(R.id.info);
-
-
-        new AccessTokenTracker() {
+        accessTokenTracker = new AccessTokenTracker() {
             @Override
-            protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken, AccessToken newAccessToken) {
-                if (newAccessToken==null){
+            protected void onCurrentAccessTokenChanged(
+                    AccessToken oldAccessToken,
+                    AccessToken currentAccessToken) {
+                if (currentAccessToken == null && stopTracking == false){
+                    //User logged out
                     profilePictureView.setProfileId(null);
-                    info.setText("Welcome :)");
-                }
+                    info.setText("Welcome :)");}
 
             }
         };
 
-        Profile profile = Profile.getCurrentProfile();
-
-        if (profile != null) {
-            setUserInformation(profile);
-            info.setText("Hi again " + profile.getFirstName() + "");
-            goToMapActivityIn(5000);
-
-        }
-
-
+        setContentView(R.layout.activity_log_in);
+        loginButton = (LoginButton)findViewById(R.id.login_button);
+        profilePictureView = (ProfilePictureView) findViewById(R.id.image);
+        info = (TextView)findViewById(R.id.info);
 
         loginButton.setReadPermissions("user_friends");
         loginButton.setReadPermissions("public_profile");
@@ -106,19 +86,25 @@ public class LoginActivity extends Activity {
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(final LoginResult loginResult) {
+                stopTracking = true;
+                boolean b =   retrieveFacebookInfoSecondAndAfterConnections();
+                if (b == false){
+                    retrieveFacebookInfoFirstConnection(loginResult);
 
-                retrieveFacebookInfoFirstConnection(loginResult);
-                retrieveFacebookInfoSecondAndAfterConnections();
-                goToMapActivityIn(2000);
+                }
+                goToMapActivityIn(1500);
             }
 
             @Override
             public void onCancel() {
+
+                Log.d("faceLogin","cancel");
                 info.setText("Login attempt canceled.");
             }
 
             @Override
             public void onError(FacebookException e) {
+                Log.d("faceLogin","error");
                 info.setText("Login attempt failed.");
             }
         });
@@ -171,21 +157,23 @@ public class LoginActivity extends Activity {
             @Override
             public void run() {
                 // Go to Map Activity after i ms
+                stopTracking = false;
                 Intent intent = new Intent(context, MapActivity.class);
                 startActivity(intent);
-
             }
         }, i);
     }
 
-    private void retrieveFacebookInfoSecondAndAfterConnections() {
+    private boolean retrieveFacebookInfoSecondAndAfterConnections() {
          /*Use for 2nd and next connections*/
         Profile profile = Profile.getCurrentProfile();
         if(profile == null){
-            return ;
+            return false ;
         }
         Log.d("Success", "" + profile);
         setUserInformation(profile);
+        accessTokenTracker.stopTracking();
+        return true;
 
     }
 
@@ -236,6 +224,11 @@ public class LoginActivity extends Activity {
                     mProfileTracker.stopTracking();
                     setUserInformation(profile2);
                 }
+                else{
+                    profilePictureView.setProfileId(null);
+                    info.setText("Welcome :)");
+
+                }
             }
         };
         mProfileTracker.startTracking();
@@ -251,8 +244,16 @@ public class LoginActivity extends Activity {
     }
 
 
-
-
+    @Override
+    public void onResume(){
+        super.onResume();
+        if(mProfileTracker != null){
+            mProfileTracker.startTracking();
+        }
+        if(accessTokenTracker != null){
+            accessTokenTracker.startTracking();
+        }
+    }
     @Override
     public void onDestroy() {
         super.onDestroy();
