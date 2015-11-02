@@ -4,10 +4,12 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -80,7 +82,17 @@ public class PaymentActivity extends AppCompatActivity {
     }
 
     public void payment_button_click(View view) {
-        Intent intent =  new Intent(this, WaitingActivity.class);
-        startActivity(intent);
+        EditText cardNumber = (EditText) findViewById(R.id.payment_cardNumber);
+        EditText cardExpDate = (EditText) findViewById(R.id.payment_expDate);
+        EditText cardSecurityNumber = (EditText) findViewById(R.id.payment_securityNumber);
+
+        if(cardNumber.getText().toString().length() < 4 || cardExpDate.getText().toString().length() < 4 || cardSecurityNumber.getText().toString().length() < 4){
+            Toast.makeText(getApplicationContext(), getString(R.string.NoCardInformation),
+                    Toast.LENGTH_SHORT).show();
+        }
+        else{
+            Intent intent =  new Intent(this, WaitingActivity.class);
+            startActivity(intent);
+        }
     }
 }
