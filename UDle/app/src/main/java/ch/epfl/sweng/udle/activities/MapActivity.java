@@ -8,27 +8,51 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AutoCompleteTextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import ch.epfl.sweng.udle.Food.OrderElement;
 import ch.epfl.sweng.udle.Food.Orders;
 import ch.epfl.sweng.udle.R;
 
-public class MapActivity extends AppCompatActivity {
+public class MapActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
     private Location location;
+    private AutoCompleteTextView autoCompView = null;
+
+    private Marker selected_position = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
         setUpMapIfNeeded();
+
+        AutoCompleteTextView autoCompView = (AutoCompleteTextView) findViewById(R.id.autoCompleteTextView2);
+        autoCompView.setAdapter(new GooglePlacesAutocompleteAdapter(this, R.layout.list_item));
+        autoCompView.setOnItemClickListener(this);
+    }
+
+    public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+        String str = (String) adapterView.getItemAtPosition(position);
+        LatLng latLng = GooglePlacesAutocompleteAdapter.getLatLngFromId(((GooglePlacesAutocompleteAdapter)adapterView.getAdapter()).getItem_Id(position));
+        if (selected_position == null)
+            selected_position = this.mMap.addMarker(new MarkerOptions().position(latLng).title(str));
+        else {
+            selected_position.setPosition(latLng);
+            selected_position.setTitle(str);
+        }
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
     }
 
     /** Called when the user clicks the MenuMap_ValidatePosition button */
@@ -38,7 +62,6 @@ public class MapActivity extends AppCompatActivity {
         orderElement.setDeliveryAddress("Rue du test de la mort, 1069 SwEng"); //TODO: Take a real location
 
         Orders.setActiveOrder(orderElement);
-
         Intent intent = new Intent(this, MenuActivity.class);
         startActivity(intent);
     }
