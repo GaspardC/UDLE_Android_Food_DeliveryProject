@@ -17,6 +17,8 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import ch.epfl.sweng.udle.Food.OrderElement;
 import ch.epfl.sweng.udle.Food.Orders;
@@ -26,6 +28,9 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
     private Location location;
+    private AutoCompleteTextView autoCompView = null;
+
+    private Marker selected_position = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +45,14 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
 
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
         String str = (String) adapterView.getItemAtPosition(position);
-        Toast.makeText(this, str, Toast.LENGTH_SHORT).show();
+        LatLng latLng = GooglePlacesAutocompleteAdapter.getLatLngFromId(((GooglePlacesAutocompleteAdapter)adapterView.getAdapter()).getItem_Id(position));
+        if (selected_position == null)
+            selected_position = this.mMap.addMarker(new MarkerOptions().position(latLng).title(str));
+        else {
+            selected_position.setPosition(latLng);
+            selected_position.setTitle(str);
+        }
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
     }
 
     /** Called when the user clicks the MenuMap_ValidatePosition button */
