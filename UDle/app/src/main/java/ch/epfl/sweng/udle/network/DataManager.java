@@ -1,8 +1,5 @@
 package ch.epfl.sweng.udle.network;
 
-import android.location.Location;
-import android.util.Log;
-
 
 import com.parse.FindCallback;
 import com.parse.GetCallback;
@@ -12,8 +9,10 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.json.JSONStringer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +27,7 @@ import ch.epfl.sweng.udle.Food.OrderElement;
 public class DataManager {
     public static final double MAX_DISTANCE_IN_KM_TO_FIND_A_RESTAURANT = 10;
     public static ParseGeoPoint userLocation;
+    private JSONObject pendingOrder;
 
     public ParseUser getCurrentParseUser() {
 
@@ -46,11 +46,11 @@ public class DataManager {
 
         getUserLocation();
         setPendingOrdersForARestaurantOwner();
-        getPendingOderForARestaurantOwner();
 
     }
 
-    private void getPendingOderForARestaurantOwner() {
+    private void getUserStatusRestaurantOwner() {
+
     }
 
     public void getUserLocation(){
@@ -120,30 +120,36 @@ public class DataManager {
 
     public void setPendingOrdersForARestaurantOwner(){
         ParseUser user = getCurrentParseUser();
+        /*Restaurant Owner only*/
 //        if( ("NO".equals(user.get("RestaurantOwner")))){
 //            return;
 //        }
         final ParseGeoPoint locResto = user.getParseGeoPoint("Location");
-
+        //In OrderInformation Class we check all orders that are still pending
         ParseQuery<ParseObject> query = ParseQuery.getQuery("ParseUserOrderInformations");
         query.whereEqualTo("orderStatus", "Pending");
         query.findInBackground(new FindCallback<ParseObject>() {
             public void done(List<ParseObject> OrderList, ParseException e) {
                 if (e == null) {
 
+                    //for all clients who are waiting the validation of their command
                     for(ParseObject locOfClient : OrderList){
                         ParseGeoPoint locClient = locOfClient.getParseGeoPoint("currentLocation");
 
                         double km = locResto.distanceInKilometersTo(locClient);
+                        //We check if they are near of us (restaurant owner connected) if yes we add it to our PendingCommandForARestaurant column
                         if(km<MAX_DISTANCE_IN_KM_TO_FIND_A_RESTAURANT){
-                            JSONObject pendingOrder = new JSONObject();
+                             pendingOrder = new JSONObject();
 
                             try {
-                                pendingOrder.put("location", locClient);
+                                pendingOrder.put("lat", locClient.getLatitude());
+                                pendingOrder.put("lon", locClient.getLongitude());
+
                                 pendingOrder.put("client","idDuClient");
                             } catch (JSONException e1) {
                                 e1.printStackTrace();
                             }
+                            getPendingOderForARestaurantOwner();
                             ParseUser currentUser = ParseUser.getCurrentUser();
                             currentUser.put("PendingCommandForARestaurant", pendingOrder);
                             currentUser.saveInBackground();
@@ -158,7 +164,28 @@ public class DataManager {
 
 
     }
-    public void setUserStatusRestaurantOwner(){
+
+    public JSONObject getPendingOderForARestaurantOwner(){
+
+
+            JSONObject p = pendingOrder;
+            JSONObject j = new JSONObject();
+
+
+        try {
+
+            String client =  pendingOrder.getString("client");
+            double lat =  pendingOrder.getDouble("lat");
+            double lon =  pendingOrder.getDouble("lon");
+            j.put("lat",lat);
+            j.put("lon",lon);
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+            return  j;
 
     }
 
