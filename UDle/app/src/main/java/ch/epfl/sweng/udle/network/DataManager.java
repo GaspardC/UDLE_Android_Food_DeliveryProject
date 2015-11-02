@@ -40,14 +40,17 @@ public class DataManager {
     public void getOrderStatus(){
         //TODO
     }
+
     public void setOrderStatus(){
         //TODO
     }
-    public String getDeliveryGuyNumber(){
+
+    public static String getDeliveryGuyNumber(){
         //TODO
-        return "";
+        return "+41766796729";
     }
-    public void setDeliveryGuyNumber(){
+
+    public void setDeliveryGuyNumber(String phoneNumber){
         //TODO
     }
 
