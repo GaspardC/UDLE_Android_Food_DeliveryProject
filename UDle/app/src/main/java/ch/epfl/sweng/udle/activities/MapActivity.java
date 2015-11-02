@@ -18,6 +18,7 @@ import com.google.android.gms.maps.model.LatLng;
 import ch.epfl.sweng.udle.Food.OrderElement;
 import ch.epfl.sweng.udle.Food.Orders;
 import ch.epfl.sweng.udle.R;
+import ch.epfl.sweng.udle.network.DataManager;
 
 public class MapActivity extends AppCompatActivity {
 
@@ -107,7 +108,8 @@ public class MapActivity extends AppCompatActivity {
         double latitude = myLocation.getLatitude();
         double longitude = myLocation.getLongitude();
         LatLng latLng = new LatLng(latitude, longitude);
-
+        DataManager data = new DataManager();
+        data.setUserLocation(latitude,longitude);
         // Show the current location in Google Map
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
 

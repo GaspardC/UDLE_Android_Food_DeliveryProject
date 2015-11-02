@@ -3,6 +3,7 @@ package ch.epfl.sweng.udle.network;
 import android.location.Location;
 
 
+import com.parse.ParseGeoPoint;
 import com.parse.ParseUser;
 import ch.epfl.sweng.udle.Food.OrderElement;
 
@@ -19,6 +20,14 @@ public class DataManager {
             return currentUser;
         }
         else return null;
+    }
+
+    public void setUserLocation(double lat, double lon){
+        ParseUser user = getCurrentParseUser();
+        ParseGeoPoint point = new ParseGeoPoint(lat, lon);
+        user.put("Location", point);
+        user.saveInBackground();
+
     }
 
 
