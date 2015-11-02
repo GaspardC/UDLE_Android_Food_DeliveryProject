@@ -8,8 +8,12 @@ import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
+import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,8 +27,7 @@ import ch.epfl.sweng.udle.Food.OrderElement;
 
 public class DataManager {
     public static final double MAX_DISTANCE_IN_KM_TO_FIND_A_RESTAURANT = 10;
-    public ParseGeoPoint userLocation;
-    public   ArrayList<ParseUser> listAvailableRestaurant;
+    public static ParseGeoPoint userLocation;
 
     public ParseUser getCurrentParseUser() {
 
@@ -42,8 +45,14 @@ public class DataManager {
         user.saveInBackground();
 
         getUserLocation();
+        setPendingOrdersForARestaurantOwner();
+        getPendingOderForARestaurantOwner();
 
     }
+
+    private void getPendingOderForARestaurantOwner() {
+    }
+
     public void getUserLocation(){
         ParseUser user = getCurrentParseUser();
         ParseQuery<ParseUser> query = ParseUser.getQuery();
@@ -52,7 +61,7 @@ public class DataManager {
                 userLocation  = object.getParseGeoPoint("Location");
                 // This will throw an exception, since the ParseUser is not authenticated
                 object.saveInBackground();
-                getRestaurantLocations(userLocation);
+                getRestaurantLocationsNearTheUser(userLocation);
             }
         });
 
@@ -61,24 +70,25 @@ public class DataManager {
 
     //info all restaurant around the user location
     //get all restaurant locations, return all restaurant in a perimeter of 5km
-    public void getRestaurantLocations(ParseGeoPoint currLocation) {
+    public void getRestaurantLocationsNearTheUser(ParseGeoPoint currLocation) {
         ParseQuery<ParseUser> query = ParseUser.getQuery();
         query.whereEqualTo("RestaurantOwner", "YES");
         query.findInBackground(new FindCallback<ParseUser>() {
             public void done(List<ParseUser> objects, ParseException e) {
                 if (e == null) {
                     // The query was successful.
-                    Log.d("obj", objects.toString());
-                    listAvailableRestaurant= new ArrayList<ParseUser>();
+                    ArrayList<String> listAvailableRestaurant= new ArrayList<String>();
 
                     for(ParseUser restoUser : objects){
                         ParseGeoPoint locResto = restoUser.getParseGeoPoint("Location");
                         double km = locResto.distanceInKilometersTo(userLocation);
                         if(km<MAX_DISTANCE_IN_KM_TO_FIND_A_RESTAURANT){
-                        listAvailableRestaurant.add(restoUser);
+                        listAvailableRestaurant.add(restoUser.getObjectId());
                         }
-
                     }
+                    ParseUser user = getCurrentParseUser();
+                    user.put("ArrayOfNearRestaurant", listAvailableRestaurant);
+                    user.saveInBackground();
                 } else {
                     // Something went wrong.
                 }
@@ -108,7 +118,44 @@ public class DataManager {
     }
 
 
-    public void getOrdersForARestaurantOwner(){
+    public void setPendingOrdersForARestaurantOwner(){
+        ParseUser user = getCurrentParseUser();
+//        if( ("NO".equals(user.get("RestaurantOwner")))){
+//            return;
+//        }
+        final ParseGeoPoint locResto = user.getParseGeoPoint("Location");
+
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("ParseUserOrderInformations");
+        query.whereEqualTo("orderStatus", "Pending");
+        query.findInBackground(new FindCallback<ParseObject>() {
+            public void done(List<ParseObject> OrderList, ParseException e) {
+                if (e == null) {
+
+                    for(ParseObject locOfClient : OrderList){
+                        ParseGeoPoint locClient = locOfClient.getParseGeoPoint("currentLocation");
+
+                        double km = locResto.distanceInKilometersTo(locClient);
+                        if(km<MAX_DISTANCE_IN_KM_TO_FIND_A_RESTAURANT){
+                            JSONObject pendingOrder = new JSONObject();
+
+                            try {
+                                pendingOrder.put("location", locClient);
+                                pendingOrder.put("client","idDuClient");
+                            } catch (JSONException e1) {
+                                e1.printStackTrace();
+                            }
+                            ParseUser currentUser = ParseUser.getCurrentUser();
+                            currentUser.put("PendingCommandForARestaurant", pendingOrder);
+                            currentUser.saveInBackground();
+                        }
+                    }
+
+                } else {
+//                    Log.d("score", "Error: " + e.getMessage());
+                }
+            }
+        });
+
 
     }
     public void setUserStatusRestaurantOwner(){

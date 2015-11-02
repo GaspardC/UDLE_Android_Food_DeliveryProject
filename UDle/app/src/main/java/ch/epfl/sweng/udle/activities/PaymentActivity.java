@@ -82,5 +82,8 @@ public class PaymentActivity extends AppCompatActivity {
     public void payment_button_click(View view) {
         Intent intent =  new Intent(this, WaitingActivity.class);
         startActivity(intent);
+
+
+
     }
 }
