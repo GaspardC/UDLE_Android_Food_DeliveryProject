@@ -32,8 +32,8 @@
     <ListView
         android:id="@+id/PaymentActivity_recap"
         android:layout_width="match_parent"
-        android:layout_height="134dp"
-        android:layout_weight="0.65"
+        android:layout_height="0dp"
+        android:layout_weight="0.9"
         android:layout_marginTop="20dp"/>
 
     <LinearLayout
@@ -82,7 +82,7 @@
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/editText"
+            android:id="@+id/payment_cardNumber"
             android:layout_weight="1" />
     </LinearLayout>
 
@@ -100,7 +100,7 @@
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/editText2"
+            android:id="@+id/payment_expDate"
             android:layout_weight="1" />
     </LinearLayout>
 
@@ -118,7 +118,7 @@
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/editText3"
+            android:id="@+id/payment_securityNumber"
             android:layout_weight="1" />
     </LinearLayout>
 
