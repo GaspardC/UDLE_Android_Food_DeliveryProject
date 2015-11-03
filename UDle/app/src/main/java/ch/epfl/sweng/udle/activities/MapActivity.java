@@ -23,6 +23,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import ch.epfl.sweng.udle.Food.OrderElement;
 import ch.epfl.sweng.udle.Food.Orders;
 import ch.epfl.sweng.udle.R;
+import ch.epfl.sweng.udle.network.DataManager;
 
 public class MapActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
@@ -58,7 +59,10 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
     /** Called when the user clicks the MenuMap_ValidatePosition button */
     public void goToMenuActivity(View view) {
         OrderElement orderElement = new OrderElement();
-        orderElement.setDeliveryLocation(location); //TODO: here I take the current location, need to take the location added (Might be the one set via the address searchView
+        if(location != null){
+            orderElement.setDeliveryLocation(location); //TODO: here I take the current location, need to take the location added (Might be the one set via the address searchView
+
+        }
         orderElement.setDeliveryAddress("Rue du test de la mort, 1069 SwEng"); //TODO: Take a real location
 
         Orders.setActiveOrder(orderElement);
@@ -120,12 +124,15 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
         location = myLocation;
         // set map type
         mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+        if( location == null) return ;
+
 
         // Get latitude/ longitude of the current location
         double latitude = myLocation.getLatitude();
         double longitude = myLocation.getLongitude();
         LatLng latLng = new LatLng(latitude, longitude);
-
+        DataManager data = new DataManager();
+        data.setUserLocation(latitude,longitude);
         // Show the current location in Google Map
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
 

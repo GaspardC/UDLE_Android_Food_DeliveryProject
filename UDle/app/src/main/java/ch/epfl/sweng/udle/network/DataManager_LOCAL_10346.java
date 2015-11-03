@@ -16,36 +16,25 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.location.Location;
-
-import com.parse.ParseGeoPoint;
-import com.parse.ParseUser;
-
 import ch.epfl.sweng.udle.Food.OrderElement;
 
 
 /**
  * Created by rodri on 23/10/2015.
- * This class manages the User's information relevant to the order, order status, and contact info
- * One user can currently have one order.
- *
- *
- * THESE METHODS NEED TO BE MADE STATIC. I AM HAVING TROUBLE FINDING A WAY TO GET THE EXACT
- * PARSE OBJECT FOR USER ORDER INFORMATION BASED ON JUST THE USER ID AND RESTAURANT ID
- *
  */
 
 public class DataManager {
     public static final double MAX_DISTANCE_IN_KM_TO_FIND_A_RESTAURANT = 10;
     public static ParseGeoPoint userLocation;
     private JSONObject pendingOrder;
-    private ParseUserOrderInformations userOrderInformations;
 
-    public DataManager() {
-    }
+    public ParseUser getCurrentParseUser() {
 
-    public DataManager(double latitude, double longitude) {
-        userOrderInformations = new ParseUserOrderInformations(latitude, longitude);
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        if ((currentUser != null)) {
+            return currentUser;
+        }
+        else return null;
     }
 
     public void setUserLocation(double lat, double lon){
@@ -74,19 +63,11 @@ public class DataManager {
                 getRestaurantLocationsNearTheUser(userLocation);
             }
         });
+
     }
 
-    public ParseUser getCurrentParseUser() {
-        return ParseUser.getCurrentUser();
-    }
 
-    public static void setUserLocation(ParseUser user, double latitude, double longitude){
-        ParseGeoPoint point = new ParseGeoPoint(latitude, longitude);
-        user.put("Location", point);
-        user.saveInBackground();
-    }
-
-    //Info all restaurant around the user location
+    //info all restaurant around the user location
     //get all restaurant locations, return all restaurant in a perimeter of 5km
     public void getRestaurantLocationsNearTheUser(ParseGeoPoint currLocation) {
         ParseQuery<ParseUser> query = ParseUser.getQuery();
@@ -115,36 +96,31 @@ public class DataManager {
     }
     public void getOrder(int userId, int restaurantId){
         //TODO
-//    public void getRestaurantLocations(Location currLocation) {
-//        //TODO
-//    }
-
-//    public OrderElement getOrder(int userId, int restaurantId){
-//        return userOrderInformations.getOrder();
     }
 
-    public void setOrder(ParseUser userId, String restaurantId, OrderElement orderElement){
-        userOrderInformations.setOrder(orderElement);
+    public void setOrder(int userId, int restaurantId, OrderElement orderElement){
+        //TODO
     }
 
-    public String getOrderStatus(){
-        return userOrderInformations.getOrderStatus();
+    public void getOrderStatus(){
+        //TODO
     }
 
-    public void setOrderStatus(String orderStatus){
-        userOrderInformations.setOrderStatus(orderStatus);
+    public void setOrderStatus(){
+        //TODO
     }
 
-    public String getDeliveryGuyNumber(){
-        return userOrderInformations.getDeliveryGuyNumber();
+    public static String getDeliveryGuyNumber(){
+        //TODO
+        return "+41766796729";
     }
 
-    public void setDeliveryGuyNumber(String number){
-        userOrderInformations.setDeliveryGuyNumber(number);
+    public void setDeliveryGuyNumber(String phoneNumber){
+        //TODO
     }
 
 
-    public void setPendingOrdersForARestaurantOwner() {
+    public void setPendingOrdersForARestaurantOwner(){
         ParseUser user = getCurrentParseUser();
         /*Restaurant Owner only*/
 //        if( ("NO".equals(user.get("RestaurantOwner")))){
@@ -159,19 +135,19 @@ public class DataManager {
                 if (e == null) {
 
                     //for all clients who are waiting the validation of their command
-                    for (ParseObject locOfClient : OrderList) {
+                    for(ParseObject locOfClient : OrderList){
                         ParseGeoPoint locClient = locOfClient.getParseGeoPoint("currentLocation");
 
                         double km = locResto.distanceInKilometersTo(locClient);
                         //We check if they are near of us (restaurant owner connected) if yes we add it to our PendingCommandForARestaurant column
-                        if (km < MAX_DISTANCE_IN_KM_TO_FIND_A_RESTAURANT) {
-                            pendingOrder = new JSONObject();
+                        if(km<MAX_DISTANCE_IN_KM_TO_FIND_A_RESTAURANT){
+                             pendingOrder = new JSONObject();
 
                             try {
                                 pendingOrder.put("lat", locClient.getLatitude());
                                 pendingOrder.put("lon", locClient.getLongitude());
 
-                                pendingOrder.put("client", "idDuClient");
+                                pendingOrder.put("client","idDuClient");
                             } catch (JSONException e1) {
                                 e1.printStackTrace();
                             }
@@ -187,10 +163,7 @@ public class DataManager {
                 }
             }
         });
-    }
 
-
-    public void getOrdersForARestaurantOwner(){
 
     }
 
@@ -217,7 +190,6 @@ public class DataManager {
             return  j;
 
     }
-
 
 
 }
