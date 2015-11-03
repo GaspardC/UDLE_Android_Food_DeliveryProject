@@ -161,7 +161,7 @@ public class DeliveryRestaurantMapActivity extends AppCompatActivity {
 
 
     /** JUST FOR TEST**/
-    public ArrayList<OrderElement> getWaitingOrders(ArrayList<OrderElement> orders){
+    public ArrayList<OrderElement> getWaitingOrders(ArrayList<OrderElement> orders){ //TODO: server methods
         //BASIC DATA FOR TESTS
         Menu menu1 = new Menu();
         menu1.setFood(FoodTypes.KEBAB);
@@ -216,7 +216,7 @@ public class DeliveryRestaurantMapActivity extends AppCompatActivity {
         return orders;
     }
 
-    private ArrayList<OrderElement> getCurrentOrders(ArrayList<OrderElement> orders) {
+    public static ArrayList<OrderElement> getCurrentOrders(ArrayList<OrderElement> orders) { //TODO: server Methods
         Menu menu1 = new Menu();
         menu1.setFood(FoodTypes.KEBAB);
         menu1.addToOptions(OptionsTypes.KETCHUP);
@@ -228,7 +228,7 @@ public class DeliveryRestaurantMapActivity extends AppCompatActivity {
         location1.setLatitude(46.519);
         location1.setLongitude(6.666);
         orderElement1.setDeliveryLocation(location1);
-        orderElement1.setDeliveryAddress("Address for the deliver 1, 1002 SwEng");
+        orderElement1.setDeliveryAddress("Address for the deliver, 1002 SwEng");
         orders.add(orderElement1);
 
         Orders.setActiveOrder(orderElement1);

@@ -36,8 +36,9 @@ public class DeliverCommandDetailActivity extends AppCompatActivity {
             for (OrderElement orders : Orders.getCurrentOrders()){
                 if (orders.getDeliveryAddress().equals(getIntent().getExtras().getString("Address"))){ //TODO: Instead of compare with the address, compare with the id of the command for example.
                     order = orders;
-                    findViewById(R.id.DeliverCommandDetail_acceptCommand).setVisibility(View.INVISIBLE);
+                    findViewById(R.id.DeliverCommandDetail_acceptCommand).setVisibility(View.GONE);
                     findViewById(R.id.DeliverCommandDetail_time).setVisibility(View.INVISIBLE);
+                    findViewById(R.id.DeliverCommandDetail_commandDelivered).setVisibility(View.VISIBLE);
                 }
             }
         }
@@ -107,5 +108,10 @@ public class DeliverCommandDetailActivity extends AppCompatActivity {
             Intent intent = new Intent(this, DeliveryRestaurantMapActivity.class);
             startActivity(intent);
         }
+    }
+    public void commandDelivered(View view){
+
+        Intent intent = new Intent(this, DeliveryRestaurantMapActivity.class);
+        startActivity(intent);
     }
 }

@@ -1,8 +1,6 @@
 package ch.epfl.sweng.udle.Food;
 
 import android.location.Location;
-import android.os.Parcel;
-import android.os.Parcelable;
 
 import java.util.ArrayList;
 

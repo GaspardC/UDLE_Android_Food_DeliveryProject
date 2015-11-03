@@ -124,5 +124,13 @@
         android:text="@string/acceptCommand"
         android:layout_weight="10"
         android:onClick="acceptCommand" />
+    <Button
+        android:id="@+id/DeliverCommandDetail_commandDelivered"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:text="@string/commandDelivered"
+        android:layout_weight="10"
+        android:onClick="commandDelivered"
+        android:visibility="gone"/>
 
 </LinearLayout>
