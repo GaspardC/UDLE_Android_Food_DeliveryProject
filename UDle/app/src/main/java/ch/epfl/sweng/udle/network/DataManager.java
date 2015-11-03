@@ -16,13 +16,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.location.Location;
-
-import com.parse.ParseGeoPoint;
-import com.parse.ParseUser;
 
 import ch.epfl.sweng.udle.Food.OrderElement;
-
 
 /**
  * Created by rodri on 23/10/2015.
@@ -90,7 +85,7 @@ public class DataManager {
     //get all restaurant locations, return all restaurant in a perimeter of 5km
     public void getRestaurantLocationsNearTheUser(ParseGeoPoint currLocation) {
         ParseQuery<ParseUser> query = ParseUser.getQuery();
-        query.whereEqualTo("RestaurantOwner", "YES");
+        query.whereEqualTo("RestaurantOwner", true);
         query.findInBackground(new FindCallback<ParseUser>() {
             public void done(List<ParseUser> objects, ParseException e) {
                 if (e == null) {
@@ -147,7 +142,7 @@ public class DataManager {
     public void setPendingOrdersForARestaurantOwner() {
         ParseUser user = getCurrentParseUser();
         /*Restaurant Owner only*/
-//        if( ("NO".equals(user.get("RestaurantOwner")))){
+//        if( (false.equals(user.get("RestaurantOwner")))){
 //            return;
 //        }
         final ParseGeoPoint locResto = user.getParseGeoPoint("Location");
