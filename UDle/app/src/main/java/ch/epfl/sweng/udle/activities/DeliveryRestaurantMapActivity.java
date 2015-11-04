@@ -18,6 +18,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 
 import ch.epfl.sweng.udle.R;
+import ch.epfl.sweng.udle.activities.MenuOptionsDrinks.MenuFragment;
 
 public class DeliveryRestaurantMapActivity extends AppCompatActivity {
 
@@ -32,7 +33,7 @@ public class DeliveryRestaurantMapActivity extends AppCompatActivity {
 
     /** Called when the user clicks the MenuMap_ValidatePosition button */
     public void goToMenuActivity(View view) {
-        Intent intent = new Intent(this, MenuActivity.class);
+        Intent intent = new Intent(this, MenuFragment.class);
         startActivity(intent);
     }
 
