@@ -1,7 +1,6 @@
 package ch.epfl.sweng.udle.network;
 
 import com.parse.ParseClassName;
-import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 
@@ -20,59 +19,90 @@ import ch.epfl.sweng.udle.Food.OrderElement;
 @ParseClassName("ParseUserOrderInformations")
 public class ParseUserOrderInformations extends ParseObject {
 
-    /* Contructor takes in the current location latitude and longitude and initializes user info.
+    /*
+     * Contructor takes in the current location latitude and longitude and initializes user info.
      * USER info gathered from ParseUser Method
+     *
      */
-    public ParseUserOrderInformations(double latitude, double longitude) {
+
+    public ParseUserOrderInformations() {
         ParseUser currentUser = ParseUser.getCurrentUser();
         if ((currentUser != null)) {
             this.put("user", currentUser);
         }
 
         this.setDeliveryGuyNumber("");
-        this.setOrderStatus("Pending");
+        this.setOrderStatus("waiting for restaurant");
+        this.setExpectedTime(0);
 
-        ParseGeoPoint currentLocation = new ParseGeoPoint(latitude, longitude);
-        this.setCurrentLocation(currentLocation);
     }
+
+    //Get current user
+    public ParseUser getUser() {
+
+        return (ParseUser) this.get("user");
+    }
+
 
     //Return the contact info for the guy delivering the food
     public String getDeliveryGuyNumber() {
-        return getString("deliveryGuyNumber");
+
+        return this.getString("deliveryGuyNumber");
     }
 
     //Set the contact info for the guy delivering the food
     public void setDeliveryGuyNumber(String value) {
+
         this.put("deliveryGuyNumber", value);
     }
 
-    //Get the geoPoint for currentLocation, must be preset
-    public ParseGeoPoint getCurrentLocation() {
-        return getParseGeoPoint("currentLocation");
+    //Return the name of the restaurant delivering
+    public String getParseDeliveringRestaurant(){
+
+        return this.getString("deliveringRestaurant");
     }
 
-    // Change current location
-    public void setCurrentLocation(ParseGeoPoint value) {
-        this.put("currentLocation", value);
+    //Set the name of the restaurant delivering
+    public void setParseDeliveringRestaurant(String value) {
+
+        this.put("deliveringRestaurant", value);
     }
+
+
+    //Return the ETA of the food delivery
+    public int getExpectedTime() {
+
+        return (int) this.getNumber("expectedTime");
+    }
+
+    //Set the ETA for the food delivery
+    public void setExpectedTime(int value) {
+
+        this.put("expectedTime", value);
+    }
+
 
     // Retrieve current order status based on pre-defined strings
     public String getOrderStatus() {
-        return getString("orderStatus");
+
+        return this.getString("orderStatus");
     }
 
     //Change Order Status when order is made
     public void setOrderStatus(String orderStatus) {
+
         this.put("orderStatus", orderStatus);
     }
 
     //Retrieve the order parse element and add parameters to the order
     public void setOrder (OrderElement orderElement){
+
         this.put("order", orderElement);
     }
 
     //Return Order in type ArrayListMenu
     public OrderElement getOrder(){
+
         return (OrderElement) this.get("order");
     }
 
