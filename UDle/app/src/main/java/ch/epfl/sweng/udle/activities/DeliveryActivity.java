@@ -35,9 +35,11 @@ public class DeliveryActivity extends AppCompatActivity {
 
     public void callDeliveryGuy(View view){
         try {
+            /*
             Intent my_callIntent = new Intent(Intent.ACTION_CALL);
             my_callIntent.setData(Uri.parse("tel:" + DataManager.getDeliveryGuyNumber()));
             startActivity(my_callIntent);
+            */
         } catch (ActivityNotFoundException e) {
             Toast.makeText(getApplicationContext(), "Error in your phone call" + e.getMessage(), Toast.LENGTH_LONG).show();
         } catch (SecurityException e){
