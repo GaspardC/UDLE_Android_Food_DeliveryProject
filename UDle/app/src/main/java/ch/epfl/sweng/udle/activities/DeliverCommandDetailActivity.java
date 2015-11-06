@@ -26,12 +26,14 @@ import ch.epfl.sweng.udle.R;
 
 public class DeliverCommandDetailActivity extends AppCompatActivity {
 
+    private OrderElement order;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_deliver_command_detail);
 
-        OrderElement order = Orders.getActiveOrder();
+        order = Orders.getActiveOrder();
         if (order == null){
             for (OrderElement orders : Orders.getCurrentOrders()){
                 if (orders.getDeliveryAddress().equals(getIntent().getExtras().getString("Address"))){ //TODO: Instead of compare with the address, compare with the id of the command for example.
@@ -105,12 +107,15 @@ public class DeliverCommandDetailActivity extends AppCompatActivity {
                     Toast.LENGTH_SHORT).show();
         }
         else{
+            Orders.activeOrderToCurrentOrder(order);
+            //TODO: DataManager -> deliveryEnRoute (Issue #66)
             Intent intent = new Intent(this, DeliveryRestaurantMapActivity.class);
             startActivity(intent);
         }
     }
     public void commandDelivered(View view){
-
+        Orders.currentOrderFinished(order);
+        //TODO: DataManager -> deliveryDelivered  (Issue #67)
         Intent intent = new Intent(this, DeliveryRestaurantMapActivity.class);
         startActivity(intent);
     }

@@ -29,6 +29,7 @@ import ch.epfl.sweng.udle.Food.OptionsTypes;
 import ch.epfl.sweng.udle.Food.OrderElement;
 import ch.epfl.sweng.udle.Food.Orders;
 import ch.epfl.sweng.udle.R;
+import ch.epfl.sweng.udle.network.DataManager;
 
 public class DeliveryRestaurantMapActivity extends AppCompatActivity {
 
@@ -112,7 +113,7 @@ public class DeliveryRestaurantMapActivity extends AppCompatActivity {
 
     private void showWaitingOrders(){
         final ArrayList<OrderElement> waitingOrders = getWaitingOrders(new ArrayList<OrderElement>());
-        final ArrayList<OrderElement> currentOrders = getCurrentOrders(new ArrayList<OrderElement>());
+        final ArrayList<OrderElement> currentOrders = Orders.getCurrentOrders();
 
 
         for(OrderElement order : waitingOrders) {
@@ -161,7 +162,9 @@ public class DeliveryRestaurantMapActivity extends AppCompatActivity {
 
 
     /** JUST FOR TEST**/
-    public ArrayList<OrderElement> getWaitingOrders(ArrayList<OrderElement> orders){ //TODO: server methods
+    public ArrayList<OrderElement> getWaitingOrders(ArrayList<OrderElement> orders){
+        //DataManager.getPendingOrdersForARestaurantOwner(); TODO: When DataManager is uptaded to the master
+
         //BASIC DATA FOR TESTS
         Menu menu1 = new Menu();
         menu1.setFood(FoodTypes.KEBAB);
@@ -212,27 +215,6 @@ public class DeliveryRestaurantMapActivity extends AppCompatActivity {
         orderElement3.setDeliveryLocation(location3);
         orderElement3.setDeliveryAddress("Address for the deliver 3, 1002 SwEng");
         orders.add(orderElement3);
-
-        return orders;
-    }
-
-    public static ArrayList<OrderElement> getCurrentOrders(ArrayList<OrderElement> orders) { //TODO: server Methods
-        Menu menu1 = new Menu();
-        menu1.setFood(FoodTypes.KEBAB);
-        menu1.addToOptions(OptionsTypes.KETCHUP);
-        menu1.addToOptions(OptionsTypes.SALAD);
-        OrderElement orderElement1 = new OrderElement();
-        orderElement1.addMenu(menu1);
-        orderElement1.addToDrinks(DrinkTypes.BEER);
-        Location location1 = new Location("");
-        location1.setLatitude(46.519);
-        location1.setLongitude(6.666);
-        orderElement1.setDeliveryLocation(location1);
-        orderElement1.setDeliveryAddress("Address for the deliver, 1002 SwEng");
-        orders.add(orderElement1);
-
-        Orders.setActiveOrder(orderElement1);
-        Orders.activeOrderToCurrentOrder(orderElement1);
 
         return orders;
     }

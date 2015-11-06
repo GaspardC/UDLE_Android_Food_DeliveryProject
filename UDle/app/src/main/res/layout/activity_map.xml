@@ -12,12 +12,15 @@
     tools:context="ch.epfl.sweng.udle.activities.MapActivity">
 
 
-    <SearchView
-        android:id="@+id/MenuMap_search"
-        android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:layout_weight="7"
-        android:queryHint="@string/MenuMap_SearchHint" />
+    <AutoCompleteTextView
+        android:id="@+id/autoCompleteTextView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Please enter your place">
+
+        <requestFocus />
+    </AutoCompleteTextView>
 
     <fragment
         xmlns:android="http://schemas.android.com/apk/res/android"

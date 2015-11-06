@@ -14,11 +14,19 @@ public class Orders {
     private static String                  moneyDevise = " CHF";
 
 
+    public Orders(){
+        oldOrders = new ArrayList<>();
+        currentOrders = new ArrayList<>();
+        activeOrder = null;
+    }
+
 
     public static OrderElement getActiveOrder(){
         return activeOrder;
     }
     public static void setActiveOrder(OrderElement orderElement){
+        //ActiveOrder can be null
+
         activeOrder = orderElement;
     }
 
