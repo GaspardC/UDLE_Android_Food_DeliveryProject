@@ -31,6 +31,7 @@ import java.util.Locale;
 import ch.epfl.sweng.udle.Food.OrderElement;
 import ch.epfl.sweng.udle.Food.Orders;
 import ch.epfl.sweng.udle.R;
+import ch.epfl.sweng.udle.network.DataManager;
 
 public class MapActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
@@ -69,8 +70,11 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
     /** Called when the user clicks the MenuMap_ValidatePosition button */
     public void goToMenuActivity(View view) {
         OrderElement orderElement = new OrderElement();
-        orderElement.setDeliveryLocation(location); //TODO: here I take the current location, need to take the location added (Might be the one set via the address searchView
-        orderElement.setDeliveryAddress(deliveryAddress); //TODO: Take a real location
+
+        if(location != null)
+            orderElement.setDeliveryLocation(location);
+        orderElement.setDeliveryAddress(deliveryAddress);
+
         Orders.setActiveOrder(orderElement);
         Intent intent = new Intent(this, MenuActivity.class);
         startActivity(intent);
@@ -153,6 +157,8 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
 
         // set map type
         mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+        if( location == null) return ;
+
 
         // Get latitude/ longitude of the current location
         double latitude = location.getLatitude();
@@ -160,6 +166,9 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
         LatLng latLng = new LatLng(latitude, longitude);
         deliveryAddress = getCompleteAddressString(latitude,longitude);
         Log.i("Message :", deliveryAddress);
+
+        DataManager data = new DataManager();
+        data.setUserLocation(latitude,longitude);
 
         // Show the current location in Google Map
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));

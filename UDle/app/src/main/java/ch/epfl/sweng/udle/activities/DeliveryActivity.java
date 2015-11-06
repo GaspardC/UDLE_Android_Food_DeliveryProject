@@ -37,7 +37,7 @@ public class DeliveryActivity extends AppCompatActivity {
         try {
             /*
             Intent my_callIntent = new Intent(Intent.ACTION_CALL);
-            my_callIntent.setData(Uri.parse("tel:" + DataManager.getDeliveryGuyNumber()));
+//            my_callIntent.setData(Uri.parse("tel:" + DataManager.getDeliveryGuyNumber()));
             startActivity(my_callIntent);
             */
         } catch (ActivityNotFoundException e) {
