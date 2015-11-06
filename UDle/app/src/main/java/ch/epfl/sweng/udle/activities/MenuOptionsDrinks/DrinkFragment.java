@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 
 import ch.epfl.sweng.udle.Food.OrderElement;
@@ -24,12 +25,19 @@ public class DrinkFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         rlLayout =  (RelativeLayout) inflater.inflate(R.layout.activity_drink, container, false);
-
+        Button buttonNext = (Button) rlLayout.findViewById(R.id.drinkNext);
+        buttonNext.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view)
+            {
+                goToRecapActivity();
+            }
+        });
         return rlLayout;
 
     }
 
-    public void goToRecapActivity(View view){
+    public void goToRecapActivity(){
         OrderElement orderElement = Orders.getActiveOrder();
         //TODO: orderElement.addToDrinks to add the choosen drinks (if any) to the order.
 

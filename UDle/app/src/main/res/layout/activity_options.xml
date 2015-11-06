@@ -107,7 +107,6 @@
         android:text="Next"
         android:id="@+id/optionNext"
         android:layout_alignParentBottom="true"
-        android:onClick="goToDrinkActivity"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentRight="true"

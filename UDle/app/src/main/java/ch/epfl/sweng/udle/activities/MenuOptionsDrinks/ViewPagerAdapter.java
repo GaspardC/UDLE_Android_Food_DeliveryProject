@@ -3,9 +3,13 @@ package ch.epfl.sweng.udle.activities.MenuOptionsDrinks;
 /**
  * Created by Gasp on 04/11/2015.
  */
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.ViewPager;
+
+import ch.epfl.sweng.udle.HorizontalSlideLibrary.SlidingTabLayout;
 
 
 /**
@@ -15,10 +19,12 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
 
     CharSequence Titles[]; // This will Store the Titles of the Tabs which are Going to be passed when ViewPagerAdapter is created
     int NumbOfTabs; // Store the number of tabs, this will also be passed when the ViewPagerAdapter is created
+    ViewPager pager;
 
 
     // Build a Constructor and assign the passed Values to appropriate values in the class
-    public ViewPagerAdapter(FragmentManager fm,CharSequence mTitles[], int mNumbOfTabsumb) {
+    public ViewPagerAdapter(FragmentManager fm,CharSequence mTitles[], int mNumbOfTabsumb
+    ) {
         super(fm);
 
         this.Titles = mTitles;
@@ -33,11 +39,13 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
         if(position == 0) // if the position is 0 we are returning the First tab
         {
             MenuFragment menu = new MenuFragment();
+            menu.setPager(pager);
             return menu;
         }
         else if(position == 1) // if the position is 0 we are returning the First tab
         {
             OptionsFragment options = new OptionsFragment();
+            options.setPager(pager);
             return options;
         }
         else             // As we are having 2 tabs if the position is now 0 it must be 1 so we are returning second tab
@@ -61,5 +69,9 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
     @Override
     public int getCount() {
         return NumbOfTabs;
+    }
+
+    public void setPager(ViewPager pager) {
+        this.pager = pager;
     }
 }

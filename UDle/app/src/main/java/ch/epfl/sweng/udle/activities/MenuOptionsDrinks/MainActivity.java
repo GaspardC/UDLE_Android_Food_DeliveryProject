@@ -18,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
 
     Toolbar toolbar;
     ViewPager pager;
-    public static ViewPagerAdapter adapter;
+    ViewPagerAdapter adapter;
     SlidingTabLayout tabs;
     CharSequence Titles[]={"Menu","Options","Drinks"};
     int Numboftabs =3;
@@ -41,6 +41,8 @@ public class MainActivity extends AppCompatActivity {
         // Assigning ViewPager View and setting the adapter
         pager = (ViewPager) findViewById(R.id.pager);
         pager.setAdapter(adapter);
+
+        adapter.setPager(pager);
 
         // Assiging the Sliding Tab Layout View
         tabs = (SlidingTabLayout) findViewById(R.id.tabs);

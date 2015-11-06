@@ -3,6 +3,8 @@ package ch.epfl.sweng.udle.activities.MenuOptionsDrinks;
 import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.os.Bundle;
+import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +20,7 @@ import ch.epfl.sweng.udle.Food.FoodTypes;
 import ch.epfl.sweng.udle.Food.Menu;
 import ch.epfl.sweng.udle.Food.OrderElement;
 import ch.epfl.sweng.udle.Food.Orders;
+import ch.epfl.sweng.udle.HorizontalSlideLibrary.SlidingTabLayout;
 import ch.epfl.sweng.udle.R;
 
 public class MenuFragment extends Fragment{
@@ -26,6 +29,8 @@ public class MenuFragment extends Fragment{
     private int nbrKebabs = 0;
     private int nbrBurgers = 0;
     private LinearLayout        llLayout;
+    private ViewPager pager;
+
 
 
     @Override
@@ -33,6 +38,15 @@ public class MenuFragment extends Fragment{
         llLayout =  (LinearLayout) inflater.inflate(R.layout.activity_menu, container, false);
         kebabInit();
         burgerInit();
+        Button buttonNext = (Button) llLayout.findViewById(R.id.MenuActivity_NextButton);
+        buttonNext.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view)
+            {
+                goToOptionsActivity();
+            }
+        });
+
         return llLayout;
 
     }
@@ -68,7 +82,7 @@ public class MenuFragment extends Fragment{
                 if (newNbrValue >= 0) {
                     kebabNbr.setText(Integer.toString(newNbrValue));
                     computeKebabPrice(newNbrValue);
-                    nbrKebabs --;
+                    nbrKebabs--;
                 }
             }
         });
@@ -115,7 +129,7 @@ public class MenuFragment extends Fragment{
                     burgerNbr.setText(Integer.toString(newNbrValue));
 
                     computeBurgerPrice(newNbrValue);
-                    nbrBurgers --;
+                    nbrBurgers--;
                 }
             }
         });
@@ -133,7 +147,7 @@ public class MenuFragment extends Fragment{
 
 
     /** Called when the user clicks the MapActivity button */
-    public void goToOptionsActivity(View view) {
+    public void goToOptionsActivity() {
         int nbrMenus = nbrKebabs + nbrBurgers;
         if(nbrMenus < 1){
             Toast.makeText(super.getActivity().getApplicationContext(), getString(R.string.NoMenuSelected),
@@ -155,11 +169,15 @@ public class MenuFragment extends Fragment{
             }
 
 
-//            MainActivity.adapter.getItem(1);
+            pager.setCurrentItem(1);
 
-//            Intent intent = new Intent(super.getActivity(), OptionsFragment.class);
-//            startActivity(intent);
+
         }
+    }
+
+
+    public void setPager(ViewPager pager) {
+        this.pager = pager;
     }
 
 
