@@ -18,14 +18,15 @@ public class OrderElement {
 
     public OrderElement(){
         this.orderList = new ArrayList<>();
+        this.drinks = new ArrayList<>();
         this.deliveryLocation = null;
         this.deliveryAddress = "";
-        this.drinks = new ArrayList<>();
     }
 
 
     public void empty(){
         this.orderList = new ArrayList<>();
+        this.drinks = new ArrayList<>();
     }
 
     public void addMenu (Menu menu){
@@ -50,7 +51,7 @@ public class OrderElement {
     }
 
     public void setDeliveryAddress(String address){
-        if ("".equals(address)){
+        if ("".equals(address) || address==null){
             throw new IllegalArgumentException("Address is empty or null.");
         }
         this.deliveryAddress = address;
@@ -63,8 +64,12 @@ public class OrderElement {
         return drinks;
     }
     public void addToDrinks(DrinkTypes drink){
+        if(drink == null){
+            throw new IllegalArgumentException("Ty to add a null drink");
+        }
         this.drinks.add(drink);
     }
+
 
     public double getTotalCost(){
         double cost = 2.00; //Delivery Cost
@@ -78,5 +83,4 @@ public class OrderElement {
 
         return cost;
     }
-
 }
