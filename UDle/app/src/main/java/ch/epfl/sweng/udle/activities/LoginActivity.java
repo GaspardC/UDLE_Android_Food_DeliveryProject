@@ -158,7 +158,8 @@ public class LoginActivity extends Activity {
             public void run() {
                 // Go to Map Activity after i ms
                 stopTracking = false;
-                Intent intent = new Intent(context, MapActivity.class);
+                //Intent intent = new Intent(context, MapActivity.class);
+                Intent intent = new Intent(context, DeliveryActivity.class); // TODO: remove this before commiting !!!
                 startActivity(intent);
             }
         }, i);

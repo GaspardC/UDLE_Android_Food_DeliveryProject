@@ -1,5 +1,10 @@
 package ch.epfl.sweng.udle.activities;
 
+/*
+took most of the code from there
+http://codetheory.in/android-navigation-drawer/
+*/
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -65,6 +70,7 @@ public abstract class SlideMenuActivity extends AppCompatActivity {
         slideMenuList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Log.v(TAG, "onItemClick event raised on position " + position);
                 selectItemFromList(position);
             }
         });
@@ -85,6 +91,7 @@ public abstract class SlideMenuActivity extends AppCompatActivity {
             /** Called when a drawer has settled in a completely open state. */
             @Override
             public void onDrawerOpened(View drawerView) {
+                Log.d(TAG, "call to onDrawerOpened(), SlideMenu should be open");
                 super.onDrawerOpened(drawerView);
 
                 getActionBar().setTitle(mDrawerTitle); //
@@ -103,6 +110,7 @@ public abstract class SlideMenuActivity extends AppCompatActivity {
 
     // slide menu actions
     private void selectItemFromList(int position) {
+        Log.d(TAG, "SlideMenu item selected. N° : " + position);
         //close Menu
         mDrawerLayout.closeDrawer(slideMenu_frame);
         switch (position){
@@ -113,6 +121,7 @@ public abstract class SlideMenuActivity extends AppCompatActivity {
     }
 
 
+    // force display of the 3 bar icon on the Action Bar, the "logo" widely used for Menu
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
@@ -128,19 +137,21 @@ public abstract class SlideMenuActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        Log.d(TAG, "Item selected in the Action Bar");
         // Pass the event to ActionBarDrawerToggle, if it returns
         // true, then it has handled the app icon touch event
         if (mDrawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
         // Handle other action bar items...
-
+        getSupportActionBar().openOptionsMenu();
+        Log.d(TAG, "call to getSupportActionBar().openOptionsMenu()");
         return super.onOptionsItemSelected(item);
     }
 
     // Called when invalidateOptionsMenu() is invoked
     public boolean onPrepareOptionsMenu(Menu menu) {
-        boolean drawerOpen = mDrawerLayout.isDrawerOpen(slideMenuList);
+        boolean drawerOpen = mDrawerLayout.isDrawerOpen(slideMenu_frame);
         /*
         // If the nav drawer is open, hide action items related to the content view
         menu.findItem(R.id.action_search).setVisible(!drawerOpen);
@@ -202,8 +213,8 @@ class DrawerListAdapter extends BaseAdapter {
         TextView subtitleView = (TextView) view.findViewById(R.id.subTitle);
         ImageView iconView = (ImageView) view.findViewById(R.id.icon);
 
-        titleView.setText( mNavItems.get(position).name );
-        subtitleView.setText( mNavItems.get(position).description );
+        titleView.setText( mNavItems.get(position).name);
+        subtitleView.setText( mNavItems.get(position).description);
         iconView.setImageResource(mNavItems.get(position).icon);
 
         return view;
