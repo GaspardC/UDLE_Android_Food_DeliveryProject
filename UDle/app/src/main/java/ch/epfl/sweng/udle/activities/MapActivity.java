@@ -10,7 +10,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -23,6 +22,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import ch.epfl.sweng.udle.Food.OrderElement;
 import ch.epfl.sweng.udle.Food.Orders;
 import ch.epfl.sweng.udle.R;
+import ch.epfl.sweng.udle.activities.MenuOptionsDrinks.MainActivity;
+import ch.epfl.sweng.udle.activities.MenuOptionsDrinks.MenuFragment;
 import ch.epfl.sweng.udle.network.DataManager;
 
 public class MapActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
@@ -66,7 +67,7 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
         orderElement.setDeliveryAddress("Rue du test de la mort, 1069 SwEng"); //TODO: Take a real location
 
         Orders.setActiveOrder(orderElement);
-        Intent intent = new Intent(this, MenuActivity.class);
+        Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
 
