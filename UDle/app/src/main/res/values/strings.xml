@@ -11,15 +11,18 @@
     <string name="ValidatePosition">Validate Position</string>
     <string name="NoMenuSelected">You need to select at least one menu</string>
     <string name="title_activity_maps">Map</string>
+
     <string name="buttonCallDeliveryGuy">Call Delivery Guy</string>
     <string name="recapOfCommand">Recap of the command:</string>
     <string name="deliveryAddress">Delivery Address:</string>
     <string name="deliveryCost">Delivery Cost:</string>
     <string name="deliveryCostPrice">2.00 CHF</string>
-    <string name="total">Total:</string>
+    <string name="total">Total</string>
     <string name="confirm">Confirm</string>
     <string name="TitleAlertBack">Give up the order"</string>
     <string name="MessageAlertBack">Are you sure you want to go back? This will delete your order</string>
-
-
+    <string name="expectedTime">Expected Time</string>
+    <string name="acceptCommand">Accept Command</string>
+    <string name="expectedTimeNotValid">Please enter an expected time</string>
+    <string name="commandDelivered">Command Delivered</string>
 </resources>
