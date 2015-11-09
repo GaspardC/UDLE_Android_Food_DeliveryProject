@@ -134,13 +134,11 @@ public class DeliveryRestaurantMapActivity extends AppCompatActivity {
             public void onInfoWindowClick(Marker marker) {
                 for (OrderElement order : waitingOrders) {
                     if (order.getDeliveryAddress().equals(marker.getSnippet())) { //TODO: Instead of compare with the address, compare with the id of the command for example.
-                        Orders.setActiveOrder(order);
-                        goToDeliveryCommandDetail(null);
+                        goToDeliveryCommandDetail(order);
                     }
                 }
                 for (OrderElement order : currentOrders) {
                     if (order.getDeliveryAddress().equals(marker.getSnippet())) { //TODO: Instead of compare with the address, compare with the id of the command for example.
-                        Orders.setActiveOrder(null);
                         goToDeliveryCommandDetail(order);
                     }
                 }
@@ -152,10 +150,9 @@ public class DeliveryRestaurantMapActivity extends AppCompatActivity {
 
     /** Called when the user clicks the MenuMap_ValidatePosition button */
     public void goToDeliveryCommandDetail(OrderElement order) {
+        Orders.setActiveOrder(order);
         Intent intent = new Intent(this, DeliverCommandDetailActivity.class);
-        if (order != null){
-            intent.putExtra("Address", order.getDeliveryAddress());//TODO: Instead of compare with the address, compare with the id of the command for example.
-        }
+        Orders.setActiveOrder(order);
         startActivity(intent);
     }
 
@@ -163,7 +160,7 @@ public class DeliveryRestaurantMapActivity extends AppCompatActivity {
 
     /** JUST FOR TEST**/
     public ArrayList<OrderElement> getWaitingOrders(ArrayList<OrderElement> orders){
-        //DataManager.getPendingOrdersForARestaurantOwner(); TODO: When DataManager is uptaded to the master
+        //return DataManager.getPendingOrdersForARestaurantOwner(); TODO: When DataManager is uptaded to the master
 
         //BASIC DATA FOR TESTS
         Menu menu1 = new Menu();

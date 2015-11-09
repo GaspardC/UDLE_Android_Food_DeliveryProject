@@ -1,8 +1,12 @@
-package ch.epfl.sweng.udle.Food;
+package ch.epfl.sweng.udle;
 
 import org.junit.Test;
 
 import java.util.ArrayList;
+
+import ch.epfl.sweng.udle.Food.FoodTypes;
+import ch.epfl.sweng.udle.Food.Menu;
+import ch.epfl.sweng.udle.Food.OptionsTypes;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.fail;

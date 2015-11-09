@@ -34,15 +34,10 @@ public class DeliverCommandDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_deliver_command_detail);
 
         order = Orders.getActiveOrder();
-        if (order == null){
-            for (OrderElement orders : Orders.getCurrentOrders()){
-                if (orders.getDeliveryAddress().equals(getIntent().getExtras().getString("Address"))){ //TODO: Instead of compare with the address, compare with the id of the command for example.
-                    order = orders;
-                    findViewById(R.id.DeliverCommandDetail_acceptCommand).setVisibility(View.GONE);
-                    findViewById(R.id.DeliverCommandDetail_time).setVisibility(View.INVISIBLE);
-                    findViewById(R.id.DeliverCommandDetail_commandDelivered).setVisibility(View.VISIBLE);
-                }
-            }
+        if (Orders.getCurrentOrders().contains(order)){
+            findViewById(R.id.DeliverCommandDetail_acceptCommand).setVisibility(View.GONE);
+            findViewById(R.id.DeliverCommandDetail_time).setVisibility(View.INVISIBLE);
+            findViewById(R.id.DeliverCommandDetail_commandDelivered).setVisibility(View.VISIBLE);
         }
 
         ListView listView = (ListView) findViewById(R.id.DeliverCommandDetail_recapListView);
