@@ -50,7 +50,7 @@ public class DataManager {
         user.saveInBackground();
 
         getUserLocation();
-        setPendingOrdersForARestaurantOwner();
+//        setPendingOrdersForARestaurantOwner();
 
     }
 
