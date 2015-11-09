@@ -103,11 +103,10 @@ public class PaymentActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Log.d("CDA", "onBackPressed Called");
 
         new AlertDialog.Builder(PaymentActivity.this)
-                .setTitle("Give up the order")
-                .setMessage("Are you sure you want to go back? This will delete your order")
+                .setTitle(R.string.TitleAlertBack)
+                .setMessage(R.string.MessageAlertBack)
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         // continue with delete
