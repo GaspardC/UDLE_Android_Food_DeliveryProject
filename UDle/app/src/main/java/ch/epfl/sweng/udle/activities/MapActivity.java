@@ -1,6 +1,17 @@
 package ch.epfl.sweng.udle.activities;
 
 import android.Manifest;
+
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.Build;
+import android.os.Bundle;
+import android.provider.Settings;
+import android.text.TextUtils;
+import android.widget.Toast;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -10,12 +21,14 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -31,6 +44,8 @@ import java.util.Locale;
 import ch.epfl.sweng.udle.Food.OrderElement;
 import ch.epfl.sweng.udle.Food.Orders;
 import ch.epfl.sweng.udle.R;
+import ch.epfl.sweng.udle.activities.MenuOptionsDrinks.MainActivity;
+import ch.epfl.sweng.udle.activities.MenuOptionsDrinks.MenuFragment;
 import ch.epfl.sweng.udle.network.DataManager;
 
 public class MapActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
@@ -46,14 +61,27 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
+        CheckEnableGPS();
         setUpMapIfNeeded();
         AutoCompleteTextView autoCompView = (AutoCompleteTextView) findViewById(R.id.autoCompleteTextView2);
         autoCompView.setAdapter(new GooglePlacesAutocompleteAdapter(this, R.layout.list_item));
         autoCompView.setOnItemClickListener(this);
         if (deliveryAddress!="")
             autoCompView.setText(deliveryAddress);
+        hideKeyborad();
     }
 
+    private void hideKeyborad() {
+        
+        getWindow().setSoftInputMode(
+                WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN
+        );
+    }
+    @Override
+    protected void onResume(){
+        super.onResume();
+        CheckEnableGPS();
+    }
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
         String str = (String) adapterView.getItemAtPosition(position);
         LatLng latLng = GooglePlacesAutocompleteAdapter.getLatLngFromId(((GooglePlacesAutocompleteAdapter) adapterView.getAdapter()).getItem_Id(position));
@@ -76,7 +104,7 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
             orderElement.setDeliveryLocation(location);
             orderElement.setDeliveryAddress(deliveryAddress);
             Orders.setActiveOrder(orderElement);
-            Intent intent = new Intent(this, MenuActivity.class);
+            Intent intent = new Intent(this, SlideMenuActivity.class);
             startActivity(intent);
         }else {
             Toast.makeText(this, "This location was not recognized, please chose a correct location", Toast.LENGTH_SHORT).show();
@@ -112,6 +140,7 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
         }
     }
 
+
     private String getCompleteAddressString(double latitude, double longitude) {
         String Address = "";
         Geocoder geocoder = new Geocoder(this, Locale.getDefault());
@@ -134,6 +163,28 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
             e.printStackTrace();
         }
         return Address;
+    }
+
+
+    private void CheckEnableGPS(){
+        LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+            Toast.makeText(this, "Location is enabled", Toast.LENGTH_SHORT).show();
+        }else{
+            AlertDialog.Builder dlgAlert  = new AlertDialog.Builder(this);
+            dlgAlert.setMessage("Dear user, your gps is needed but is currently disabled. Would you like to enable it?");
+            dlgAlert.setTitle("Udle");
+            dlgAlert.setPositiveButton("Ok",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                            Intent callGPSSettingIntent = new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                            startActivity(callGPSSettingIntent);
+                        }
+                    });
+            dlgAlert.setCancelable(false);
+            dlgAlert.create().show();
+        }
     }
 
     /**

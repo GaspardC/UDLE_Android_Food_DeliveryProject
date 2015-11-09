@@ -1,5 +1,7 @@
 package ch.epfl.sweng.udle.activities;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -76,5 +78,28 @@ public class WaitingActivity extends AppCompatActivity {
     public void orderAccepted_button_click(View view) {
         Intent intent =  new Intent(this, DeliveryActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        new AlertDialog.Builder(WaitingActivity.this)
+                .setTitle(R.string.TitleAlertBack)
+                .setMessage(R.string.MessageAlertBack)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // continue with delete
+                        Intent intent =  new Intent(WaitingActivity.this, MapActivity.class);
+                        startActivity(intent);
+                    }
+                })
+                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // do nothing
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
+
     }
 }
