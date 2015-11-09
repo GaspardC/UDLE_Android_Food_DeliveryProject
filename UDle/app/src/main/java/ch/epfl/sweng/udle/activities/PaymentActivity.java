@@ -1,8 +1,11 @@
 package ch.epfl.sweng.udle.activities;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ListAdapter;
@@ -96,5 +99,28 @@ public class PaymentActivity extends AppCompatActivity {
             Intent intent =  new Intent(this, WaitingActivity.class);
             startActivity(intent);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        new AlertDialog.Builder(PaymentActivity.this)
+                .setTitle(R.string.TitleAlertBack)
+                .setMessage(R.string.MessageAlertBack)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // continue with delete
+                        Intent intent =  new Intent(PaymentActivity.this, MapActivity.class);
+                        startActivity(intent);
+                    }
+                })
+                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // do nothing
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
+
     }
 }
