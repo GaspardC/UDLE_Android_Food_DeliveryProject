@@ -50,6 +50,8 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
         AutoCompleteTextView autoCompView = (AutoCompleteTextView) findViewById(R.id.autoCompleteTextView2);
         autoCompView.setAdapter(new GooglePlacesAutocompleteAdapter(this, R.layout.list_item));
         autoCompView.setOnItemClickListener(this);
+        if (deliveryAddress!="")
+            autoCompView.setText(deliveryAddress);
     }
 
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
@@ -69,15 +71,16 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
 
     /** Called when the user clicks the MenuMap_ValidatePosition button */
     public void goToMenuActivity(View view) {
-        OrderElement orderElement = new OrderElement();
-
-        if(location != null)
+        if(location != null && deliveryAddress!="") {
+            OrderElement orderElement = new OrderElement();
             orderElement.setDeliveryLocation(location);
-        orderElement.setDeliveryAddress(deliveryAddress);
-
-        Orders.setActiveOrder(orderElement);
-        Intent intent = new Intent(this, MenuActivity.class);
-        startActivity(intent);
+            orderElement.setDeliveryAddress(deliveryAddress);
+            Orders.setActiveOrder(orderElement);
+            Intent intent = new Intent(this, MenuActivity.class);
+            startActivity(intent);
+        }else {
+            Toast.makeText(this, "This location was not recognized, please chose a correct location", Toast.LENGTH_SHORT).show();
+        }
     }
 
 
