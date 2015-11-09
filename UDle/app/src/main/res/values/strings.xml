@@ -18,4 +18,8 @@
     <string name="deliveryCostPrice">2.00 CHF</string>
     <string name="total">Total:</string>
     <string name="confirm">Confirm</string>
+    <string name="descriptionBurgerRotating">image stop rotating when order accepted</string>
+    <string name="infotextwaiting">Please wait for a shop to accept your command</string>
+    <string name="infotextwaitingConfirmed">Congrats, your order is coming for you</string>
+
 </resources>
