@@ -56,6 +56,12 @@ public class LoginActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context = getApplication();
+
+        ///////////////////////////////////////////////////////////////
+        Intent intent = new Intent(context, DeliveryActivity.class); // TODO: remove this before commiting !!!
+        startActivity(intent);                                       //
+        ///////////////////////////////////////////////////////////////
+
         FacebookSdk.sdkInitialize(getApplicationContext());
         callbackManager = CallbackManager.Factory.create();
         accessTokenTracker = new AccessTokenTracker() {
@@ -158,8 +164,7 @@ public class LoginActivity extends Activity {
             public void run() {
                 // Go to Map Activity after i ms
                 stopTracking = false;
-                //Intent intent = new Intent(context, MapActivity.class);
-                Intent intent = new Intent(context, DeliveryActivity.class); // TODO: remove this before commiting !!!
+                Intent intent = new Intent(context, MapActivity.class);
                 startActivity(intent);
             }
         }, i);

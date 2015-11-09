@@ -8,11 +8,13 @@ http://codetheory.in/android-navigation-drawer/
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -75,7 +77,10 @@ public abstract class SlideMenuActivity extends AppCompatActivity {
             }
         });
 
-
+        // Show the menu icon on top of the screen
+        // More info: http://codetheory.in/difference-between-setdisplayhomeasupenabled-sethomebuttonenabled-and-setdisplayshowhomeenabled/
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
 
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.openSlideMenu, R.string.closeSlideMenu) {
             /** Called when a drawer has settled in a completely closed state. */
@@ -83,9 +88,6 @@ public abstract class SlideMenuActivity extends AppCompatActivity {
             public void onDrawerClosed(View view) {
                 super.onDrawerClosed(view);
                 Log.d(TAG, "onDrawerClosed: " + getTitle());
-
-                getActionBar().setTitle(mTitle); //
-
                 invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
             }
             /** Called when a drawer has settled in a completely open state. */
@@ -93,19 +95,13 @@ public abstract class SlideMenuActivity extends AppCompatActivity {
             public void onDrawerOpened(View drawerView) {
                 Log.d(TAG, "call to onDrawerOpened(), SlideMenu should be open");
                 super.onDrawerOpened(drawerView);
-
-                getActionBar().setTitle(mDrawerTitle); //
-
                 invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
             }
         };
 
         // Set the drawer toggle as the DrawerListener
         mDrawerLayout.setDrawerListener(mDrawerToggle);
-
-        // Show the menu icon on top of the screen
-        // More info: http://codetheory.in/difference-between-setdisplayhomeasupenabled-sethomebuttonenabled-and-setdisplayshowhomeenabled/
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Log.d(TAG, "mDrawerToggle created and assigned to mDrawerLayout : " + String.valueOf(mDrawerToggle));
     }
 
     // slide menu actions
@@ -130,22 +126,16 @@ public abstract class SlideMenuActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        mDrawerToggle.onConfigurationChanged(newConfig);
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         Log.d(TAG, "Item selected in the Action Bar");
+        mDrawerLayout.openDrawer(GravityCompat.START);
+        Log.d(TAG, "call to mDrawerLayout.openDrawer(GravityCompat.START)");
         // Pass the event to ActionBarDrawerToggle, if it returns
         // true, then it has handled the app icon touch event
         if (mDrawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
         // Handle other action bar items...
-        getSupportActionBar().openOptionsMenu();
-        Log.d(TAG, "call to getSupportActionBar().openOptionsMenu()");
         return super.onOptionsItemSelected(item);
     }
 
@@ -173,6 +163,7 @@ class NavItem {
 }
 
 class DrawerListAdapter extends BaseAdapter {
+    private static String TAG = DrawerListAdapter.class.getSimpleName();
 
     Context mContext;
     ArrayList<NavItem> mNavItems;
@@ -199,11 +190,13 @@ class DrawerListAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+        Log.d(TAG, "getView");
         View view;
 
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = inflater.inflate(R.layout.drawer_item, null);
+            Log.d(TAG, "drawer_item inflated");
         }
         else {
             view = convertView;

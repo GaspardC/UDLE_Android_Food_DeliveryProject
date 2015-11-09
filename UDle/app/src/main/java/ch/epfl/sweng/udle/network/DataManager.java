@@ -35,6 +35,8 @@ public class DataManager {
     public static ParseGeoPoint userLocation;
     private JSONObject pendingOrder;
     private ParseUserOrderInformations userOrderInformations;
+    /** If we don't know the status (i.e. before login), it is set to 'Guest' */
+    private UserStatus status = UserStatus.GUEST;
 
     public DataManager() {
     }
@@ -53,9 +55,11 @@ public class DataManager {
         setPendingOrdersForARestaurantOwner();
 
     }
-
-    private void getUserStatusRestaurantOwner() {
-
+    private void setUserStatus(UserStatus status){
+        this.status = status;
+    }
+    private UserStatus getUserStatusRestaurantOwner() {
+        return status;
     }
 
     public void getUserLocation(){

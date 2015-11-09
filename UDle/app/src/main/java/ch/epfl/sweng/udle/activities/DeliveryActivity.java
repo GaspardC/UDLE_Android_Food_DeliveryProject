@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -36,10 +37,11 @@ public class DeliveryActivity extends SlideMenuActivity {
     public void callDeliveryGuy(View view){
         try {
             Intent my_callIntent = new Intent(Intent.ACTION_CALL);
-//            my_callIntent.setData(Uri.parse("tel:" + DataManager.getDeliveryGuyNumber()));
+            //my_callIntent.setData(Uri.parse("tel:" + new DataManager().getDeliveryGuyNumber()));
+            my_callIntent.setData(Uri.parse("tel:+41766796729"));
             startActivity(my_callIntent);
         } catch (ActivityNotFoundException e) {
-            Toast.makeText(getApplicationContext(), "Error in your phone call" + e.getMessage(), Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Error in your phone call :" + e.getMessage(), Toast.LENGTH_LONG).show();
         } catch (SecurityException e){
             Toast.makeText(getApplicationContext(), "UDle doesn't have the right to pass phone call" + e.getMessage(), Toast.LENGTH_LONG).show();
         }
