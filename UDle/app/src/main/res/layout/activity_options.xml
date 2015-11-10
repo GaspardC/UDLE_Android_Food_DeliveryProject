@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
     tools:context="ch.epfl.sweng.udle.activities.MenuOptionsDrinks.OptionsFragment">
 
     <TextView
@@ -13,105 +17,23 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Sauces &amp; Extras"
         android:id="@+id/optionTitle"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_weight="10"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Extras"
-        android:layout_marginTop="38dp"
-        android:id="@+id/optionExtra"
-        android:layout_below="@id/optionTitle"
-        android:layout_centerHorizontal="true" />
-
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Salade"
-        android:id="@+id/optionSalad"
-        android:layout_below="@+id/optionExtra"
-        android:layout_alignParentLeft="true" />
+    <ExpandableListView
+        android:id="@+id/MenuElement_list"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="80">
+    </ExpandableListView>
 
 
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Tomates"
-        android:id="@+id/optionTomate"
-        android:layout_below="@+id/optionExtra"
-        android:layout_alignParentRight="true"/>
-
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Ognions"
-        android:id="@+id/optionOgnion"
-        android:layout_below="@+id/optionSalad"
-        android:layout_alignParentLeft="true"/>
-
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Carottes"
-        android:id="@+id/checkBox5"
-        android:layout_below="@+id/optionTomate"
-        android:layout_alignParentRight="true" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Sauces"
-        android:layout_marginTop="38dp"
-        android:id="@+id/optionSauce"
-        android:layout_below="@id/optionOgnion"
-        android:layout_centerHorizontal="true" />
-
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Sauce Piquante"
-        android:id="@+id/optionPiquante"
-        android:layout_below="@+id/optionSauce"
-        android:layout_alignParentLeft="true" />
-
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Sauce Blanche"
-        android:id="@+id/optionBlanche"
-        android:layout_below="@+id/optionSauce"
-        android:layout_alignParentRight="true" />
-
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Ketchup"
-        android:id="@+id/optionKetchup"
-        android:layout_below="@+id/optionPiquante"
-        android:layout_alignParentLeft="true" />
-
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Mayonaise"
-        android:id="@+id/optionMayonaise"
-        android:layout_below="@+id/optionBlanche"
-        android:layout_alignParentRight="true" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Next"
         android:id="@+id/optionNext"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_weight="10"/>
 
 
-
-</RelativeLayout>
+</LinearLayout>

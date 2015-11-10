@@ -1,7 +1,6 @@
 package ch.epfl.sweng.udle.activities.MenuOptionsDrinks;
 
 import android.support.v4.app.Fragment;
-import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -13,9 +12,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+import android.widget.ExpandableListView;
 
 import ch.epfl.sweng.udle.Food.Menu;
 import ch.epfl.sweng.udle.Food.OrderElement;
@@ -24,14 +26,15 @@ import ch.epfl.sweng.udle.R;
 
 public class OptionsFragment extends Fragment {
 
-    private RelativeLayout rlLayout;
+    private LinearLayout rlLayout;
     private ViewPager pager;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        Log.i("BBBBBBBBBBBBBBBBBBBBBBBBBBB", "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
         FragmentActivity    faActivity  = (FragmentActivity)    super.getActivity();
 
-        rlLayout    = (RelativeLayout)    inflater.inflate(R.layout.activity_options, container, false);
+        rlLayout    = (LinearLayout)    inflater.inflate(R.layout.activity_options, container, false);
         Button buttonNext = (Button) rlLayout.findViewById(R.id.optionNext);
         buttonNext.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -40,6 +43,12 @@ public class OptionsFragment extends Fragment {
                 goToDrinkActivity();
             }
         });
+
+        ExpandableListView expandableListView = (ExpandableListView) rlLayout.findViewById(R.id.MenuElement_list);
+        HashMap<String, List<String>> hashMap = Options_ExpandableListData.getData();
+        ArrayList<String> hashMapKeys = new ArrayList<String>(hashMap.keySet());
+        Options_ExpandableListAdapter adapter = new Options_ExpandableListAdapter(inflater, hashMap);
+        expandableListView.setAdapter(adapter);
 
         return rlLayout;
 
@@ -63,6 +72,7 @@ public class OptionsFragment extends Fragment {
     }
 
     public void setPager(ViewPager pager) {
+        Log.i("CCCCCCCCCCCCCCCCCCCCCCC", "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
         this.pager = pager;
     }
 }
