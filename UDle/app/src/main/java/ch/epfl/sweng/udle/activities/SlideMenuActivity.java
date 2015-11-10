@@ -19,6 +19,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
@@ -46,6 +47,8 @@ public abstract class SlideMenuActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        //getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
+        setTheme(R.style.SlideMenuTheme);
         super.onCreate(savedInstanceState);
         super.setContentView(R.layout.actitivity_slidemenu);
 

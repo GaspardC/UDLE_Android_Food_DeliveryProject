@@ -1,9 +1,7 @@
 package ch.epfl.sweng.udle.activities;
 
-import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Criteria;
 import android.location.Location;
@@ -102,11 +100,5 @@ public class DeliveryActivity extends SlideMenuActivity {
         }
     }
 
-    @Override
-    public void onBackPressed() {
 
-        Intent intent =  new Intent(DeliveryActivity.this, MapActivity.class);
-        startActivity(intent);
-
-    }
 }
