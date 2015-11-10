@@ -47,7 +47,7 @@ public class DataManager {
      * Find restaurants near the user
      */
 
-    public ArrayList<String> getRestaurantLocationsNearTheUser() {
+    public ArrayList<String> getRestaurantLocationsNearTheUser() throws ParseException{
 
         ParseQuery<ParseUser> query = ParseUser.getQuery();
         query.whereEqualTo("RestaurantOwner", true);
@@ -75,6 +75,11 @@ public class DataManager {
                 }
             }
         });
+
+        if (nearbyRestaurants == null) {
+            throw new ParseException(1, "Query search for nearby restaurants failed");
+        }
+
         return nearbyRestaurants;
     }
 
@@ -84,7 +89,7 @@ public class DataManager {
      * Returns null if query fails.
      */
 
-    public ArrayList<OrderElement> getPendingOrdersForARestaurantOwner() {
+    public ArrayList<OrderElement> getPendingOrdersForARestaurantOwner() throws ParseException {
 
         //Only restaurants can access this method
         if (user.get("RestaurantOwner") == false) {
@@ -121,10 +126,14 @@ public class DataManager {
                 } else {
                     //failure of query
                     //THROW EXCEPTION OTHERWISE
+                    pendingOrders = null;
                 }
             }
         });
 
+        if (nearbyRestaurants == null) {
+            throw new ParseException(2, "Query search for pending orders failed");
+        }
 
         return pendingOrders;
     }

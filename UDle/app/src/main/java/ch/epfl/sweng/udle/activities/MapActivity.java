@@ -221,8 +221,6 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
         double longitude = location.getLongitude();
         LatLng latLng = new LatLng(latitude, longitude);
 
-        DataManager dataManager = new DataManager();
-        dataManager.getRestaurantLocationsNearTheUser();
         deliveryAddress = getCompleteAddressString(latitude,longitude);
         Log.i("Message :", deliveryAddress);
 
