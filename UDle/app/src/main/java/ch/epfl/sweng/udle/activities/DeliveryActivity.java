@@ -82,6 +82,7 @@ public class DeliveryActivity extends AppCompatActivity {
             myLocation = locationManager.getLastKnownLocation(provider);
 
             // Get latitude/ longitude of the current location
+            if(myLocation == null)  return;
             double latitude = myLocation.getLatitude();
             double longitude = myLocation.getLongitude();
             LatLng latLng = new LatLng(latitude, longitude);
