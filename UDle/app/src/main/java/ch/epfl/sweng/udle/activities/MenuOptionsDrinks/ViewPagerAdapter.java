@@ -42,7 +42,7 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
     public Fragment getItem(int position) {
 
 
-        Log.i("EEEEEEEEEEEEEEEEEEEEEE", "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO"+String.valueOf(position));
+        Log.i("EEEEEEEEEEEEEEEEEEEEEE", "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO    Position:"+String.valueOf(position));
 
         if(position == 0) // if the position is 0 we are returning the First tab
         {

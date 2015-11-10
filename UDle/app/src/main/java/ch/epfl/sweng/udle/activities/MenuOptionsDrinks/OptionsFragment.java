@@ -31,7 +31,7 @@ public class OptionsFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        Log.i("BBBBBBBBBBBBBBBBBBBBBBBBBBB", "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
+        Log.i("BBBBBBBBBBBBBBBBBBBBB", "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
         FragmentActivity    faActivity  = (FragmentActivity)    super.getActivity();
 
         rlLayout    = (LinearLayout)    inflater.inflate(R.layout.activity_options, container, false);

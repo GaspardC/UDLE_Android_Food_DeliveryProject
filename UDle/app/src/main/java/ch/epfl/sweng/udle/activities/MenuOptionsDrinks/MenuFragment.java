@@ -26,8 +26,6 @@ import ch.epfl.sweng.udle.R;
 public class MenuFragment extends Fragment{
 
 
-    private int nbrKebabs = 0;
-    private int nbrBurgers = 0;
     private LinearLayout        llLayout;
     private ViewPager pager;
 
@@ -53,10 +51,19 @@ public class MenuFragment extends Fragment{
 
 
     private void kebabInit(){
-        final TextView kebabNbr = (TextView) llLayout.findViewById(R.id.MenuActivity_KebabNbr);
-        kebabNbr.setText("" + 0);
-        computeKebabPrice(0);
+        OrderElement orderElement = Orders.getActiveOrder();
+        int nbrKebab = 0;
+        if (orderElement != null){
+            for(Menu menu: orderElement.getOrder()){
+                if (menu.getFood().toString().equals(FoodTypes.KEBAB.toString())){
+                    nbrKebab ++;
+                }
+            }
+        }
 
+        final TextView kebabNbr = (TextView) llLayout.findViewById(R.id.MenuActivity_KebabNbr);
+        kebabNbr.setText("" + nbrKebab);
+        computeKebabPrice(nbrKebab);
         TextView kebabPlus = (TextView) llLayout.findViewById(R.id.MenuActivity_KebabPlus);
         kebabPlus.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
@@ -68,7 +75,7 @@ public class MenuFragment extends Fragment{
                 if (newNbrValue <= maxNbr) {
                     kebabNbr.setText(Integer.toString(newNbrValue));
                     computeKebabPrice(newNbrValue);
-                    nbrKebabs++;
+                    addOneKebab();
                 }
             }
         });
@@ -82,7 +89,7 @@ public class MenuFragment extends Fragment{
                 if (newNbrValue >= 0) {
                     kebabNbr.setText(Integer.toString(newNbrValue));
                     computeKebabPrice(newNbrValue);
-                    nbrKebabs--;
+                    removeOneKebab();
                 }
             }
         });
@@ -98,10 +105,21 @@ public class MenuFragment extends Fragment{
 
 
 
+
     private void burgerInit(){
+        OrderElement orderElement = Orders.getActiveOrder();
+        int nbrBurger = 0;
+        if (orderElement != null){
+            for(Menu menu: orderElement.getOrder()){
+                if (menu.getFood().toString().equals(FoodTypes.BURGER.toString())){
+                    nbrBurger ++;
+                }
+            }
+        }
+
         final TextView burgerNbr = (TextView) llLayout.findViewById(R.id.MenuActivity_BurgerNbr);
-        burgerNbr.setText("" + 0);
-        computeBurgerPrice(0);
+        burgerNbr.setText("" + nbrBurger);
+        computeBurgerPrice(nbrBurger);
 
         TextView burgerPlus = (TextView) llLayout.findViewById(R.id.MenuActivity_BurgerPlus);
         burgerPlus.setOnClickListener(new Button.OnClickListener() {
@@ -116,6 +134,7 @@ public class MenuFragment extends Fragment{
                     computeBurgerPrice(newNbrValue);
                     nbrBurgers++;
                 }
+
             }
         });
 
@@ -155,7 +174,6 @@ public class MenuFragment extends Fragment{
         }
         else{
             OrderElement orderElement = Orders.getActiveOrder();
-            orderElement.empty();
 
             for (int i=0; i<nbrKebabs; i++){
                 Menu menu = new Menu();
@@ -167,11 +185,9 @@ public class MenuFragment extends Fragment{
                 menu.setFood(FoodTypes.BURGER);
                 orderElement.addMenu(menu);
             }
-
-
+            Orders.setActiveOrder(orderElement);
+            Log.i("KKKKKKKKKKKK", "Active Order set to the correct one");
             pager.setCurrentItem(1);
-
-
         }
     }
 
