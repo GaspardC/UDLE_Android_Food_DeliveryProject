@@ -104,7 +104,7 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
             orderElement.setDeliveryLocation(location);
             orderElement.setDeliveryAddress(deliveryAddress);
             Orders.setActiveOrder(orderElement);
-            Intent intent = new Intent(this, SlideMenuActivity.class);
+            Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
         }else {
             Toast.makeText(this, "This location was not recognized, please chose a correct location", Toast.LENGTH_SHORT).show();
