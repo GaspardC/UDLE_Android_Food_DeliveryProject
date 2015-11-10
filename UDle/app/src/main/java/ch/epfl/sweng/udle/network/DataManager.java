@@ -52,7 +52,7 @@ public class DataManager {
         user.saveInBackground();
 
         getUserLocation();
-        setPendingOrdersForARestaurantOwner();
+//        setPendingOrdersForARestaurantOwner();
 
     }
     private void setUserStatus(UserStatus status){

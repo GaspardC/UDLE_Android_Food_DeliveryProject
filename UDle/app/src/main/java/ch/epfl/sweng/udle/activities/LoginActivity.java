@@ -92,13 +92,7 @@ public class LoginActivity extends Activity {
                     retrieveFacebookInfoFirstConnection(loginResult);
 
                 }
-
-                ///////////////////////////////////////////////////////////////
-                Intent intent = new Intent(context, DeliveryActivity.class); // TODO: remove this before commiting !!!
-                startActivity(intent);                                       //
-                ///////////////////////////////////////////////////////////////
-
-                //goToMapActivityIn(1500);
+                goToMapActivityIn(1500);
             }
 
             @Override

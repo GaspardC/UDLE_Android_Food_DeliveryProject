@@ -1,4 +1,4 @@
-package ch.epfl.sweng.udle.Food;
+package ch.epfl.sweng.udle;
 
 import android.location.Location;
 
@@ -6,6 +6,12 @@ import org.junit.Test;
 
 
 import java.util.ArrayList;
+
+import ch.epfl.sweng.udle.Food.DrinkTypes;
+import ch.epfl.sweng.udle.Food.FoodTypes;
+import ch.epfl.sweng.udle.Food.Menu;
+import ch.epfl.sweng.udle.Food.OptionsTypes;
+import ch.epfl.sweng.udle.Food.OrderElement;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.fail;
