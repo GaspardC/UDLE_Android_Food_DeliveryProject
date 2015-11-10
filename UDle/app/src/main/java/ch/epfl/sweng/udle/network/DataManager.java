@@ -24,7 +24,6 @@ import ch.epfl.sweng.udle.Food.OrderElement;
  */
 
 public class DataManager {
-<<<<<<< HEAD
     private static double maxDeliveryDistance;
     private static ParseUser user;
     private static ParseGeoPoint userLocation;
@@ -41,37 +40,6 @@ public class DataManager {
         maxDeliveryDistance = (double) user.get("maxDeliveryDistance");
         //NEED AN OBJECT FOR RESTAURANTS AFTER USERS
 
-=======
-    public static final double MAX_DISTANCE_IN_KM_TO_FIND_A_RESTAURANT = 10;
-    public static ParseGeoPoint userLocation;
-    private JSONObject pendingOrder;
-    private ParseUserOrderInformations userOrderInformations;
-    /** If we don't know the status (i.e. before login), it is set to 'Guest' */
-    private UserStatus status = UserStatus.GUEST;
-
-    public DataManager() {
-    }
-
-    public DataManager(double latitude, double longitude) {
-        userOrderInformations = new ParseUserOrderInformations(latitude, longitude);
-    }
-
-    public void setUserLocation(double lat, double lon){
-        ParseUser user = getCurrentParseUser();
-        ParseGeoPoint point = new ParseGeoPoint(lat, lon);
-        user.put("Location", point);
-        user.saveInBackground();
-
-        getUserLocation();
-//        setPendingOrdersForARestaurantOwner();
-
-    }
-    private void setUserStatus(UserStatus status){
-        this.status = status;
-    }
-    private UserStatus getUserStatusRestaurantOwner() {
-        return status;
->>>>>>> master
     }
 
 
