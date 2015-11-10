@@ -47,7 +47,7 @@ public class DataManager {
      * Find restaurants near the user
      */
 
-    public ArrayList<String> getRestaurantLocationsNearTheUser() throws ParseException{
+    public static ArrayList<String> getRestaurantLocationsNearTheUser() throws ParseException{
 
         ParseQuery<ParseUser> query = ParseUser.getQuery();
         query.whereEqualTo("RestaurantOwner", true);
@@ -89,7 +89,7 @@ public class DataManager {
      * Returns null if query fails.
      */
 
-    public ArrayList<OrderElement> getPendingOrdersForARestaurantOwner() throws ParseException {
+    public static ArrayList<OrderElement> getPendingOrdersForARestaurantOwner() throws ParseException {
 
         //Only restaurants can access this method
         if (user.get("RestaurantOwner") == false) {
@@ -168,6 +168,11 @@ public class DataManager {
             userOrderInformations.setOrderStatus("delivered");
             userOrderInformations.saveInBackground();
         }
+    }
+
+    public static ParseUser getUser(){
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        return currentUser;
     }
 
 
