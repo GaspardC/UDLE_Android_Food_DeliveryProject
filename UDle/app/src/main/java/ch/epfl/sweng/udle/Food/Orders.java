@@ -26,6 +26,7 @@ public class Orders {
     }
     public static void setActiveOrder(OrderElement orderElement){
         //ActiveOrder can be null
+
         activeOrder = orderElement;
     }
 

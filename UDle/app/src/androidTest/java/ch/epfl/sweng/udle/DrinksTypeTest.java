@@ -1,7 +1,9 @@
 
-package ch.epfl.sweng.udle.Food;
+package ch.epfl.sweng.udle;
 
 import org.junit.Test;
+
+import ch.epfl.sweng.udle.Food.DrinkTypes;
 
 import static junit.framework.Assert.assertEquals;
 

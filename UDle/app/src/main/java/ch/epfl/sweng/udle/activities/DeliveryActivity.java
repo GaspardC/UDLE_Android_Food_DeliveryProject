@@ -22,7 +22,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import ch.epfl.sweng.udle.R;
 import ch.epfl.sweng.udle.network.DataManager;
 
-public class DeliveryActivity extends AppCompatActivity {
+public class DeliveryActivity extends SlideMenuActivity {
 
     private GoogleMap mMap;
 
@@ -31,13 +31,16 @@ public class DeliveryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_delivery);
         setUpMapIfNeeded();
+        slideMenuItems.add(new NavItem("Special Delivery", "option added from the child activity", R.mipmap.ic_launcher));
     }
 
     public void callDeliveryGuy(View view){
         try {
+            /*
             Intent my_callIntent = new Intent(Intent.ACTION_CALL);
 //            my_callIntent.setData(Uri.parse("tel:" + DataManager.getDeliveryGuyNumber()));
             startActivity(my_callIntent);
+            */
         } catch (ActivityNotFoundException e) {
             Toast.makeText(getApplicationContext(), "Error in your phone call" + e.getMessage(), Toast.LENGTH_LONG).show();
         } catch (SecurityException e){
@@ -80,6 +83,7 @@ public class DeliveryActivity extends AppCompatActivity {
             myLocation = locationManager.getLastKnownLocation(provider);
 
             // Get latitude/ longitude of the current location
+            if(myLocation == null)  return;
             double latitude = myLocation.getLatitude();
             double longitude = myLocation.getLongitude();
             LatLng latLng = new LatLng(latitude, longitude);
@@ -98,4 +102,6 @@ public class DeliveryActivity extends AppCompatActivity {
             return;
         }
     }
+
+
 }
