@@ -49,6 +49,12 @@ public class DataManager {
 
     public static ArrayList<String> getRestaurantLocationsNearTheUser() throws ParseException{
 
+        //Because this method is static, these fields may not be instantiated
+        user = DataManager.getUser();
+        userLocation = user.getParseGeoPoint("Location");
+        maxDeliveryDistance = (double) user.get("maxDeliveryDistance");
+
+        //Start Query
         ParseQuery<ParseUser> query = ParseUser.getQuery();
         query.whereEqualTo("RestaurantOwner", true);
         query.findInBackground(new FindCallback<ParseUser>() {
@@ -96,6 +102,12 @@ public class DataManager {
             return null;
         }
 
+        //Because this method is static, these fields may not be instantiated
+        user = DataManager.getUser();
+        userLocation = user.getParseGeoPoint("Location");
+        maxDeliveryDistance = (double) user.get("maxDeliveryDistance");
+
+        //Start Query
         ParseQuery<ParseObject> query = ParseQuery.getQuery("ParseUserOrderInformations");
         query.whereEqualTo("orderStatus", "waiting for restaurant");
         query.findInBackground(new FindCallback<ParseObject>() {
