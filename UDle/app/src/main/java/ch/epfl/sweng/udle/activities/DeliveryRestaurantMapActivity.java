@@ -31,7 +31,7 @@ import ch.epfl.sweng.udle.Food.Orders;
 import ch.epfl.sweng.udle.R;
 import ch.epfl.sweng.udle.network.DataManager;
 
-public class DeliveryRestaurantMapActivity extends AppCompatActivity {
+public class DeliveryRestaurantMapActivity extends SlideMenuActivity {
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
 
