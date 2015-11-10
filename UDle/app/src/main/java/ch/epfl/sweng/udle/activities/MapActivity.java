@@ -131,8 +131,8 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
         double latitude = myLocation.getLatitude();
         double longitude = myLocation.getLongitude();
         LatLng latLng = new LatLng(latitude, longitude);
-        DataManager data = new DataManager();
-        data.setUserLocation(latitude,longitude);
+        DataManager dataManager = new DataManager();
+        dataManager.getRestaurantLocationsNearTheUser();
         // Show the current location in Google Map
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
 

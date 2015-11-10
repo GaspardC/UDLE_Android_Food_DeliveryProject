@@ -32,18 +32,19 @@ public class DataManager {
 
     private ParseUserOrderInformations userOrderInformations = null;
 
-    public DataManager(String userType) {
+    public DataManager() {
 
-        //NEED AN OBJECT FOR RESTAURANTS AFTER USERS
         userOrderInformations = new ParseUserOrderInformations();
         user = userOrderInformations.getUser();
         userLocation = user.getParseGeoPoint("Location");
         maxDeliveryDistance = (double) user.get("maxDeliveryDistance");
+        //NEED AN OBJECT FOR RESTAURANTS AFTER USERS
+
     }
 
 
-    /* Find restaurants near the user
-     *
+    /*
+     * Find restaurants near the user
      */
 
     public ArrayList<String> getRestaurantLocationsNearTheUser() {
@@ -82,6 +83,7 @@ public class DataManager {
      * Compile an arraylist of all the order element objects and return
      * Returns null if query fails.
      */
+
     public ArrayList<OrderElement> getPendingOrdersForARestaurantOwner() {
 
         //Only restaurants can access this method
@@ -118,11 +120,46 @@ public class DataManager {
 
                 } else {
                     //failure of query
-                    pendingOrders = null;
+                    //THROW EXCEPTION OTHERWISE
                 }
             }
         });
 
+
         return pendingOrders;
     }
+
+    /*
+     * Once order is created, the order doesn't appear on the server until an orderElement is
+     * provided. If not, the data manager will be useful to a restaurant.
+     *
+     */
+    public void pushOrderToServer(OrderElement orderElement){
+        userOrderInformations.setOrder(orderElement);
+        userOrderInformations.saveInBackground();
+    }
+
+
+    /*
+     *  Change status of order to reflect that it's currenty being delivered
+     */
+    public void deliveryEnRoute(String deliveringRestaurant, String deliveryGuyNumber, int eta) {
+        userOrderInformations.setDeliveryGuyNumber(deliveryGuyNumber);
+        userOrderInformations.setParseDeliveringRestaurant(deliveringRestaurant);
+        userOrderInformations.setExpectedTime(eta);
+        userOrderInformations.setOrderStatus("enRoute");
+        userOrderInformations.saveInBackground();
+    }
+
+    /*
+     *  Change status of order to reflect that it's currenty delivered
+     */
+    public void deliveryDelivered() {
+        if (userOrderInformations.getOrderStatus() == "enRoute") {
+            userOrderInformations.setOrderStatus("delivered");
+            userOrderInformations.saveInBackground();
+        }
+    }
+
+
 }
