@@ -92,6 +92,8 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
             selected_position.setTitle(str);
         }
         deliveryAddress = str;
+        if (location == null)
+            location = new Location("");
         location.setLatitude(latLng.latitude);
         location.setLongitude(latLng.longitude);
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
