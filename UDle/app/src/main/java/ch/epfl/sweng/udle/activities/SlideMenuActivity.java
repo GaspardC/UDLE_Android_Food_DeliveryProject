@@ -5,16 +5,15 @@ took most of the code from there
 http://codetheory.in/android-navigation-drawer/
 */
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Configuration;
-import android.support.v4.view.GravityCompat;
+import android.support.annotation.LayoutRes;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -35,33 +34,37 @@ public abstract class SlideMenuActivity extends AppCompatActivity {
     private static String TAG = SlideMenuActivity.class.getSimpleName();
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
-    protected ListView slideMenuList;
-    protected RelativeLayout slideMenu_frame;
+    ListView slideMenuList;
+    RelativeLayout slideMenu_frame;
+    RelativeLayout content_frame;
 
-    protected ArrayList<NavItem> slideMenuItems = new ArrayList<NavItem>();
+    protected ArrayList<NavItem> slideMenuItems = new ArrayList<>();
 
 
-    private CharSequence mDrawerTitle; //
-    private CharSequence mTitle;       //
+    private CharSequence mDrawerTitle;
+    private CharSequence mTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.acitivity_slidemenu);
+        super.setContentView(R.layout.actitivity_slidemenu);
 
         //set menu items
-        slideMenuItems.add(new NavItem("Preferences", "Change your preferences", R.mipmap.ic_launcher));
-        slideMenuItems.add(new NavItem("About", "Get to know about us", R.mipmap.ic_launcher));
+        slideMenuItems.add(new NavItem(getString(R.string.restaurantMode), getString(R.string.restaurantModeDesc), R.mipmap.ic_launcher, DeliveryRestaurantMapActivity.class));
+        slideMenuItems.add(new NavItem(getString(R.string.about), getString(R.string.notImplemented), R.mipmap.ic_launcher));
 
 
         mTitle = mDrawerTitle = getTitle();//
 
-        //main layout
+        // main layout
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        //slide menu layout
+        // slide menu layout
         slideMenu_frame = (RelativeLayout) findViewById(R.id.slideMenu_frame);
-        //slide menu list container
+        // content layout
+        content_frame = (RelativeLayout) findViewById(R.id.content_frame);
+        // slide menu list container
         slideMenuList = (ListView) findViewById(R.id.slideMenu_items);
+
 
         //adapter between logical NavItems and graphical representation
         DrawerListAdapter adapter = new DrawerListAdapter(this, slideMenuItems);
@@ -72,7 +75,6 @@ public abstract class SlideMenuActivity extends AppCompatActivity {
         slideMenuList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.v(TAG, "onItemClick event raised on position " + position);
                 selectItemFromList(position);
             }
         });
@@ -86,14 +88,14 @@ public abstract class SlideMenuActivity extends AppCompatActivity {
             /** Called when a drawer has settled in a completely closed state. */
             @Override
             public void onDrawerClosed(View view) {
+                Log.d(TAG, "Slide menu closed");
                 super.onDrawerClosed(view);
-                Log.d(TAG, "onDrawerClosed: " + getTitle());
                 invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
             }
             /** Called when a drawer has settled in a completely open state. */
             @Override
             public void onDrawerOpened(View drawerView) {
-                Log.d(TAG, "call to onDrawerOpened(), SlideMenu should be open");
+                Log.d(TAG, "Slide menu opened");
                 super.onDrawerOpened(drawerView);
                 invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
             }
@@ -101,7 +103,6 @@ public abstract class SlideMenuActivity extends AppCompatActivity {
 
         // Set the drawer toggle as the DrawerListener
         mDrawerLayout.setDrawerListener(mDrawerToggle);
-        Log.d(TAG, "mDrawerToggle created and assigned to mDrawerLayout : " + String.valueOf(mDrawerToggle));
     }
 
     // slide menu actions
@@ -109,13 +110,30 @@ public abstract class SlideMenuActivity extends AppCompatActivity {
         Log.d(TAG, "SlideMenu item selected. N° : " + position);
         //close Menu
         mDrawerLayout.closeDrawer(slideMenu_frame);
-        switch (position){
+        switch (position) {
             default:
-                Intent newActivity = new Intent(this, DeliveryRestaurantMapActivity.class);
-                startActivity(newActivity);
+                if (slideMenuItems.get(position).linkedActivity != null){
+                    Intent newActivity = new Intent(this, slideMenuItems.get(position).linkedActivity);
+                    startActivity(newActivity);
+                }
         }
     }
 
+
+    /**
+     * Set the activity content_frame (the main content view in the drawer) from a layout resource.  The resource will be
+     * inflated, adding all top-level views to the activity.
+     *
+     * @param layoutResID Resource ID to be inflated.
+     *
+     * @see #setContentView(android.view.View)
+     * @see #setContentView(android.view.View, android.view.ViewGroup.LayoutParams)
+     */
+    @Override
+    public void setContentView(@LayoutRes int layoutResID)
+    {
+        content_frame.addView(getLayoutInflater().inflate(layoutResID, null));
+    }
 
     // force display of the 3 bar icon on the Action Bar, the "logo" widely used for Menu
     @Override
@@ -127,9 +145,6 @@ public abstract class SlideMenuActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Log.d(TAG, "Item selected in the Action Bar");
-        mDrawerLayout.openDrawer(GravityCompat.START);
-        Log.d(TAG, "call to mDrawerLayout.openDrawer(GravityCompat.START)");
         // Pass the event to ActionBarDrawerToggle, if it returns
         // true, then it has handled the app icon touch event
         if (mDrawerToggle.onOptionsItemSelected(item)) {
@@ -141,8 +156,8 @@ public abstract class SlideMenuActivity extends AppCompatActivity {
 
     // Called when invalidateOptionsMenu() is invoked
     public boolean onPrepareOptionsMenu(Menu menu) {
-        boolean drawerOpen = mDrawerLayout.isDrawerOpen(slideMenu_frame);
         /*
+        boolean drawerOpen = mDrawerLayout.isDrawerOpen(slideMenu_frame);
         // If the nav drawer is open, hide action items related to the content view
         menu.findItem(R.id.action_search).setVisible(!drawerOpen);
         */
@@ -154,7 +169,20 @@ class NavItem {
     String name;
     String description;
     int icon;
+    Class<?> linkedActivity = null;
 
+    /**
+     * @param name name of the item
+     * @param description short description, will be visible under the name
+     * @param icon
+     * @param linkedActivity Activity launched when the item is clicked
+     */
+    public NavItem(String name, String description, int icon, Class<?> linkedActivity){
+        this.name = name;
+        this.description = description;
+        this.icon = icon;
+        this.linkedActivity = linkedActivity;
+    }
     public NavItem(String name, String description, int icon){
         this.name = name;
         this.description = description;
@@ -190,13 +218,11 @@ class DrawerListAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        Log.d(TAG, "getView");
         View view;
 
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = inflater.inflate(R.layout.drawer_item, null);
-            Log.d(TAG, "drawer_item inflated");
         }
         else {
             view = convertView;

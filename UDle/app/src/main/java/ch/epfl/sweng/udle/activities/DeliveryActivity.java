@@ -15,7 +15,6 @@ import android.widget.Toast;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -32,16 +31,16 @@ public class DeliveryActivity extends SlideMenuActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_delivery);
         setUpMapIfNeeded();
+        slideMenuItems.add(new NavItem("Special Delivery", "option added from the child activity", R.mipmap.ic_launcher));
     }
 
     public void callDeliveryGuy(View view){
         try {
             Intent my_callIntent = new Intent(Intent.ACTION_CALL);
-            //my_callIntent.setData(Uri.parse("tel:" + new DataManager().getDeliveryGuyNumber()));
-            my_callIntent.setData(Uri.parse("tel:+41766796729"));
+//            my_callIntent.setData(Uri.parse("tel:" + DataManager.getDeliveryGuyNumber()));
             startActivity(my_callIntent);
         } catch (ActivityNotFoundException e) {
-            Toast.makeText(getApplicationContext(), "Error in your phone call :" + e.getMessage(), Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Error in your phone call" + e.getMessage(), Toast.LENGTH_LONG).show();
         } catch (SecurityException e){
             Toast.makeText(getApplicationContext(), "UDle doesn't have the right to pass phone call" + e.getMessage(), Toast.LENGTH_LONG).show();
         }

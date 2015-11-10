@@ -56,12 +56,6 @@ public class LoginActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context = getApplication();
-
-        ///////////////////////////////////////////////////////////////
-        Intent intent = new Intent(context, DeliveryActivity.class); // TODO: remove this before commiting !!!
-        startActivity(intent);                                       //
-        ///////////////////////////////////////////////////////////////
-
         FacebookSdk.sdkInitialize(getApplicationContext());
         callbackManager = CallbackManager.Factory.create();
         accessTokenTracker = new AccessTokenTracker() {
@@ -98,7 +92,13 @@ public class LoginActivity extends Activity {
                     retrieveFacebookInfoFirstConnection(loginResult);
 
                 }
-                goToMapActivityIn(1500);
+
+                ///////////////////////////////////////////////////////////////
+                Intent intent = new Intent(context, DeliveryActivity.class); // TODO: remove this before commiting !!!
+                startActivity(intent);                                       //
+                ///////////////////////////////////////////////////////////////
+
+                //goToMapActivityIn(1500);
             }
 
             @Override

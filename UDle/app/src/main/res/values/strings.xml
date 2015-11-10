@@ -22,4 +22,8 @@
 	<string name="openSlideMenu">Open slide menu</string>
 	<string name ="closeSlideMenu">Close slide menu</string>
     <string name="username">Username</string>
+    <string name="restaurantMode">Restaurant mode</string>
+    <string name="restaurantModeDesc">go to restaurant map activity</string>
+    <string name="about">About</string>
+    <string name="notImplemented">Not implemented</string>
 </resources>
