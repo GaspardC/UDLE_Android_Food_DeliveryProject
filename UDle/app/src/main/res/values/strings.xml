@@ -21,6 +21,8 @@
     <string name="descriptionBurgerRotating">image stop rotating when order accepted</string>
     <string name="infotextwaiting">Please wait for a shop to accept your command</string>
     <string name="infotextwaitingConfirmed">Congrats, your order is coming for you</string>
+    <string name="TitleAlertBack">Give up the order"</string>
+    <string name="MessageAlertBack">Are you sure you want to go back? This will delete your order</string>
     <string name="expectedTime">Expected Time</string>
     <string name="acceptCommand">Accept Command</string>
     <string name="expectedTimeNotValid">Please enter an expected time</string>
