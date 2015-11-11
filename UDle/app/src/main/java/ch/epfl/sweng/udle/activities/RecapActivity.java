@@ -32,17 +32,6 @@ public class RecapActivity extends AppCompatActivity {
         ListView listView = (ListView) findViewById(R.id.RecapActivity_recapListView);
         String moneyDevise = Orders.getMoneyDevise();
 
-        //TO TEST
-        order.addToDrinks(DrinkTypes.BEER);
-        order.addToDrinks(DrinkTypes.COCA);
-        for(Menu menu : order.getOrder()){
-            menu.addToOptions(OptionsTypes.ALGERIENNE);
-            menu.addToOptions(OptionsTypes.KETCHUP);
-            menu.addToOptions(OptionsTypes.SALAD);
-            menu.addToOptions(OptionsTypes.TOMATO);
-        }
-        //FINISH TEST
-
         String address = order.getDeliveryAddress();
         TextView deliveryAddress = (TextView) findViewById(R.id.RecapActivity_deliveryAddress);
         deliveryAddress.setText(address);
