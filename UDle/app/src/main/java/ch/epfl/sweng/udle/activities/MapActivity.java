@@ -54,8 +54,12 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
     private Location location;
     private String deliveryAddress;
     private AutoCompleteTextView autoCompView = null;
-
+    private AlertDialog.Builder dlgAlert = null;
     private Marker selected_position = null;
+    private boolean displayGpsMessage = true;
+    private DataManager data = null;
+    private boolean dlgAlertcountCreated = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +67,7 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
         setContentView(R.layout.activity_map);
         CheckEnableGPS();
         setUpMapIfNeeded();
-        AutoCompleteTextView autoCompView = (AutoCompleteTextView) findViewById(R.id.autoCompleteTextView2);
+        autoCompView = (AutoCompleteTextView) findViewById(R.id.autoCompleteTextView2);
         autoCompView.setAdapter(new GooglePlacesAutocompleteAdapter(this, R.layout.list_item));
         autoCompView.setOnItemClickListener(this);
         if (deliveryAddress!="")
@@ -72,7 +76,6 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
     }
 
     private void hideKeyborad() {
-        
         getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN
         );
@@ -85,18 +88,8 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
         String str = (String) adapterView.getItemAtPosition(position);
         LatLng latLng = GooglePlacesAutocompleteAdapter.getLatLngFromId(((GooglePlacesAutocompleteAdapter) adapterView.getAdapter()).getItem_Id(position));
-        if (selected_position == null)
-            selected_position = this.mMap.addMarker(new MarkerOptions().position(latLng).title(str));
-        else {
-            selected_position.setPosition(latLng);
-            selected_position.setTitle(str);
-        }
-        deliveryAddress = str;
-        if (location == null)
-            location = new Location("");
-        location.setLatitude(latLng.latitude);
-        location.setLongitude(latLng.longitude);
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+        setDeliveryAddressLocation(latLng, str);
+        setCamera(latLng);
     }
 
     /** Called when the user clicks the MenuMap_ValidatePosition button */
@@ -113,7 +106,11 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
         }
     }
 
-
+    private boolean isLocationNull(){
+        if (location == null)
+            return true;
+        return false;
+    }
     /**
      * Sets up the map if it is possible to do so (i.e., the Google Play services APK is correctly
      * installed) and the map has not already been instantiated.. This will ensure that we only ever
@@ -142,6 +139,32 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
         }
     }
 
+    private void setDeliveryAddressLocation(LatLng latLng, String str) {
+        if (selected_position == null)
+            selected_position = this.mMap.addMarker(new MarkerOptions().position(latLng).title(str));
+        else {
+            selected_position.setPosition(latLng);
+            selected_position.setTitle(str);
+        }
+        deliveryAddress = str;
+        if (location == null)
+            location = new Location("");
+        location.setLatitude(latLng.latitude);
+        location.setLongitude(latLng.longitude);
+
+        if (data == null)
+            data = new DataManager();
+        data.setUserLocation(location.getLatitude(), location.getLongitude());
+
+        if (deliveryAddress!="" && autoCompView!= null)
+            autoCompView.setText(deliveryAddress);
+    }
+    private void setCamera(LatLng latLng) {
+        // Show the argument location in Google Map
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+        // Zoom in the Google Map
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+    }
 
     private String getCompleteAddressString(double latitude, double longitude) {
         String Address = "";
@@ -169,25 +192,55 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
 
 
     private void CheckEnableGPS(){
-        LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
-            Toast.makeText(this, "Location is enabled", Toast.LENGTH_SHORT).show();
-        }else{
-            AlertDialog.Builder dlgAlert  = new AlertDialog.Builder(this);
-            dlgAlert.setMessage("Dear user, your gps is needed but is currently disabled. Would you like to enable it?");
-            dlgAlert.setTitle("Udle");
-            dlgAlert.setPositiveButton("Ok",
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.cancel();
-                            Intent callGPSSettingIntent = new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                            startActivity(callGPSSettingIntent);
-                        }
-                    });
-            dlgAlert.setCancelable(false);
-            dlgAlert.create().show();
+        if (displayGpsMessage){
+            LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+            if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+                if(dlgAlertcountCreated) {
+                    dlgAlert.create().cancel();
+                    dlgAlertcountCreated = false;
+                }
+                Toast.makeText(this, "Location is enabled", Toast.LENGTH_SHORT).show();
+            }else{
+                if (!dlgAlertcountCreated) {
+                    if (dlgAlert == null)
+                        dlgAlert = new AlertDialog.Builder(this);
+                    dlgAlertcountCreated = true;
+                    dlgAlert.setMessage("Dear user, your gps is currently disabled. Would you like to enable it?");
+                    dlgAlert.setTitle("Udle");
+                    dlgAlert.setPositiveButton("Ok",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dlgAlert.create().cancel();
+                                    dlgAlertcountCreated = false;
+                                    Intent callGPSSettingIntent = new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                                    startActivity(callGPSSettingIntent);
+                                }
+                            });
+                    dlgAlert.setNegativeButton("No",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dlgAlert.create().cancel();
+                                    dlgAlertcountCreated = false;
+                                    displayGpsMessage = false;
+                                }
+                            });
+                    dlgAlert.setCancelable(false);
+                    dlgAlert.create().show();
+                }
+            }
         }
     }
+
+    private GoogleMap.OnMyLocationChangeListener myLocationChangeListener = new GoogleMap.OnMyLocationChangeListener() {
+        @Override
+        public void onMyLocationChange(Location location) {
+            if (isLocationNull()){
+                LatLng LatLng = new LatLng(location.getLatitude(), location.getLongitude());
+                setDeliveryAddressLocation(LatLng, getCompleteAddressString(location.getLatitude(), location.getLongitude()));
+                setCamera(LatLng);
+            }
+        }
+    };
 
     /**
      * This is where we can add markers or lines, add listeners or move the camera. In this case, we
@@ -198,41 +251,23 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
     private void setUpMap() {
         // Enable MyLocation Layer of Google Map
         mMap.setMyLocationEnabled(true);
-
         // Get LocationManager object from System Service LOCATION_SERVICE
         LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-
         // Create a criteria object to retrieve provider
         Criteria criteria = new Criteria();
-
         // Get the name of the best provider
         String provider = locationManager.getBestProvider(criteria, true);
-
         // Get Current Location
         location = locationManager.getLastKnownLocation(provider);
-
         // set map type
         mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-        if( location == null) return ;
-
-
-        // Get latitude/ longitude of the current location
-        double latitude = location.getLatitude();
-        double longitude = location.getLongitude();
-        LatLng latLng = new LatLng(latitude, longitude);
-        deliveryAddress = getCompleteAddressString(latitude,longitude);
-        Log.i("Message :", deliveryAddress);
-
-        DataManager data = new DataManager();
-        data.setUserLocation(latitude,longitude);
-
-        // Show the current location in Google Map
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-
-        // Zoom in the Google Map
-        LatLng myCoordinates = new LatLng(latitude, longitude);
-        CameraUpdate yourLocation = CameraUpdateFactory.newLatLngZoom(myCoordinates, 15);
-        mMap.animateCamera(yourLocation);
+        if (location == null){
+            mMap.setOnMyLocationChangeListener(myLocationChangeListener);
+        }else{
+            LatLng LatLng = new LatLng(location.getLatitude(), location.getLongitude());
+            setDeliveryAddressLocation(LatLng, getCompleteAddressString(location.getLatitude(), location.getLongitude()));
+            setCamera(LatLng);
+        }
     }
 }
 
