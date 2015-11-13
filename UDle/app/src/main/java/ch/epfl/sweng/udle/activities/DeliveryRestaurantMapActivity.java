@@ -84,8 +84,8 @@ public class DeliveryRestaurantMapActivity extends AppCompatActivity {
 
         List<HashMap<String,String>> aList = new ArrayList<HashMap<String,String>>();
         ArrayList<String> ordersAdress = new ArrayList<>();
-        ParseUser user = DataManager.getCurrentParseUser();
-        ParseGeoPoint position = user.getParseGeoPoint("Location");
+//        ParseUser user = DataManager.getCurrentParseUser();
+//        ParseGeoPoint position = user.getParseGeoPoint("Location");
 
         int i = 1;
         for(OrderElement order : waitingOrders) {
