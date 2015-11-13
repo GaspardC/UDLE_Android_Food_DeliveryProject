@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
+import android.media.Image;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -16,6 +17,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListAdapter;
@@ -81,62 +83,90 @@ public class DeliveryRestaurantMapActivity extends AppCompatActivity {
         List<HashMap<String,String>> aList = new ArrayList<HashMap<String,String>>();
         ArrayList<String> ordersAdress = new ArrayList<>();
 
+        int i = 0;
         for(OrderElement order : waitingOrders) {
+
             Location location = order.getDeliveryLocation();
             String deliveryAddress = order.getDeliveryAddress();
             LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-//            mMap.addMarker(new MarkerOptions().position(latLng).title("Waiting Order").snippet(deliveryAddress).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
             ordersAdress.add(deliveryAddress);
+            HashMap<String, String> hm = new HashMap<String,String>();
+            hm.put("numCommande", "#" + i+" ");
+            hm.put("address", ordersAdress.get(i));
+            hm.put("image", Integer.toString(R.drawable.logoburger) );
+            aList.add(hm);
+            i++;
         }
         for(OrderElement order : currentOrders) {
             Location location = order.getDeliveryLocation();
             String deliveryAddress = order.getDeliveryAddress();
             LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-//            mMap.addMarker(new MarkerOptions().position(latLng).title("Confirmed Order").snippet(deliveryAddress).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
             ordersAdress.add(deliveryAddress);
-        }
-
-
-        for(int i=0;i<ordersAdress.size();i++){
             HashMap<String, String> hm = new HashMap<String,String>();
-            hm.put("address", "address : " + ordersAdress.get(i));
-//            hm.put("cur","Currency : " + currency[i]);
-//            hm.put("flag", Integer.toString(flags[i]) );
-            hm.put("image", Integer.toString(R.drawable.logoburger) );
+            hm.put("numCommande", "#" + i+" ");
+            hm.put("address", ordersAdress.get(i));
+
+            hm.put("image", Integer.toString(R.drawable.logogreen) );
             aList.add(hm);
+            i++;
+
         }
+
+
 
         // Keys used in Hashmap
-        String[] from = { "image", "address" };
+        String[] from = { "image","numCommande", "address" };
 
         // Ids of views in listview_layout
 //        int[] to = { R.id.addressDelivery};
-        int[] to = { R.id.iconListDelivery,R.id.addressDelivery};
+        int[] to = { R.id.iconListDelivery,R.id.numCommandeDeliveryRestaurant,R.id.addressDelivery};
 
 
         // Instantiating an adapter to store each items
-        // R.layout.listview_layout defines the layout of each item
+        // R.layout.listView_layout defines the layout of each item
         SimpleAdapter adapter = new SimpleAdapter(this, aList, R.layout.list_item_restaurant_delivery, from, to);
 
 
         listView.setAdapter(adapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+                //Open the browser here
+                HashMap<String, String> hm = (HashMap<String, String>) parent.getItemAtPosition(position);
+                String adress = hm.get("address");
+
+
+                for (OrderElement order : waitingOrders) {
+                    if (order.getDeliveryAddress().equals(adress)) { //TODO: Instead of compare with the address, compare with the id of the command for example.
+                        goToDeliveryCommandDetail(order);
+                    }
+                }
+                for (OrderElement order : currentOrders) {
+                    if (order.getDeliveryAddress().equals(adress)) { //TODO: Instead of compare with the address, compare with the id of the command for example.
+                        goToDeliveryCommandDetail(order);
+                    }
+                }
+            }
+
+        });
     }
 
-    /**
-     * Sets up the map if it is possible to do so (i.e., the Google Play services APK is correctly
-     * installed) and the map has not already been instantiated.. This will ensure that we only ever
-     * call {@link #setUpMap()} once when {@link #mMap} is not null.
-     * <p/>
-     * If it isn't installed {@link SupportMapFragment} (and
-     * {@link com.google.android.gms.maps.MapView MapView}) will show a prompt for the user to
-     * install/update the Google Play services APK on their device.
-     * <p/>
-     * A user can return to this FragmentActivity after following the prompt and correctly
-     * installing/updating/enabling the Google Play services. Since the FragmentActivity may not
-     * have been completely destroyed during this process (it is likely that it would only be
-     * stopped or paused), {@link #onCreate(Bundle)} may not be called again so we should call this
-     * method in {@link #onResume()} to guarantee that it will be called.
-     */
+                /**
+                 * Sets up the map if it is possible to do so (i.e., the Google Play services APK is correctly
+                 * installed) and the map has not already been instantiated.. This will ensure that we only ever
+                 * call {@link #setUpMap()} once when {@link #mMap} is not null.
+                 * <p/>
+                 * If it isn't installed {@link SupportMapFragment} (and
+                 * {@link com.google.android.gms.maps.MapView MapView}) will show a prompt for the user to
+                 * install/update the Google Play services APK on their device.
+                 * <p/>
+                 * A user can return to this FragmentActivity after following the prompt and correctly
+                 * installing/updating/enabling the Google Play services. Since the FragmentActivity may not
+                 * have been completely destroyed during this process (it is likely that it would only be
+                 * stopped or paused), {@link #onCreate(Bundle)} may not be called again so we should call this
+                 * method in {@link #onResume()} to guarantee that it will be called.
+                 */
+
     private void setUpMapIfNeeded() {
         // Do a null check to confirm that we have not already instantiated the map.
         if (mMap == null) {
