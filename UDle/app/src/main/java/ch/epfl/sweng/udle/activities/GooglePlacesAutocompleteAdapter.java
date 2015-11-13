@@ -174,11 +174,7 @@ class GooglePlacesAutocompleteAdapter extends ArrayAdapter<String> implements Fi
             }
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
-                if (results != null && results.count > 0) {
-                    notifyDataSetChanged();
-                } else {
-                    notifyDataSetInvalidated();
-                }
+                notifyDataSetChanged();
             }
         };
         return filter;

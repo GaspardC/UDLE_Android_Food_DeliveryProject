@@ -39,11 +39,11 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
     private Location location = new Location("");
     private String deliveryAddress = "";
-    private AutoCompleteTextView autoCompView = null;
-    private AlertDialog.Builder dlgAlert = null;
-    private Marker selected_position = null;
+    private AutoCompleteTextView autoCompView;
+    private AlertDialog.Builder dlgAlert;
+    private Marker selected_position;
     private boolean displayGpsMessage = true;
-    private DataManager data = null;
+    private DataManager data;
     private boolean dlgAlertcountCreated = false;
     private String nonNullLocationProvider = "nonNullLocationProvider";
 
@@ -51,13 +51,13 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
-        CheckEnableGPS();
-        setUpMapIfNeeded();
+        dlgAlert = new AlertDialog.Builder(this);
+        data = new DataManager();
         autoCompView = (AutoCompleteTextView) findViewById(R.id.autoCompleteTextView2);
         autoCompView.setAdapter(new GooglePlacesAutocompleteAdapter(this, R.layout.list_item));
         autoCompView.setOnItemClickListener(this);
-        if(!getDeliveryAdress().equals(""))
-            autoCompView.setText(deliveryAddress);
+        CheckEnableGPS();
+        setUpMapIfNeeded();
         hideKeyborad();
     }
 
@@ -141,13 +141,13 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
         }
 
         setDeliveryAdress(str);
-
-        if (data == null)
-            data = new DataManager();
         data.setUserLocation(location.getLatitude(), location.getLongitude());
-
-        if (!getDeliveryAdress().equals("") && autoCompView!= null)
-            autoCompView.setText(deliveryAddress);
+        runOnUiThread(new Runnable() {
+            public void run() {
+                if (!getDeliveryAdress().equals(""))
+                    autoCompView.setText(deliveryAddress);
+            }
+        });
     }
     private void setCamera(LatLng latLng) {
         // Show the argument location in Google Map
@@ -192,8 +192,6 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
                 Toast.makeText(this, R.string.locationEnable, Toast.LENGTH_SHORT).show();
             }else{
                 if (!dlgAlertcountCreated) {
-                    if (dlgAlert == null)
-                        dlgAlert = new AlertDialog.Builder(this);
                     dlgAlertcountCreated = true;
                     dlgAlert.setMessage(R.string.mapActivityNoGps);
                             dlgAlert.setTitle(R.string.app_name);
