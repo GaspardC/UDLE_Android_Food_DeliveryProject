@@ -59,7 +59,8 @@
         </activity>
         <activity android:name=".activities.PaymentActivity" >
         </activity>
-        <activity android:name=".activities.DeliveryActivity" >
+        <activity android:name=".activities.DeliveryActivity"
+            android:theme="@style/SlideMenuTheme">
         </activity>
         <activity android:name=".activities.DeliveryRestaurantMapActivity" >
         </activity>
