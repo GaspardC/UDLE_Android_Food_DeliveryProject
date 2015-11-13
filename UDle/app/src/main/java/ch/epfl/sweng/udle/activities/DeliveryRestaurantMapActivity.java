@@ -1,14 +1,26 @@
 package ch.epfl.sweng.udle.activities;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ListAdapter;
+import android.widget.ListView;
+import android.widget.SimpleAdapter;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -21,6 +33,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import ch.epfl.sweng.udle.Food.DrinkTypes;
 import ch.epfl.sweng.udle.Food.FoodTypes;
@@ -31,9 +45,13 @@ import ch.epfl.sweng.udle.Food.Orders;
 import ch.epfl.sweng.udle.R;
 import ch.epfl.sweng.udle.network.DataManager;
 
-public class DeliveryRestaurantMapActivity extends SlideMenuActivity {
+public class DeliveryRestaurantMapActivity extends AppCompatActivity {
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
+    private boolean showMap = true;
+    private ListView listView;
+    final ArrayList<OrderElement> waitingOrders = getWaitingOrders(new ArrayList<OrderElement>());
+    final ArrayList<OrderElement> currentOrders = Orders.getCurrentOrders();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +59,69 @@ public class DeliveryRestaurantMapActivity extends SlideMenuActivity {
         setContentView(R.layout.activity_delivery_restaurant_map);
         setUpMapIfNeeded();
         showWaitingOrders();
+        setUpListView();
+
     }
+
+
+
+    private void setUpListView() {
+        listView = (ListView) findViewById(R.id.listOrderRestaurantMap);
+        if(showMap){
+            listView.setVisibility(View.GONE);
+        }
+        else{
+            listView.setVisibility(View.VISIBLE);
+            populateListView();
+        }
+    }
+
+    private void populateListView() {
+
+        List<HashMap<String,String>> aList = new ArrayList<HashMap<String,String>>();
+        ArrayList<String> ordersAdress = new ArrayList<>();
+
+        for(OrderElement order : waitingOrders) {
+            Location location = order.getDeliveryLocation();
+            String deliveryAddress = order.getDeliveryAddress();
+            LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+//            mMap.addMarker(new MarkerOptions().position(latLng).title("Waiting Order").snippet(deliveryAddress).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
+            ordersAdress.add(deliveryAddress);
+        }
+        for(OrderElement order : currentOrders) {
+            Location location = order.getDeliveryLocation();
+            String deliveryAddress = order.getDeliveryAddress();
+            LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+//            mMap.addMarker(new MarkerOptions().position(latLng).title("Confirmed Order").snippet(deliveryAddress).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+            ordersAdress.add(deliveryAddress);
+        }
+
+
+        for(int i=0;i<ordersAdress.size();i++){
+            HashMap<String, String> hm = new HashMap<String,String>();
+            hm.put("address", "address : " + ordersAdress.get(i));
+//            hm.put("cur","Currency : " + currency[i]);
+//            hm.put("flag", Integer.toString(flags[i]) );
+            hm.put("image", Integer.toString(R.drawable.logoburger) );
+            aList.add(hm);
+        }
+
+        // Keys used in Hashmap
+        String[] from = { "image", "address" };
+
+        // Ids of views in listview_layout
+//        int[] to = { R.id.addressDelivery};
+        int[] to = { R.id.iconListDelivery,R.id.addressDelivery};
+
+
+        // Instantiating an adapter to store each items
+        // R.layout.listview_layout defines the layout of each item
+        SimpleAdapter adapter = new SimpleAdapter(this, aList, R.layout.list_item_restaurant_delivery, from, to);
+
+
+        listView.setAdapter(adapter);
+    }
+
     /**
      * Sets up the map if it is possible to do so (i.e., the Google Play services APK is correctly
      * installed) and the map has not already been instantiated.. This will ensure that we only ever
@@ -90,6 +170,18 @@ public class DeliveryRestaurantMapActivity extends SlideMenuActivity {
         String provider = locationManager.getBestProvider(criteria, true);
 
         // Get Current Location
+
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                // TODO: Consider calling
+                //    public void requestPermissions(@NonNull String[] permissions, int requestCode)
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for Activity#requestPermissions for more details.
+
         Location myLocation = locationManager.getLastKnownLocation(provider);
 
         // set map type
@@ -108,12 +200,13 @@ public class DeliveryRestaurantMapActivity extends SlideMenuActivity {
         LatLng myCoordinates = new LatLng(latitude, longitude);
         CameraUpdate yourLocation = CameraUpdateFactory.newLatLngZoom(myCoordinates, 12);
         mMap.animateCamera(yourLocation);
-
+                return;
+            }
+        }
     }
 
     private void showWaitingOrders(){
-        final ArrayList<OrderElement> waitingOrders = getWaitingOrders(new ArrayList<OrderElement>());
-        final ArrayList<OrderElement> currentOrders = Orders.getCurrentOrders();
+
 
 
         for(OrderElement order : waitingOrders) {
@@ -214,6 +307,27 @@ public class DeliveryRestaurantMapActivity extends SlideMenuActivity {
         orders.add(orderElement3);
 
         return orders;
+    }
+
+    //When button clicked
+    public void switchOrderList(View view) {
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        Fragment mapFrag = getSupportFragmentManager().findFragmentById(R.id.DeliveryMap_GoogleMaps);
+        Button buttonSwitch = (Button) findViewById(R.id.button_list_mode);
+        if(showMap) {
+            ft.hide(mapFrag).commit();
+            showMap = !showMap;
+            setUpListView();
+            buttonSwitch.setText("Switch to Map Mode");
+        }
+        else{
+            ft.show(mapFrag).commit();
+            showMap = !showMap;
+            setUpListView();
+            buttonSwitch.setText("Switch to List Mode");
+
+        }
     }
 }
 
