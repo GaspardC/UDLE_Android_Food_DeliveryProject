@@ -257,6 +257,8 @@ public class LoginActivity extends Activity {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mProfileTracker.stopTracking();
+        if(mProfileTracker!=null){
+            mProfileTracker.stopTracking();
+        }
     }
 }

@@ -32,6 +32,8 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.parse.ParseGeoPoint;
+import com.parse.ParseUser;
 
 
 import java.util.ArrayList;
@@ -82,8 +84,10 @@ public class DeliveryRestaurantMapActivity extends AppCompatActivity {
 
         List<HashMap<String,String>> aList = new ArrayList<HashMap<String,String>>();
         ArrayList<String> ordersAdress = new ArrayList<>();
+        ParseUser user = DataManager.getCurrentParseUser();
+        ParseGeoPoint position = user.getParseGeoPoint("Location");
 
-        int i = 0;
+        int i = 1;
         for(OrderElement order : waitingOrders) {
 
             Location location = order.getDeliveryLocation();
