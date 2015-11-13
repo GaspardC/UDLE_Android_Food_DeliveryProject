@@ -20,7 +20,7 @@ import ch.epfl.sweng.udle.R;
 public class Options_ExpandableListAdapter extends BaseExpandableListAdapter {
 
     LayoutInflater inflater;
-    int nbrGroup = 0; //Here, the nbrGroup represents the numbers of menus to display.
+    int nbrMenusToDisplay = 0;
 
     public Options_ExpandableListAdapter(LayoutInflater context){
         this.inflater = context;
@@ -30,13 +30,14 @@ public class Options_ExpandableListAdapter extends BaseExpandableListAdapter {
     //Group count is the numbers of menus.
     @Override
     public int getGroupCount() {
-        int nbr = Orders.getActiveOrder().getOrder().size();
+        int nbrMenus = Orders.getActiveOrder().getOrder().size();
 
-        if (nbr != nbrGroup){ //If a menu was added/removed, need to 'refresh' the options list
-            nbrGroup = nbr;
+        if (nbrMenus != nbrMenusToDisplay){ //If a menu was added/removed, need to 'refresh' the options list
+            nbrMenusToDisplay = nbrMenus;
             this.notifyDataSetChanged();
         }
-        return nbr;
+
+        return nbrMenusToDisplay;
     }
 
 
