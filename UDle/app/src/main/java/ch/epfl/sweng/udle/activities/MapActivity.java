@@ -97,6 +97,7 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
             orderElement.setDeliveryLocation(location);
             orderElement.setDeliveryAddress(deliveryAddress);
             Orders.setActiveOrder(orderElement);
+            storeNearbyRestaurants();
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
         }else {
@@ -212,19 +213,6 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
         double longitude = location.getLongitude();
         LatLng latLng = new LatLng(latitude, longitude);
 
-        //Put current location in parse.com
-        ParseGeoPoint currentLocation = new ParseGeoPoint(latitude, longitude);
-        ParseUser currentUser = DataManager.getUser();
-        currentUser.put("currentLocation", currentLocation);
-
-        //Find nearby restaurants
-        try {
-            ArrayList<String> nearbyRestaurants = DataManager.getRestaurantLocationsNearTheUser();
-            currentUser.put("ArrayOfNearRestaurant", nearbyRestaurants);
-        }
-        catch (ParseException e){
-            //Failed Query search
-        }
 
         //Set delivery address
         deliveryAddress = getCompleteAddressString(latitude,longitude);
@@ -239,5 +227,18 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
         CameraUpdate yourLocation = CameraUpdateFactory.newLatLngZoom(myCoordinates, 15);
         mMap.animateCamera(yourLocation);
     }
-}
 
+
+
+    private void storeNearbyRestaurants(){
+        //Put current location in parse.com
+        ParseGeoPoint currentLocation = new ParseGeoPoint(location.getLatitude(), location.getLongitude());
+        ParseUser currentUser = DataManager.getUser();
+        currentUser.put("Location", currentLocation);
+
+        //Find nearby restaurants
+        boolean nearbyRestaurantStatus = DataManager.getRestaurantLocationsNearTheUser();
+        Log.d("OSid", String.valueOf(nearbyRestaurantStatus));
+
+    }
+}

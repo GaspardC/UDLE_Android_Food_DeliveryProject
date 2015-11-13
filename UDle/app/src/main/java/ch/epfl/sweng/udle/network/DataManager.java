@@ -15,7 +15,7 @@ import ch.epfl.sweng.udle.Food.OrderElement;
 
 /**
  *
- *  Created by rodri on 23/10/2015.
+ *  Created by rodri on 23/10/2015
  * This class manages the User's information relevant to the order, order status, and contact info
  * One user can currently have one order.
  * One order exist per user per time period so we create one Order Parse Object per DataManager
@@ -29,6 +29,7 @@ public class DataManager {
     private static ParseGeoPoint userLocation;
     private static ArrayList<OrderElement> pendingOrders;
     private static ArrayList<String> nearbyRestaurants;
+    private static boolean isThereAnyNearbyRestaurants;
 
     private ParseUserOrderInformations userOrderInformations = null;
 
@@ -37,7 +38,7 @@ public class DataManager {
         userOrderInformations = new ParseUserOrderInformations();
         user = userOrderInformations.getUser();
         userLocation = user.getParseGeoPoint("Location");
-        maxDeliveryDistance = (double) user.get("maxDeliveryDistance");
+        maxDeliveryDistance = ((double) (Integer)user.get("maxDeliveryDistanceKm"));
         //NEED AN OBJECT FOR RESTAURANTS AFTER USERS
 
     }
@@ -47,12 +48,12 @@ public class DataManager {
      * Find restaurants near the user
      */
 
-    public static ArrayList<String> getRestaurantLocationsNearTheUser() throws ParseException{
+    public static boolean getRestaurantLocationsNearTheUser() {
 
         //Because this method is static, these fields may not be instantiated
         user = DataManager.getUser();
         userLocation = user.getParseGeoPoint("Location");
-        maxDeliveryDistance = (double) user.get("maxDeliveryDistance");
+        maxDeliveryDistance = (double) ((Integer) user.get("maxDeliveryDistanceKm"));
 
         //Start Query
         ParseQuery<ParseUser> query = ParseUser.getQuery();
@@ -60,7 +61,9 @@ public class DataManager {
         query.findInBackground(new FindCallback<ParseUser>() {
             public void done(List<ParseUser> listOfRestaurants, ParseException e) {
                 if (e == null) {
+
                     // The query was successful.
+                    nearbyRestaurants = new ArrayList<String>();
                     for (ParseUser restaurantUser : listOfRestaurants) {
 
                         //Calculate distance between restaraunt and clients
@@ -68,25 +71,28 @@ public class DataManager {
                         double distance = restaurantLocation.distanceInKilometersTo(userLocation);
 
                         //Add to nearby restaurants list if they are within limits
-                        nearbyRestaurants = new ArrayList<String>();
                         if (distance <= maxDeliveryDistance) {
                             nearbyRestaurants.add(restaurantUser.getObjectId());
                         }
                     }
+                    isThereAnyNearbyRestaurants = true;
                     user.put("ArrayOfNearRestaurant", nearbyRestaurants);
                     user.saveInBackground();
                 } else {
                     // Something went wrong.
-                    nearbyRestaurants = null;
                 }
             }
         });
 
-        if (nearbyRestaurants == null) {
-            throw new ParseException(1, "Query search for nearby restaurants failed");
+        if (nearbyRestaurants == null || nearbyRestaurants.isEmpty()){
+            isThereAnyNearbyRestaurants = false;
         }
 
-        return nearbyRestaurants;
+        else {
+            isThereAnyNearbyRestaurants = true;
+        }
+
+        return isThereAnyNearbyRestaurants;
     }
 
 
@@ -105,7 +111,7 @@ public class DataManager {
         //Because this method is static, these fields may not be instantiated
         user = DataManager.getUser();
         userLocation = user.getParseGeoPoint("Location");
-        maxDeliveryDistance = (double) user.get("maxDeliveryDistance");
+        maxDeliveryDistance = (double) ((Integer) user.get("maxDeliveryDistance"));
 
         //Start Query
         ParseQuery<ParseObject> query = ParseQuery.getQuery("ParseUserOrderInformations");
@@ -185,6 +191,11 @@ public class DataManager {
     public static ParseUser getUser(){
         ParseUser currentUser = ParseUser.getCurrentUser();
         return currentUser;
+    }
+
+    public static ParseGeoPoint getUserLocation(){
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        return currentUser.getParseGeoPoint("Location");
     }
 
 
