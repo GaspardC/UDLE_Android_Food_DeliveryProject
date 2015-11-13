@@ -1,36 +1,23 @@
 package ch.epfl.sweng.udle.activities;
 
-import android.Manifest;
-
-import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Build;
-import android.os.Bundle;
-import android.provider.Settings;
-import android.text.TextUtils;
-import android.widget.Toast;
-
-import android.content.Context;
-import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Criteria;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
+import android.widget.Toast;
 
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -45,21 +32,20 @@ import ch.epfl.sweng.udle.Food.OrderElement;
 import ch.epfl.sweng.udle.Food.Orders;
 import ch.epfl.sweng.udle.R;
 import ch.epfl.sweng.udle.activities.MenuOptionsDrinks.MainActivity;
-import ch.epfl.sweng.udle.activities.MenuOptionsDrinks.MenuFragment;
 import ch.epfl.sweng.udle.network.DataManager;
 
 public class MapActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
-    private Location location;
-    private String deliveryAddress;
+    private Location location = new Location("");
+    private String deliveryAddress = "";
     private AutoCompleteTextView autoCompView = null;
     private AlertDialog.Builder dlgAlert = null;
     private Marker selected_position = null;
     private boolean displayGpsMessage = true;
     private DataManager data = null;
     private boolean dlgAlertcountCreated = false;
-
+    private String nonNullLocationProvider = "nonNullLocationProvider";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,9 +56,16 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
         autoCompView = (AutoCompleteTextView) findViewById(R.id.autoCompleteTextView2);
         autoCompView.setAdapter(new GooglePlacesAutocompleteAdapter(this, R.layout.list_item));
         autoCompView.setOnItemClickListener(this);
-        if (deliveryAddress!="")
+        if(!getDeliveryAdress().equals(""))
             autoCompView.setText(deliveryAddress);
         hideKeyborad();
+    }
+
+    public void setDeliveryAdress(String addr){
+        deliveryAddress = addr;
+    }
+    public String getDeliveryAdress(){
+        return deliveryAddress;
     }
 
     private void hideKeyborad() {
@@ -94,10 +87,10 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
 
     /** Called when the user clicks the MenuMap_ValidatePosition button */
     public void goToMenuActivity(View view) {
-        if(location != null && deliveryAddress!="") {
+        if(isLocationInitialised() && !getDeliveryAdress().equals("")) {
             OrderElement orderElement = new OrderElement();
-            orderElement.setDeliveryLocation(location);
-            orderElement.setDeliveryAddress(deliveryAddress);
+            orderElement.setDeliveryLocation(getLocation());
+            orderElement.setDeliveryAddress(getDeliveryAdress());
             Orders.setActiveOrder(orderElement);
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
@@ -106,11 +99,6 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
         }
     }
 
-    private boolean isLocationNull(){
-        if (location == null)
-            return true;
-        return false;
-    }
     /**
      * Sets up the map if it is possible to do so (i.e., the Google Play services APK is correctly
      * installed) and the map has not already been instantiated.. This will ensure that we only ever
@@ -140,23 +128,25 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
     }
 
     private void setDeliveryAddressLocation(LatLng latLng, String str) {
+        Location tempLocation = new Location("");
+        tempLocation.setLatitude(latLng.latitude);
+        tempLocation.setLongitude(latLng.longitude);
+        setLocation(tempLocation);
+
         if (selected_position == null)
             selected_position = this.mMap.addMarker(new MarkerOptions().position(latLng).title(str));
         else {
             selected_position.setPosition(latLng);
             selected_position.setTitle(str);
         }
-        deliveryAddress = str;
-        if (location == null)
-            location = new Location("");
-        location.setLatitude(latLng.latitude);
-        location.setLongitude(latLng.longitude);
+
+        setDeliveryAdress(str);
 
         if (data == null)
             data = new DataManager();
         data.setUserLocation(location.getLatitude(), location.getLongitude());
 
-        if (deliveryAddress!="" && autoCompView!= null)
+        if (!getDeliveryAdress().equals("") && autoCompView!= null)
             autoCompView.setText(deliveryAddress);
     }
     private void setCamera(LatLng latLng) {
@@ -231,10 +221,25 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
         }
     }
 
+    private void setLocation(Location loc){
+        if (loc != null) {
+            this.location = loc;
+            this.location.setProvider(nonNullLocationProvider);
+        }
+    }
+    private Location getLocation(){
+        return location;
+    }
+    private boolean isLocationInitialised(){
+        if (getLocation().getProvider().equals(nonNullLocationProvider))
+            return true;
+        return false;
+    }
+
     private GoogleMap.OnMyLocationChangeListener myLocationChangeListener = new GoogleMap.OnMyLocationChangeListener() {
         @Override
         public void onMyLocationChange(Location location) {
-            if (isLocationNull()){
+            if (!isLocationInitialised()){
                 LatLng LatLng = new LatLng(location.getLatitude(), location.getLongitude());
                 setDeliveryAddressLocation(LatLng, getCompleteAddressString(location.getLatitude(), location.getLongitude()));
                 setCamera(LatLng);
@@ -258,10 +263,10 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
         // Get the name of the best provider
         String provider = locationManager.getBestProvider(criteria, true);
         // Get Current Location
-        location = locationManager.getLastKnownLocation(provider);
+        setLocation(locationManager.getLastKnownLocation(provider));
         // set map type
         mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-        if (location == null){
+        if (!isLocationInitialised()){
             mMap.setOnMyLocationChangeListener(myLocationChangeListener);
         }else{
             LatLng LatLng = new LatLng(location.getLatitude(), location.getLongitude());
