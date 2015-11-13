@@ -95,7 +95,7 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
         }else {
-            Toast.makeText(this, "This location was not recognized, please chose a correct location", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.incorrectLocation, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -189,14 +189,14 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
                     dlgAlert.create().cancel();
                     dlgAlertcountCreated = false;
                 }
-                Toast.makeText(this, "Location is enabled", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.locationEnable, Toast.LENGTH_SHORT).show();
             }else{
                 if (!dlgAlertcountCreated) {
                     if (dlgAlert == null)
                         dlgAlert = new AlertDialog.Builder(this);
                     dlgAlertcountCreated = true;
-                    dlgAlert.setMessage("Dear user, your gps is currently disabled. Would you like to enable it?");
-                    dlgAlert.setTitle("Udle");
+                    dlgAlert.setMessage(R.string.mapActivityNoGps);
+                            dlgAlert.setTitle(R.string.app_name);
                     dlgAlert.setPositiveButton("Ok",
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
