@@ -21,6 +21,8 @@ import ch.epfl.sweng.udle.Food.OrderElement;
  * One order exist per user per time period so we create one Order Parse Object per DataManager
  * Instance.
  *
+ * Restaurants can also use DataManager to find pendingOrders
+ *
  */
 
 public class DataManager {
@@ -29,7 +31,6 @@ public class DataManager {
     private static ParseGeoPoint userLocation;
     private static ArrayList<OrderElement> pendingOrders;
     private static ArrayList<String> nearbyRestaurants;
-    private static boolean isThereAnyNearbyRestaurants;
 
     private ParseUserOrderInformations userOrderInformations = null;
 
@@ -39,13 +40,15 @@ public class DataManager {
         user = userOrderInformations.getUser();
         userLocation = user.getParseGeoPoint("Location");
         maxDeliveryDistance = ((double) (Integer)user.get("maxDeliveryDistanceKm"));
-        //NEED AN OBJECT FOR RESTAURANTS AFTER USERS
 
     }
 
 
     /*
      * Find restaurants near the user
+     * Return true or false based on if the query search is successful for debugging purposes
+     * Stores result on server
+     *
      */
 
     public static boolean getRestaurantLocationsNearTheUser() {
@@ -75,7 +78,6 @@ public class DataManager {
                             nearbyRestaurants.add(restaurantUser.getObjectId());
                         }
                     }
-                    isThereAnyNearbyRestaurants = true;
                     user.put("ArrayOfNearRestaurant", nearbyRestaurants);
                     user.saveInBackground();
                 } else {
@@ -85,27 +87,28 @@ public class DataManager {
         });
 
         if (nearbyRestaurants == null || nearbyRestaurants.isEmpty()){
-            isThereAnyNearbyRestaurants = false;
+            return false;
         }
 
         else {
-            isThereAnyNearbyRestaurants = true;
+            return true;
         }
-
-        return isThereAnyNearbyRestaurants;
     }
 
 
     /* Start a query of all the pending orders available within the restaurant's range.
      * Compile an arraylist of all the order element objects and return
      * Returns null if query fails.
+     *
+     * NO FIELDS IN THE SERVER EXIST FOR US TO STORE PENDING ORDERS
+     * RETURN DIRECTLY TO CALLER
      */
 
-    public static ArrayList<OrderElement> getPendingOrdersForARestaurantOwner() throws ParseException {
+    public static ArrayList<OrderElement> getPendingOrdersForARestaurantOwner() {
 
         //Only restaurants can access this method
         if (user.get("RestaurantOwner") == false) {
-            return null;
+            return new ArrayList<OrderElement>();
         }
 
         //Because this method is static, these fields may not be instantiated
@@ -120,6 +123,8 @@ public class DataManager {
             public void done(List<ParseObject> OrderList, ParseException e) {
                 if (e == null) {
 
+                    pendingOrders = new ArrayList<OrderElement>();
+
                     //for all clients who are waiting the validation of their command
                     for (ParseObject userOrder : OrderList) {
 
@@ -133,7 +138,6 @@ public class DataManager {
 
                         //We check if they are near of us (restaurant owner connected) if yes we
                         //concatinate a ArrayList of OrderElements and return
-                        pendingOrders = new ArrayList<OrderElement>();
 
                         if (distanceKm <= maxDeliveryDistance) {
                             OrderElement order = parseUserOrder.getOrder();
@@ -143,15 +147,9 @@ public class DataManager {
 
                 } else {
                     //failure of query
-                    //THROW EXCEPTION OTHERWISE
-                    pendingOrders = null;
                 }
             }
         });
-
-        if (nearbyRestaurants == null) {
-            throw new ParseException(2, "Query search for pending orders failed");
-        }
 
         return pendingOrders;
     }
@@ -188,10 +186,12 @@ public class DataManager {
         }
     }
 
+
     public static ParseUser getUser(){
         ParseUser currentUser = ParseUser.getCurrentUser();
         return currentUser;
     }
+
 
     public static ParseGeoPoint getUserLocation(){
         ParseUser currentUser = ParseUser.getCurrentUser();
