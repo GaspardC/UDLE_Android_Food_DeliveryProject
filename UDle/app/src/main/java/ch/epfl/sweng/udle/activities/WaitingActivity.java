@@ -40,54 +40,15 @@ public class WaitingActivity extends AppCompatActivity {
         ImageView burgerImage = (ImageView)findViewById(R.id.burgerImage);
         startAnimation(burgerImage);
 
-
-        OrderElement order = Orders.getActiveOrder();
-        ListView listView = (ListView) findViewById(R.id.WaitingActivity_recapList);
-        String moneyDevise = Orders.getMoneyDevise();
-
-
         List<HashMap<String, String>> list = new ArrayList<>();
-        HashMap<String, String> element;
-
-        for(Menu menu : order.getOrder()){
-            String food = "1 " + menu.getFood().toString();
-            String price = String.format("%.2f", menu.getFood().getPrice());
-            price = price + moneyDevise;
-
-            String option = "";
-            for( OptionsTypes opt : menu.getOptions()){
-                option = option + opt.toString() + " ; " ;
-            }
-
-            element = new HashMap<>();
-            element.put("elem", food);
-            element.put("price", price);
-            element.put("options", option);
-
-            list.add(element);
-        }
-        for(DrinkTypes drinkType : DrinkTypes.values()){
-            int nbaOccurrences = Collections.frequency(order.getDrinks(), drinkType);
-
-            if (nbaOccurrences != 0){
-                String drink = String.valueOf(nbaOccurrences) +"x " + drinkType.toString();
-                String price = String.format("%.2f", drinkType.getPrice()*nbaOccurrences);
-                price = price + moneyDevise;
-
-                element = new HashMap<>();
-                element.put("elem", drink);
-                element.put("price", price);
-                element.put("options", "");
-
-                list.add(element);
-            }
-        }
-
+        Menu.displayInRecap(list);
+        DrinkTypes.displayInRecap(list);
 
         ListAdapter adapter = new SimpleAdapter(this, list,
                 R.layout.recap_elem_with_price,
                 new String[] {"elem", "price", "options"},
                 new int[] {R.id.RecapElem, R.id.RecapPriceElem, R.id.RecapOptionsString});
+        ListView listView = (ListView) findViewById(R.id.WaitingActivity_recapList);
         listView.setAdapter(adapter);
 
     }

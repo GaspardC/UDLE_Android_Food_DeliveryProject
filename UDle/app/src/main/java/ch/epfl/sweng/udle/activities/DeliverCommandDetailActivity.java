@@ -41,61 +41,22 @@ public class DeliverCommandDetailActivity extends AppCompatActivity {
             findViewById(R.id.DeliverCommandDetail_commandDelivered).setVisibility(View.VISIBLE);
         }
 
-        ListView listView = (ListView) findViewById(R.id.DeliverCommandDetail_recapListView);
-        String moneyDevise = Orders.getMoneyDevise();
-
-
-
         TextView priceTextView = (TextView) findViewById(R.id.DeliverCommandDetail_totalCost);
-        priceTextView.setText(String.format("%.2f", order.getTotalCost()) + moneyDevise);
+        priceTextView.setText(String.format("%.2f", order.getTotalCost()) + Orders.getMoneyDevise());
 
         TextView deliveryAddress = (TextView) findViewById(R.id.DeliverCommandDetail_deliveryAddress);
         deliveryAddress.setText(order.getDeliveryAddress());
 
 
-
         List<HashMap<String, String>> list = new ArrayList<>();
-        HashMap<String, String> element;
-
-        for(Menu menu : order.getOrder()){
-            String food = "1 " + menu.getFood().toString();
-            String price = String.format("%.2f", menu.getFood().getPrice());
-            price = price + moneyDevise;
-
-            String option = "";
-            for( OptionsTypes opt : menu.getOptions()){
-                option = option + opt.toString() + " ; " ;
-            }
-
-            element = new HashMap<>();
-            element.put("elem", food);
-            element.put("price", price);
-            element.put("options", option);
-
-            list.add(element);
-        }
-        for(DrinkTypes drinkType : DrinkTypes.values()){
-            int nbaOccurrences = Collections.frequency(order.getDrinks(), drinkType);
-
-            if (nbaOccurrences != 0){
-                String drink = String.valueOf(nbaOccurrences) +"x " + drinkType.toString();
-                String price = String.format("%.2f", drinkType.getPrice()*nbaOccurrences);
-                price = price + moneyDevise;
-
-                element = new HashMap<>();
-                element.put("elem", drink);
-                element.put("price", price);
-                element.put("options", "");
-
-                list.add(element);
-            }
-        }
-
+        Menu.displayInRecap(list);
+        DrinkTypes.displayInRecap(list);
 
         ListAdapter adapter = new SimpleAdapter(this, list,
                 R.layout.recap_elem_with_price,
                 new String[] {"elem", "price", "options"},
                 new int[] {R.id.RecapElem, R.id.RecapPriceElem, R.id.RecapOptionsString});
+        ListView listView = (ListView) findViewById(R.id.DeliverCommandDetail_recapListView);
         listView.setAdapter(adapter);
     }
 
