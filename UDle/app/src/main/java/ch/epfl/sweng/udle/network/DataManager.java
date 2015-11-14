@@ -2,221 +2,201 @@ package ch.epfl.sweng.udle.network;
 
 
 import com.parse.FindCallback;
-import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-
 import java.util.ArrayList;
 import java.util.List;
-
 
 import ch.epfl.sweng.udle.Food.OrderElement;
 
 /**
- * Created by rodri on 23/10/2015.
+ *
+ *  Created by rodri on 23/10/2015
  * This class manages the User's information relevant to the order, order status, and contact info
  * One user can currently have one order.
+ * One order exist per user per time period so we create one Order Parse Object per DataManager
+ * Instance.
  *
- *
- * THESE METHODS NEED TO BE MADE STATIC. I AM HAVING TROUBLE FINDING A WAY TO GET THE EXACT
- * PARSE OBJECT FOR USER ORDER INFORMATION BASED ON JUST THE USER ID AND RESTAURANT ID
+ * Restaurants can also use DataManager to find pendingOrders
  *
  */
 
 public class DataManager {
-    public static final double MAX_DISTANCE_IN_KM_TO_FIND_A_RESTAURANT = 10;
-    public static ParseGeoPoint userLocation;
-    private JSONObject pendingOrder;
-    private ParseUserOrderInformations userOrderInformations;
-    /** If we don't know the status (i.e. before login), it is set to 'Guest' */
-    private UserStatus status = UserStatus.GUEST;
+    private static double maxDeliveryDistance;
+    private static ParseUser user;
+    private static ParseGeoPoint userLocation;
+    private static ArrayList<OrderElement> pendingOrders;
+    private static ArrayList<String> nearbyRestaurants;
+
+    private ParseUserOrderInformations userOrderInformations = null;
 
     public DataManager() {
-    }
 
-    public DataManager(double latitude, double longitude) {
-        userOrderInformations = new ParseUserOrderInformations(latitude, longitude);
-    }
-
-    public void setUserLocation(double lat, double lon){
-        ParseUser user = getCurrentParseUser();
-        ParseGeoPoint point = new ParseGeoPoint(lat, lon);
-        user.put("Location", point);
-        user.saveInBackground();
-
-        getUserLocation();
-//        setPendingOrdersForARestaurantOwner();
+        userOrderInformations = new ParseUserOrderInformations();
+        user = userOrderInformations.getUser();
+        userLocation = user.getParseGeoPoint("Location");
+        maxDeliveryDistance = ((double) (Integer)user.get("maxDeliveryDistanceKm"));
 
     }
-    private void setUserStatus(UserStatus status){
-        this.status = status;
-    }
-    private UserStatus getUserStatusRestaurantOwner() {
-        return status;
-    }
 
-    public void getUserLocation(){
-        ParseUser user = getCurrentParseUser();
-        ParseQuery<ParseUser> query = ParseUser.getQuery();
-        query.getInBackground(user.getObjectId(), new GetCallback<ParseUser>() {
-            public void done(ParseUser object, ParseException e) {
-                userLocation  = object.getParseGeoPoint("Location");
-                // This will throw an exception, since the ParseUser is not authenticated
-                object.saveInBackground();
-                getRestaurantLocationsNearTheUser(userLocation);
-            }
-        });
-    }
 
-    public ParseUser getCurrentParseUser() {
-        return ParseUser.getCurrentUser();
-    }
+    /*
+     * Find restaurants near the user
+     * Return true or false based on if the query search is successful for debugging purposes
+     * Stores result on server
+     *
+     */
 
-    public static void setUserLocation(ParseUser user, double latitude, double longitude){
-        ParseGeoPoint point = new ParseGeoPoint(latitude, longitude);
-        user.put("Location", point);
-        user.saveInBackground();
-    }
+    public static boolean getRestaurantLocationsNearTheUser() {
 
-    //Info all restaurant around the user location
-    //get all restaurant locations, return all restaurant in a perimeter of 5km
-    public void getRestaurantLocationsNearTheUser(ParseGeoPoint currLocation) {
+        //Because this method is static, these fields may not be instantiated
+        user = DataManager.getUser();
+        userLocation = user.getParseGeoPoint("Location");
+        maxDeliveryDistance = (double) ((Integer) user.get("maxDeliveryDistanceKm"));
+
+        //Start Query
         ParseQuery<ParseUser> query = ParseUser.getQuery();
         query.whereEqualTo("RestaurantOwner", true);
         query.findInBackground(new FindCallback<ParseUser>() {
-            public void done(List<ParseUser> objects, ParseException e) {
+            public void done(List<ParseUser> listOfRestaurants, ParseException e) {
                 if (e == null) {
-                    // The query was successful.
-                    ArrayList<String> listAvailableRestaurant= new ArrayList<String>();
 
-                    for(ParseUser restoUser : objects){
-                        ParseGeoPoint locResto = restoUser.getParseGeoPoint("Location");
-                        double km = locResto.distanceInKilometersTo(userLocation);
-                        if(km<MAX_DISTANCE_IN_KM_TO_FIND_A_RESTAURANT){
-                        listAvailableRestaurant.add(restoUser.getObjectId());
+                    // The query was successful.
+                    nearbyRestaurants = new ArrayList<String>();
+                    for (ParseUser restaurantUser : listOfRestaurants) {
+
+                        //Calculate distance between restaraunt and clients
+                        ParseGeoPoint restaurantLocation = restaurantUser.getParseGeoPoint("Location");
+                        double distance = restaurantLocation.distanceInKilometersTo(userLocation);
+
+                        //Add to nearby restaurants list if they are within limits
+                        if (distance <= maxDeliveryDistance) {
+                            nearbyRestaurants.add(restaurantUser.getObjectId());
                         }
                     }
-                    ParseUser user = getCurrentParseUser();
-                    user.put("ArrayOfNearRestaurant", listAvailableRestaurant);
+                    user.put("ArrayOfNearRestaurant", nearbyRestaurants);
                     user.saveInBackground();
                 } else {
                     // Something went wrong.
                 }
             }
         });
-    }
-    public void getOrder(int userId, int restaurantId){
-        //TODO
-//    public void getRestaurantLocations(Location currLocation) {
-//        //TODO
-//    }
 
-//    public OrderElement getOrder(int userId, int restaurantId){
-//        return userOrderInformations.getOrder();
-    }
+        if (nearbyRestaurants == null || nearbyRestaurants.isEmpty()){
+            return false;
+        }
 
-    public void setOrder(ParseUser userId, String restaurantId, OrderElement orderElement){
-        userOrderInformations.setOrder(orderElement);
-    }
-
-    public String getOrderStatus(){
-        return userOrderInformations.getOrderStatus();
-    }
-
-    public void setOrderStatus(String orderStatus){
-        userOrderInformations.setOrderStatus(orderStatus);
-    }
-
-    public String getDeliveryGuyNumber(){
-        return userOrderInformations.getDeliveryGuyNumber();
-    }
-
-    public void setDeliveryGuyNumber(String number){
-        userOrderInformations.setDeliveryGuyNumber(number);
+        else {
+            return true;
+        }
     }
 
 
-    public void setPendingOrdersForARestaurantOwner() {
-        ParseUser user = getCurrentParseUser();
-        /*Restaurant Owner only*/
-//        if( (false.equals(user.get("RestaurantOwner")))){
-//            return;
-//        }
-        final ParseGeoPoint locResto = user.getParseGeoPoint("Location");
-        //In OrderInformation Class we check all orders that are still pending
+    /* Start a query of all the pending orders available within the restaurant's range.
+     * Compile an arraylist of all the order element objects and return
+     * Returns null if query fails.
+     *
+     * NO FIELDS IN THE SERVER EXIST FOR US TO STORE PENDING ORDERS
+     * RETURN DIRECTLY TO CALLER
+     */
+
+    public static ArrayList<OrderElement> getPendingOrdersForARestaurantOwner() {
+
+        //Only restaurants can access this method
+        if (user.get("RestaurantOwner") == false) {
+            return new ArrayList<OrderElement>();
+        }
+
+        //Because this method is static, these fields may not be instantiated
+        user = DataManager.getUser();
+        userLocation = user.getParseGeoPoint("Location");
+        maxDeliveryDistance = (double) ((Integer) user.get("maxDeliveryDistance"));
+
+        //Start Query
         ParseQuery<ParseObject> query = ParseQuery.getQuery("ParseUserOrderInformations");
-        query.whereEqualTo("orderStatus", "Pending");
+        query.whereEqualTo("orderStatus", "waiting for restaurant");
         query.findInBackground(new FindCallback<ParseObject>() {
             public void done(List<ParseObject> OrderList, ParseException e) {
                 if (e == null) {
 
+                    pendingOrders = new ArrayList<OrderElement>();
+
                     //for all clients who are waiting the validation of their command
-                    for (ParseObject locOfClient : OrderList) {
-                        ParseGeoPoint locClient = locOfClient.getParseGeoPoint("currentLocation");
+                    for (ParseObject userOrder : OrderList) {
 
-                        double km = locResto.distanceInKilometersTo(locClient);
-                        //We check if they are near of us (restaurant owner connected) if yes we add it to our PendingCommandForARestaurant column
-                        if (km < MAX_DISTANCE_IN_KM_TO_FIND_A_RESTAURANT) {
-                            pendingOrder = new JSONObject();
+                        //Cast to parseUserOrderInformations to use methods
+                        ParseUserOrderInformations parseUserOrder = (ParseUserOrderInformations) userOrder;
 
-                            try {
-                                pendingOrder.put("lat", locClient.getLatitude());
-                                pendingOrder.put("lon", locClient.getLongitude());
+                        //Get Client location - - - should be delivery location, not client's?
+                        ParseUser client = parseUserOrder.getUser();
+                        ParseGeoPoint clientLocation = client.getParseGeoPoint("currentLocation");
+                        double distanceKm = userLocation.distanceInKilometersTo(clientLocation);
 
-                                pendingOrder.put("client", "idDuClient");
-                            } catch (JSONException e1) {
-                                e1.printStackTrace();
-                            }
-                            getPendingOderForARestaurantOwner();
-                            ParseUser currentUser = ParseUser.getCurrentUser();
-                            currentUser.put("PendingCommandForARestaurant", pendingOrder);
-                            currentUser.saveInBackground();
+                        //We check if they are near of us (restaurant owner connected) if yes we
+                        //concatinate a ArrayList of OrderElements and return
+
+                        if (distanceKm <= maxDeliveryDistance) {
+                            OrderElement order = parseUserOrder.getOrder();
+                            pendingOrders.add(order);
                         }
                     }
 
                 } else {
-//                    Log.d("score", "Error: " + e.getMessage());
+                    //failure of query
                 }
             }
         });
+
+        return pendingOrders;
+    }
+
+    /*
+     * Once order is created, the order doesn't appear on the server until an orderElement is
+     * provided. If not, the data manager will be useful to a restaurant.
+     *
+     */
+    public void pushOrderToServer(OrderElement orderElement){
+        userOrderInformations.setOrder(orderElement);
+        userOrderInformations.saveInBackground();
     }
 
 
-    public void getOrdersForARestaurantOwner(){
-
+    /*
+     *  Change status of order to reflect that it's currenty being delivered
+     */
+    public void deliveryEnRoute(String deliveringRestaurant, String deliveryGuyNumber, int eta) {
+        userOrderInformations.setDeliveryGuyNumber(deliveryGuyNumber);
+        userOrderInformations.setParseDeliveringRestaurant(deliveringRestaurant);
+        userOrderInformations.setExpectedTime(eta);
+        userOrderInformations.setOrderStatus("enRoute");
+        userOrderInformations.saveInBackground();
     }
 
-    public JSONObject getPendingOderForARestaurantOwner(){
-
-
-            JSONObject p = pendingOrder;
-            JSONObject j = new JSONObject();
-
-
-        try {
-
-            String client =  pendingOrder.getString("client");
-            double lat =  pendingOrder.getDouble("lat");
-            double lon =  pendingOrder.getDouble("lon");
-            j.put("lat",lat);
-            j.put("lon",lon);
-
-
-        } catch (JSONException e) {
-            e.printStackTrace();
+    /*
+     *  Change status of order to reflect that it's currenty delivered
+     */
+    public void deliveryDelivered() {
+        if (userOrderInformations.getOrderStatus() == "enRoute") {
+            userOrderInformations.setOrderStatus("delivered");
+            userOrderInformations.saveInBackground();
         }
-
-            return  j;
-
     }
 
+
+    public static ParseUser getUser(){
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        return currentUser;
+    }
+
+
+    public static ParseGeoPoint getUserLocation(){
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        return currentUser.getParseGeoPoint("Location");
+    }
 
 
 }

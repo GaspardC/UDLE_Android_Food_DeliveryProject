@@ -1,34 +1,22 @@
 package ch.epfl.sweng.udle.activities;
 
-import android.Manifest;
-
-import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Build;
-import android.os.Bundle;
-import android.provider.Settings;
-import android.text.TextUtils;
-import android.widget.Toast;
-
-import android.content.Context;
-import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Criteria;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -37,7 +25,11 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.parse.ParseException;
+import com.parse.ParseGeoPoint;
+import com.parse.ParseUser;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -45,7 +37,6 @@ import ch.epfl.sweng.udle.Food.OrderElement;
 import ch.epfl.sweng.udle.Food.Orders;
 import ch.epfl.sweng.udle.R;
 import ch.epfl.sweng.udle.activities.MenuOptionsDrinks.MainActivity;
-import ch.epfl.sweng.udle.activities.MenuOptionsDrinks.MenuFragment;
 import ch.epfl.sweng.udle.network.DataManager;
 
 public class MapActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
@@ -106,6 +97,7 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
             orderElement.setDeliveryLocation(location);
             orderElement.setDeliveryAddress(deliveryAddress);
             Orders.setActiveOrder(orderElement);
+            storeNearbyRestaurants();
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
         }else {
@@ -220,11 +212,12 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
         double latitude = location.getLatitude();
         double longitude = location.getLongitude();
         LatLng latLng = new LatLng(latitude, longitude);
+
+
+        //Set delivery address
         deliveryAddress = getCompleteAddressString(latitude,longitude);
         Log.i("Message :", deliveryAddress);
 
-        DataManager data = new DataManager();
-        data.setUserLocation(latitude,longitude);
 
         // Show the current location in Google Map
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
@@ -234,5 +227,18 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
         CameraUpdate yourLocation = CameraUpdateFactory.newLatLngZoom(myCoordinates, 15);
         mMap.animateCamera(yourLocation);
     }
-}
 
+
+
+    private void storeNearbyRestaurants(){
+        //Put current location in parse.com
+        ParseGeoPoint currentLocation = new ParseGeoPoint(location.getLatitude(), location.getLongitude());
+        ParseUser currentUser = DataManager.getUser();
+        currentUser.put("Location", currentLocation);
+
+        //Find nearby restaurants
+        boolean nearbyRestaurantStatus = DataManager.getRestaurantLocationsNearTheUser();
+        Log.d("OSid", String.valueOf(nearbyRestaurantStatus));
+
+    }
+}
