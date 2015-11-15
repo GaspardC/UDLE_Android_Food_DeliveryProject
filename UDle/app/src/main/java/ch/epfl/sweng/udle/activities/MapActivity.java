@@ -92,7 +92,10 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
             selected_position.setTitle(str);
         }
         deliveryAddress = str;
-        location = new Location("");
+
+        if (location == null)
+            location = new Location("");
+
         location.setLatitude(latLng.latitude);
         location.setLongitude(latLng.longitude);
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
