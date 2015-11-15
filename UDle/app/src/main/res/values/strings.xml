@@ -10,6 +10,8 @@
 
     <string name="mapActivityNoGps">Dear user, your gps is currently disabled. Would you like to enable it?</string>
     <string name="locationEnable">Location is enabled</string>
+    <string name="invalidAddress">Invalid Address</string>
+
     <string name="incorrectLocation">This location was not recognized, please chose a correct location</string>
 
     <string name="MenuMap_SearchHint">Search the desired delivery address</string>

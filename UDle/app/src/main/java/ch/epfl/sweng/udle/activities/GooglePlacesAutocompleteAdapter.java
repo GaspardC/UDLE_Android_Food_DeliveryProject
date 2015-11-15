@@ -144,11 +144,15 @@ class GooglePlacesAutocompleteAdapter extends ArrayAdapter<String> implements Fi
 
     @Override
     public int getCount() {
-        return resultList.size();
+        if (resultList != null)
+            return resultList.size();
+        return 0;
     }
     @Override
     public String getItem(int index) {
-        return resultList.get(index);
+        if (index <= getCount())
+            return resultList.get(index);
+        return "";
     }
     public String getItem_Id(int index) {
         return resultList_Id.get(index);
