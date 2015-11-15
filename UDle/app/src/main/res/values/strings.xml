@@ -6,6 +6,12 @@
     <string name="enterYourNumberPhone">Enter your number phone</string>
     <string name="Hello">Hello!</string>
     <string name="Next">Next</string>
+
+
+    <string name="mapActivityNoGps">Dear user, your gps is currently disabled. Would you like to enable it?</string>
+    <string name="locationEnable">Location is enabled</string>
+    <string name="incorrectLocation">This location was not recognized, please chose a correct location</string>
+
     <string name="MenuMap_SearchHint">Search the desired delivery address</string>
     <string name="NoCardInformation">Please, fill in your card information</string>
     <string name="ValidatePosition">Validate Position</string>
