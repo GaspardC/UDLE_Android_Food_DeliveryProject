@@ -55,16 +55,16 @@
 
     </LinearLayout>
 
-    <TextView
+    <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Le burger qui tourne!"
-        android:id="@+id/textView6"
+        android:id="@+id/burgerImage"
         android:layout_gravity="center_horizontal"
-        android:textSize="35dp"
         android:layout_below="@+id/linearLayout"
         android:layout_centerHorizontal="true"
-        android:layout_above="@+id/textView7" />
+        android:layout_above="@+id/textView7"
+        android:contentDescription="@string/descriptionBurgerRotating"
+        android:src="@drawable/logoburger" />
 
     <Button
         android:layout_width="wrap_content"
@@ -79,7 +79,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Please wait for a shop to accept your command"
+        android:text="@string/infotextwaiting"
         android:id="@+id/textView7"
         android:textSize="30dp"
         android:layout_above="@+id/button2"

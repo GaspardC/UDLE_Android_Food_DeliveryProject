@@ -36,9 +36,11 @@ public class DeliveryActivity extends SlideMenuActivity {
 
     public void callDeliveryGuy(View view){
         try {
+            /*
             Intent my_callIntent = new Intent(Intent.ACTION_CALL);
 //            my_callIntent.setData(Uri.parse("tel:" + DataManager.getDeliveryGuyNumber()));
             startActivity(my_callIntent);
+            */
         } catch (ActivityNotFoundException e) {
             Toast.makeText(getApplicationContext(), "Error in your phone call" + e.getMessage(), Toast.LENGTH_LONG).show();
         } catch (SecurityException e){
@@ -81,6 +83,7 @@ public class DeliveryActivity extends SlideMenuActivity {
             myLocation = locationManager.getLastKnownLocation(provider);
 
             // Get latitude/ longitude of the current location
+            if(myLocation == null)  return;
             double latitude = myLocation.getLatitude();
             double longitude = myLocation.getLongitude();
             LatLng latLng = new LatLng(latitude, longitude);

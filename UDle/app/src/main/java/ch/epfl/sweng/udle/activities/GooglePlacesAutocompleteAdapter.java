@@ -26,9 +26,7 @@ import java.util.ArrayList;
  */
 class GooglePlacesAutocompleteAdapter extends ArrayAdapter<String> implements Filterable {
     private ArrayList<String> resultList;
-
     private ArrayList<String> resultList_Id= null;
-
     private static final String LOG_TAG = "ExampleApp";
     private static final String PLACES_API_BASE = "https://maps.googleapis.com/maps/api/place";
     private static final String TYPE_AUTOCOMPLETE = "/autocomplete";
@@ -80,8 +78,6 @@ class GooglePlacesAutocompleteAdapter extends ArrayAdapter<String> implements Fi
         }
         return null;
     }
-
-
     public static AdresseData autocomplete(String input) {
         AdresseData resultPair= null;
         ArrayList<String> resultList = null;
@@ -146,25 +142,20 @@ class GooglePlacesAutocompleteAdapter extends ArrayAdapter<String> implements Fi
         super(context, textViewResourceId);
     }
 
-
     @Override
     public int getCount() {
         return resultList.size();
     }
-
     @Override
     public String getItem(int index) {
         return resultList.get(index);
     }
-
     public String getItem_Id(int index) {
         return resultList_Id.get(index);
     }
 
-
     @Override
     public Filter getFilter() {
-
         Filter filter = new Filter() {
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
@@ -181,7 +172,6 @@ class GooglePlacesAutocompleteAdapter extends ArrayAdapter<String> implements Fi
                 }
                 return filterResults;
             }
-
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
                 if (results != null && results.count > 0) {

@@ -1,5 +1,7 @@
 package ch.epfl.sweng.udle.activities;
 
+import android.Manifest;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -12,12 +14,16 @@ import android.widget.Toast;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Address;
 import android.location.Criteria;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
@@ -32,6 +38,9 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.List;
+import java.util.Locale;
+
 import ch.epfl.sweng.udle.Food.OrderElement;
 import ch.epfl.sweng.udle.Food.Orders;
 import ch.epfl.sweng.udle.R;
@@ -43,6 +52,7 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
     private Location location;
+    private String deliveryAddress;
     private AutoCompleteTextView autoCompView = null;
 
     private Marker selected_position = null;
@@ -56,7 +66,8 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
         AutoCompleteTextView autoCompView = (AutoCompleteTextView) findViewById(R.id.autoCompleteTextView2);
         autoCompView.setAdapter(new GooglePlacesAutocompleteAdapter(this, R.layout.list_item));
         autoCompView.setOnItemClickListener(this);
-
+        if (deliveryAddress!="")
+            autoCompView.setText(deliveryAddress);
         hideKeyborad();
     }
 
@@ -73,30 +84,34 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
     }
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
         String str = (String) adapterView.getItemAtPosition(position);
-        LatLng latLng = GooglePlacesAutocompleteAdapter.getLatLngFromId(((GooglePlacesAutocompleteAdapter)adapterView.getAdapter()).getItem_Id(position));
+        LatLng latLng = GooglePlacesAutocompleteAdapter.getLatLngFromId(((GooglePlacesAutocompleteAdapter) adapterView.getAdapter()).getItem_Id(position));
         if (selected_position == null)
             selected_position = this.mMap.addMarker(new MarkerOptions().position(latLng).title(str));
         else {
             selected_position.setPosition(latLng);
             selected_position.setTitle(str);
         }
+        deliveryAddress = str;
+        if (location == null)
+            location = new Location("");
+        location.setLatitude(latLng.latitude);
+        location.setLongitude(latLng.longitude);
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
     }
 
     /** Called when the user clicks the MenuMap_ValidatePosition button */
     public void goToMenuActivity(View view) {
-        OrderElement orderElement = new OrderElement();
-        if(location != null){
-            orderElement.setDeliveryLocation(location); //TODO: here I take the current location, need to take the location added (Might be the one set via the address searchView
-
+        if(location != null && deliveryAddress!="") {
+            OrderElement orderElement = new OrderElement();
+            orderElement.setDeliveryLocation(location);
+            orderElement.setDeliveryAddress(deliveryAddress);
+            Orders.setActiveOrder(orderElement);
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+        }else {
+            Toast.makeText(this, "This location was not recognized, please chose a correct location", Toast.LENGTH_SHORT).show();
         }
-        orderElement.setDeliveryAddress("Rue du test de la mort, 1069 SwEng"); //TODO: Take a real location
-
-        Orders.setActiveOrder(orderElement);
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
     }
-
 
 
     /**
@@ -127,6 +142,32 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
         }
     }
 
+
+    private String getCompleteAddressString(double latitude, double longitude) {
+        String Address = "";
+        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+        try {
+            List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
+            if (addresses != null) {
+                Address returnedAddress = addresses.get(0);
+                StringBuilder sb = new StringBuilder("");
+                for (int i = 0; i < returnedAddress.getMaxAddressLineIndex(); i++) {
+                    sb.append(returnedAddress.getAddressLine(i)).append(", ");
+                }
+                Address = sb.toString();
+                if (Address.endsWith(", ")) {
+                    Address = Address.substring(0, Address.length() - 2);
+                }
+            } else {
+                Log.w("Current location", "No address returned");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return Address;
+    }
+
+
     private void CheckEnableGPS(){
         LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
@@ -147,6 +188,7 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
             dlgAlert.create().show();
         }
     }
+
     /**
      * This is where we can add markers or lines, add listeners or move the camera. In this case, we
      * just add a marker near Africa.
@@ -167,19 +209,23 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
         String provider = locationManager.getBestProvider(criteria, true);
 
         // Get Current Location
-        Location myLocation = locationManager.getLastKnownLocation(provider);
-        location = myLocation;
+        location = locationManager.getLastKnownLocation(provider);
+
         // set map type
         mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         if( location == null) return ;
 
 
         // Get latitude/ longitude of the current location
-        double latitude = myLocation.getLatitude();
-        double longitude = myLocation.getLongitude();
+        double latitude = location.getLatitude();
+        double longitude = location.getLongitude();
         LatLng latLng = new LatLng(latitude, longitude);
+        deliveryAddress = getCompleteAddressString(latitude,longitude);
+        Log.i("Message :", deliveryAddress);
+
         DataManager data = new DataManager();
         data.setUserLocation(latitude,longitude);
+
         // Show the current location in Google Map
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
 
