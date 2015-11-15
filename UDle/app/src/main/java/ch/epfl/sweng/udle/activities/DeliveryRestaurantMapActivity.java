@@ -20,6 +20,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -50,6 +51,9 @@ import ch.epfl.sweng.udle.R;
 import ch.epfl.sweng.udle.network.DataManager;
 
 public class DeliveryRestaurantMapActivity extends AppCompatActivity {
+
+    private static final int RED_LOGO = 0;
+    private static final int GREEN_LOGO = 1;
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
     private boolean showMap = true;
@@ -84,8 +88,11 @@ public class DeliveryRestaurantMapActivity extends AppCompatActivity {
 
         List<HashMap<String,String>> aList = new ArrayList<HashMap<String,String>>();
         ArrayList<String> ordersAdress = new ArrayList<>();
+
 //        ParseUser user = DataManager.getCurrentParseUser();
-//        ParseGeoPoint position = user.getParseGeoPoint("Location");
+//        if(user!=null){
+//            ParseGeoPoint position = user.getParseGeoPoint("Location");
+//        }
 
         int i = 1;
         for(OrderElement order : waitingOrders) {
@@ -96,8 +103,8 @@ public class DeliveryRestaurantMapActivity extends AppCompatActivity {
             ordersAdress.add(deliveryAddress);
             HashMap<String, String> hm = new HashMap<String,String>();
             hm.put("numCommande", "#" + i+" ");
-            hm.put("address", ordersAdress.get(i));
-            hm.put("image", Integer.toString(R.drawable.logoburger) );
+            hm.put("address", ordersAdress.get(i - 1));
+            hm.put("image", Integer.toString(R.drawable.logoburger));
             aList.add(hm);
             i++;
         }
@@ -108,12 +115,10 @@ public class DeliveryRestaurantMapActivity extends AppCompatActivity {
             ordersAdress.add(deliveryAddress);
             HashMap<String, String> hm = new HashMap<String,String>();
             hm.put("numCommande", "#" + i+" ");
-            hm.put("address", ordersAdress.get(i));
-
+            hm.put("address", ordersAdress.get(i-1));
             hm.put("image", Integer.toString(R.drawable.logogreen) );
             aList.add(hm);
             i++;
-
         }
 
 
