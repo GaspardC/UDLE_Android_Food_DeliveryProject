@@ -26,12 +26,13 @@ import java.util.ArrayList;
  */
 class GooglePlacesAutocompleteAdapter extends ArrayAdapter<String> implements Filterable {
     private ArrayList<String> resultList;
-    private ArrayList<String> resultList_Id= null;
+    private ArrayList<String> resultList_Id;
     private static final String LOG_TAG = "ExampleApp";
     private static final String PLACES_API_BASE = "https://maps.googleapis.com/maps/api/place";
     private static final String TYPE_AUTOCOMPLETE = "/autocomplete";
     private static final String TYPE_DETAILS = "/details";
     private static final String OUT_JSON = "/json";
+    private boolean enableAutocomplete = true;
 
     private static final String SERVER_KEY = "AIzaSyDR4GowG4dOfEZVtr7KrcfzlZErdfulqk8";
 
@@ -78,11 +79,12 @@ class GooglePlacesAutocompleteAdapter extends ArrayAdapter<String> implements Fi
         }
         return null;
     }
-    public static AdresseData autocomplete(String input) {
-        AdresseData resultPair= null;
-        ArrayList<String> resultList = null;
-        ArrayList<String> resultList_Id = null;
-
+    public static AdresseData autocomplete(String input, boolean isEnabledAutocomplete) {
+        ArrayList<String> resultList = new ArrayList<String>();
+        ArrayList<String> resultList_Id = new ArrayList<String>();
+        AdresseData resultPair = new AdresseData(resultList, resultList_Id);
+        if (!isEnabledAutocomplete)
+            return resultPair;
         HttpURLConnection conn = null;
         StringBuilder jsonResults = new StringBuilder();
         try {
@@ -130,11 +132,11 @@ class GooglePlacesAutocompleteAdapter extends ArrayAdapter<String> implements Fi
                 resultList.add(predsJsonArray.getJSONObject(i).getString("description"));
                 resultList_Id.add(predsJsonArray.getJSONObject(i).getString("place_id"));
             }
-            resultPair = new AdresseData(resultList, resultList_Id);
+            resultPair.setResultList(resultList);
+            resultPair.setResultListId(resultList_Id);
         } catch (JSONException e) {
             Log.e(LOG_TAG, "Cannot process JSON results", e);
         }
-
         return resultPair;
     }
 
@@ -144,9 +146,7 @@ class GooglePlacesAutocompleteAdapter extends ArrayAdapter<String> implements Fi
 
     @Override
     public int getCount() {
-        if (resultList != null)
-            return resultList.size();
-        return 0;
+        return resultList.size();
     }
     @Override
     public String getItem(int index) {
@@ -167,13 +167,14 @@ class GooglePlacesAutocompleteAdapter extends ArrayAdapter<String> implements Fi
                 FilterResults filterResults = new FilterResults();
                 if (constraint != null) {
                     // Retrieve the autocomplete results.
-                    resultPair = autocomplete(constraint.toString());
+                    resultPair = autocomplete(constraint.toString(), isEnableAutocomplete());
                     resultList = resultPair.getResultList();
                     resultList_Id = resultPair.getResultListId();
                     // Assign the data to the FilterResults
                     filterResults.values = resultList;
                     filterResults.count = resultList.size();
                 }
+                setEnableAutocomplete(true);
                 return filterResults;
             }
             @Override
@@ -182,5 +183,13 @@ class GooglePlacesAutocompleteAdapter extends ArrayAdapter<String> implements Fi
             }
         };
         return filter;
+    }
+
+    public boolean isEnableAutocomplete() {
+        return enableAutocomplete;
+    }
+
+    public void setEnableAutocomplete(boolean enableAutocomplete) {
+        this.enableAutocomplete = enableAutocomplete;
     }
 }

@@ -278,6 +278,7 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
             @Override
             public void onCameraChange(CameraPosition arg0) {
                 if (isLocationInitialised() || !displayGpsMessage) {
+                    googleAdapter.setEnableAutocomplete(false);
                     LatLng LatLng = mMap.getCameraPosition().target;
                     setDeliveryAddressLocation(LatLng, getCompleteAddressString(location.getLatitude(), location.getLongitude()), true);
                 }
