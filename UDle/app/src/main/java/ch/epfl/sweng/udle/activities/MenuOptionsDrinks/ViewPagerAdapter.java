@@ -3,13 +3,10 @@ package ch.epfl.sweng.udle.activities.MenuOptionsDrinks;
 /**
  * Created by Gasp on 04/11/2015.
  */
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
-
-import ch.epfl.sweng.udle.HorizontalSlideLibrary.SlidingTabLayout;
 
 
 /**
@@ -23,8 +20,7 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
 
 
     // Build a Constructor and assign the passed Values to appropriate values in the class
-    public ViewPagerAdapter(FragmentManager fm,CharSequence mTitles[], int mNumbOfTabsumb
-    ) {
+    public ViewPagerAdapter(FragmentManager fm,CharSequence mTitles[], int mNumbOfTabsumb) {
         super(fm);
 
         this.Titles = mTitles;
@@ -35,7 +31,6 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
     //This method return the fragment for the every position in the View Pager
     @Override
     public Fragment getItem(int position) {
-
         if(position == 0) // if the position is 0 we are returning the First tab
         {
             MenuFragment menu = new MenuFragment();

@@ -1,10 +1,9 @@
 package ch.epfl.sweng.udle.activities.MenuOptionsDrinks;
 
-import android.content.Intent;
-import android.support.annotation.Nullable;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,23 +11,19 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.support.v4.app.Fragment;
 
-
+import java.util.ArrayList;
 
 import ch.epfl.sweng.udle.Food.FoodTypes;
 import ch.epfl.sweng.udle.Food.Menu;
 import ch.epfl.sweng.udle.Food.OrderElement;
 import ch.epfl.sweng.udle.Food.Orders;
-import ch.epfl.sweng.udle.HorizontalSlideLibrary.SlidingTabLayout;
 import ch.epfl.sweng.udle.R;
 
 public class MenuFragment extends Fragment{
 
 
-    private int nbrKebabs = 0;
-    private int nbrBurgers = 0;
-    private LinearLayout        llLayout;
+    private LinearLayout llLayout;
     private ViewPager pager;
 
 
@@ -53,10 +48,23 @@ public class MenuFragment extends Fragment{
 
 
     private void kebabInit(){
+        //If kebabs was already added to the order, add them and show the price.
+        //If not, just set the price and the kebab numbers to 0
+        OrderElement orderElement = Orders.getActiveOrder();
+        int nbrKebab = 0;
+        if (orderElement != null){
+            for(Menu menu: orderElement.getOrder()){
+                if (menu.getFood().toString().equals(FoodTypes.KEBAB.toString())){
+                    nbrKebab ++;
+                }
+            }
+        }
         final TextView kebabNbr = (TextView) llLayout.findViewById(R.id.MenuActivity_KebabNbr);
-        kebabNbr.setText("" + 0);
-        computeKebabPrice(0);
+        kebabNbr.setText("" + nbrKebab);
+        computeKebabPrice(nbrKebab);
 
+
+        //Set the Listener for the plus button
         TextView kebabPlus = (TextView) llLayout.findViewById(R.id.MenuActivity_KebabPlus);
         kebabPlus.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
@@ -64,15 +72,17 @@ public class MenuFragment extends Fragment{
 
                 String value = kebabNbr.getText().toString();
                 int actualValue = Integer.parseInt(value);
+
                 int newNbrValue = actualValue + 1;
                 if (newNbrValue <= maxNbr) {
                     kebabNbr.setText(Integer.toString(newNbrValue));
                     computeKebabPrice(newNbrValue);
-                    nbrKebabs++;
+                    addOneMenu(FoodTypes.KEBAB);
                 }
             }
         });
 
+        //Set the Listener for the minus button
         TextView kebabMinus = (TextView) llLayout.findViewById(R.id.MenuActivity_KebabMinus);
         kebabMinus.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
@@ -82,7 +92,7 @@ public class MenuFragment extends Fragment{
                 if (newNbrValue >= 0) {
                     kebabNbr.setText(Integer.toString(newNbrValue));
                     computeKebabPrice(newNbrValue);
-                    nbrKebabs--;
+                    removeOneMenu(FoodTypes.KEBAB);
                 }
             }
         });
@@ -99,10 +109,23 @@ public class MenuFragment extends Fragment{
 
 
     private void burgerInit(){
-        final TextView burgerNbr = (TextView) llLayout.findViewById(R.id.MenuActivity_BurgerNbr);
-        burgerNbr.setText("" + 0);
-        computeBurgerPrice(0);
+        //If burgers were already added to the order, add them and show the price.
+        //If not, just set the price and the burger numbers to 0
+        OrderElement orderElement = Orders.getActiveOrder();
+        int nbrBurger = 0;
+        if (orderElement != null){
+            for(Menu menu: orderElement.getOrder()){
+                if (menu.getFood().toString().equals(FoodTypes.BURGER.toString())){
+                    nbrBurger ++;
+                }
+            }
+        }
 
+        final TextView burgerNbr = (TextView) llLayout.findViewById(R.id.MenuActivity_BurgerNbr);
+        burgerNbr.setText("" + nbrBurger);
+        computeBurgerPrice(nbrBurger);
+
+        //Set the Listener for the plus button
         TextView burgerPlus = (TextView) llLayout.findViewById(R.id.MenuActivity_BurgerPlus);
         burgerPlus.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
@@ -114,11 +137,12 @@ public class MenuFragment extends Fragment{
                     burgerNbr.setText(Integer.toString(newNbrValue));
 
                     computeBurgerPrice(newNbrValue);
-                    nbrBurgers++;
+                    addOneMenu(FoodTypes.BURGER);
                 }
+
             }
         });
-
+        //Set the Listener for the minus button
         TextView burgerMinus = (TextView) llLayout.findViewById(R.id.MenuActivity_BurgerMinus);
         burgerMinus.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
@@ -129,7 +153,7 @@ public class MenuFragment extends Fragment{
                     burgerNbr.setText(Integer.toString(newNbrValue));
 
                     computeBurgerPrice(newNbrValue);
-                    nbrBurgers--;
+                    removeOneMenu(FoodTypes.BURGER);
                 }
             }
         });
@@ -146,32 +170,42 @@ public class MenuFragment extends Fragment{
 
 
 
-    /** Called when the user clicks the MapActivity button */
+    private void addOneMenu(FoodTypes foodTypes){
+        OrderElement orderElement = Orders.getActiveOrder();
+        ArrayList<Menu> menus = orderElement.getOrder();
+        Menu newOne = new Menu();
+        newOne.setFood(foodTypes);
+        menus.add(newOne);
+    }
+
+    private void removeOneMenu(FoodTypes foodTypes){
+        OrderElement orderElement = Orders.getActiveOrder();
+        ArrayList<Menu> menus = orderElement.getOrder();
+        Boolean menuAlreadyRemoved = false;
+
+        //Start at the end of the list in order to remove the last added Kebab
+        for(int i=menus.size()-1 ; i >= 0 ; i--){
+            if (menus.get(i).getFood().toString().equals(foodTypes.toString())){
+                if (! menuAlreadyRemoved){
+                    menuAlreadyRemoved = true;
+                    menus.remove(menus.get(i));
+                }
+            }
+        }
+    }
+
+
+
+
+    /** Called when the user clicks the 'Next' button */
     public void goToOptionsActivity() {
-        int nbrMenus = nbrKebabs + nbrBurgers;
+        int nbrMenus = Orders.getActiveOrder().getOrder().size();
         if(nbrMenus < 1){
             Toast.makeText(super.getActivity().getApplicationContext(), getString(R.string.NoMenuSelected),
                     Toast.LENGTH_SHORT).show();
         }
         else{
-            OrderElement orderElement = Orders.getActiveOrder();
-            orderElement.empty();
-
-            for (int i=0; i<nbrKebabs; i++){
-                Menu menu = new Menu();
-                menu.setFood(FoodTypes.KEBAB);
-                orderElement.addMenu(menu);
-            }
-            for (int i=0; i<nbrBurgers; i++){
-                Menu menu = new Menu();
-                menu.setFood(FoodTypes.BURGER);
-                orderElement.addMenu(menu);
-            }
-
-
             pager.setCurrentItem(1);
-
-
         }
     }
 
