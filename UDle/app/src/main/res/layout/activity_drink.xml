@@ -50,12 +50,10 @@
         android:layout_marginTop="44dp"/>
     <TextView
         android:id="@+id/cocaNbr"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:gravity="center_vertical|center_horizontal"
         android:inputType="number"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
         android:layout_alignBottom="@+id/cocaMinus"
         android:layout_toRightOf="@id/cocaMinus"/>
     <Button
@@ -69,7 +67,8 @@
     <TextView
         android:id="@+id/cocaTotal"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_height="30dp"
+        android:layout_marginLeft="15dp"
         android:editable="false"
         android:gravity="center_vertical"
         android:layout_alignBottom="@+id/cocaMinus"
@@ -98,12 +97,10 @@
         android:layout_marginTop="44dp"/>
     <TextView
         android:id="@+id/waterNbr"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:gravity="center_vertical|center_horizontal"
         android:inputType="number"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
         android:layout_alignBottom="@+id/waterMinus"
         android:layout_toRightOf="@id/waterMinus"/>
     <Button
@@ -117,7 +114,8 @@
     <TextView
         android:id="@+id/waterTotal"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_height="30dp"
+        android:layout_marginLeft="15dp"
         android:editable="false"
         android:gravity="center_vertical"
         android:layout_alignBottom="@+id/waterMinus"
@@ -145,12 +143,10 @@
         android:layout_marginTop="44dp"/>
     <TextView
         android:id="@+id/orangNbr"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:gravity="center_vertical|center_horizontal"
         android:inputType="number"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
         android:layout_alignBottom="@+id/orangMinus"
         android:layout_toRightOf="@id/orangMinus"/>
     <Button
@@ -164,7 +160,8 @@
     <TextView
         android:id="@+id/orangTotal"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_height="30dp"
+        android:layout_marginLeft="15dp"
         android:editable="false"
         android:gravity="center_vertical"
         android:layout_alignBottom="@+id/orangMinus"
@@ -191,12 +188,11 @@
         android:layout_marginTop="44dp"/>
     <TextView
         android:id="@+id/beerNbr"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:gravity="center_vertical|center_horizontal"
         android:inputType="number"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
+
         android:layout_alignBottom="@+id/beerMinus"
         android:layout_toRightOf="@id/beerMinus"/>
     <Button
@@ -210,7 +206,8 @@
     <TextView
         android:id="@+id/beerTotal"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_height="30dp"
+        android:layout_marginLeft="15dp"
         android:editable="false"
         android:gravity="center_vertical"
         android:layout_alignBottom="@+id/beerMinus"
