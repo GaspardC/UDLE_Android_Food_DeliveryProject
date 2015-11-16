@@ -34,7 +34,7 @@ import ch.epfl.sweng.udle.R;
 import ch.epfl.sweng.udle.activities.MenuOptionsDrinks.MainActivity;
 import ch.epfl.sweng.udle.network.DataManager;
 
-public class MapActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
+public class MapActivity extends SlideMenuActivity implements AdapterView.OnItemClickListener {
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
     private Location location = new Location("");

@@ -75,7 +75,7 @@ public class DataManager {
         });
     }
 
-    public ParseUser getCurrentParseUser() {
+    public static ParseUser getCurrentParseUser() {
         return ParseUser.getCurrentUser();
     }
 
@@ -156,6 +156,7 @@ public class DataManager {
         query.findInBackground(new FindCallback<ParseObject>() {
             public void done(List<ParseObject> OrderList, ParseException e) {
                 if (e == null) {
+
 
                     //for all clients who are waiting the validation of their command
                     for (ParseObject locOfClient : OrderList) {
