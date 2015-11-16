@@ -197,7 +197,7 @@ public class MenuFragment extends Fragment{
 
 
 
-    /** Called when the user clicks the MapActivity button */
+    /** Called when the user clicks the 'Next' button */
     public void goToOptionsActivity() {
         int nbrMenus = Orders.getActiveOrder().getOrder().size();
         if(nbrMenus < 1){
