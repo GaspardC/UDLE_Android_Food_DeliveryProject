@@ -85,7 +85,7 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
         String str = (String) adapterView.getItemAtPosition(position);
         LatLng latLng = GooglePlacesAutocompleteAdapter.getLatLngFromId(((GooglePlacesAutocompleteAdapter) adapterView.getAdapter()).getItem_Id(position));
-        setDeliveryAddressLocation(latLng, str);
+        setDeliveryAddressLocation(latLng, str, false);
         setCamera(latLng);
     }
 
@@ -131,7 +131,7 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
         }
     }
 
-    private void setDeliveryAddressLocation(LatLng latLng, String str) {
+    private void setDeliveryAddressLocation(LatLng latLng, String str, final boolean changeAutocompView) {
         Location tempLocation = new Location("");
         tempLocation.setLatitude(latLng.latitude);
         tempLocation.setLongitude(latLng.longitude);
@@ -143,10 +143,12 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
 
         runOnUiThread(new Runnable() {
             public void run() {
-                if (!getDeliveryAdress().equals(""))
-                    autoCompView.setText(deliveryAddress);
-                else
-                    autoCompView.setText(R.string.invalidAddress);
+                if (changeAutocompView) {
+                    if (!getDeliveryAdress().equals(""))
+                        autoCompView.setText(deliveryAddress);
+                    else
+                        autoCompView.setText(R.string.invalidAddress);
+                }
             }
         });
     }
@@ -240,7 +242,7 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
         public void onMyLocationChange(Location location) {
             if (!isLocationInitialised()){
                 LatLng LatLng = new LatLng(location.getLatitude(), location.getLongitude());
-                setDeliveryAddressLocation(LatLng, getCompleteAddressString(location.getLatitude(), location.getLongitude()));
+                setDeliveryAddressLocation(LatLng, getCompleteAddressString(location.getLatitude(), location.getLongitude()), true);
                 setCamera(LatLng);
             }
         }
@@ -269,7 +271,7 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
             mMap.setOnMyLocationChangeListener(myLocationChangeListener);
         }else{
             LatLng LatLng = new LatLng(location.getLatitude(), location.getLongitude());
-            setDeliveryAddressLocation(LatLng, getCompleteAddressString(location.getLatitude(), location.getLongitude()));
+            setDeliveryAddressLocation(LatLng, getCompleteAddressString(location.getLatitude(), location.getLongitude()), true);
             setCamera(LatLng);
         }
         mMap.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
@@ -277,7 +279,7 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
             public void onCameraChange(CameraPosition arg0) {
                 if (isLocationInitialised() || !displayGpsMessage) {
                     LatLng LatLng = mMap.getCameraPosition().target;
-                    setDeliveryAddressLocation(LatLng, getCompleteAddressString(location.getLatitude(), location.getLongitude()));
+                    setDeliveryAddressLocation(LatLng, getCompleteAddressString(location.getLatitude(), location.getLongitude()), true);
                 }
             }
         });
