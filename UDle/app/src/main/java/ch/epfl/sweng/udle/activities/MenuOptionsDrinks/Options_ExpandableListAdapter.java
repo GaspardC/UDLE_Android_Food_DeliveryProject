@@ -50,7 +50,7 @@ public class Options_ExpandableListAdapter extends BaseExpandableListAdapter {
     //Return the title of the group (e.g: #2 Burger)
     @Override
     public Object getGroup(int groupPosition) {
-        return getOrders().get(groupPosition);
+        return getOrdersTitle().get(groupPosition);
     }
 
     //Return the options string (e.g : Salad)
@@ -60,14 +60,15 @@ public class Options_ExpandableListAdapter extends BaseExpandableListAdapter {
     }
 
 
+    //Display the title for each group
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
         String groupTitle = (String) getGroup(groupPosition);
         if (convertView == null){
             convertView = inflater.inflate(R.layout.activity_options_menu_title, parent, false);
         }
-        TextView parentTextView = (TextView) convertView.findViewById(R.id.OptionsFragment_MenuTitle);
-        parentTextView.setText(groupTitle);
+        TextView menuTitle = (TextView) convertView.findViewById(R.id.OptionsFragment_MenuTitle);
+        menuTitle.setText(groupTitle);
         return convertView;
     }
 
@@ -79,27 +80,26 @@ public class Options_ExpandableListAdapter extends BaseExpandableListAdapter {
         if (convertView == null){
             convertView = inflater.inflate(R.layout.activity_options_list_childs, parent, false);
         }
-        final CheckBox childTextView = (CheckBox) convertView.findViewById(R.id.OptionsFragment_MenuElement);
-        childTextView.setText(childTitle);
+        final CheckBox optionTitleTextView = (CheckBox) convertView.findViewById(R.id.OptionsFragment_MenuElement);
+        optionTitleTextView.setText(childTitle);
 
         //If the options is already added for the menu, need to check the checkbox
         Menu menu = Orders.getActiveOrder().getOrder().get(groupPosition);
         if (menu.getOptions().contains(OptionsTypes.values()[childPosition])){
-            childTextView.setChecked(true);
+            optionTitleTextView.setChecked(true);
         }
         else{
-            childTextView.setChecked(false);
+            optionTitleTextView.setChecked(false);
         }
 
 
-        childTextView.setOnClickListener(new View.OnClickListener() {
+        optionTitleTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ArrayList<Menu> menu = Orders.getActiveOrder().getOrder();
-                if(childTextView.isChecked()){
+                if (optionTitleTextView.isChecked()) {
                     menu.get(groupPosition).addToOptions(OptionsTypes.values()[childPosition]);
-                }
-                else{ //Remove from Options
+                } else { //Remove from Options
                     menu.get(groupPosition).removeFromOptions(OptionsTypes.values()[childPosition]);
                 }
             }
@@ -132,17 +132,17 @@ public class Options_ExpandableListAdapter extends BaseExpandableListAdapter {
 
 
     //Return a list of orders name with the position on this list (e.g : #1 Burger, #2 Kebab, ...);
-    public ArrayList<String> getOrders(){
+    public ArrayList<String> getOrdersTitle(){
 
         ArrayList<Menu> orders = Orders.getActiveOrder().getOrder();
-        ArrayList<String> tmp = new ArrayList<>();
+        ArrayList<String> menusTitles = new ArrayList<>();
 
-        int nbr = 1;
+        int listOrdersIndex = 1;
         for (Menu menu : orders){
-            tmp.add("#"+String.valueOf(nbr)+"  "+menu.getFood().toString());
-            nbr ++;
+            menusTitles.add("#" + String.valueOf(listOrdersIndex) + "  " + menu.getFood().toString());
+            listOrdersIndex ++;
         }
-        return tmp;
+        return menusTitles;
     }
 }
 
