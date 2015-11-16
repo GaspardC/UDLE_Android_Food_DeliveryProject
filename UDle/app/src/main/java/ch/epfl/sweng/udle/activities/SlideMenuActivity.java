@@ -5,7 +5,6 @@ took most of the code from there
 http://codetheory.in/android-navigation-drawer/
 */
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.LayoutRes;
@@ -19,7 +18,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
@@ -30,7 +28,14 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import ch.epfl.sweng.udle.R;
-
+/**
+ * You need to add the following line in the activity declaration in AndroidManifest.xml
+ *
+ *      android:theme="@style/SlideMenuTheme"
+ *
+ * because 'setTheme(R.style.SlideMenuTheme);' seems not working.
+ *
+ */
 public abstract class SlideMenuActivity extends AppCompatActivity {
     private static String TAG = SlideMenuActivity.class.getSimpleName();
     private DrawerLayout mDrawerLayout;
@@ -47,9 +52,9 @@ public abstract class SlideMenuActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        //getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
         setTheme(R.style.SlideMenuTheme);
         super.onCreate(savedInstanceState);
+        setTheme(R.style.SlideMenuTheme);
         super.setContentView(R.layout.actitivity_slidemenu);
 
         //set menu items
@@ -84,8 +89,10 @@ public abstract class SlideMenuActivity extends AppCompatActivity {
 
         // Show the menu icon on top of the screen
         // More info: http://codetheory.in/difference-between-setdisplayhomeasupenabled-sethomebuttonenabled-and-setdisplayshowhomeenabled/
-        /*getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);*/
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setHomeButtonEnabled(true);
+        }
 
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.openSlideMenu, R.string.closeSlideMenu) {
             /** Called when a drawer has settled in a completely closed state. */
