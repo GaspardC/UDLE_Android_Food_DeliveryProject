@@ -99,16 +99,11 @@ public class DataManager {
 
     public static ArrayList<OrderElement> getPendingOrdersForARestaurantOwner() {
 
-        //Only restaurants can access this method
-        if (user.get("RestaurantOwner") == false) {
-            return new ArrayList<OrderElement>();
-        }
-
         //Because this method is static, these fields may not be instantiated
         user = DataManager.getUser();
         userLocation = user.getParseGeoPoint("Location");
         maxDeliveryDistance = (double) ((Integer) user.get("maxDeliveryDistance"));
-
+        
         //Start Query
         ParseQuery<ParseObject> query = ParseQuery.getQuery("ParseUserOrderInformations");
         query.whereEqualTo("orderStatus", "waiting for restaurant");
