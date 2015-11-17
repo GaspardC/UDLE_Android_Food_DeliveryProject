@@ -10,7 +10,6 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -19,11 +18,14 @@ import android.widget.AutoCompleteTextView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.parse.ParseGeoPoint;
+import com.parse.ParseUser;
 
 import java.util.List;
 import java.util.Locale;
@@ -33,6 +35,7 @@ import ch.epfl.sweng.udle.Food.Orders;
 import ch.epfl.sweng.udle.R;
 import ch.epfl.sweng.udle.activities.MenuOptionsDrinks.MainActivity;
 import ch.epfl.sweng.udle.network.DataManager;
+
 
 public class MapActivity extends SlideMenuActivity implements AdapterView.OnItemClickListener {
 
@@ -96,6 +99,7 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
             orderElement.setDeliveryLocation(getLocation());
             orderElement.setDeliveryAddress(getDeliveryAdress());
             Orders.setActiveOrder(orderElement);
+            storeNearbyRestaurants();
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
         }else {
@@ -139,7 +143,6 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
 
         setDeliveryAdress(str);
 
-        data.setUserLocation(location.getLatitude(), location.getLongitude());
 
         runOnUiThread(new Runnable() {
             public void run() {
@@ -267,6 +270,28 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
         setLocation(locationManager.getLastKnownLocation(provider));
         // set map type
         mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+
+        if( location == null) return;
+
+
+        // Get latitude/ longitude of the current location
+        double latitude = location.getLatitude();
+        double longitude = location.getLongitude();
+        LatLng latLng = new LatLng(latitude, longitude);
+
+
+        //Set delivery address
+        deliveryAddress = getCompleteAddressString(latitude,longitude);
+        Log.i("Message :", deliveryAddress);
+
+
+        // Show the current location in Google Map
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+
+        // Zoom in the Google Map
+        LatLng myCoordinates = new LatLng(latitude, longitude);
+        CameraUpdate yourLocation = CameraUpdateFactory.newLatLngZoom(myCoordinates, 15);
+        mMap.animateCamera(yourLocation);
         if (!isLocationInitialised()){
             mMap.setOnMyLocationChangeListener(myLocationChangeListener);
         }else{
@@ -285,5 +310,18 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
             }
         });
     }
-}
 
+
+
+    private void storeNearbyRestaurants(){
+        //Put current location in parse.com
+        ParseGeoPoint currentLocation = new ParseGeoPoint(location.getLatitude(), location.getLongitude());
+        ParseUser currentUser = DataManager.getUser();
+        currentUser.put("Location", currentLocation);
+
+        //Find nearby restaurants
+        boolean nearbyRestaurantStatus = DataManager.getRestaurantLocationsNearTheUser();
+        Log.d("OSid", String.valueOf(nearbyRestaurantStatus));
+
+    }
+}
