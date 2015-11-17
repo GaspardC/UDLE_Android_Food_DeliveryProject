@@ -103,7 +103,12 @@ public class DataManager {
         user = DataManager.getUser();
         userLocation = user.getParseGeoPoint("Location");
         maxDeliveryDistance = (double) ((Integer) user.get("maxDeliveryDistance"));
-        
+
+        if (user.getBoolean("RestaurantOwner")){
+            return new ArrayList<OrderElement>();
+        }
+
+
         //Start Query
         ParseQuery<ParseObject> query = ParseQuery.getQuery("ParseUserOrderInformations");
         query.whereEqualTo("orderStatus", "waiting for restaurant");
