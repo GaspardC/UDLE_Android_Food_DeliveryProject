@@ -146,8 +146,8 @@ public class LoginActivity extends Activity {
 
                 } else {
                     Log.d("MyApp", "User logged in through Facebook!");
-//                    ParseUserInformations userInf = new ParseUserInformations();
-//                    userInf.fetcUserInfomation();
+                    ParseUserInformations userInf = new ParseUserInformations();
+                    userInf.fetcUserInfomation();
                 }
             }
         });
@@ -265,6 +265,8 @@ public class LoginActivity extends Activity {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mProfileTracker.stopTracking();
+        if(mProfileTracker!=null){
+            mProfileTracker.stopTracking();
+        }
     }
 }

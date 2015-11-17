@@ -70,6 +70,14 @@ public class OrderElement {
         }
         this.drinks.add(drink);
     }
+    public void removeToDrinks(DrinkTypes drink){
+        if(drink == null){
+            throw new IllegalArgumentException("Ty to add a null drink");
+        }
+        else if(this.drinks.size() != 0){
+            this.drinks.remove(drink);
+        }
+    }
 
 
     public double getTotalCost(){

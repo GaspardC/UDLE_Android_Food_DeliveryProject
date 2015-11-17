@@ -6,8 +6,8 @@ import java.util.ArrayList;
  * Created by Abdes on 01/11/2015.
  */
 public class AdresseData {
-    private ArrayList<String> resultList= null;
-    private ArrayList<String> resultList_Id= null;
+    private ArrayList<String> resultList;
+    private ArrayList<String> resultList_Id;
 
     AdresseData(ArrayList<String> resultList,ArrayList<String> resultList_Id){
         this.resultList = resultList;
@@ -18,5 +18,11 @@ public class AdresseData {
     }
     ArrayList<String> getResultListId(){
         return resultList_Id;
+    }
+    void setResultList(ArrayList<String> resultList){
+        this.resultList = resultList;
+    }
+    void setResultListId(ArrayList<String> resultList_Id){
+        this.resultList_Id = resultList_Id;
     }
 }

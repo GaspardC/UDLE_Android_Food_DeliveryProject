@@ -1,6 +1,8 @@
 package ch.epfl.sweng.udle.Food;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by rodri on 23/10/2015.
@@ -47,6 +49,26 @@ public class Menu {
         }
         if (this.options.contains(option)) {
             this.options.remove(option);
+        }
+    }
+
+    public static void displayInRecap(List<HashMap<String, String>> list){
+        for(Menu menu : Orders.getActiveOrder().getOrder()){
+            String food = "1 " + menu.getFood().toString();
+            String price = String.format("%.2f", menu.getFood().getPrice());
+            price = price + Orders.getMoneyDevise();
+
+            String option = "";
+            for( OptionsTypes opt : menu.getOptions()){
+                option = option + opt.toString() + " ; " ;
+            }
+
+            HashMap<String, String> element = new HashMap<>();
+            element.put("elem", food);
+            element.put("price", price);
+            element.put("options", option);
+
+            list.add(element);
         }
     }
 }

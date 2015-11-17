@@ -44,13 +44,6 @@ public class DataManager {
     }
 
 
-    /*
-     * Find restaurants near the user
-     * Return true or false based on if the query search is successful for debugging purposes
-     * Stores result on server
-     *
-     */
-
     public static boolean getRestaurantLocationsNearTheUser() {
 
         //Because this method is static, these fields may not be instantiated
@@ -122,7 +115,6 @@ public class DataManager {
         query.findInBackground(new FindCallback<ParseObject>() {
             public void done(List<ParseObject> OrderList, ParseException e) {
                 if (e == null) {
-
                     pendingOrders = new ArrayList<OrderElement>();
 
                     //for all clients who are waiting the validation of their command
