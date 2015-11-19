@@ -1,14 +1,29 @@
 package ch.epfl.sweng.udle.activities;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
+import android.media.Image;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.ListAdapter;
+import android.widget.ListView;
+import android.widget.SimpleAdapter;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -18,9 +33,13 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.parse.ParseGeoPoint;
+import com.parse.ParseUser;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import ch.epfl.sweng.udle.Food.DrinkTypes;
 import ch.epfl.sweng.udle.Food.FoodTypes;
@@ -31,9 +50,16 @@ import ch.epfl.sweng.udle.Food.Orders;
 import ch.epfl.sweng.udle.R;
 import ch.epfl.sweng.udle.network.DataManager;
 
-public class DeliveryRestaurantMapActivity extends SlideMenuActivity {
+public class DeliveryRestaurantMapActivity extends AppCompatActivity {
+
+    private static final int RED_LOGO = 0;
+    private static final int GREEN_LOGO = 1;
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
+    private boolean showMap = true;
+    private ListView listView;
+    final ArrayList<OrderElement> waitingOrders = getWaitingOrders(new ArrayList<OrderElement>());
+    final ArrayList<OrderElement> currentOrders = Orders.getCurrentOrders();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,22 +67,115 @@ public class DeliveryRestaurantMapActivity extends SlideMenuActivity {
         setContentView(R.layout.activity_delivery_restaurant_map);
         setUpMapIfNeeded();
         showWaitingOrders();
+        setUpListView();
+
     }
-    /**
-     * Sets up the map if it is possible to do so (i.e., the Google Play services APK is correctly
-     * installed) and the map has not already been instantiated.. This will ensure that we only ever
-     * call {@link #setUpMap()} once when {@link #mMap} is not null.
-     * <p/>
-     * If it isn't installed {@link SupportMapFragment} (and
-     * {@link com.google.android.gms.maps.MapView MapView}) will show a prompt for the user to
-     * install/update the Google Play services APK on their device.
-     * <p/>
-     * A user can return to this FragmentActivity after following the prompt and correctly
-     * installing/updating/enabling the Google Play services. Since the FragmentActivity may not
-     * have been completely destroyed during this process (it is likely that it would only be
-     * stopped or paused), {@link #onCreate(Bundle)} may not be called again so we should call this
-     * method in {@link #onResume()} to guarantee that it will be called.
-     */
+
+
+
+    private void setUpListView() {
+        listView = (ListView) findViewById(R.id.listOrderRestaurantMap);
+        if(showMap){
+            listView.setVisibility(View.GONE);
+        }
+        else{
+            listView.setVisibility(View.VISIBLE);
+            populateListView();
+        }
+    }
+
+    private void populateListView() {
+
+        List<HashMap<String,String>> aList = new ArrayList<HashMap<String,String>>();
+        ArrayList<String> ordersAdress = new ArrayList<>();
+
+//        ParseUser user = DataManager.getCurrentParseUser();
+//        if(user!=null){
+//            ParseGeoPoint position = user.getParseGeoPoint("Location");
+//        }
+
+        int i = 1;
+        for(OrderElement order : waitingOrders) {
+
+            Location location = order.getDeliveryLocation();
+            String deliveryAddress = order.getDeliveryAddress();
+            LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+            ordersAdress.add(deliveryAddress);
+            HashMap<String, String> hm = new HashMap<String,String>();
+            hm.put("numCommande", "#" + i+" ");
+            hm.put("address", ordersAdress.get(i - 1));
+            hm.put("image", Integer.toString(R.drawable.logoburger));
+            aList.add(hm);
+            i++;
+        }
+        for(OrderElement order : currentOrders) {
+            Location location = order.getDeliveryLocation();
+            String deliveryAddress = order.getDeliveryAddress();
+            LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+            ordersAdress.add(deliveryAddress);
+            HashMap<String, String> hm = new HashMap<String,String>();
+            hm.put("numCommande", "#" + i+" ");
+            hm.put("address", ordersAdress.get(i-1));
+            hm.put("image", Integer.toString(R.drawable.logogreen) );
+            aList.add(hm);
+            i++;
+        }
+
+
+
+        // Keys used in Hashmap
+        String[] from = { "image","numCommande", "address" };
+
+        // Ids of views in listview_layout
+//        int[] to = { R.id.addressDelivery};
+        int[] to = { R.id.iconListDelivery,R.id.numCommandeDeliveryRestaurant,R.id.addressDelivery};
+
+
+        // Instantiating an adapter to store each items
+        // R.layout.listView_layout defines the layout of each item
+        SimpleAdapter adapter = new SimpleAdapter(this, aList, R.layout.list_item_restaurant_delivery, from, to);
+
+
+        listView.setAdapter(adapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+                //Open the browser here
+                HashMap<String, String> hm = (HashMap<String, String>) parent.getItemAtPosition(position);
+                String adress = hm.get("address");
+
+
+                for (OrderElement order : waitingOrders) {
+                    if (order.getDeliveryAddress().equals(adress)) { //TODO: Instead of compare with the address, compare with the id of the command for example.
+                        goToDeliveryCommandDetail(order);
+                    }
+                }
+                for (OrderElement order : currentOrders) {
+                    if (order.getDeliveryAddress().equals(adress)) { //TODO: Instead of compare with the address, compare with the id of the command for example.
+                        goToDeliveryCommandDetail(order);
+                    }
+                }
+            }
+
+        });
+    }
+
+                /**
+                 * Sets up the map if it is possible to do so (i.e., the Google Play services APK is correctly
+                 * installed) and the map has not already been instantiated.. This will ensure that we only ever
+                 * call {@link #setUpMap()} once when {@link #mMap} is not null.
+                 * <p/>
+                 * If it isn't installed {@link SupportMapFragment} (and
+                 * {@link com.google.android.gms.maps.MapView MapView}) will show a prompt for the user to
+                 * install/update the Google Play services APK on their device.
+                 * <p/>
+                 * A user can return to this FragmentActivity after following the prompt and correctly
+                 * installing/updating/enabling the Google Play services. Since the FragmentActivity may not
+                 * have been completely destroyed during this process (it is likely that it would only be
+                 * stopped or paused), {@link #onCreate(Bundle)} may not be called again so we should call this
+                 * method in {@link #onResume()} to guarantee that it will be called.
+                 */
+
     private void setUpMapIfNeeded() {
         // Do a null check to confirm that we have not already instantiated the map.
         if (mMap == null) {
@@ -90,6 +209,18 @@ public class DeliveryRestaurantMapActivity extends SlideMenuActivity {
         String provider = locationManager.getBestProvider(criteria, true);
 
         // Get Current Location
+
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                // TODO: Consider calling
+                //    public void requestPermissions(@NonNull String[] permissions, int requestCode)
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for Activity#requestPermissions for more details.
+
         Location myLocation = locationManager.getLastKnownLocation(provider);
 
         // set map type
@@ -108,12 +239,13 @@ public class DeliveryRestaurantMapActivity extends SlideMenuActivity {
         LatLng myCoordinates = new LatLng(latitude, longitude);
         CameraUpdate yourLocation = CameraUpdateFactory.newLatLngZoom(myCoordinates, 12);
         mMap.animateCamera(yourLocation);
-
+                return;
+            }
+        }
     }
 
     private void showWaitingOrders(){
-        final ArrayList<OrderElement> waitingOrders = getWaitingOrders(new ArrayList<OrderElement>());
-        final ArrayList<OrderElement> currentOrders = Orders.getCurrentOrders();
+
 
 
         for(OrderElement order : waitingOrders) {
@@ -214,6 +346,27 @@ public class DeliveryRestaurantMapActivity extends SlideMenuActivity {
         orders.add(orderElement3);
 
         return orders;
+    }
+
+    //When button clicked
+    public void switchOrderList(View view) {
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        Fragment mapFrag = getSupportFragmentManager().findFragmentById(R.id.DeliveryMap_GoogleMaps);
+        Button buttonSwitch = (Button) findViewById(R.id.button_list_mode);
+        if(showMap) {
+            ft.hide(mapFrag).commit();
+            showMap = !showMap;
+            setUpListView();
+            buttonSwitch.setText("Switch to Map Mode");
+        }
+        else{
+            ft.show(mapFrag).commit();
+            showMap = !showMap;
+            setUpListView();
+            buttonSwitch.setText("Switch to List Mode");
+
+        }
     }
 }
 

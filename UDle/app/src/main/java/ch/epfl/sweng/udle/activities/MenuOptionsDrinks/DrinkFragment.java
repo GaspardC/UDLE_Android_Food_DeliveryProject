@@ -51,7 +51,7 @@ public class DrinkFragment extends Fragment {
     private void cocaInit() {
         Button cocaPlus = (Button) rlLayout.findViewById(R.id.cocaPlus);
         Button cocaMinus = (Button) rlLayout.findViewById(R.id.cocaMinus);
-        final TextView cocaNbr = (TextView) rlLayout.findViewById(R.id.cocaNbr);
+        computeCocaPrice(0);
 
         cocaPlus.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
@@ -59,7 +59,6 @@ public class DrinkFragment extends Fragment {
                 orderElement.addToDrinks(DrinkTypes.COCA);
                 nbrCoca++;
                 computeCocaPrice(nbrCoca);
-                cocaNbr.setText(Integer.toString(nbrCoca));
             }
         });
         cocaMinus.setOnClickListener(new View.OnClickListener() {
@@ -70,7 +69,6 @@ public class DrinkFragment extends Fragment {
                     nbrCoca--;
                 }
                 computeCocaPrice(nbrCoca);
-                cocaNbr.setText(Integer.toString(nbrCoca));
             }
         });
     }
@@ -78,7 +76,7 @@ public class DrinkFragment extends Fragment {
     private void orangInit() {
         Button orangPlus = (Button) rlLayout.findViewById(R.id.orangPlus);
         Button orangMinus = (Button) rlLayout.findViewById(R.id.orangMinus);
-        final TextView orangNbr = (TextView) rlLayout.findViewById(R.id.orangNbr);
+        computeOrangPrice(0);
 
         orangPlus.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
@@ -86,7 +84,6 @@ public class DrinkFragment extends Fragment {
                 orderElement.addToDrinks(DrinkTypes.ORANGINA);
                 nbrOrang++;
                 computeOrangPrice(nbrOrang);
-                orangNbr.setText(Integer.toString(nbrOrang));
             }
         });
         orangMinus.setOnClickListener(new View.OnClickListener() {
@@ -97,7 +94,6 @@ public class DrinkFragment extends Fragment {
                     nbrOrang--;
                 }
                 computeOrangPrice(nbrOrang);
-                orangNbr.setText(Integer.toString(nbrOrang));
             }
         });
     }
@@ -105,7 +101,7 @@ public class DrinkFragment extends Fragment {
     private void beerInit() {
         Button beerPlus = (Button) rlLayout.findViewById(R.id.beerPlus);
         Button beerMinus = (Button) rlLayout.findViewById(R.id.beerMinus);
-        final TextView beerNbr = (TextView) rlLayout.findViewById(R.id.beerNbr);
+        computeBeerPrice(0);
 
         beerPlus.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
@@ -113,7 +109,6 @@ public class DrinkFragment extends Fragment {
                 orderElement.addToDrinks(DrinkTypes.BEER);
                 nbrBeer++;
                 computeBeerPrice(nbrBeer);
-                beerNbr.setText(Integer.toString(nbrBeer));
             }
         });
         beerMinus.setOnClickListener(new View.OnClickListener() {
@@ -124,7 +119,6 @@ public class DrinkFragment extends Fragment {
                     nbrBeer--;
                 }
                 computeBeerPrice(nbrBeer);
-                beerNbr.setText(Integer.toString(nbrBeer));
             }
         });
     }
@@ -133,7 +127,7 @@ public class DrinkFragment extends Fragment {
     private void waterInit() {
         Button waterPlus = (Button) rlLayout.findViewById(R.id.waterPlus);
         Button waterMinus = (Button) rlLayout.findViewById(R.id.waterMinus);
-        final TextView waterNbr = (TextView) rlLayout.findViewById(R.id.waterNbr);
+        computeWaterPrice(0);
 
         waterPlus.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
@@ -141,7 +135,6 @@ public class DrinkFragment extends Fragment {
                 orderElement.addToDrinks(DrinkTypes.WATER);
                 nbrWater++;
                 computeWaterPrice(nbrWater);
-                waterNbr.setText(Integer.toString(nbrWater));
             }
         });
         waterMinus.setOnClickListener(new View.OnClickListener() {
@@ -152,7 +145,6 @@ public class DrinkFragment extends Fragment {
                     nbrWater--;
                 }
                 computeWaterPrice(nbrWater);
-                waterNbr.setText(Integer.toString(nbrWater));
             }
         });
     }
@@ -163,6 +155,8 @@ public class DrinkFragment extends Fragment {
         double price = nbr*cocaPrice;
         TextView cocaPriceText = (TextView) rlLayout.findViewById(R.id.cocaTotal);
         cocaPriceText.setText(Double.toString(price) + Orders.getMoneyDevise());
+        TextView cocaNbr = (TextView) rlLayout.findViewById(R.id.cocaNbr);
+        cocaNbr.setText(Integer.toString(nbrCoca));
     }
 
     private void computeOrangPrice(int nbr){
@@ -170,6 +164,8 @@ public class DrinkFragment extends Fragment {
         double price = nbr*orangPrice;
         TextView orangPriceText = (TextView) rlLayout.findViewById(R.id.orangTotal);
         orangPriceText.setText(Double.toString(price) + Orders.getMoneyDevise());
+        TextView orangNbr = (TextView) rlLayout.findViewById(R.id.orangNbr);
+        orangNbr.setText(Integer.toString(nbrOrang));
     }
 
     private void computeBeerPrice(int nbr){
@@ -177,6 +173,9 @@ public class DrinkFragment extends Fragment {
         double price = nbr*beerPrice;
         TextView beerPriceText = (TextView) rlLayout.findViewById(R.id.beerTotal);
         beerPriceText.setText(Double.toString(price) + Orders.getMoneyDevise());
+        TextView beerNbr = (TextView) rlLayout.findViewById(R.id.beerNbr);
+        beerNbr.setText(Integer.toString(nbrBeer));
+
     }
 
     private void computeWaterPrice(int nbr){
@@ -184,16 +183,11 @@ public class DrinkFragment extends Fragment {
         double price = nbr*waterPrice;
         TextView waterPriceText = (TextView) rlLayout.findViewById(R.id.waterTotal);
         waterPriceText.setText(Double.toString(price) + Orders.getMoneyDevise());
+        TextView waterNbr = (TextView) rlLayout.findViewById(R.id.waterNbr);
+        waterNbr.setText(Integer.toString(nbrWater));
     }
 
     public void goToRecapActivity(){
-        OrderElement orderElement = Orders.getActiveOrder();
-        orderElement.addToDrinks(DrinkTypes.BEER);
-        //TODO: orderElement.addToDrinks to add the choosen drinks (if any) to the order.
-
-//        Intent intent = new Intent(super.getActivity(), RecapActivity.class);
-//        startActivity(intent);
-
         Intent intent = new Intent(getActivity().getBaseContext(),
                 RecapActivity.class);
         getActivity().startActivity(intent);

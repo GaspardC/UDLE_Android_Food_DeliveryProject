@@ -10,20 +10,22 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
+import com.parse.ParseGeoPoint;
+import com.parse.ParseUser;
 
 import java.util.List;
 import java.util.Locale;
@@ -34,14 +36,16 @@ import ch.epfl.sweng.udle.R;
 import ch.epfl.sweng.udle.activities.MenuOptionsDrinks.MainActivity;
 import ch.epfl.sweng.udle.network.DataManager;
 
-public class MapActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
+
+public class MapActivity extends SlideMenuActivity implements AdapterView.OnItemClickListener {
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
     private Location location = new Location("");
+    private LinearLayout markerLayout;
     private String deliveryAddress = "";
     private AutoCompleteTextView autoCompView;
+    private GooglePlacesAutocompleteAdapter googleAdapter;
     private AlertDialog.Builder dlgAlert;
-    private Marker selected_position;
     private boolean displayGpsMessage = true;
     private DataManager data;
     private boolean dlgAlertcountCreated = false;
@@ -51,10 +55,13 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
+        markerLayout = (LinearLayout) findViewById(R.id.locationMarker);
         dlgAlert = new AlertDialog.Builder(this);
         data = new DataManager();
         autoCompView = (AutoCompleteTextView) findViewById(R.id.autoCompleteTextView2);
-        autoCompView.setAdapter(new GooglePlacesAutocompleteAdapter(this, R.layout.list_item));
+        googleAdapter = new GooglePlacesAutocompleteAdapter(this, R.layout.list_item);
+        autoCompView.setAdapter(googleAdapter);
+        googleAdapter.setNotifyOnChange(true);
         autoCompView.setOnItemClickListener(this);
         CheckEnableGPS();
         setUpMapIfNeeded();
@@ -81,7 +88,7 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
         String str = (String) adapterView.getItemAtPosition(position);
         LatLng latLng = GooglePlacesAutocompleteAdapter.getLatLngFromId(((GooglePlacesAutocompleteAdapter) adapterView.getAdapter()).getItem_Id(position));
-        setDeliveryAddressLocation(latLng, str);
+        setDeliveryAddressLocation(latLng, str, false);
         setCamera(latLng);
     }
 
@@ -92,6 +99,7 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
             orderElement.setDeliveryLocation(getLocation());
             orderElement.setDeliveryAddress(getDeliveryAdress());
             Orders.setActiveOrder(orderElement);
+            storeNearbyRestaurants();
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
         }else {
@@ -127,25 +135,23 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
         }
     }
 
-    private void setDeliveryAddressLocation(LatLng latLng, String str) {
+    private void setDeliveryAddressLocation(LatLng latLng, String str, final boolean changeAutocompView) {
         Location tempLocation = new Location("");
         tempLocation.setLatitude(latLng.latitude);
         tempLocation.setLongitude(latLng.longitude);
         setLocation(tempLocation);
 
-        if (selected_position == null)
-            selected_position = this.mMap.addMarker(new MarkerOptions().position(latLng).title(str));
-        else {
-            selected_position.setPosition(latLng);
-            selected_position.setTitle(str);
-        }
-
         setDeliveryAdress(str);
-        data.setUserLocation(location.getLatitude(), location.getLongitude());
+
+
         runOnUiThread(new Runnable() {
             public void run() {
-                if (!getDeliveryAdress().equals(""))
-                    autoCompView.setText(deliveryAddress);
+                if (changeAutocompView) {
+                    if (!getDeliveryAdress().equals(""))
+                        autoCompView.setText(deliveryAddress);
+                    else
+                        autoCompView.setText(R.string.invalidAddress);
+                }
             }
         });
     }
@@ -239,7 +245,7 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
         public void onMyLocationChange(Location location) {
             if (!isLocationInitialised()){
                 LatLng LatLng = new LatLng(location.getLatitude(), location.getLongitude());
-                setDeliveryAddressLocation(LatLng, getCompleteAddressString(location.getLatitude(), location.getLongitude()));
+                setDeliveryAddressLocation(LatLng, getCompleteAddressString(location.getLatitude(), location.getLongitude()), true);
                 setCamera(LatLng);
             }
         }
@@ -264,13 +270,58 @@ public class MapActivity extends AppCompatActivity implements AdapterView.OnItem
         setLocation(locationManager.getLastKnownLocation(provider));
         // set map type
         mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+
+        if( location == null) return;
+
+
+        // Get latitude/ longitude of the current location
+        double latitude = location.getLatitude();
+        double longitude = location.getLongitude();
+        LatLng latLng = new LatLng(latitude, longitude);
+
+
+        //Set delivery address
+        deliveryAddress = getCompleteAddressString(latitude,longitude);
+        Log.i("Message :", deliveryAddress);
+
+
+        // Show the current location in Google Map
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+
+        // Zoom in the Google Map
+        LatLng myCoordinates = new LatLng(latitude, longitude);
+        CameraUpdate yourLocation = CameraUpdateFactory.newLatLngZoom(myCoordinates, 15);
+        mMap.animateCamera(yourLocation);
         if (!isLocationInitialised()){
             mMap.setOnMyLocationChangeListener(myLocationChangeListener);
         }else{
             LatLng LatLng = new LatLng(location.getLatitude(), location.getLongitude());
-            setDeliveryAddressLocation(LatLng, getCompleteAddressString(location.getLatitude(), location.getLongitude()));
+            setDeliveryAddressLocation(LatLng, getCompleteAddressString(location.getLatitude(), location.getLongitude()), true);
             setCamera(LatLng);
         }
+        mMap.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
+            @Override
+            public void onCameraChange(CameraPosition arg0) {
+                if (isLocationInitialised() || !displayGpsMessage) {
+                    googleAdapter.setEnableAutocomplete(false);
+                    LatLng LatLng = mMap.getCameraPosition().target;
+                    setDeliveryAddressLocation(LatLng, getCompleteAddressString(location.getLatitude(), location.getLongitude()), true);
+                }
+            }
+        });
+    }
+
+
+
+    private void storeNearbyRestaurants(){
+        //Put current location in parse.com
+        ParseGeoPoint currentLocation = new ParseGeoPoint(location.getLatitude(), location.getLongitude());
+        ParseUser currentUser = DataManager.getUser();
+        currentUser.put("Location", currentLocation);
+
+        //Find nearby restaurants
+        boolean nearbyRestaurantStatus = DataManager.getRestaurantLocationsNearTheUser();
+        Log.d("OSid", String.valueOf(nearbyRestaurantStatus));
+
     }
 }
-

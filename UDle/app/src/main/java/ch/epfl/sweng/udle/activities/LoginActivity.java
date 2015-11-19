@@ -25,14 +25,19 @@ import com.parse.LogInCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseFacebookUtils;
+import com.parse.ParseObject;
 import com.parse.ParseUser;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
 import ch.epfl.sweng.udle.R;
 import ch.epfl.sweng.udle.network.ParseUserInformations;
+import ch.epfl.sweng.udle.network.ParseUserOrderInformations;
 
 
 public class LoginActivity extends Activity {
@@ -119,6 +124,9 @@ public class LoginActivity extends Activity {
 
 //        // Enable Local Datastore.
 //        Parse.enableLocalDatastore(this);
+
+        //Initialize the parse Order server object
+        ParseObject.registerSubclass(ParseUserOrderInformations.class);
         Parse.initialize(this, "9owjl8GmUsbfyoKtXhd5hK7QX8CUJVfuAvSLNoaY", "xd6XKHd9NxLfzFPbHQ5xaMHVzU1gfeLen0qCyI4F");
 
 
@@ -138,8 +146,8 @@ public class LoginActivity extends Activity {
 
                 } else {
                     Log.d("MyApp", "User logged in through Facebook!");
-//                    ParseUserInformations userInf = new ParseUserInformations();
-//                    userInf.fetcUserInfomation();
+                    ParseUserInformations userInf = new ParseUserInformations();
+                    userInf.fetcUserInfomation();
                 }
             }
         });
@@ -257,6 +265,8 @@ public class LoginActivity extends Activity {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mProfileTracker.stopTracking();
+        if(mProfileTracker!=null){
+            mProfileTracker.stopTracking();
+        }
     }
 }
