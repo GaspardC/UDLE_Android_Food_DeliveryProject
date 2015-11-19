@@ -11,7 +11,6 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/ParseUI-Login" />
-            <option value="$PROJECT_DIR$/ParseUI-Widget" />
             <option value="$PROJECT_DIR$/app" />
           </set>
         </option>

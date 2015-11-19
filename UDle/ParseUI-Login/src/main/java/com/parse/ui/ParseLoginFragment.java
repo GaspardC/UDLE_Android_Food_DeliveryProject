@@ -39,6 +39,7 @@ import com.facebook.GraphResponse;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseFacebookUtils;
+import com.parse.ParseGeoPoint;
 import com.parse.ParseTwitterUtils;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
@@ -60,7 +61,10 @@ public class ParseLoginFragment extends ParseLoginFragmentBase {
   }
 
   private static final String LOG_TAG = "ParseLoginFragment";
-  private static final String USER_OBJECT_NAME_FIELD = "name";
+  private static final String USER_OBJECT_NAME_FIELD = "username";
+
+  private static final String MAX_DELIVERY_DISTANCE_FIELD = "maxDeliveryDistanceKm" ;
+  private static final Object MAX_DELIEVRY_DISTANCE_INIT = 15 ;
 
   private View parseLogin;
   private EditText usernameField;
@@ -266,6 +270,10 @@ public class ParseLoginFragment extends ParseLoginFragmentBase {
                 if (fbUser != null && parseUser != null
                         && fbUser.optString("name").length() > 0) {
                   parseUser.put(USER_OBJECT_NAME_FIELD, fbUser.optString("name"));
+                  //fix  init value just to prevent datamanager to access null field
+                  parseUser.put(MAX_DELIVERY_DISTANCE_FIELD,MAX_DELIEVRY_DISTANCE_INIT);
+                  parseUser.put("Location",new ParseGeoPoint(40.0,50.0));
+                  parseUser.put("RestaurantOwner",false); //always false restaurant owner are added by hand on the server
                   parseUser.saveInBackground(new SaveCallback() {
                     @Override
                     public void done(ParseException e) {

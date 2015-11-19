@@ -59,7 +59,7 @@ public class ParseSignupFragment extends ParseLoginFragmentBase implements OnCli
 
   private static final String LOG_TAG = "ParseSignupFragment";
   private static final int DEFAULT_MIN_PASSWORD_LENGTH = 6;
-  private static final String USER_OBJECT_NAME_FIELD = "name";
+  private static final String USER_OBJECT_NAME_FIELD = "user    name";
 
   public static ParseSignupFragment newInstance(Bundle configOptions, String username, String password) {
     ParseSignupFragment signupFragment = new ParseSignupFragment();
