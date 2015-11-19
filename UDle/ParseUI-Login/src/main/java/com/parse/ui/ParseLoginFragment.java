@@ -36,6 +36,7 @@ import android.widget.TextView;
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
+import com.facebook.login.widget.ProfilePictureView;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseFacebookUtils;
@@ -266,7 +267,13 @@ public class ParseLoginFragment extends ParseLoginFragmentBase {
                     If we were able to successfully retrieve the Facebook
                     user's name, let's set it on the fullName field.
                   */
-                ParseUser parseUser = ParseUser.getCurrentUser();
+
+
+                  //To retrieve the pictureviey
+                  ProfilePictureView profilePic = new ProfilePictureView(getContext());
+                  profilePic.setProfileId(fbUser.optString("id"));
+                 ParseUser parseUser = ParseUser.getCurrentUser();
+
                 if (fbUser != null && parseUser != null
                         && fbUser.optString("name").length() > 0) {
                   parseUser.put(USER_OBJECT_NAME_FIELD, fbUser.optString("name"));
