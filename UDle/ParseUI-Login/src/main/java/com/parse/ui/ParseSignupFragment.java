@@ -33,6 +33,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.parse.ParseException;
+import com.parse.ParseGeoPoint;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
 
@@ -42,6 +43,8 @@ import com.parse.SignUpCallback;
 public class ParseSignupFragment extends ParseLoginFragmentBase implements OnClickListener {
   public static final String USERNAME = "com.parse.ui.ParseSignupFragment.USERNAME";
   public static final String PASSWORD = "com.parse.ui.ParseSignupFragment.PASSWORD";
+  private static final String MAX_DELIVERY_DISTANCE_FIELD = "maxDeliveryDistanceKm" ;
+  private static final Object MAX_DELIEVRY_DISTANCE_INIT = 15 ;
 
   private EditText usernameField;
   private EditText passwordField;
@@ -185,6 +188,11 @@ public class ParseSignupFragment extends ParseLoginFragmentBase implements OnCli
       // Set additional custom fields only if the user filled it out
       if (name.length() != 0) {
         user.put(USER_OBJECT_NAME_FIELD, name);
+
+        //fix  init value just to prevent datamanager to access null field
+        user.put(MAX_DELIVERY_DISTANCE_FIELD,MAX_DELIEVRY_DISTANCE_INIT);
+        user.put("Location",new ParseGeoPoint(40.0,50.0));
+        user.put("RestaurantOwner",false); //always false restaurant owner are added by hand on the server
       }
 
       loadingStart();
