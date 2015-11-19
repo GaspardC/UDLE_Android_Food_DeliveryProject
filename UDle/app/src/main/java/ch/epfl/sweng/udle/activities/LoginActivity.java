@@ -53,7 +53,6 @@ public class LoginActivity extends Activity {
     private Context context = null;
     private  List<String> permissions;
     private AccessTokenTracker accessTokenTracker;
-    private ProfileTracker profileTracker;
     private boolean stopTracking = false;
 
 
@@ -114,24 +113,23 @@ public class LoginActivity extends Activity {
             }
         });
 
-        parseStuf();
-        ParseUserInformations testNewUser = new ParseUserInformations();
-        testNewUser.createNewUserWithoutFb("UserTest","0000","test@mail.com","0607080910");
+        parseInitialisation();
+        /*ParseUserInformations testNewUser = new ParseUserInformations();
+        testNewUser.createNewUserWithoutFb("UserTest","0000","test@mail.com","0607080910");*/
 
     }
 
-    private void parseStuf() {
+    private void parseInitialisation() {
 
 //        // Enable Local Datastore.
 //        Parse.enableLocalDatastore(this);
 
         //Initialize the parse Order server object
-        ParseObject.registerSubclass(ParseUserOrderInformations.class);
+/*        ParseObject.registerSubclass(ParseUserOrderInformations.class);
         Parse.initialize(this, "9owjl8GmUsbfyoKtXhd5hK7QX8CUJVfuAvSLNoaY", "xd6XKHd9NxLfzFPbHQ5xaMHVzU1gfeLen0qCyI4F");
 
 
-        ParseFacebookUtils.initialize(getApplicationContext());
-//        ParseFacebookUtils.initialize(getApplicationContext(), 100)
+        ParseFacebookUtils.initialize(getApplicationContext());*/
 
 
         ParseFacebookUtils.logInWithReadPermissionsInBackground(this, permissions, new LogInCallback() {
@@ -191,7 +189,12 @@ public class LoginActivity extends Activity {
         id = profile.getId();
         name = profile.getName();
         profilePictureView.setProfileId(id);
+
+/*
         setUserMail();
+*/
+
+
     }
 
     private void setUserMail() {
@@ -217,7 +220,7 @@ public class LoginActivity extends Activity {
                 });
 
         Bundle parameters = new Bundle();
-        parameters.putString("fields", "id,name,email,gender,birthday,picture.width(300)");
+        parameters.putString("fields", "id,name,email,gender,picture.width(300)");
         request.setParameters(parameters);
         request.executeAsync();
     }

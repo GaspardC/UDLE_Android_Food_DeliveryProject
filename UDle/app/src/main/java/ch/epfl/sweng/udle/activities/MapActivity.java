@@ -57,6 +57,7 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
         setContentView(R.layout.activity_map);
         markerLayout = (LinearLayout) findViewById(R.id.locationMarker);
         dlgAlert = new AlertDialog.Builder(this);
+        //FIXME if it the first connection the user hqs not yet a location and it will crash inside dtanamanger (cf user.getmaxdelivery)
         data = new DataManager();
         autoCompView = (AutoCompleteTextView) findViewById(R.id.autoCompleteTextView2);
         googleAdapter = new GooglePlacesAutocompleteAdapter(this, R.layout.list_item);
