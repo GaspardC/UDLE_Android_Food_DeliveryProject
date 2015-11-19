@@ -64,8 +64,6 @@ import ch.epfl.sweng.udle.network.DataManager;
 
 public class DeliveryRestaurantMapActivity extends AppCompatActivity {
 
-    private static final int RED_LOGO = 0;
-    private static final int GREEN_LOGO = 1;
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
     private boolean showMap = true;
