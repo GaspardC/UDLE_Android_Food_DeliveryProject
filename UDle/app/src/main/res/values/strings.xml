@@ -46,4 +46,6 @@
     <string name="acceptCommand">Accept Command</string>
     <string name="expectedTimeNotValid">Please enter an expected time</string>
     <string name="commandDelivered">Command Delivered</string>
+
+    <string name="orderedBy">Ordered by: </string>
 </resources>

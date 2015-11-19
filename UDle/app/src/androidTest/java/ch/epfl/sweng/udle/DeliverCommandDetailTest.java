@@ -39,12 +39,23 @@ public class DeliverCommandDetailTest{
     @Test
     public void deliveryAddressTest(){
         setUpIntentAndActivityForNewOrders();
-        onView(withId(R.id.DeliverCommandDetail_deliveryAddress)).check(matches(withText(orderElement.getDeliveryAddress())));
+        onView(withId(R.id.DeliverCommandDetail_deliveryAddress)).check(matches(withText("Address for the deliver 1, 1002 SwEng")));
     }
     @Test
     public void deliveryAddressTestEnRouteOrder(){
         setUpIntentAndActivityForEnRouteOrders();
-        onView(withId(R.id.DeliverCommandDetail_deliveryAddress)).check(matches(withText(orderElement.getDeliveryAddress())));
+        onView(withId(R.id.DeliverCommandDetail_deliveryAddress)).check(matches(withText("Address for the deliver 1, 1002 SwEng")));
+    }
+
+    @Test
+    public void deliveryNameTest(){
+        setUpIntentAndActivityForNewOrders();
+        onView(withId(R.id.DeliverCommandDetail_deliveryName)).check(matches(withText("User Name 1")));
+    }
+    @Test
+    public void deliveryNameTestEnRouteOrder(){
+        setUpIntentAndActivityForEnRouteOrders();
+        onView(withId(R.id.DeliverCommandDetail_deliveryName)).check(matches(withText("User Name 1")));
     }
 
 
@@ -126,6 +137,7 @@ public class DeliverCommandDetailTest{
         location1.setLongitude(6.566);
         orderElement1.setDeliveryLocation(location1);
         orderElement1.setDeliveryAddress("Address for the deliver 1, 1002 SwEng");
+        orderElement1.setOrderedUserName("User Name 1");
         return orderElement1;
     }
 }
