@@ -44,7 +44,8 @@
             android:theme="@style/SlideMenuTheme">
 
         </activity>
-        <activity android:name=".activities.WaitingActivity" >
+        <activity android:name=".activities.WaitingActivity"
+            android:theme="@style/SlideMenuTheme">
         </activity>
         <activity android:name=".activities.PaymentActivity"
             android:theme="@style/SlideMenuTheme">
@@ -53,8 +54,8 @@
         <activity android:name=".activities.DeliveryActivity"
             android:theme="@style/SlideMenuTheme">
         </activity>
-        <activity android:name=".activities.DeliveryRestaurantMapActivity" >
-
+        <activity android:name=".activities.DeliveryRestaurantMapActivity"
+            android:theme="@style/SlideMenuTheme">
         </activity>
         <activity android:name=".activities.DeliverCommandDetailActivity" >
         </activity>

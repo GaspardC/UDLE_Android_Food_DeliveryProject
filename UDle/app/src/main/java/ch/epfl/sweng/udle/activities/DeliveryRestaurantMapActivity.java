@@ -62,7 +62,7 @@ import ch.epfl.sweng.udle.network.DataManager;
  * He can interact with these orders by clicking on them
  */
 
-public class DeliveryRestaurantMapActivity extends AppCompatActivity {
+public class DeliveryRestaurantMapActivity extends SlideMenuActivity {
 
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
