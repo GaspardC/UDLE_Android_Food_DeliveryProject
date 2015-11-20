@@ -22,7 +22,7 @@ import ch.epfl.sweng.udle.Food.OrderElement;
 import ch.epfl.sweng.udle.Food.Orders;
 import ch.epfl.sweng.udle.R;
 
-public class RecapActivity extends AppCompatActivity {
+public class RecapActivity extends SlideMenuActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

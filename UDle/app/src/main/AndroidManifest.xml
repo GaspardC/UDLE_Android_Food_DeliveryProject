@@ -40,11 +40,15 @@
         <activity android:name=".activities.MapActivity"
             android:theme="@style/SlideMenuTheme">
         </activity>
-        <activity android:name=".activities.RecapActivity" >
+        <activity android:name=".activities.RecapActivity"
+            android:theme="@style/SlideMenuTheme">
+
         </activity>
         <activity android:name=".activities.WaitingActivity" >
         </activity>
-        <activity android:name=".activities.PaymentActivity" >
+        <activity android:name=".activities.PaymentActivity"
+            android:theme="@style/SlideMenuTheme">
+
         </activity>
         <activity android:name=".activities.DeliveryActivity"
             android:theme="@style/SlideMenuTheme">
