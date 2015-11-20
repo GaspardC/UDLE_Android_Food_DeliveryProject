@@ -46,4 +46,6 @@
     <string name="acceptCommand">Accept Command</string>
     <string name="expectedTimeNotValid">Please enter an expected time</string>
     <string name="commandDelivered">Command Delivered</string>
+
+    <string name="noMenuNoOptions">No menus selected. You need to select at least one menu in order to choose your options for it.</string>
 </resources>
