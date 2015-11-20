@@ -20,6 +20,8 @@
     <string name="NoMenuSelected">You need to select at least one menu</string>
     <string name="title_activity_maps">Map</string>
     <string name="buttonCallDeliveryGuy">Call Delivery Guy</string>
+    <string name="markerTitle">Delivery Address</string>
+
     <string name="recapOfCommand">Recap of the command:</string>
     <string name="deliveryAddress">Delivery Address:</string>
     <string name="deliveryCost">Delivery Cost:</string>

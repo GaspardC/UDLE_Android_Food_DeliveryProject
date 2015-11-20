@@ -66,14 +66,28 @@ public class DeliveryActivity extends SlideMenuActivity {
     private void placeMarkers() {
         Location deliveryLocation;
         String deliveryAddress;
-
         // Get delivery location
         deliveryLocation = Orders.getActiveOrder().getDeliveryLocation();
         deliveryAddress = Orders.getActiveOrder().getDeliveryAddress();
+
+        /*
+        Location restaurantLocation;
+        String restaurantAddress;
+
+        // Get delivery location
+        restaurantLocation = Something to do;
+        restaurantAddress = Something to do;
+
+        mMap.addMarker(new MarkerOptions()
+                        .position(new LatLng(deliveryLocation.getLatitude(), deliveryLocation.getLongitude()))
+                        .title("Restaurant address")
+                        .snippet(restaurantAddress)
+        );
+        */
         LatLng latLng = new LatLng(deliveryLocation.getLatitude(), deliveryLocation.getLongitude());
         mMap.addMarker(new MarkerOptions()
                         .position(latLng)
-                        .title("delivery address")
+                        .title(getResources().getString(R.string.markerTitle))
                         .snippet(deliveryAddress)
                         .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker))
         );
