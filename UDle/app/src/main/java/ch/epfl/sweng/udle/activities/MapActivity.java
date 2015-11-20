@@ -271,27 +271,6 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
         // set map type
         mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 
-        if( location == null) return;
-
-
-        // Get latitude/ longitude of the current location
-        double latitude = location.getLatitude();
-        double longitude = location.getLongitude();
-        LatLng latLng = new LatLng(latitude, longitude);
-
-
-        //Set delivery address
-        deliveryAddress = getCompleteAddressString(latitude,longitude);
-        Log.i("Message :", deliveryAddress);
-
-
-        // Show the current location in Google Map
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-
-        // Zoom in the Google Map
-        LatLng myCoordinates = new LatLng(latitude, longitude);
-        CameraUpdate yourLocation = CameraUpdateFactory.newLatLngZoom(myCoordinates, 15);
-        mMap.animateCamera(yourLocation);
         if (!isLocationInitialised()){
             mMap.setOnMyLocationChangeListener(myLocationChangeListener);
         }else{
@@ -310,8 +289,6 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
             }
         });
     }
-
-
 
     private void storeNearbyRestaurants(){
         //Put current location in parse.com
