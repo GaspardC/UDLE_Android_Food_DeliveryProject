@@ -185,6 +185,11 @@ public class DataManager {
     }
 
 
+    public static String getUserName(){
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        return currentUser.getUsername();
+    }
+
     public static ParseGeoPoint getUserLocation(){
         ParseUser currentUser = ParseUser.getCurrentUser();
         return currentUser.getParseGeoPoint("Location");

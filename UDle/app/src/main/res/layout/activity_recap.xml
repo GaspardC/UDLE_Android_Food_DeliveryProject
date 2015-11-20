@@ -21,6 +21,27 @@
         android:gravity="center"/>
 
     <LinearLayout
+        android:id="@+id/RecapActivity_deliveryUserName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/orderedBy"
+            android:textSize="15sp"/>
+        <TextView
+            android:id="@+id/RecapActivity_deliveryName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"/>
+    </LinearLayout>
+
+    <LinearLayout
         android:id="@+id/RecapActivity_deliveryAdd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

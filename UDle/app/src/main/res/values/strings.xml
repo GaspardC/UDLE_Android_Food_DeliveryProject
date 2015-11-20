@@ -37,13 +37,15 @@
     <string name="restaurantMode">Restaurant mode</string>
     <string name="restaurantModeDesc">go to restaurant map activity</string>
     <string name="about">About</string>
-	
+
     <string name="notImplemented">Not implemented</string>
->>>>>>> master
+
     <string name="TitleAlertBack">Give up the order"</string>
     <string name="MessageAlertBack">Are you sure you want to go back? This will delete your order</string>
     <string name="expectedTime">Expected Time</string>
     <string name="acceptCommand">Accept Command</string>
     <string name="expectedTimeNotValid">Please enter an expected time</string>
     <string name="commandDelivered">Command Delivered</string>
+
+    <string name="orderedBy">Ordered by: </string>
 </resources>
