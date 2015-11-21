@@ -36,7 +36,7 @@ import ch.epfl.sweng.udle.R;
  * Shows the user profile. This simple activity can function regardless of whether the user
  * is currently logged in.
  */
-public class ProfileActivity extends Activity {
+public class ProfileActivity extends SlideMenuActivity {
   private static final int LOGIN_REQUEST = 0;
 
   private TextView titleTextView;
