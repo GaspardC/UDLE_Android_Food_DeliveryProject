@@ -24,6 +24,7 @@ import ch.epfl.sweng.udle.Food.OptionsTypes;
 import ch.epfl.sweng.udle.Food.OrderElement;
 import ch.epfl.sweng.udle.Food.Orders;
 import ch.epfl.sweng.udle.R;
+import ch.epfl.sweng.udle.network.DataManager;
 
 public class DeliverCommandDetailActivity extends AppCompatActivity {
 
@@ -43,6 +44,9 @@ public class DeliverCommandDetailActivity extends AppCompatActivity {
 
         TextView priceTextView = (TextView) findViewById(R.id.DeliverCommandDetail_totalCost);
         priceTextView.setText(String.format("%.2f", order.getTotalCost()) + Orders.getMoneyDevise());
+
+        TextView deliveryName = (TextView) findViewById(R.id.DeliverCommandDetail_deliveryName);
+        deliveryName.setText(order.getOrderedUserName());
 
         TextView deliveryAddress = (TextView) findViewById(R.id.DeliverCommandDetail_deliveryAddress);
         deliveryAddress.setText(order.getDeliveryAddress());

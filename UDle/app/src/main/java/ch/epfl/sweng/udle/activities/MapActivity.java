@@ -104,6 +104,7 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
             OrderElement orderElement = new OrderElement();
             orderElement.setDeliveryLocation(getLocation());
             orderElement.setDeliveryAddress(getDeliveryAdress());
+            orderElement.setOrderedUserName(DataManager.getUserName());
             Orders.setActiveOrder(orderElement);
             storeNearbyRestaurants();
             Intent intent = new Intent(this, MainActivity.class);

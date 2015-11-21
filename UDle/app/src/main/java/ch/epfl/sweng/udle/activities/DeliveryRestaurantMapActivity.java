@@ -309,6 +309,7 @@ public class DeliveryRestaurantMapActivity extends AppCompatActivity {
         location1.setLongitude(6.566);
         orderElement1.setDeliveryLocation(location1);
         orderElement1.setDeliveryAddress("Address for the deliver 1, 1002 SwEng");
+        orderElement1.setOrderedUserName("User Name");
         orders.add(orderElement1);
 
         Menu menu2 = new Menu();
@@ -324,6 +325,7 @@ public class DeliveryRestaurantMapActivity extends AppCompatActivity {
         location2.setLongitude(6.556);
         orderElement2.setDeliveryLocation(location2);
         orderElement2.setDeliveryAddress("Address for the deliver 2, 1002 SwEng");
+        orderElement2.setOrderedUserName("User Name2");
         orders.add(orderElement2);
 
         Menu menu3 = new Menu();
@@ -345,6 +347,7 @@ public class DeliveryRestaurantMapActivity extends AppCompatActivity {
         location3.setLongitude(6.496);
         orderElement3.setDeliveryLocation(location3);
         orderElement3.setDeliveryAddress("Address for the deliver 3, 1002 SwEng");
+        orderElement3.setOrderedUserName("User Name3");
         orders.add(orderElement3);
 
         return orders;
