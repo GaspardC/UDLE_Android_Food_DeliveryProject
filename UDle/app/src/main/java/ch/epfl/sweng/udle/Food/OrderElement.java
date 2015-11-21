@@ -15,6 +15,8 @@ public class OrderElement {
     private Location deliveryLocation;
     private String deliveryAddress;
 
+    private String orderedBy;
+
 
 
     public OrderElement(){
@@ -22,6 +24,7 @@ public class OrderElement {
         this.drinks = new ArrayList<>();
         this.deliveryLocation = null;
         this.deliveryAddress = "";
+        this.orderedBy = "";
     }
 
 
@@ -91,5 +94,13 @@ public class OrderElement {
         }
 
         return cost;
+    }
+
+    public String getOrderedUserName() {
+        return orderedBy;
+    }
+
+    public void setOrderedUserName(String userName){
+        this.orderedBy = userName;
     }
 }

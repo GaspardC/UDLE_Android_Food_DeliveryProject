@@ -36,7 +36,7 @@
     <string name="restaurantMode">Restaurant mode</string>
     <string name="restaurantModeDesc">go to restaurant map activity</string>
     <string name="about">About</string>
-	
+
     <string name="notImplemented">Not implemented</string>
     <string name="TitleAlertBack">Give up the order"</string>
     <string name="MessageAlertBack">Are you sure you want to go back? This will delete your order</string>
@@ -52,9 +52,8 @@
     <string name="profile_logout_button_label">Log out</string>
     <string name="profile_title_logged_out">You must be logged in to view your profile</string>
     <string name="profile_login_button_label">Log in</string>
-
-
     <string name="parse_app_id">9owjl8GmUsbfyoKtXhd5hK7QX8CUJVfuAvSLNoaY</string>
     <string name="parse_client_key">xd6XKHd9NxLfzFPbHQ5xaMHVzU1gfeLen0qCyI4F</string>
     <string name="facebook_app_id">1483920968589089</string>
+    <string name="orderedBy">Ordered by: </string>
 </resources>

@@ -9,10 +9,12 @@ import ch.epfl.sweng.udle.Food.DrinkTypes;
 import ch.epfl.sweng.udle.Food.OrderElement;
 import ch.epfl.sweng.udle.Food.Orders;
 import ch.epfl.sweng.udle.activities.RecapActivity;
+import ch.epfl.sweng.udle.network.DataManager;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
 /**
@@ -38,7 +40,15 @@ public class RecapTest extends ActivityInstrumentationTestCase2<RecapActivity> {
         orderElement.addToDrinks(DrinkTypes.COCA);
         orderElement.addToDrinks(DrinkTypes.WATER);
 
+        orderElement.setOrderedUserName("Test userName");
         Orders.setActiveOrder(orderElement);
+    }
+
+
+    @Test
+    public void testUserName(){
+        getActivity();
+        onView(withId(R.id.RecapActivity_deliveryName)).check(matches(withText("Test userName")));
     }
 
 

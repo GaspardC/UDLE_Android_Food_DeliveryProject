@@ -21,6 +21,7 @@ import ch.epfl.sweng.udle.Food.OptionsTypes;
 import ch.epfl.sweng.udle.Food.OrderElement;
 import ch.epfl.sweng.udle.Food.Orders;
 import ch.epfl.sweng.udle.R;
+import ch.epfl.sweng.udle.network.DataManager;
 
 public class RecapActivity extends SlideMenuActivity {
 
@@ -31,6 +32,11 @@ public class RecapActivity extends SlideMenuActivity {
 
         OrderElement order = Orders.getActiveOrder();
         String moneyDevise = Orders.getMoneyDevise();
+
+
+        String userName = order.getOrderedUserName();
+        TextView deliveryName = (TextView) findViewById(R.id.RecapActivity_deliveryName);
+        deliveryName.setText(userName);
 
         String address = order.getDeliveryAddress();
         TextView deliveryAddress = (TextView) findViewById(R.id.RecapActivity_deliveryAddress);

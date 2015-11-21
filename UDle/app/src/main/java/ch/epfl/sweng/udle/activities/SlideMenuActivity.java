@@ -28,6 +28,8 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import ch.epfl.sweng.udle.R;
+import ch.epfl.sweng.udle.network.DataManager;
+
 /**
  * You need to add the following line in the activity declaration in AndroidManifest.xml
  *
@@ -69,6 +71,9 @@ public abstract class SlideMenuActivity extends AppCompatActivity {
 
 
         mTitle = mDrawerTitle = getTitle();//
+
+        TextView username = (TextView) findViewById(R.id.SlideMenu_userName);
+        username.setText(DataManager.getUserName());
 
         // main layout
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
