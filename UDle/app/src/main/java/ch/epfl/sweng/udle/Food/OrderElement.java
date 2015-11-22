@@ -75,12 +75,22 @@ public class OrderElement {
     }
     public void removeToDrinks(DrinkTypes drink){
         if(drink == null){
-            throw new IllegalArgumentException("Ty to add a null drink");
+            throw new IllegalArgumentException("Ty to remove a null drink");
         }
         else if(this.drinks.size() != 0){
             this.drinks.remove(drink);
         }
     }
+
+    public void removeToFood(Menu menu){
+        if(menu == null){
+            throw new IllegalArgumentException("Ty to remove a null menu");
+        }
+        else if(this.orderList.size() != 0){
+            this.orderList.remove(menu);
+        }
+    }
+
 
 
     public double getTotalCost(){
