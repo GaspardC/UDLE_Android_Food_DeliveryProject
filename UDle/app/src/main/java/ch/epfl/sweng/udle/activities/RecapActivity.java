@@ -58,7 +58,7 @@ public class RecapActivity extends AppCompatActivity {
             @Override
             public boolean onItemLongClick(AdapterView<?> arg0, View arg1, final int pos, long id) {
                 dlgAlert.setMessage(((HashMap<String, String>) listView.getAdapter().getItem(pos)).get("elem") + "\t?");
-                dlgAlert.setTitle("Remove :");
+                dlgAlert.setTitle(R.string.removeMessage_1);
                 dlgAlert.setPositiveButton("Ok",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {

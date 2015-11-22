@@ -37,7 +37,7 @@
     <string name="restaurantMode">Restaurant mode</string>
     <string name="restaurantModeDesc">go to restaurant map activity</string>
     <string name="about">About</string>
-
+    <string name="removeMessage_1">"Remove :"</string>
     <string name="notImplemented">Not implemented</string>
 
     <string name="TitleAlertBack">Give up the order"</string>
