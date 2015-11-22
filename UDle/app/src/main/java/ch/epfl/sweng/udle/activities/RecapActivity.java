@@ -13,12 +13,14 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
 import ch.epfl.sweng.udle.Food.DrinkTypes;
 import ch.epfl.sweng.udle.Food.FoodTypes;
 import ch.epfl.sweng.udle.Food.Menu;
+import ch.epfl.sweng.udle.Food.OptionsTypes;
 import ch.epfl.sweng.udle.Food.OrderElement;
 import ch.epfl.sweng.udle.Food.Orders;
 import ch.epfl.sweng.udle.R;
@@ -121,12 +123,37 @@ public class RecapActivity extends AppCompatActivity {
                 }
             }
         }else{
-        // It's a menu
-
-
+            // It's a menu
+            String[] temp2 = elementToRemove.get("options").split(" ; ");
+            ArrayList<OptionsTypes> tempListOption = new ArrayList<>();
+            for (int j = 0; j < temp2.length; j++){
+                for (OptionsTypes options : OptionsTypes.values()) {
+                    if (temp2[j].equals(options.toString()))
+                        tempListOption.add(options);
+                }
+            }
+            for(Menu menu : order.getOrder()) {
+                if (elem.equals(menu.getFood().toString())){
+                    if(compareLists(menu.getOptions(),tempListOption)) {
+                        order.removeToFood(menu);
+                        break;
+                    }
+                }
+            }
         }
         update();
     }
+
+    public boolean compareLists(ArrayList<OptionsTypes> a, ArrayList<OptionsTypes> b){
+        if (a == null && b == null) return true;
+        if ((a.size() != b.size()) || (a == null && b!= null) || (a != null && b== null)){
+            return false;
+        }
+        Collections.sort(a);
+        Collections.sort(b);
+        return a.equals(b);
+    }
+
     public void setDeleteAll(boolean bool){
         deleteAll = bool;
     }
