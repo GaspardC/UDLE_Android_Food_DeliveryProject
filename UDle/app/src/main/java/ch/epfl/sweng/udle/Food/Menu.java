@@ -52,15 +52,65 @@ public class Menu {
         }
     }
 
+    public boolean equals(Menu menu) {
+        int equalityCheckNbr = 0;
+
+        if (this.food.toString().equals(menu.food.toString())){
+            for (OptionsTypes options : this.options){
+                for (OptionsTypes optionsToCompare : menu.getOptions()){
+                    if (options.toString() == optionsToCompare.toString()){
+                        equalityCheckNbr ++;
+                    }
+                }
+            }
+            boolean equalityCheck = (equalityCheckNbr == this.options.size());
+            boolean sizeCheck = (this.options.size() == menu.getOptions().size());
+
+            return (equalityCheck && sizeCheck);
+        }
+        else{
+            return false;
+        }
+
+    }
+
     public static void displayInRecap(List<HashMap<String, String>> list){
-        for(Menu menu : Orders.getActiveOrder().getOrder()){
-            String food = "1 " + menu.getFood().toString();
-            String price = String.format("%.2f", menu.getFood().getPrice());
+        ArrayList<Menu> menusInRecap = new ArrayList<>();
+        ArrayList<Integer> menuNumbers = new ArrayList<>();
+
+        for (Menu menu : Orders.getActiveOrder().getOrder()){
+            boolean added = false;
+            for (int i = 0; i < menusInRecap.size() ; i++){
+                if (menusInRecap.get(i).equals(menu)){
+                    int actualValue = menuNumbers.get(i);
+                    menuNumbers.set(i, actualValue+1);
+                    added = true;
+                }
+            }
+            if (!added){
+                menusInRecap.add(menu);
+                menuNumbers.add(1);
+            }
+        }
+
+        for(int i = 0; i < menusInRecap.size() ; i++){
+            Menu menu = menusInRecap.get(i);
+            int menuNbr = menuNumbers.get(i);
+
+            String food = String.valueOf(menuNbr) + "x " + menu.getFood().toString();
+            double priceNbr = menuNbr * menu.getFood().getPrice();
+            String price = String.format("%.2f", priceNbr);
             price = price + Orders.getMoneyDevise();
 
-            String option = "";
-            for( OptionsTypes opt : menu.getOptions()){
-                option = option + opt.toString() + " ; " ;
+            String option;
+            if (menu.getOptions().size() == 0){
+                option = "No options selected.";
+            }
+            else{
+                option = "Options:  ";
+                for( OptionsTypes opt : menu.getOptions()){
+                    option = option + opt.toString() + " ; " ;
+                }
             }
 
             HashMap<String, String> element = new HashMap<>();
