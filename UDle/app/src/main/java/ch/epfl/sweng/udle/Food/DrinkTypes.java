@@ -36,7 +36,7 @@ public enum DrinkTypes {
             int nbaOccurrences = Collections.frequency(Orders.getActiveOrder().getDrinks(), drinkType);
 
             if (nbaOccurrences != 0){
-                String drink = String.valueOf(nbaOccurrences) +"x " + drinkType.toString();
+                String drink = String.valueOf(nbaOccurrences) +" " + drinkType.toString();
                 String price = String.format("%.2f", drinkType.getPrice()*nbaOccurrences);
                 price = price + Orders.getMoneyDevise();
 
