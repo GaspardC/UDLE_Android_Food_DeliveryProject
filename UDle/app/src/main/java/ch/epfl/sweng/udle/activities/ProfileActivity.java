@@ -25,12 +25,15 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.parse.ParseUser;
 import com.parse.ui.ParseLoginBuilder;
 
 import ch.epfl.sweng.udle.R;
+import ch.epfl.sweng.udle.network.DataManager;
 
 /**
  * Shows the user profile. This simple activity can function regardless of whether the user
@@ -43,9 +46,9 @@ public class ProfileActivity extends SlideMenuActivity {
   private TextView emailTextView;
   private TextView nameTextView;
   private Button loginOrLogoutButton;
-
+  private SeekBar seekBarRestaurantDistance;
   private ParseUser currentUser;
-
+  private  TextView seekBarValue;
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -55,6 +58,8 @@ public class ProfileActivity extends SlideMenuActivity {
     emailTextView = (TextView) findViewById(R.id.profile_email);
     nameTextView = (TextView) findViewById(R.id.profile_name);
     loginOrLogoutButton = (Button) findViewById(R.id.login_or_logout_button);
+    seekBarRestaurantDistance = (SeekBar) findViewById(R.id.seekBarRestaurantDistance);
+    seekBarValue = (TextView)findViewById(R.id.value_distance_restaurant);
     titleTextView.setText(R.string.profile_title_logged_in);
 
     loginOrLogoutButton.setOnClickListener(new OnClickListener() {
@@ -98,6 +103,44 @@ public class ProfileActivity extends SlideMenuActivity {
       nameTextView.setText(fullName);
     }
     loginOrLogoutButton.setText(R.string.profile_logout_button_label);
+    final ParseUser currentUser = DataManager.getUser();
+    if(currentUser == null){
+      return;
+    }
+    else{
+      if(currentUser.getBoolean("RestaurantOwner")){
+        seekBarRestaurantDistance.setVisibility(View.VISIBLE);
+        seekBarValue.setVisibility(View.VISIBLE);
+
+
+          final int[] seekvalue = {0};
+
+          seekBarRestaurantDistance.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener(){
+
+              @Override
+              public void onProgressChanged(SeekBar seekBar, int progress,
+                                            boolean fromUser) {
+                  seekBarValue.setText("Radius of delivery : "+String.valueOf(progress) + " km");
+                  seekvalue[0] = progress;
+              }
+
+              @Override
+              public void onStartTrackingTouch(SeekBar seekBar) {
+              }
+
+              @Override
+              public void onStopTrackingTouch(SeekBar seekBar) {
+                  currentUser.put("radiusOfDelivery", seekvalue[0]);
+                  currentUser.saveInBackground();
+              }
+          });
+
+  }
+      else{
+        seekBarRestaurantDistance.setVisibility(View.GONE);
+        seekBarValue.setVisibility(View.GONE);
+      }
+    }
   }
 
   /**
