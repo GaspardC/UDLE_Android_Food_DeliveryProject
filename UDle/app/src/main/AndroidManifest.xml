@@ -98,7 +98,8 @@
             android:theme="@style/SlideMenuTheme">
 
         </activity>
-        <activity android:name=".activities.MenuOptionsDrinks.MainActivity" >
+        <activity android:name=".activities.MenuOptionsDrinks.MainActivity"
+            android:theme="@style/SlideMenuTheme">
         </activity>
 
         <activity
