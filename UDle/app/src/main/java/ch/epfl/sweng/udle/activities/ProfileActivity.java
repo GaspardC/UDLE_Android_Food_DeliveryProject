@@ -111,7 +111,11 @@ public class ProfileActivity extends SlideMenuActivity {
       if(currentUser.getBoolean("RestaurantOwner")){
         seekBarRestaurantDistance.setVisibility(View.VISIBLE);
         seekBarValue.setVisibility(View.VISIBLE);
-
+        int seekbarValueInit = currentUser.getInt("maxDeliveryDistanceKm");
+        if(0 != seekbarValueInit){
+            seekBarRestaurantDistance.setProgress(seekbarValueInit);
+            seekBarValue.setText("Radius of delivery : " + String.valueOf(seekbarValueInit) + " km");
+          }
 
           final int[] seekvalue = {0};
 
@@ -130,7 +134,7 @@ public class ProfileActivity extends SlideMenuActivity {
 
               @Override
               public void onStopTrackingTouch(SeekBar seekBar) {
-                  currentUser.put("radiusOfDelivery", seekvalue[0]);
+                  currentUser.put("maxDeliveryDistanceKm", seekvalue[0]);
                   currentUser.saveInBackground();
               }
           });
@@ -150,6 +154,8 @@ public class ProfileActivity extends SlideMenuActivity {
     titleTextView.setText(R.string.profile_title_logged_out);
     emailTextView.setText("");
     nameTextView.setText("");
+    seekBarRestaurantDistance.setVisibility(View.GONE);
+    seekBarValue.setVisibility(View.GONE);
     loginOrLogoutButton.setText(R.string.profile_login_button_label);
   }
 }
