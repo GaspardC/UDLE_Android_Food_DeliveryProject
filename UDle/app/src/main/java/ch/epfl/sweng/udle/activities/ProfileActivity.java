@@ -93,7 +93,7 @@ public class ProfileActivity extends SlideMenuActivity {
   private void showProfileLoggedIn() {
     titleTextView.setText(R.string.profile_title_logged_in);
     emailTextView.setText(currentUser.getEmail());
-    String fullName = currentUser.getString("name");
+    String fullName = currentUser.getString("username");
     if (fullName != null) {
       nameTextView.setText(fullName);
     }
