@@ -20,6 +20,8 @@
     <string name="NoMenuSelected">You need to select at least one menu</string>
     <string name="title_activity_maps">Map</string>
     <string name="buttonCallDeliveryGuy">Call Delivery Guy</string>
+    <string name="markerTitle">Delivery Address</string>
+
     <string name="recapOfCommand">Recap of the command:</string>
     <string name="deliveryAddress">Delivery Address:</string>
     <string name="deliveryCost">Delivery Cost:</string>
@@ -29,6 +31,9 @@
     <string name="descriptionBurgerRotating">image stop rotating when order accepted</string>
     <string name="infotextwaiting">Please wait for a shop to accept your command</string>
     <string name="infotextwaitingConfirmed">Congrats, your order is coming for you</string>
+
+    <string name="ConfirmedOrders">Confirmed Order</string>
+    <string name="WaitingOrders">Waiting Order</string>
 
 	<string name="sampleText">This is a sample text.</string>
 	<string name="openSlideMenu">Open slide menu</string>

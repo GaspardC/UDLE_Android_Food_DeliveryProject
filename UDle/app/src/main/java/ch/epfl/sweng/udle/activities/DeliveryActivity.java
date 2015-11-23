@@ -1,26 +1,20 @@
 package ch.epfl.sweng.udle.activities;
 
 import android.content.ActivityNotFoundException;
-import android.content.Context;
-import android.content.Intent;
-import android.location.Criteria;
 import android.location.Location;
-import android.location.LocationManager;
-import android.net.Uri;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import ch.epfl.sweng.udle.Food.Orders;
 import ch.epfl.sweng.udle.R;
-import ch.epfl.sweng.udle.network.DataManager;
 
 public class DeliveryActivity extends SlideMenuActivity {
 
@@ -31,6 +25,7 @@ public class DeliveryActivity extends SlideMenuActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_delivery);
         setUpMapIfNeeded();
+        placeMarkers();
         slideMenuItems.add(new NavItem("Special Delivery", "option added from the child activity", R.mipmap.ic_launcher));
     }
 
@@ -61,47 +56,48 @@ public class DeliveryActivity extends SlideMenuActivity {
         }
     }
 
+    private void setCamera(LatLng latLng) {
+        // Show the argument location in Google Map
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+        // Zoom in the Google Map
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 12));
+    }
+
+    private void placeMarkers() {
+        Location deliveryLocation;
+        String deliveryAddress;
+        // Get delivery location
+        deliveryLocation = Orders.getActiveOrder().getDeliveryLocation();
+        deliveryAddress = Orders.getActiveOrder().getDeliveryAddress();
+
+        /*
+        Location restaurantLocation;
+        String restaurantAddress;
+
+        // Get delivery location
+        restaurantLocation = Something to do;
+        restaurantAddress = Something to do;
+
+        mMap.addMarker(new MarkerOptions()
+                        .position(new LatLng(deliveryLocation.getLatitude(), deliveryLocation.getLongitude()))
+                        .title("Restaurant address")
+                        .snippet(restaurantAddress)
+        );
+        */
+        LatLng latLng = new LatLng(deliveryLocation.getLatitude(), deliveryLocation.getLongitude());
+        mMap.addMarker(new MarkerOptions()
+                        .position(latLng)
+                        .title(getResources().getString(R.string.markerTitle))
+                        .snippet(deliveryAddress)
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker))
+        );
+
+        setCamera(latLng);
+    }
     private void setUpMap() {
         // Enable MyLocation Layer of Google Map
         mMap.setMyLocationEnabled(true);
-
-        // Get LocationManager object from System Service LOCATION_SERVICE
-        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-
-        // Create a criteria object to retrieve provider
-        Criteria criteria = new Criteria();
-
-        // Get the name of the best provider
-        String provider = locationManager.getBestProvider(criteria, true);
-
         // set map type
         mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-
-        Location myLocation;
-        try {
-            // Get Current Location
-            myLocation = locationManager.getLastKnownLocation(provider);
-
-            // Get latitude/ longitude of the current location
-            if(myLocation == null)  return;
-            double latitude = myLocation.getLatitude();
-            double longitude = myLocation.getLongitude();
-            LatLng latLng = new LatLng(latitude, longitude);
-
-            // Show the current location in Google Map
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-
-            // Zoom in the Google Map
-            //mMap.animateCamera(CameraUpdateFactory.zoomTo(14));
-            mMap.addMarker(new MarkerOptions().position(new LatLng(latitude + .001, longitude + .001)).title("Restaurant Location").snippet("ETA 5min"));
-            LatLng myCoordinates = new LatLng(latitude, longitude);
-            CameraUpdate yourLocation = CameraUpdateFactory.newLatLngZoom(myCoordinates, 15);
-            mMap.animateCamera(yourLocation);
-        }catch(SecurityException e){
-            Toast.makeText(getApplicationContext(), "You need to enable localisation" + e.getMessage(), Toast.LENGTH_LONG).show();
-            return;
-        }
     }
-
-
 }
