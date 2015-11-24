@@ -189,6 +189,13 @@ public class DeliveryRestaurantMapActivity extends AppCompatActivity {
         }
     }
 
+    private void setCamera(LatLng latLng) {
+        // Show the argument location in Google Map
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+        // Zoom in the Google Map
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
+    }
+
     /**
      * This is where we can add markers or lines, add listeners or move the camera. In this case, we
      * just add a marker near Africa.
@@ -198,69 +205,36 @@ public class DeliveryRestaurantMapActivity extends AppCompatActivity {
     private void setUpMap() {
         // Enable MyLocation Layer of Google Map
         mMap.setMyLocationEnabled(true);
-
-        // Get LocationManager object from System Service LOCATION_SERVICE
-        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-
-        // Create a criteria object to retrieve provider
-        Criteria criteria = new Criteria();
-
-        // Get the name of the best provider
-        String provider = locationManager.getBestProvider(criteria, true);
-
-        // Get Current Location
-
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                // TODO: Consider calling
-                //    public void requestPermissions(@NonNull String[] permissions, int requestCode)
-                // here to request the missing permissions, and then overriding
-                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                //                                          int[] grantResults)
-                // to handle the case where the user grants the permission. See the documentation
-                // for Activity#requestPermissions for more details.
-
-        Location myLocation = locationManager.getLastKnownLocation(provider);
-
         // set map type
         mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-
-        // Get latitude/ longitude of the current location
-        double latitude = myLocation.getLatitude();
-        double longitude = myLocation.getLongitude();
-        LatLng latLng = new LatLng(latitude, longitude);
-
-        // Show the current location in Google Map
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-
-        // Zoom in the Google Map
-
-        LatLng myCoordinates = new LatLng(latitude, longitude);
-        CameraUpdate yourLocation = CameraUpdateFactory.newLatLngZoom(myCoordinates, 12);
-        mMap.animateCamera(yourLocation);
-                return;
-            }
-        }
     }
 
     private void showWaitingOrders(){
-
-
-
+        boolean initialised = false;
         for(OrderElement order : waitingOrders) {
             Location location = order.getDeliveryLocation();
             String deliveryAddress = order.getDeliveryAddress();
             LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-            mMap.addMarker(new MarkerOptions().position(latLng).title("Waiting Order").snippet(deliveryAddress).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
+            if (!initialised) {
+                setCamera(latLng); // should be set on the restaurant location
+                initialised = true;
+            }
+            mMap.addMarker(new MarkerOptions()
+                    .position(latLng)
+                    .title(getResources().getString(R.string.WaitingOrders))
+                    .snippet(deliveryAddress)
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
         }
         for(OrderElement order : currentOrders) {
             Location location = order.getDeliveryLocation();
             String deliveryAddress = order.getDeliveryAddress();
             LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-            mMap.addMarker(new MarkerOptions().position(latLng).title("Confirmed Order").snippet(deliveryAddress).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+            mMap.addMarker(new MarkerOptions()
+                    .position(latLng)
+                    .title(getResources().getString(R.string.ConfirmedOrders))
+                    .snippet(deliveryAddress)
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
         }
-
         mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             @Override
             public void onInfoWindowClick(Marker marker) {
@@ -307,6 +281,7 @@ public class DeliveryRestaurantMapActivity extends AppCompatActivity {
         location1.setLongitude(6.566);
         orderElement1.setDeliveryLocation(location1);
         orderElement1.setDeliveryAddress("Address for the deliver 1, 1002 SwEng");
+        orderElement1.setOrderedUserName("User Name");
         orders.add(orderElement1);
 
         Menu menu2 = new Menu();
@@ -322,6 +297,7 @@ public class DeliveryRestaurantMapActivity extends AppCompatActivity {
         location2.setLongitude(6.556);
         orderElement2.setDeliveryLocation(location2);
         orderElement2.setDeliveryAddress("Address for the deliver 2, 1002 SwEng");
+        orderElement2.setOrderedUserName("User Name2");
         orders.add(orderElement2);
 
         Menu menu3 = new Menu();
@@ -343,6 +319,7 @@ public class DeliveryRestaurantMapActivity extends AppCompatActivity {
         location3.setLongitude(6.496);
         orderElement3.setDeliveryLocation(location3);
         orderElement3.setDeliveryAddress("Address for the deliver 3, 1002 SwEng");
+        orderElement3.setOrderedUserName("User Name3");
         orders.add(orderElement3);
 
         return orders;

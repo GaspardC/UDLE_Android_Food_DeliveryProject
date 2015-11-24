@@ -51,7 +51,15 @@ public class DrinkFragment extends Fragment {
     private void cocaInit() {
         Button cocaPlus = (Button) rlLayout.findViewById(R.id.cocaPlus);
         Button cocaMinus = (Button) rlLayout.findViewById(R.id.cocaMinus);
-        computeCocaPrice(0);
+
+        int nbr = 0;
+        for (DrinkTypes drink :Orders.getActiveOrder().getDrinks()){
+            if (drink.toString() == DrinkTypes.COCA.toString()){
+                nbr ++;
+            }
+        }
+        nbrCoca = nbr;
+        computeCocaPrice(nbrCoca);
 
         cocaPlus.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
@@ -76,7 +84,15 @@ public class DrinkFragment extends Fragment {
     private void orangInit() {
         Button orangPlus = (Button) rlLayout.findViewById(R.id.orangPlus);
         Button orangMinus = (Button) rlLayout.findViewById(R.id.orangMinus);
-        computeOrangPrice(0);
+
+        int nbr = 0;
+        for (DrinkTypes drink :Orders.getActiveOrder().getDrinks()){
+            if (drink.toString() == DrinkTypes.ORANGINA.toString()){
+                nbr ++;
+            }
+        }
+        nbrOrang = nbr;
+        computeOrangPrice(nbrOrang);
 
         orangPlus.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
@@ -101,7 +117,15 @@ public class DrinkFragment extends Fragment {
     private void beerInit() {
         Button beerPlus = (Button) rlLayout.findViewById(R.id.beerPlus);
         Button beerMinus = (Button) rlLayout.findViewById(R.id.beerMinus);
-        computeBeerPrice(0);
+
+        int nbr = 0;
+        for (DrinkTypes drink :Orders.getActiveOrder().getDrinks()){
+            if (drink.toString() == DrinkTypes.BEER.toString()){
+                nbr ++;
+            }
+        }
+        nbrBeer= nbr;
+        computeBeerPrice(nbrBeer);
 
         beerPlus.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
@@ -127,7 +151,15 @@ public class DrinkFragment extends Fragment {
     private void waterInit() {
         Button waterPlus = (Button) rlLayout.findViewById(R.id.waterPlus);
         Button waterMinus = (Button) rlLayout.findViewById(R.id.waterMinus);
-        computeWaterPrice(0);
+
+        int nbr = 0;
+        for (DrinkTypes drink :Orders.getActiveOrder().getDrinks()){
+            if (drink.toString() == DrinkTypes.WATER.toString()){
+                nbr ++;
+            }
+        }
+        nbrWater = nbr;
+        computeWaterPrice(nbrWater);
 
         waterPlus.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {

@@ -2,18 +2,25 @@ package ch.epfl.sweng.udle.Food;
 
 import android.location.Location;
 
+import com.parse.ParseClassName;
+import com.parse.ParseObject;
+
 import java.util.ArrayList;
 
 /**
  * Created by rodri on 23/10/2015.
  */
-public class OrderElement {
+
+@ParseClassName("OrderElement")
+public class OrderElement extends ParseObject {
 
     private ArrayList<Menu> orderList;
     private ArrayList<DrinkTypes> drinks;
 
     private Location deliveryLocation;
     private String deliveryAddress;
+
+    private String orderedBy;
 
 
 
@@ -22,6 +29,7 @@ public class OrderElement {
         this.drinks = new ArrayList<>();
         this.deliveryLocation = null;
         this.deliveryAddress = "";
+        this.orderedBy = "";
     }
 
 
@@ -72,12 +80,22 @@ public class OrderElement {
     }
     public void removeToDrinks(DrinkTypes drink){
         if(drink == null){
-            throw new IllegalArgumentException("Ty to add a null drink");
+            throw new IllegalArgumentException("Ty to remove a null drink");
         }
         else if(this.drinks.size() != 0){
             this.drinks.remove(drink);
         }
     }
+
+    public void removeToFood(Menu menu){
+        if(menu == null){
+            throw new IllegalArgumentException("Ty to remove a null menu");
+        }
+        else if(this.orderList.size() != 0){
+            this.orderList.remove(menu);
+        }
+    }
+
 
 
     public double getTotalCost(){
@@ -91,5 +109,13 @@ public class OrderElement {
         }
 
         return cost;
+    }
+
+    public String getOrderedUserName() {
+        return orderedBy;
+    }
+
+    public void setOrderedUserName(String userName){
+        this.orderedBy = userName;
     }
 }
