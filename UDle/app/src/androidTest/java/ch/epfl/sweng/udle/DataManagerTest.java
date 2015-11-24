@@ -1,25 +1,30 @@
 package ch.epfl.sweng.udle;
 
+import com.parse.Parse;
+import com.parse.ParseException;
+import com.parse.ParseObject;
 import com.parse.ParseUser;
 
 import org.junit.Test;
 
-import java.util.ArrayList;
-
 import ch.epfl.sweng.udle.Food.OrderElement;
+import ch.epfl.sweng.udle.activities.LoginActivity;
 import ch.epfl.sweng.udle.network.DataManager;
+import ch.epfl.sweng.udle.network.ParseUserOrderInformations;
+
+import static junit.framework.Assert.fail;
 
 /**
  * Created by skalli93 on 11/10/15.
  */
 public class DataManagerTest {
-    public OrderElement orderElement = new OrderElement();
-    DataManager dataManager;
 
-
-    /*
     public void setupClientUser() {
         try {
+            ParseObject.registerSubclass(ParseUserOrderInformations.class);
+            ParseObject.registerSubclass(OrderElement.class);
+            Parse.initialize(new LoginActivity(), "9owjl8GmUsbfyoKtXhd5hK7QX8CUJVfuAvSLNoaY", "xd6XKHd9NxLfzFPbHQ5xaMHVzU1gfeLen0qCyI4F");
+
             ParseUser userTest = ParseUser.logIn("userTest", "12345678");
             String sessionToken = userTest.getSessionToken();
             ParseUser.become(sessionToken);
@@ -34,8 +39,13 @@ public class DataManagerTest {
 
     }
 
+    /*
     public void setupRestaurantUser() {
         try {
+            ParseObject.registerSubclass(ParseUserOrderInformations.class);
+            ParseObject.registerSubclass(OrderElement.class);
+            Parse.initialize(this, "9owjl8GmUsbfyoKtXhd5hK7QX8CUJVfuAvSLNoaY", "xd6XKHd9NxLfzFPbHQ5xaMHVzU1gfeLen0qCyI4F");
+
             ParseUser userTest = ParseUser.logIn("I62hSyM8FF", "12345678");
             String sessionToken = userTest.getSessionToken();
             ParseUser.become(sessionToken);
@@ -49,24 +59,27 @@ public class DataManagerTest {
         }
 
     }
-
-*/
+    */
 
     //Simulate a situation where the order is created and is now ready to push onto a server.
     @Test
     public void dataManagerUserTest(){
-        //setupClientUser();
-        ParseUser.enableAutomaticUser();
+        setupClientUser();
 
-        dataManager = new DataManager();
-        //dataManager.getRestaurantLocationsNearTheUser();
-        dataManager.pushOrderToServer(orderElement);
+        //ParseUser.enableAutomaticUser();
+        OrderElement orderElement = new OrderElement();
+        orderElement.setDeliveryAddress("testLocation");
+
+        DataManager.createNewParseUserOrderInformations();
+        DataManager.pushOrderToServer(orderElement);
+
 
         //RestaurantSide
-        dataManager.deliveryEnRoute("Holy Cow", "+419733893029", 20);
-        dataManager.deliveryDelivered();
+        DataManager.deliveryEnRoute("Holy Cow", "+419733893029", 20);
+        DataManager.deliveryDelivered();
     }
 
+    /*
     @Test
     public void dataManagerRestaurantTest(){
         //setupRestaurantUser();
@@ -74,4 +87,5 @@ public class DataManagerTest {
         ArrayList<OrderElement> pendingOrders = dataManager.getPendingOrdersForARestaurantOwner();
 
     }
+    */
 }

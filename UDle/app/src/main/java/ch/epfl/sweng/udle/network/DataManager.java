@@ -209,4 +209,13 @@ public class DataManager {
         return currentUser.getParseGeoPoint("Location");
     }
 
+    /*
+     *  Return current user status - user or restaurant
+     */
+
+    public static boolean isCurrentUserARestaurant(){
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        return currentUser.getBoolean("RestaurantOwner");
+    }
+
 }
