@@ -1,6 +1,8 @@
 package ch.epfl.sweng.udle.network;
 
 
+import android.util.Log;
+
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
@@ -31,11 +33,16 @@ public class DataManager {
     private static ParseGeoPoint userLocation;
     private static ArrayList<OrderElement> pendingOrders;
     private static ArrayList<String> nearbyRestaurants;
+    private static ParseUserOrderInformations userOrderInformations = null;
 
-    private ParseUserOrderInformations userOrderInformations = null;
 
-    public DataManager() {
-
+    /*
+     * Because dataManager is now a static class, we don't need to keep relying on the
+     * constructor to be able to use the user end functionality. Having a separate function is
+     * a lot cleaner and more efficient.
+     *
+     */
+    public static void createNewParseUserOrderInformations(){
         userOrderInformations = new ParseUserOrderInformations();
         user = userOrderInformations.getUser();
         userLocation = user.getParseGeoPoint("Location");
@@ -43,8 +50,14 @@ public class DataManager {
 
     }
 
-
-    public static boolean getRestaurantLocationsNearTheUser() {
+    /*
+     *  Return objectId array of nearby restaurants. Relies on user current position
+     *  and position of the position of the restaurant and the maximum preffered distance between
+     *  them to determine if restaurant is suitable. Does not consider availability of restaurant.
+     *
+     *  WHEN I TRY TO RETURN ARRAYLIST<STRING> THE VALUE IS ALWAYS NULL???
+     */
+    public static void getRestaurantsNearTheUser() {
 
         //Because this method is static, these fields may not be instantiated
         user = DataManager.getUser();
@@ -70,22 +83,16 @@ public class DataManager {
                         if (distance <= maxDeliveryDistance) {
                             nearbyRestaurants.add(restaurantUser.getObjectId());
                         }
+
                     }
                     user.put("ArrayOfNearRestaurant", nearbyRestaurants);
                     user.saveInBackground();
+
                 } else {
                     // Something went wrong.
                 }
             }
         });
-
-        if (nearbyRestaurants == null || nearbyRestaurants.isEmpty()){
-            return false;
-        }
-
-        else {
-            return true;
-        }
     }
 
 
@@ -93,8 +100,6 @@ public class DataManager {
      * Compile an arraylist of all the order element objects and return
      * Returns null if query fails.
      *
-     * NO FIELDS IN THE SERVER EXIST FOR US TO STORE PENDING ORDERS
-     * RETURN DIRECTLY TO CALLER
      */
 
     public static ArrayList<OrderElement> getPendingOrdersForARestaurantOwner() {
@@ -147,48 +152,55 @@ public class DataManager {
     }
 
     /*
-     * Once order is created, the order doesn't appear on the server until an orderElement is
-     * provided. If not, the data manager will be useful to a restaurant.
-     *
+     * Once order is created, use this to push orderElement onto server
      */
-    public void pushOrderToServer(OrderElement orderElement){
-        userOrderInformations.setOrder(orderElement);
-        userOrderInformations.saveInBackground();
-    }
+    public static void pushOrderToServer(OrderElement orderElement){
+        if (userOrderInformations != null) {
+            userOrderInformations.setOrder(orderElement);
+            OrderElement order = userOrderInformations.getOrder();
+            Log.d("OSid", order.getDeliveryAddress());
+        }
 
+    }
 
     /*
      *  Change status of order to reflect that it's currenty being delivered
      */
-    public void deliveryEnRoute(String deliveringRestaurant, String deliveryGuyNumber, int eta) {
-        userOrderInformations.setDeliveryGuyNumber(deliveryGuyNumber);
-        userOrderInformations.setParseDeliveringRestaurant(deliveringRestaurant);
-        userOrderInformations.setExpectedTime(eta);
-        userOrderInformations.setOrderStatus("enRoute");
-        userOrderInformations.saveInBackground();
+    public static void deliveryEnRoute(String deliveringRestaurant, String deliveryGuyNumber, int eta) {
+        if (userOrderInformations != null) {
+            userOrderInformations.setDeliveryGuyNumber(deliveryGuyNumber);
+            userOrderInformations.setParseDeliveringRestaurant(deliveringRestaurant);
+            userOrderInformations.setExpectedTime(eta);
+            userOrderInformations.setOrderStatus("enRoute");
+        }
     }
 
     /*
      *  Change status of order to reflect that it's currenty delivered
      */
-    public void deliveryDelivered() {
-        if (userOrderInformations.getOrderStatus() == "enRoute") {
-            userOrderInformations.setOrderStatus("delivered");
-            userOrderInformations.saveInBackground();
+    public static void deliveryDelivered() {
+        if (userOrderInformations != null) {
+            if (userOrderInformations.getOrderStatus() == "enRoute") {
+                userOrderInformations.setOrderStatus("delivered");
+            }
         }
     }
 
-
+    /*
+     *  Return current parse user
+     */
     public static ParseUser getUser(){
         ParseUser currentUser = ParseUser.getCurrentUser();
         return currentUser;
     }
 
 
+    /*
+     *  Return current parse user location
+     */
     public static ParseGeoPoint getUserLocation(){
         ParseUser currentUser = ParseUser.getCurrentUser();
         return currentUser.getParseGeoPoint("Location");
     }
-
 
 }

@@ -59,8 +59,10 @@ public class DataManagerTest {
         ParseUser.enableAutomaticUser();
 
         dataManager = new DataManager();
-        dataManager.getRestaurantLocationsNearTheUser();
+        //dataManager.getRestaurantLocationsNearTheUser();
         dataManager.pushOrderToServer(orderElement);
+
+        //RestaurantSide
         dataManager.deliveryEnRoute("Holy Cow", "+419733893029", 20);
         dataManager.deliveryDelivered();
     }

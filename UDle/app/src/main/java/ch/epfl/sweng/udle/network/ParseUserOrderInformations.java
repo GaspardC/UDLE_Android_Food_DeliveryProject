@@ -27,13 +27,11 @@ public class ParseUserOrderInformations extends ParseObject {
 
     public ParseUserOrderInformations() {
         ParseUser currentUser = ParseUser.getCurrentUser();
-        if ((currentUser != null)) {
-            this.put("user", currentUser);
-        }
-
-        this.setDeliveryGuyNumber("");
+        this.put("user", currentUser);
+        this.setDeliveryGuyNumber("no number assigned");
         this.setOrderStatus("waiting for restaurant");
         this.setExpectedTime(0);
+        this.setParseDeliveringRestaurant("no restaurant assigned");
 
     }
 
@@ -54,6 +52,7 @@ public class ParseUserOrderInformations extends ParseObject {
     public void setDeliveryGuyNumber(String value) {
 
         this.put("deliveryGuyNumber", value);
+        this.saveInBackground();
     }
 
     //Return the name of the restaurant delivering
@@ -66,6 +65,7 @@ public class ParseUserOrderInformations extends ParseObject {
     public void setParseDeliveringRestaurant(String value) {
 
         this.put("deliveringRestaurant", value);
+        this.saveInBackground();
     }
 
 
@@ -79,6 +79,7 @@ public class ParseUserOrderInformations extends ParseObject {
     public void setExpectedTime(int value) {
 
         this.put("expectedTime", value);
+        this.saveInBackground();
     }
 
 
@@ -92,18 +93,19 @@ public class ParseUserOrderInformations extends ParseObject {
     public void setOrderStatus(String orderStatus) {
 
         this.put("orderStatus", orderStatus);
+        this.saveInBackground();
     }
 
     //Retrieve the order parse element and add parameters to the order
     public void setOrder (OrderElement orderElement){
-
-        this.put("order", orderElement);
+        this.put("orderElement", orderElement);
+        this.saveInBackground();
     }
 
     //Return Order in type ArrayListMenu
     public OrderElement getOrder(){
 
-        return (OrderElement) this.get("order");
+        return (OrderElement) this.get("orderElement");
     }
 
 }

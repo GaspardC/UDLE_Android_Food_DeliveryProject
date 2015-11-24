@@ -25,8 +25,10 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.parse.ParseGeoPoint;
+import com.parse.ParseObject;
 import com.parse.ParseUser;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -47,7 +49,6 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
     private GooglePlacesAutocompleteAdapter googleAdapter;
     private AlertDialog.Builder dlgAlert;
     private boolean displayGpsMessage = true;
-    private DataManager data;
     private boolean dlgAlertcountCreated = false;
     private String nonNullLocationProvider = "nonNullLocationProvider";
 
@@ -57,7 +58,6 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
         setContentView(R.layout.activity_map);
         markerLayout = (LinearLayout) findViewById(R.id.locationMarker);
         dlgAlert = new AlertDialog.Builder(this);
-        data = new DataManager();
         autoCompView = (AutoCompleteTextView) findViewById(R.id.autoCompleteTextView2);
         googleAdapter = new GooglePlacesAutocompleteAdapter(this, R.layout.list_item);
         autoCompView.setAdapter(googleAdapter);
@@ -102,7 +102,8 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
             storeNearbyRestaurants();
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
-        }else {
+        }
+        else {
             Toast.makeText(this, R.string.incorrectLocation, Toast.LENGTH_SHORT).show();
         }
     }
@@ -312,16 +313,14 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
     }
 
 
-
     private void storeNearbyRestaurants(){
         //Put current location in parse.com
         ParseGeoPoint currentLocation = new ParseGeoPoint(location.getLatitude(), location.getLongitude());
         ParseUser currentUser = DataManager.getUser();
         currentUser.put("Location", currentLocation);
 
-        //Find nearby restaurants
-        boolean nearbyRestaurantStatus = DataManager.getRestaurantLocationsNearTheUser();
-        Log.d("OSid", String.valueOf(nearbyRestaurantStatus));
-
+        //Find nearby restaurants and store in server
+        //NEED TO CHANGE THIS DEPENDING ON HOW WE USE NEARBY RESTAURANTS
+        DataManager.getRestaurantsNearTheUser();
     }
 }

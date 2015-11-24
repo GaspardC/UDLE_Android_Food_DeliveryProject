@@ -35,6 +35,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import ch.epfl.sweng.udle.Food.OrderElement;
 import ch.epfl.sweng.udle.R;
 import ch.epfl.sweng.udle.network.ParseUserInformations;
 import ch.epfl.sweng.udle.network.ParseUserOrderInformations;
@@ -61,6 +62,7 @@ public class LoginActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context = getApplication();
+        parseStuff();
         FacebookSdk.sdkInitialize(getApplicationContext());
         callbackManager = CallbackManager.Factory.create();
         accessTokenTracker = new AccessTokenTracker() {
@@ -92,8 +94,8 @@ public class LoginActivity extends Activity {
             @Override
             public void onSuccess(final LoginResult loginResult) {
                 stopTracking = true;
-                boolean b =   retrieveFacebookInfoSecondAndAfterConnections();
-                if (b == false){
+                boolean b = retrieveFacebookInfoSecondAndAfterConnections();
+                if (b == false) {
                     retrieveFacebookInfoFirstConnection(loginResult);
 
                 }
@@ -103,30 +105,31 @@ public class LoginActivity extends Activity {
             @Override
             public void onCancel() {
 
-                Log.d("faceLogin","cancel");
+                Log.d("faceLogin", "cancel");
                 info.setText("Login attempt canceled.");
             }
 
             @Override
             public void onError(FacebookException e) {
-                Log.d("faceLogin","error");
+                Log.d("faceLogin", "error");
                 info.setText("Login attempt failed.");
             }
         });
 
-        parseStuf();
-        ParseUserInformations testNewUser = new ParseUserInformations();
-        testNewUser.createNewUserWithoutFb("UserTest","0000","test@mail.com","0607080910");
+
+        //ParseUserInformations testNewUser = new ParseUserInformations();
+        //testNewUser.createNewUserWithoutFb("UserTest","0000","test@mail.com","0607080910");
 
     }
 
-    private void parseStuf() {
+    private void parseStuff() {
 
 //        // Enable Local Datastore.
 //        Parse.enableLocalDatastore(this);
 
         //Initialize the parse Order server object
         ParseObject.registerSubclass(ParseUserOrderInformations.class);
+        ParseObject.registerSubclass(OrderElement.class);
         Parse.initialize(this, "9owjl8GmUsbfyoKtXhd5hK7QX8CUJVfuAvSLNoaY", "xd6XKHd9NxLfzFPbHQ5xaMHVzU1gfeLen0qCyI4F");
 
 
