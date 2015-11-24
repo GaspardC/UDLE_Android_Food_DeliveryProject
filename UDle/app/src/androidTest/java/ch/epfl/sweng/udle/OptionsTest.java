@@ -160,4 +160,20 @@ public class OptionsTest extends ActivityInstrumentationTestCase2<MainActivity> 
         }
     }
 
+    public void testNoOptionsMessage(){
+        getActivity();
+        onView(withText("Options")).perform(click());
+        onView(withId(R.id.Options_noMenuSelected)).check(matches(isDisplayed()));
+    }
+    public void testNoOptionsMessageAfterRemoveMenu(){
+        getActivity();
+        onView(withId(R.id.MenuActivity_BurgerPlus)).perform(click());
+        onView(withId(R.id.MenuActivity_NextButton)).perform(click());
+        onView(withId(R.id.Options_noMenuSelected)).check(matches(not(isDisplayed())));
+        onView(withText("Menu")).perform(click());
+        onView(withId(R.id.MenuActivity_BurgerMinus)).perform(click());
+        onView(withText("Options")).perform(click());
+        onView(withId(R.id.Options_noMenuSelected)).check(matches(isDisplayed()));
+    }
+
 }

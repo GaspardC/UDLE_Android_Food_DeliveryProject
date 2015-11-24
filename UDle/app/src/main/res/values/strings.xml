@@ -20,6 +20,8 @@
     <string name="NoMenuSelected">You need to select at least one menu</string>
     <string name="title_activity_maps">Map</string>
     <string name="buttonCallDeliveryGuy">Call Delivery Guy</string>
+    <string name="markerTitle">Delivery Address</string>
+
     <string name="recapOfCommand">Recap of the command:</string>
     <string name="deliveryAddress">Delivery Address:</string>
     <string name="deliveryCost">Delivery Cost:</string>
@@ -30,6 +32,9 @@
     <string name="infotextwaiting">Please wait for a shop to accept your command</string>
     <string name="infotextwaitingConfirmed">Congrats, your order is coming for you</string>
 
+    <string name="ConfirmedOrders">Confirmed Order</string>
+    <string name="WaitingOrders">Waiting Order</string>
+
 	<string name="sampleText">This is a sample text.</string>
 	<string name="openSlideMenu">Open slide menu</string>
 	<string name ="closeSlideMenu">Close slide menu</string>
@@ -37,7 +42,7 @@
     <string name="restaurantMode">Restaurant mode</string>
     <string name="restaurantModeDesc">go to restaurant map activity</string>
     <string name="about">About</string>
-	
+    <string name="removeMessage_1">"Remove :"</string>
     <string name="notImplemented">Not implemented</string>
 
     <string name="TitleAlertBack">Give up the order"</string>
@@ -46,4 +51,8 @@
     <string name="acceptCommand">Accept Command</string>
     <string name="expectedTimeNotValid">Please enter an expected time</string>
     <string name="commandDelivered">Command Delivered</string>
+
+    <string name="noMenuNoOptions">No menus selected. You need to select at least one menu in order to choose your options for it.</string>
+    <string name="orderedBy">Ordered by: </string>
+
 </resources>

@@ -7,6 +7,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
+
+import ch.epfl.sweng.udle.Food.Orders;
+import ch.epfl.sweng.udle.R;
 
 
 /**
@@ -68,5 +74,21 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
 
     public void setPager(ViewPager pager) {
         this.pager = pager;
+    }
+
+
+    //Use this method to show/hide 'noMenuSelected' message in Options Layer
+    @Override
+    public void startUpdate(ViewGroup container) {
+        View view = container.findViewById(R.id.Layout_Options);
+        if (view != null){
+            if (Orders.getActiveOrder().getOrder().size() == 0){ //If no menus selected
+                view.findViewById(R.id.Options_noMenuSelected).setVisibility(View.VISIBLE);
+            }
+            else{
+                view.findViewById(R.id.Options_noMenuSelected).setVisibility(View.GONE);
+            }
+        }
+        super.startUpdate(container);
     }
 }
