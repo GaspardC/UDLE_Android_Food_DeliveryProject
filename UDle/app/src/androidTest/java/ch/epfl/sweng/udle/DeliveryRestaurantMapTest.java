@@ -95,10 +95,6 @@ public class DeliveryRestaurantMapTest  extends ActivityInstrumentationTestCase2
         onView(withId(R.id.button_list_mode)).perform(click());
         final ArrayList<OrderElement> waitingOrders = mActivity.getWaitingOrders(new ArrayList<OrderElement>());
         String adress = waitingOrders.get(0).getDeliveryAddress();
-//        onData(hasToString(startsWith("Address for the deliver 2, 1002 SwEng"))).perform(click());
-//        onData(hasToString(startsWith("Address for the deliver 2, 1002 SwEng")))
-//                .inAdapterView(withId(R.id.listOrderRestaurantMap))
-//                .perform(click());
         for(int i=0;i<waitingOrders.size();i++){
             onData(anything()).inAdapterView(withContentDescription("listOrderRestaurantMap")).atPosition(i).perform(click());
             onView(withId(R.id.DeliverCommandDetail_recapListView)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));

@@ -50,10 +50,20 @@ import ch.epfl.sweng.udle.Food.Orders;
 import ch.epfl.sweng.udle.R;
 import ch.epfl.sweng.udle.network.DataManager;
 
-public class DeliveryRestaurantMapActivity extends AppCompatActivity {
 
-    private static final int RED_LOGO = 0;
-    private static final int GREEN_LOGO = 1;
+/**
+ * Activity reserved for restaurant user only
+ *
+ * In this activity the restaurant can visualize the orders around him.
+ * He can both see the current orders (assigned to him) or the waiting orders (not yet validated by him)
+ *
+ *The restaurant can visualize theses orders as pins on the map or as elements in a list
+ *
+ * He can interact with these orders by clicking on them
+ */
+
+public class DeliveryRestaurantMapActivity extends SlideMenuActivity {
+
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
     private boolean showMap = true;
@@ -84,16 +94,14 @@ public class DeliveryRestaurantMapActivity extends AppCompatActivity {
         }
     }
 
+
+    /**
+     * method used to fill (and display) the current and waiting orders
+     */
     private void populateListView() {
 
         List<HashMap<String,String>> aList = new ArrayList<HashMap<String,String>>();
         ArrayList<String> ordersAdress = new ArrayList<>();
-
-//        ParseUser user = DataManager.getCurrentParseUser();
-//        if(user!=null){
-//            ParseGeoPoint position = user.getParseGeoPoint("Location");
-//        }
-
         int i = 1;
         for(OrderElement order : waitingOrders) {
 
@@ -121,20 +129,15 @@ public class DeliveryRestaurantMapActivity extends AppCompatActivity {
             i++;
         }
 
-
-
         // Keys used in Hashmap
         String[] from = { "image","numCommande", "address" };
 
-        // Ids of views in listview_layout
-//        int[] to = { R.id.addressDelivery};
+        //Link the adapter to the xml items
         int[] to = { R.id.iconListDelivery,R.id.numCommandeDeliveryRestaurant,R.id.addressDelivery};
-
 
         // Instantiating an adapter to store each items
         // R.layout.listView_layout defines the layout of each item
         SimpleAdapter adapter = new SimpleAdapter(this, aList, R.layout.list_item_restaurant_delivery, from, to);
-
 
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -143,7 +146,6 @@ public class DeliveryRestaurantMapActivity extends AppCompatActivity {
                 //Open the browser here
                 HashMap<String, String> hm = (HashMap<String, String>) parent.getItemAtPosition(position);
                 String adress = hm.get("address");
-
 
                 for (OrderElement order : waitingOrders) {
                     if (order.getDeliveryAddress().equals(adress)) { //TODO: Instead of compare with the address, compare with the id of the command for example.
@@ -325,7 +327,9 @@ public class DeliveryRestaurantMapActivity extends AppCompatActivity {
         return orders;
     }
 
-    //When button clicked
+    /** Called when the user clicks the switch_mode button
+     *  It either display orders in a list or in the fragment
+     * */
     public void switchOrderList(View view) {
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
@@ -345,5 +349,13 @@ public class DeliveryRestaurantMapActivity extends AppCompatActivity {
 
         }
     }
+
+    /** Disable back button here
+     * Prevent the restaurant to return to an offer already validated */
+    @Override
+    public void onBackPressed() {
+    }
+
+
 }
 
