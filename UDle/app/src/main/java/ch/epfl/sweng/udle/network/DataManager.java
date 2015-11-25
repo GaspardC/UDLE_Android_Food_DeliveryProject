@@ -159,7 +159,7 @@ public class DataManager {
         userOrderInformations.saveInBackground();
     }
 
-    public boolean isARestaurant(){
+    public static boolean isARestaurant(){
         return DataManager.getUser().getBoolean("RestaurantOwner");
     }
 

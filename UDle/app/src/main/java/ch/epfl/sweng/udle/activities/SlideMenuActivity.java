@@ -46,7 +46,7 @@ public abstract class SlideMenuActivity extends AppCompatActivity {
     RelativeLayout slideMenu_frame;
     RelativeLayout content_frame;
 
-    protected ArrayList<NavItem> slideMenuItems = new ArrayList<>();
+    protected ArrayList<NavItem> slideMenuItems = new ArrayList(20);
 
 
     private CharSequence mDrawerTitle;
@@ -65,7 +65,10 @@ public abstract class SlideMenuActivity extends AppCompatActivity {
         //home
         slideMenuItems.add(new NavItem(getString(R.string.home), getString(R.string.orderNow), R.mipmap.ic_launcher, MapActivity.class));
         slideMenuItems.add(new NavItem(getString(R.string.about), getString(R.string.notImplemented), R.mipmap.ic_launcher));
-        slideMenuItems.add(new NavItem(getString(R.string.restaurantMode), getString(R.string.restaurantModeDesc), R.mipmap.ic_launcher, DeliveryRestaurantMapActivity.class));
+
+        if(DataManager.isARestaurant()){
+            slideMenuItems.add(new NavItem(getString(R.string.restaurantMode), getString(R.string.restaurantModeDesc), R.drawable.logogreen, DeliveryRestaurantMapActivity.class));
+        }
 
 
 
