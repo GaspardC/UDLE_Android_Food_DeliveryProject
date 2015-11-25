@@ -60,23 +60,22 @@ public abstract class SlideMenuActivity extends AppCompatActivity {
         super.setContentView(R.layout.actitivity_slidemenu);
 
         //set menu items
-        //Go to lo login
-        slideMenuItems.add(new NavItem(getString(R.string.profile), getString(R.string.settings), R.mipmap.ic_launcher, ProfileActivity.class));
         //home
         slideMenuItems.add(new NavItem(getString(R.string.home), getString(R.string.orderNow), R.mipmap.ic_launcher, MapActivity.class));
-        slideMenuItems.add(new NavItem(getString(R.string.about), getString(R.string.notImplemented), R.mipmap.ic_launcher));
-
         if(DataManager.isARestaurant()){
             slideMenuItems.add(new NavItem(getString(R.string.restaurantMode), getString(R.string.restaurantModeDesc), R.drawable.logogreen, DeliveryRestaurantMapActivity.class));
         }
+        slideMenuItems.add(new NavItem(getString(R.string.about), getString(R.string.notImplemented), R.mipmap.ic_launcher));
+
 
 
 
 
         mTitle = mDrawerTitle = getTitle();//
-
+        TextView helloTextView = (TextView) findViewById(R.id.hello);
+        helloTextView.setText("Hello "+ DataManager.getUserName());
         TextView username = (TextView) findViewById(R.id.SlideMenu_userName);
-        username.setText(DataManager.getUserName());
+        username.setText("yours settings");
 
         // main layout
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -86,6 +85,16 @@ public abstract class SlideMenuActivity extends AppCompatActivity {
         content_frame = (RelativeLayout) findViewById(R.id.content_frame);
         // slide menu list container
         slideMenuList = (ListView) findViewById(R.id.slideMenu_items);
+
+        RelativeLayout profileBox = (RelativeLayout) findViewById(R.id.profileBox);
+        profileBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Go to lo login
+                Intent intent = new Intent(SlideMenuActivity.this, ProfileActivity.class);
+                startActivity(intent);
+            }
+        });
 
 
         //adapter between logical NavItems and graphical representation

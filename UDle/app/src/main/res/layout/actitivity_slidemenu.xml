@@ -60,7 +60,8 @@ http://codetheory.in/android-navigation-drawer/
                     android:layout_height="wrap_content"
                     android:text="@string/Hello"
                     android:textColor="#fff"
-                    android:textSize="12sp" />
+                    android:textSize="16sp"
+                    android:textStyle="bold"/>
 
                 <TextView
                     android:id="@+id/SlideMenu_userName"
@@ -70,8 +71,8 @@ http://codetheory.in/android-navigation-drawer/
                     android:layout_marginTop="4dp"
                     android:text="@string/username"
                     android:textColor="#fff"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
+                    android:textSize="12sp"
+                     />
             </LinearLayout>
 
         </RelativeLayout>
