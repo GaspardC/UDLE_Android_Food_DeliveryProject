@@ -21,6 +21,7 @@
 
 package ch.epfl.sweng.udle.activities;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -33,6 +34,7 @@ import com.parse.ParseUser;
 import com.parse.ui.ParseLoginBuilder;
 
 import ch.epfl.sweng.udle.R;
+import ch.epfl.sweng.udle.activities.MenuOptionsDrinks.MainActivity;
 import ch.epfl.sweng.udle.network.DataManager;
 
 /**
@@ -46,6 +48,7 @@ public class ProfileActivity extends SlideMenuActivity {
   private TextView emailTextView;
   private TextView nameTextView;
   private Button loginOrLogoutButton;
+  private Button orderNowButton;
   private SeekBar seekBarRestaurantDistance;
   private ParseUser currentUser;
   private  TextView seekBarValue;
@@ -58,6 +61,7 @@ public class ProfileActivity extends SlideMenuActivity {
     emailTextView = (TextView) findViewById(R.id.profile_email);
     nameTextView = (TextView) findViewById(R.id.profile_name);
     loginOrLogoutButton = (Button) findViewById(R.id.login_or_logout_button);
+    orderNowButton = (Button) findViewById(R.id.goToHome_Button);
     seekBarRestaurantDistance = (SeekBar) findViewById(R.id.seekBarRestaurantDistance);
     seekBarValue = (TextView)findViewById(R.id.value_distance_restaurant);
     titleTextView.setText(R.string.profile_title_logged_in);
@@ -109,6 +113,7 @@ public class ProfileActivity extends SlideMenuActivity {
     }
     else{
       if(currentUser.getBoolean("RestaurantOwner")){
+        orderNowButton.setVisibility(View.GONE);
         seekBarRestaurantDistance.setVisibility(View.VISIBLE);
         seekBarValue.setVisibility(View.VISIBLE);
         int seekbarValueInit = currentUser.getInt("maxDeliveryDistanceKm");
@@ -143,8 +148,15 @@ public class ProfileActivity extends SlideMenuActivity {
       else{
         seekBarRestaurantDistance.setVisibility(View.GONE);
         seekBarValue.setVisibility(View.GONE);
+        orderNowButton.setVisibility(View.VISIBLE);
+
       }
     }
+  }
+
+  public void goToMapActivity(View view){
+    Intent intent = new Intent(this, MapActivity.class);
+    startActivity(intent);
   }
 
   /**
@@ -156,6 +168,7 @@ public class ProfileActivity extends SlideMenuActivity {
     nameTextView.setText("");
     seekBarRestaurantDistance.setVisibility(View.GONE);
     seekBarValue.setVisibility(View.GONE);
+    orderNowButton.setVisibility(View.GONE);
     loginOrLogoutButton.setText(R.string.profile_login_button_label);
   }
 }

@@ -22,7 +22,31 @@
         android:layout_weight="0.5"
         android:gravity="center"
         android:orientation="vertical">
-
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:id="@+id/LoginLinearLayoutForRestaurants"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+            <SeekBar
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/seekBarRestaurantDistance"
+                android:layout_gravity="center_horizontal"
+                android:scrollIndicators="right"
+                android:thumbTint="#ffffff"
+                android:progressTint="#ffffff"
+                android:progressBackgroundTint="#ffffff"
+                android:max="30"
+                android:thumb="@android:drawable/btn_star_big_on"
+                android:layout_weight="5"/>
+            <TextView
+                android:layout_weight="2"
+                android:id="@+id/value_distance_restaurant"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                style="@style/ParseLoginUI.TextView" />
+        </LinearLayout>
         <TextView
             android:id="@+id/profile_title"
             android:layout_width="wrap_content"
