@@ -24,6 +24,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -61,7 +62,13 @@ public abstract class SlideMenuActivity extends AppCompatActivity {
 
         //set menu items
         slideMenuItems.add(new NavItem(getString(R.string.restaurantMode), getString(R.string.restaurantModeDesc), R.mipmap.ic_launcher, DeliveryRestaurantMapActivity.class));
-        slideMenuItems.add(new NavItem(getString(R.string.about), getString(R.string.notImplemented), R.mipmap.ic_launcher));
+        slideMenuItems.add(new NavItem(getString(R.string.about), getString(R.string.notImplemented), R.mipmap.ic_launcher, new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(getApplicationContext(), R.string.notImplemented, Toast.LENGTH_LONG).show();
+                Log.d(TAG, "Toast created inside (new Runnable()).run()");
+            }
+        }));
 
 
         mTitle = mDrawerTitle = getTitle();//
@@ -121,14 +128,30 @@ public abstract class SlideMenuActivity extends AppCompatActivity {
     }
 
     // slide menu actions
+
+    /**
+     * Perform action when an item is clicked, depending on its position
+     * <p>
+     *     If the item has a linkedActivity, the activity will be launched
+     * </p>
+     * <p>
+     *     If the item has an action, the action will be run
+     * </p>
+     *
+     * @param position
+     */
     private void selectItemFromList(int position) {
-        Log.d(TAG, "SlideMenu item selected. N° : " + position);
+        Log.d(TAG, "SlideMenu item selected. N° " + position + " : " + slideMenuItems.get(position).name);
         //close Menu
         mDrawerLayout.closeDrawer(slideMenu_frame);
         switch (position) {
             default:
+                if (slideMenuItems.get(position).action != null){
+                    slideMenuItems.get(position).action.run();
+                    Log.d(TAG, ".action.run() called on item N° " + position + " : " + slideMenuItems.get(position).name);
+                }
                 if (slideMenuItems.get(position).linkedActivity != null){
-                    Intent newActivity = new Intent(this, slideMenuItems.get(position).linkedActivity);
+                    Intent newActivity = new Intent(getApplicationContext(), slideMenuItems.get(position).linkedActivity);
                     startActivity(newActivity);
                 }
         }
@@ -185,7 +208,20 @@ class NavItem {
     String description;
     int icon;
     Class<?> linkedActivity = null;
+    Runnable action = null;
 
+    /**
+     * @param name name of the item
+     * @param description short description, will be visible under the name
+     * @param icon
+     * @param action action performed when the item is clicked. It will be run <b>synchronously</b>
+     */
+    public NavItem(String name, String description, int icon, Runnable action){
+        this.name = name;
+        this.description = description;
+        this.icon = icon;
+        this.action = action;
+    }
     /**
      * @param name name of the item
      * @param description short description, will be visible under the name
@@ -198,6 +234,18 @@ class NavItem {
         this.icon = icon;
         this.linkedActivity = linkedActivity;
     }
+    /**<b>
+     *  The NavItem created will have no effect !
+     * </b>
+     * <p>
+     *  To set an effect, you must add it to
+     *  @see SlideMenuActivity#selectItemFromList(int)
+     * </p>
+     *
+     * @param name name of the item
+     * @param description short description, will be visible under the name
+     * @param icon
+     */
     public NavItem(String name, String description, int icon){
         this.name = name;
         this.description = description;
