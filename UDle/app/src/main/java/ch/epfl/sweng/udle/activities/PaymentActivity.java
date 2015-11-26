@@ -61,8 +61,10 @@ public class PaymentActivity extends AppCompatActivity {
                     Toast.LENGTH_SHORT).show();
         }
         else{
+            //Return objectId from
+            //Store it in OrderElement
+            //function to get status based on orderId
             DataManager.createNewParseUserOrderInformations();
-            DataManager.pushOrderToServer(Orders.getActiveOrder());
             Intent intent =  new Intent(this, WaitingActivity.class);
             startActivity(intent);
         }

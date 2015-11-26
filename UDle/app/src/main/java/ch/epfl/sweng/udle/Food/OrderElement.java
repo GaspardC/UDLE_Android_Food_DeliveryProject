@@ -22,6 +22,8 @@ public class OrderElement extends ParseObject {
 
     private String orderedBy;
 
+    private String objectId;
+
 
 
     public OrderElement(){
@@ -118,4 +120,9 @@ public class OrderElement extends ParseObject {
     public void setOrderedUserName(String userName){
         this.orderedBy = userName;
     }
+
+    public String getObjectId(){ return objectId;}
+
+    public void setObjectId(String objectIdToSet){ objectId = objectIdToSet;}
+
 }
