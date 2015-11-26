@@ -26,6 +26,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.AccessToken;
+import com.facebook.Profile;
+import com.facebook.login.widget.ProfilePictureView;
+
 import java.util.ArrayList;
 
 import ch.epfl.sweng.udle.R;
@@ -43,6 +47,7 @@ public abstract class SlideMenuActivity extends AppCompatActivity {
     private static String TAG = SlideMenuActivity.class.getSimpleName();
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
+    private static ProfilePictureView avatar;
     ListView slideMenuList;
     RelativeLayout slideMenu_frame;
     RelativeLayout content_frame;
@@ -75,6 +80,12 @@ public abstract class SlideMenuActivity extends AppCompatActivity {
 
         TextView username = (TextView) findViewById(R.id.SlideMenu_userName);
         username.setText(DataManager.getUserName());
+
+        avatar = (ProfilePictureView) findViewById(R.id.avatar);
+        AccessToken accessToken = AccessToken.getCurrentAccessToken();
+        if (accessToken != null) {
+            avatar.setProfileId(accessToken.getUserId());
+        }
 
         // main layout
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -130,12 +141,12 @@ public abstract class SlideMenuActivity extends AppCompatActivity {
     // slide menu actions
 
     /**
-     * Perform action when an item is clicked, depending on its position
+     * Handle item click, depending on its position.
      * <p>
-     *     If the item has a linkedActivity, the activity will be launched
+     *     If the item has a linkedActivity, the activity will be launched.
      * </p>
      * <p>
-     *     If the item has an action, the action will be run
+     *     If the item has an action, the action will be run.
      * </p>
      *
      * @param position
@@ -148,7 +159,6 @@ public abstract class SlideMenuActivity extends AppCompatActivity {
             default:
                 if (slideMenuItems.get(position).action != null){
                     slideMenuItems.get(position).action.run();
-                    Log.d(TAG, ".action.run() called on item N° " + position + " : " + slideMenuItems.get(position).name);
                 }
                 if (slideMenuItems.get(position).linkedActivity != null){
                     Intent newActivity = new Intent(getApplicationContext(), slideMenuItems.get(position).linkedActivity);
@@ -211,6 +221,11 @@ class NavItem {
     Runnable action = null;
 
     /**
+     * Create a NavItem.
+     *
+     * If you want to launch a new activity, you may want to use
+     * @see #NavItem(String, String, int, Class)
+     *
      * @param name name of the item
      * @param description short description, will be visible under the name
      * @param icon
