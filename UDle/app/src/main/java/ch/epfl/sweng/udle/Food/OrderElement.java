@@ -9,7 +9,7 @@ import java.util.ArrayList;
 /**
  * Created by rodri on 23/10/2015.
  */
-public class OrderElement extends ParseObject {
+public class OrderElement  {
 
     private ArrayList<Menu> orderList;
     private ArrayList<DrinkTypes> drinks;
