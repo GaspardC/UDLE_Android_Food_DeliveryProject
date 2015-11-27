@@ -25,6 +25,8 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.parse.ParseUser;
+
 import java.util.ArrayList;
 
 import ch.epfl.sweng.udle.R;
@@ -61,6 +63,7 @@ public abstract class SlideMenuActivity extends AppCompatActivity {
 
         //set menu items
         //home
+
         slideMenuItems.add(new NavItem(getString(R.string.home), getString(R.string.orderNow), R.mipmap.ic_launcher, MapActivity.class));
         if(DataManager.isARestaurant()){
             slideMenuItems.add(new NavItem(getString(R.string.restaurantMode), getString(R.string.restaurantModeDesc), R.drawable.logogreen, DeliveryRestaurantMapActivity.class));
@@ -73,7 +76,12 @@ public abstract class SlideMenuActivity extends AppCompatActivity {
 
         mTitle = mDrawerTitle = getTitle();//
         TextView helloTextView = (TextView) findViewById(R.id.hello);
-        helloTextView.setText("Hello "+ DataManager.getUserName());
+        if (ParseUser.getCurrentUser() !=null){
+            helloTextView.setText("Hello "+ DataManager.getUserName());
+        }
+        else{
+            helloTextView.setText("Hello ");
+        }
         TextView username = (TextView) findViewById(R.id.SlideMenu_userName);
         username.setText("yours settings");
 

@@ -160,6 +160,7 @@ public class DataManager {
     }
 
     public static boolean isARestaurant(){
+        if (ParseUser.getCurrentUser() == null) return false;
         return DataManager.getUser().getBoolean("RestaurantOwner");
     }
 
