@@ -39,7 +39,10 @@ public class DataManager {
         userOrderInformations = new ParseUserOrderInformations();
         user = userOrderInformations.getUser();
         userLocation = user.getParseGeoPoint("Location");
-        maxDeliveryDistance = ((double) (Integer)user.get("maxDeliveryDistanceKm"));
+
+        if (user.get("maxDeliveryDistanceKm") != null){
+            maxDeliveryDistance = ((double) (Integer) user.get("maxDeliveryDistanceKm"));
+        }
 
     }
 

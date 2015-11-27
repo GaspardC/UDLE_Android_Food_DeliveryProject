@@ -55,6 +55,8 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
+
+
         markerLayout = (LinearLayout) findViewById(R.id.locationMarker);
         dlgAlert = new AlertDialog.Builder(this);
         data = new DataManager();
@@ -83,6 +85,10 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
     @Override
     protected void onResume(){
         super.onResume();
+        if(DataManager.getUser() == null){
+            Intent login = new Intent(this,ProfileActivity.class);
+            startActivity(login);
+        }
         CheckEnableGPS();
     }
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {

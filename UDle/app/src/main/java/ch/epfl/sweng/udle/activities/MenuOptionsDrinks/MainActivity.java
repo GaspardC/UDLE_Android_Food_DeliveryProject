@@ -11,9 +11,10 @@ import android.view.MenuItem;
 
 import ch.epfl.sweng.udle.HorizontalSlideLibrary.SlidingTabLayout;
 import ch.epfl.sweng.udle.R;
+import ch.epfl.sweng.udle.activities.SlideMenuActivity;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends SlideMenuActivity {
 
     // Declaring Your View and Variables
 
@@ -33,8 +34,8 @@ public class MainActivity extends AppCompatActivity {
 
         // Creating The Toolbar and setting it as the Toolbar for the activity
 
-        toolbar = (Toolbar) findViewById(R.id.tool_bar);
-        setSupportActionBar(toolbar);
+/*        toolbar = (Toolbar) findViewById(R.id.tool_bar);
+        setSupportActionBar(toolbar);*/
 
 
         // Creating The ViewPagerAdapter and Passing Fragment Manager, Titles fot the Tabs and Number Of Tabs.
@@ -60,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Setting the ViewPager For the SlidingTabsLayout
         tabs.setViewPager(pager);
-
+        getActionBar();
 
 
     }

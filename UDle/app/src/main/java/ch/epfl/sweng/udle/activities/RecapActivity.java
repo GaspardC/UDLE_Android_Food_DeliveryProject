@@ -25,7 +25,7 @@ import ch.epfl.sweng.udle.Food.OrderElement;
 import ch.epfl.sweng.udle.Food.Orders;
 import ch.epfl.sweng.udle.R;
 
-public class RecapActivity extends AppCompatActivity {
+public class RecapActivity extends SlideMenuActivity {
     AlertDialog.Builder dlgAlert;
     boolean deleteAll = false;
     private ListView listView;
