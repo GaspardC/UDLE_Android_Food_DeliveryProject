@@ -129,6 +129,15 @@ public class DeliveryRestaurantMapActivity extends SlideMenuActivity {
             i++;
         }
 
+        if(aList.isEmpty()){
+            HashMap<String, String> hm = new HashMap<String,String>();
+            hm.put("numCommande", "Not any command for now");
+            hm.put("address","Wait a moment to have  the list refreshed");
+            hm.put("image", Integer.toString(R.drawable.burger) );
+            aList.add(hm);
+        }
+
+
         // Keys used in Hashmap
         String[] from = { "image","numCommande", "address" };
 
