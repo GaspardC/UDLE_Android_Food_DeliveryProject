@@ -3,10 +3,12 @@ package ch.epfl.sweng.udle.activities;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -42,20 +44,78 @@ public class DeliveryRestaurantMapActivity extends AppCompatActivity {
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
     private boolean showMap = true;
     private ListView listView;
-    private ArrayList<OrderElement> waitingOrders;
+    private ArrayList<OrderElement> waitingOrders = new ArrayList<>();
     final ArrayList<OrderElement> currentOrders = Orders.getCurrentOrders();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_delivery_restaurant_map);
-        waitingOrders = DataManager.getPendingOrdersForARestaurantOwner();
+
         setUpMapIfNeeded();
-        showWaitingOrders();
-        setUpListView();
+
+
+
+        final Handler h = new Handler();
+        final int delay = 30000; //30 seconds in milliseconds
+        h.postDelayed(new Runnable() {
+            public void run() {
+                Log.i("AAAAAAAAAAAAAaa", "=======================JJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJ=================================");
+
+                if (changeInWaitingOrders()){
+                    showWaitingOrders();
+                    setUpListView();
+                }
+
+                h.postDelayed(this, delay);
+            }
+        }, 0);
+
 
     }
 
+    /*
+    Check if there was a change in the waiting orders for the restaurant.
+    If change => refresh the display
+    If no change => Do nothing
+     */
+    private boolean changeInWaitingOrders(){
+        //Retrieve list from server
+        ArrayList<OrderElement> waitingOrdersFromServe = DataManager.getPendingOrdersForARestaurantOwner();
+
+        if (waitingOrdersFromServe.size() == 0){
+            waitingOrders = waitingOrdersFromServe;
+            return true;
+        }
+
+        //In order to check if there was a change or not, we compare the objectID of the list retrieve from server and the one already on device.
+        //So use this int to see if the retrieved list is the same or not has the local one.
+        int checkSameList = 0;
+
+        //Putting all objectIds of local waitingOrders list into a new list
+        ArrayList<String> currentWaitingOrdersObjectID = new ArrayList<>();
+        for (OrderElement orderElement: waitingOrders){
+            currentWaitingOrdersObjectID.add(orderElement.getObjectId());
+        }
+
+        //Check for all orderElements in the server list if it already present locally. If yes, add 1 to 'checkSameList'
+        for (OrderElement orderElement : waitingOrdersFromServe){
+            if (currentWaitingOrdersObjectID.contains(orderElement.getObjectId())){
+                checkSameList ++;
+            }
+        }
+
+        if (waitingOrdersFromServe.size() != checkSameList){
+            //Lists are not the same. Need to refresh
+            waitingOrders = waitingOrdersFromServe;
+            return true;
+        }
+        else {
+            //Server list is the same as the displayed one. Do nothing.
+            return false;
+        }
+
+    }
 
 
     private void setUpListView() {

@@ -29,7 +29,7 @@ public class ParseUserOrderInformations extends ParseObject {
         ParseUser currentUser = ParseUser.getCurrentUser();
         this.put("user", currentUser);
         this.setDeliveryGuyNumber("no number assigned");
-        this.setOrderStatus("waiting for restaurant");
+        this.setOrderStatus(OrderStatus.WAITING.toString());
         this.setExpectedTime(0);
         this.setParseDeliveringRestaurant("no restaurant assigned");
 
@@ -85,7 +85,6 @@ public class ParseUserOrderInformations extends ParseObject {
 
     // Retrieve current order status based on pre-defined strings
     public String getOrderStatus() {
-
         return this.getString("orderStatus");
     }
 

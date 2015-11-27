@@ -32,6 +32,7 @@ public class OrderElement extends ParseObject {
         this.deliveryLocation = null;
         this.deliveryAddress = "";
         this.orderedBy = "";
+        this.objectId = "";
     }
 
 

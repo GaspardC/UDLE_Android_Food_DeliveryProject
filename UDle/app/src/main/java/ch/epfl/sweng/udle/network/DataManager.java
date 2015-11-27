@@ -1,6 +1,9 @@
 package ch.epfl.sweng.udle.network;
 
 
+import android.location.Location;
+import android.util.Log;
+
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
@@ -30,8 +33,8 @@ public class DataManager {
     private static double maxDeliveryDistance;
     private static ParseUser user;
     private static ParseGeoPoint userLocation;
-    private static ArrayList<OrderElement> pendingOrders;
-    private static ArrayList<String> nearbyRestaurants;
+    private static ArrayList<OrderElement> pendingOrders = new ArrayList<>();
+    private static ArrayList<String> nearbyRestaurants = new ArrayList<>();
     private static ParseUserOrderInformations userOrderInformations = null;
 
 
@@ -42,16 +45,13 @@ public class DataManager {
      *
      */
     public static void createNewParseUserOrderInformations(){
-        //Intialize ParseUserOrderInformationFields
         userOrderInformations = new ParseUserOrderInformations();
-        user = userOrderInformations.getUser();
-        userLocation = user.getParseGeoPoint("Location");
-        maxDeliveryDistance = ((double) (Integer)user.get("maxDeliveryDistanceKm"));
 
         //Get objectId, set ojectId in orderElement, and save to server
         String orderElementId = userOrderInformations.getObjectId();
         OrderElement orderElement = Orders.getActiveOrder();
         orderElement.setObjectId(orderElementId);
+
         userOrderInformations.setOrder(orderElement);
     }
 
@@ -67,7 +67,6 @@ public class DataManager {
         //Because this method is static, these fields may not be instantiated
         user = DataManager.getUser();
         userLocation = user.getParseGeoPoint("Location");
-        maxDeliveryDistance = (double) ((Integer) user.get("maxDeliveryDistanceKm"));
 
         //Start Query
         ParseQuery<ParseUser> query = ParseUser.getQuery();
@@ -84,8 +83,9 @@ public class DataManager {
                         ParseGeoPoint restaurantLocation = restaurantUser.getParseGeoPoint("Location");
                         double distance = restaurantLocation.distanceInKilometersTo(userLocation);
 
+                        double restaurantMaxDeliveryDistance = (double) ((Integer) restaurantUser.get("maxDeliveryDistanceKm"));
                         //Add to nearby restaurants list if they are within limits
-                        if (distance <= maxDeliveryDistance) {
+                        if (distance <= restaurantMaxDeliveryDistance) {
                             nearbyRestaurants.add(restaurantUser.getObjectId());
                         }
 
@@ -101,54 +101,6 @@ public class DataManager {
     }
 
 
-    /* Start a query of all the pending orders available within the restaurant's range.
-     * Compile an arraylist of all the order element objects and return
-     * Returns null if query fails.
-     *
-     * THIS FUNCTION RETURNS AN ID
-     * getOrderElementWithId
-     *
-     */
-
-    public static ArrayList<OrderElement> getPendingOrdersForARestaurantOwner() {
-
-        //Because this method is static, these fields may not be instantiated
-        user = DataManager.getUser();
-        userLocation = user.getParseGeoPoint("Location");
-        maxDeliveryDistance = (double) ((Integer) user.get("maxDeliveryDistance"));
-
-        //Start Query
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("ParseUserOrderInformations");
-        query.whereEqualTo("orderStatus", "waiting for restaurant");
-
-        try {
-            List<ParseObject> OrderList = query.find();
-            for (ParseObject userOrder : OrderList) {
-
-                //Cast to parseUserOrderInformations to use methods
-                ParseUserOrderInformations parseUserOrder = (ParseUserOrderInformations) userOrder;
-
-                //Get Client location - - - should be delivery location, not client's?
-                ParseUser client = parseUserOrder.getUser();
-                ParseGeoPoint clientLocation = client.getParseGeoPoint("currentLocation");
-                double distanceKm = userLocation.distanceInKilometersTo(clientLocation);
-
-                //We check if they are near of us (restaurant owner connected) if yes we
-                //concatinate a ArrayList of OrderElements and return
-
-                if (distanceKm <= maxDeliveryDistance) {
-                    OrderElement orderElement = parseUserOrder.getOrder();
-                    pendingOrders.add(orderElement);
-                }
-            }
-        }
-
-        catch (Exception e) {
-            //throw new IOException("Nhvvb");
-        }
-
-        return pendingOrders;
-    }
 
     /*
      *  Change status of order to reflect that it's currenty being delivered
@@ -161,16 +113,18 @@ public class DataManager {
             userOrderInformations.setDeliveryGuyNumber(deliveryGuyNumber);
             userOrderInformations.setParseDeliveringRestaurant(deliveringRestaurant);
             userOrderInformations.setExpectedTime(eta);
-            userOrderInformations.setOrderStatus("enRoute");
+            userOrderInformations.setOrderStatus(OrderStatus.ENROUTE.toString());
     }
 
     /*
      *  Change status of order to reflect that it's currenty delivered
      */
-    public static void deliveryDelivered() {
+    public static void deliveryDelivered(String objectId) {
+        ParseUserOrderInformations userOrderInformations = getParseUserObjectWithId(objectId);
+
         if (userOrderInformations != null) {
-            if (userOrderInformations.getOrderStatus() == "enRoute") {
-                userOrderInformations.setOrderStatus("delivered");
+            if (userOrderInformations.getOrderStatus().equals(OrderStatus.ENROUTE.toString())) {
+                userOrderInformations.setOrderStatus(OrderStatus.DELIVERED.toString());
             }
         }
     }
@@ -210,7 +164,7 @@ public class DataManager {
 
 
     //GET ORDERINFORMATIONS WITH ID
-    public static ParseUserOrderInformations getParseUserObjectWithId(String objectId) {
+    private static ParseUserOrderInformations getParseUserObjectWithId(String objectId) {
         ParseUserOrderInformations parseUserOrderInformations = null;
 
         ParseQuery<ParseObject> query = ParseQuery.getQuery("ParseUserOrderInformations");
@@ -234,14 +188,58 @@ public class DataManager {
     * no duplicates.
     *
     *
-    * SHOULD NOT THROW IO EXCEPTION - - - Create a new exception
     */
     public static boolean isStatusWaitingForRestaurant(String objectId) {
 
         ParseUserOrderInformations parseUserOrderInformations = getParseUserObjectWithId(objectId);
         String orderStatus = parseUserOrderInformations.getOrderStatus();
-        return orderStatus.equals("waiting for restaurant");
+        return orderStatus.equals(OrderStatus.WAITING.toString());
     }
 
+
+
+    /* Start a query of all the pending orders available within the restaurant's range.
+     * Compile an arraylist of all the order element objects and return
+     * Returns null if query fails.
+     */
+    public static ArrayList<OrderElement> getPendingOrdersForARestaurantOwner() {
+
+        user = DataManager.getUser();
+        userLocation = user.getParseGeoPoint("Location");
+        maxDeliveryDistance = (double) ((Integer) user.getNumber("maxDeliveryDistanceKm"));
+
+        //Start Query
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("ParseUserOrderInformations");
+        query.whereEqualTo("orderStatus", OrderStatus.WAITING.toString());
+
+        try {
+            List<ParseObject> OrderList = query.find();
+
+            for (ParseObject userOrder : OrderList) {
+
+                //Cast to parseUserOrderInformations to use methods
+                ParseUserOrderInformations parseUserOrder = (ParseUserOrderInformations) userOrder;
+
+                //Get Client location - - - should be delivery location, not client's?
+                OrderElement orderElement = parseUserOrder.getOrder();
+                Location location = orderElement.getDeliveryLocation();
+                ParseGeoPoint parseLocation = new ParseGeoPoint(location.getLatitude(), location.getLongitude());
+                double distanceKm = userLocation.distanceInKilometersTo(parseLocation);
+
+                //We check if they are near of us (restaurant owner connected) if yes we
+                //concatinate a ArrayList of OrderElements and return
+
+                if (distanceKm <= maxDeliveryDistance) {
+                    pendingOrders.add(orderElement);
+                }
+            }
+        }
+
+        catch (Exception e) {
+            //throw new IOException("Nhvvb");
+        }
+
+        return pendingOrders;
+    }
 
 }
