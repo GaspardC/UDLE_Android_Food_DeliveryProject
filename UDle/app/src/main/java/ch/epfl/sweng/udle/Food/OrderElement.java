@@ -2,12 +2,14 @@ package ch.epfl.sweng.udle.Food;
 
 import android.location.Location;
 
+import com.parse.ParseObject;
+
 import java.util.ArrayList;
 
 /**
  * Created by rodri on 23/10/2015.
  */
-public class OrderElement {
+public class OrderElement extends ParseObject {
 
     private ArrayList<Menu> orderList;
     private ArrayList<DrinkTypes> drinks;
