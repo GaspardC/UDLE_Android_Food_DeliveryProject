@@ -12,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -53,7 +54,7 @@ public class DeliveryRestaurantMapActivity extends SlideMenuActivity {
     private HashMap<Integer, OrderElement> objectIdHashMapForList; //HashMap between the index of order shown in the list view and the specific order.
     private HashMap<String, OrderElement> objectIdHashMapForMap; //HashMap between the index of order shown in the map and the specific order.
 
-    final Handler h = new Handler(); //The list of waiting and current Orders is refresh each 'delay' milliseconds.
+    final Handler handler = new Handler(); //The list of waiting and current Orders is refresh each 'delay' milliseconds.
     final int delay = 30000; //30 seconds in milliseconds
 
 
@@ -65,20 +66,28 @@ public class DeliveryRestaurantMapActivity extends SlideMenuActivity {
 
         setUpMapIfNeeded();
 
-        h.postDelayed(new Runnable() {
+        handler.postDelayed(getMapRunnable(), 0);
+    }
+
+    /**
+     * @return Runnable: Each 'delay' milliseconds, call the function run function. This run function check if orders need to be refresh and do it if needed.
+     */
+    private Runnable getMapRunnable(){
+        Runnable runnable = new Runnable() {
+            @Override
             public void run() {
                 boolean waitingOrdersChange = changeInWaitingOrders();
                 boolean currentOrdersChange = changeInCurrentOrders();
 
-                if (waitingOrdersChange || currentOrdersChange){
+                if (waitingOrdersChange || currentOrdersChange) {
                     showOrdersOnMap();
                     setUpListView();
                 }
-                h.postDelayed(this, delay);
+                handler.postDelayed(this, delay);
             }
-        }, 0);
+        };
+        return runnable;
     }
-
 
     /**
      *
@@ -356,7 +365,7 @@ public class DeliveryRestaurantMapActivity extends SlideMenuActivity {
                 OrderElement order = objectIdHashMapForMap.get(markerTitle);
 
                 boolean isCurrent = false;
-                if (markerTitle.contains("Current")){
+                if (markerTitle.contains("Current")) {
                     isCurrent = true;
                 }
 
@@ -370,10 +379,25 @@ public class DeliveryRestaurantMapActivity extends SlideMenuActivity {
 
     /** Called when the user clicks the MenuMap_ValidatePosition button */
     public void goToDeliveryCommandDetail(OrderElement order, boolean isCurrent) {
-        Orders.setActiveOrder(order);
-        Intent intent = new Intent(this, DeliverCommandDetailActivity.class);
-        intent.putExtra("isCurrent", isCurrent);
-        startActivity(intent);
+        if (DataManager.isStatusWaiting(order.getUserOrderInformationsID())){
+            Orders.setActiveOrder(order);
+            Intent intent = new Intent(this, DeliverCommandDetailActivity.class);
+            intent.putExtra("isCurrent", isCurrent);
+            startActivity(intent);
+        }
+        else{
+            Toast.makeText(getApplicationContext(), getString(R.string.OrderNotAvailable),
+                    Toast.LENGTH_SHORT).show();
+            restartHandlerTimerForRefresh();
+        }
+    }
+
+    /**
+     * Restart the timer how deals with the refresh of the page.
+     */
+    public void restartHandlerTimerForRefresh(){
+        handler.removeCallbacksAndMessages(null);
+        handler.postDelayed(getMapRunnable(),0);
     }
 
 
@@ -408,7 +432,7 @@ public class DeliveryRestaurantMapActivity extends SlideMenuActivity {
 
     @Override
     protected void onPause() {
-        h.removeCallbacksAndMessages(null);
+        handler.removeCallbacksAndMessages(null);
         super.onPause();
     }
 }
