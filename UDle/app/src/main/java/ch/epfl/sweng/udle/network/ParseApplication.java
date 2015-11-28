@@ -29,7 +29,6 @@ import com.parse.ParseObject;
 
 import ch.epfl.sweng.udle.Food.OrderElement;
 
-//import ch.epfl.tabletlab.photon.R;
 
 public class ParseApplication extends Application {
 
