@@ -24,6 +24,11 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.facebook.AccessToken;
+import com.facebook.Profile;
+import com.facebook.login.widget.ProfilePictureView;
 
 import java.util.ArrayList;
 
@@ -42,6 +47,7 @@ public abstract class SlideMenuActivity extends AppCompatActivity {
     private static String TAG = SlideMenuActivity.class.getSimpleName();
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
+    private static ProfilePictureView avatar;
     ListView slideMenuList;
     RelativeLayout slideMenu_frame;
     RelativeLayout content_frame;
@@ -59,15 +65,30 @@ public abstract class SlideMenuActivity extends AppCompatActivity {
         setTheme(R.style.SlideMenuTheme);
         super.setContentView(R.layout.actitivity_slidemenu);
 
-        //set menu items
+        //Go to lo login
+        slideMenuItems.add(new NavItem(getString(R.string.profile), getString(R.string.settings), R.mipmap.ic_launcher, ProfileActivity.class));
+        //home
+        slideMenuItems.add(new NavItem(getString(R.string.home), getString(R.string.orderNow), R.mipmap.ic_launcher, MapActivity.class));
+        slideMenuItems.add(new NavItem(getString(R.string.about), getString(R.string.notImplemented), R.mipmap.ic_launcher, new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(getApplicationContext(), R.string.notImplemented, Toast.LENGTH_LONG).show();
+                Log.d(TAG, "Toast created inside (new Runnable()).run()");
+            }
+        }));
         slideMenuItems.add(new NavItem(getString(R.string.restaurantMode), getString(R.string.restaurantModeDesc), R.mipmap.ic_launcher, DeliveryRestaurantMapActivity.class));
-        slideMenuItems.add(new NavItem(getString(R.string.about), getString(R.string.notImplemented), R.mipmap.ic_launcher));
 
 
         mTitle = mDrawerTitle = getTitle();//
 
         TextView username = (TextView) findViewById(R.id.SlideMenu_userName);
         username.setText(DataManager.getUserName());
+
+        avatar = (ProfilePictureView) findViewById(R.id.avatar);
+        AccessToken accessToken = AccessToken.getCurrentAccessToken();
+        if (accessToken != null) {
+            avatar.setProfileId(accessToken.getUserId());
+        }
 
         // main layout
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -121,14 +142,29 @@ public abstract class SlideMenuActivity extends AppCompatActivity {
     }
 
     // slide menu actions
+
+    /**
+     * Handle item click, depending on its position.
+     * <p>
+     *     If the item has a linkedActivity, the activity will be launched.
+     * </p>
+     * <p>
+     *     If the item has an action, the action will be run.
+     * </p>
+     *
+     * @param position
+     */
     private void selectItemFromList(int position) {
-        Log.d(TAG, "SlideMenu item selected. N° : " + position);
+        Log.d(TAG, "SlideMenu item selected. N° " + position + " : " + slideMenuItems.get(position).name);
         //close Menu
         mDrawerLayout.closeDrawer(slideMenu_frame);
         switch (position) {
             default:
+                if (slideMenuItems.get(position).action != null){
+                    slideMenuItems.get(position).action.run();
+                }
                 if (slideMenuItems.get(position).linkedActivity != null){
-                    Intent newActivity = new Intent(this, slideMenuItems.get(position).linkedActivity);
+                    Intent newActivity = new Intent(getApplicationContext(), slideMenuItems.get(position).linkedActivity);
                     startActivity(newActivity);
                 }
         }
@@ -185,7 +221,25 @@ class NavItem {
     String description;
     int icon;
     Class<?> linkedActivity = null;
+    Runnable action = null;
 
+    /**
+     * Create a NavItem.
+     *
+     * If you want to launch a new activity, you may want to use
+     * @see #NavItem(String, String, int, Class)
+     *
+     * @param name name of the item
+     * @param description short description, will be visible under the name
+     * @param icon
+     * @param action action performed when the item is clicked. It will be run <b>synchronously</b>
+     */
+    public NavItem(String name, String description, int icon, Runnable action){
+        this.name = name;
+        this.description = description;
+        this.icon = icon;
+        this.action = action;
+    }
     /**
      * @param name name of the item
      * @param description short description, will be visible under the name
@@ -198,6 +252,18 @@ class NavItem {
         this.icon = icon;
         this.linkedActivity = linkedActivity;
     }
+    /**<b>
+     *  The NavItem created will have no effect !
+     * </b>
+     * <p>
+     *  To set an effect, you must add it to
+     *  @see SlideMenuActivity#selectItemFromList(int)
+     * </p>
+     *
+     * @param name name of the item
+     * @param description short description, will be visible under the name
+     * @param icon
+     */
     public NavItem(String name, String description, int icon){
         this.name = name;
         this.description = description;

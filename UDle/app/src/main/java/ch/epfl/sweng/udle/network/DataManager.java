@@ -33,7 +33,8 @@ public class DataManager {
     private static double maxDeliveryDistance;
     private static ParseUser user;
     private static ParseGeoPoint userLocation;
-    private static ArrayList<OrderElement> pendingOrders = new ArrayList<>();
+    private static ArrayList<OrderElement> pendingOrders;
+    private static ArrayList<OrderElement> currentOrders;
     private static ArrayList<String> nearbyRestaurants = new ArrayList<>();
     private static ParseUserOrderInformations userOrderInformations = null;
 
@@ -47,12 +48,15 @@ public class DataManager {
     public static void createNewParseUserOrderInformations(){
         userOrderInformations = new ParseUserOrderInformations();
 
-        //Get objectId, set ojectId in orderElement, and save to server
-        String orderElementId = userOrderInformations.getObjectId();
         OrderElement orderElement = Orders.getActiveOrder();
-        orderElement.setObjectId(orderElementId);
 
+        userOrderInformations.setUser(getUser());
+        userOrderInformations.setParseDeliveringRestaurant("No restaurant assigned");
+        userOrderInformations.setExpectedTime(-1);
+        userOrderInformations.setOrderStatus(OrderStatus.WAITING.toString());
+        userOrderInformations.setDeliveryGuyNumber("No number assigned");
         userOrderInformations.setOrder(orderElement);
+
     }
 
     /*
@@ -107,13 +111,17 @@ public class DataManager {
      *
      *  THESE ARE FUNCTIONS USED
      */
-    public static void deliveryEnRoute(String objectId, String deliveringRestaurant, String deliveryGuyNumber, int eta) {
+    public static void deliveryEnRoute(String objectId, int eta) {
 
-            ParseUserOrderInformations userOrderInformations = getParseUserObjectWithId(objectId);
-            userOrderInformations.setDeliveryGuyNumber(deliveryGuyNumber);
-            userOrderInformations.setParseDeliveringRestaurant(deliveringRestaurant);
-            userOrderInformations.setExpectedTime(eta);
-            userOrderInformations.setOrderStatus(OrderStatus.ENROUTE.toString());
+        ParseUser user = getUser();
+        String deliveringRestaurant = user.getUsername();
+        String deliveryGuyNumber = user.getString("phone");
+
+        ParseUserOrderInformations userOrderInformations = getParseUserObjectWithId(objectId);
+        userOrderInformations.setDeliveryGuyNumber(deliveryGuyNumber);
+        userOrderInformations.setParseDeliveringRestaurant(deliveringRestaurant);
+        userOrderInformations.setExpectedTime(eta);
+        userOrderInformations.setOrderStatus(OrderStatus.ENROUTE.toString());
     }
 
     /*
@@ -203,6 +211,7 @@ public class DataManager {
      * Returns null if query fails.
      */
     public static ArrayList<OrderElement> getPendingOrdersForARestaurantOwner() {
+        pendingOrders = new ArrayList<>();
 
         user = DataManager.getUser();
         userLocation = user.getParseGeoPoint("Location");
@@ -217,11 +226,14 @@ public class DataManager {
 
             for (ParseObject userOrder : OrderList) {
 
+                userOrder.fetch();
                 //Cast to parseUserOrderInformations to use methods
                 ParseUserOrderInformations parseUserOrder = (ParseUserOrderInformations) userOrder;
 
                 //Get Client location - - - should be delivery location, not client's?
                 OrderElement orderElement = parseUserOrder.getOrder();
+
+
                 Location location = orderElement.getDeliveryLocation();
                 ParseGeoPoint parseLocation = new ParseGeoPoint(location.getLatitude(), location.getLongitude());
                 double distanceKm = userLocation.distanceInKilometersTo(parseLocation);
@@ -242,4 +254,35 @@ public class DataManager {
         return pendingOrders;
     }
 
+
+    /* Start a query of all the enRoute orders that the restaurant accept.
+     * Compile an arraylist of all the order element objects and return
+     * Returns null if query fails.
+     */
+    public static ArrayList<OrderElement> getCurrentOrdersForARestaurantOwner() {
+        currentOrders = new ArrayList<>();
+        user = DataManager.getUser();
+
+        //Start Query
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("ParseUserOrderInformations");
+        query.whereEqualTo("deliveringRestaurant", user.getUsername());
+        query.whereEqualTo("orderStatus", OrderStatus.ENROUTE.toString());
+
+        try {
+            List<ParseObject> OrderList = query.find();
+
+            for (ParseObject userOrder : OrderList) {
+                ParseUserOrderInformations parseUserOrder = (ParseUserOrderInformations) userOrder;
+
+                //Get Client location - - - should be delivery location, not client's?
+                OrderElement orderElement = parseUserOrder.getOrder();
+                currentOrders.add(orderElement);
+            }
+        }
+        catch (Exception e) {
+            //throw new IOException("Nhvvb");
+        }
+
+        return currentOrders;
+    }
 }

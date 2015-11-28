@@ -51,11 +51,16 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
     private boolean displayGpsMessage = true;
     private boolean dlgAlertcountCreated = false;
     private String nonNullLocationProvider = "nonNullLocationProvider";
+    private OrderElement orderElement = new OrderElement();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
+
+        Orders.setActiveOrder(orderElement);
+
+
         markerLayout = (LinearLayout) findViewById(R.id.locationMarker);
         dlgAlert = new AlertDialog.Builder(this);
         autoCompView = (AutoCompleteTextView) findViewById(R.id.autoCompleteTextView2);
@@ -83,6 +88,10 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
     @Override
     protected void onResume(){
         super.onResume();
+        if(DataManager.getUser() == null){
+            Intent login = new Intent(this,ProfileActivity.class);
+            startActivity(login);
+        }
         CheckEnableGPS();
     }
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
@@ -95,7 +104,7 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
     /** Called when the user clicks the MenuMap_ValidatePosition button */
     public void goToMenuActivity(View view) {
         if(isLocationInitialised() && !getDeliveryAdress().equals("")) {
-            OrderElement orderElement = new OrderElement();
+            orderElement = new OrderElement();
             orderElement.setDeliveryLocation(getLocation());
             orderElement.setDeliveryAddress(getDeliveryAdress());
             orderElement.setOrderedUserName(DataManager.getUserName());

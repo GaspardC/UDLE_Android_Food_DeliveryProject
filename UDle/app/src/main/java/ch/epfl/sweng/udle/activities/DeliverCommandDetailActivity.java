@@ -73,7 +73,8 @@ public class DeliverCommandDetailActivity extends AppCompatActivity {
         }
         else{
             Orders.activeOrderToCurrentOrder(order);
-            //TODO: DataManager -> deliveryEnRoute (Issue #66)
+            int eta = Integer.parseInt(expectedTime.getText().toString());
+            DataManager.deliveryEnRoute(order.getObjectId(), eta);
             Intent intent = new Intent(this, DeliveryRestaurantMapActivity.class);
             startActivity(intent);
         }

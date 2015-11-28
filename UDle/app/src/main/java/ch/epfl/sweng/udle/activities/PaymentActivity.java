@@ -24,7 +24,7 @@ import ch.epfl.sweng.udle.Food.Orders;
 import ch.epfl.sweng.udle.R;
 import ch.epfl.sweng.udle.network.DataManager;
 
-public class PaymentActivity extends AppCompatActivity {
+public class PaymentActivity extends SlideMenuActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

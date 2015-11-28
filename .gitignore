@@ -1,5 +1,7 @@
 # Built application files
 /*/build/
+/*/ParseUI-Login/build/
+
 
 # Crashlytics configuations
 com_crashlytics_export_strings.xml
