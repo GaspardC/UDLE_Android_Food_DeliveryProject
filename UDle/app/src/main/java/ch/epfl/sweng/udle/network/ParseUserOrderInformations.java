@@ -1,22 +1,9 @@
 package ch.epfl.sweng.udle.network;
 
-import android.location.Location;
-import android.util.Log;
-
 import com.parse.ParseClassName;
+import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-
-import ch.epfl.sweng.udle.Food.DrinkTypes;
-import ch.epfl.sweng.udle.Food.Menu;
-import ch.epfl.sweng.udle.Food.OrderElement;
-import ch.epfl.sweng.udle.Food.Orders;
 
 /**
  * Created by skalli93 on 11/1/15.
@@ -37,8 +24,13 @@ public class ParseUserOrderInformations extends ParseObject {
 
     //Get current user
     public ParseUser getUser() {
-
-        return (ParseUser) this.get("user");
+        ParseUser user = (ParseUser) this.get("user");
+        try {
+            user.fetch();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return user;
     }
 
     public void setUser(ParseUser value){
@@ -99,37 +91,21 @@ public class ParseUserOrderInformations extends ParseObject {
     }
 
     //Retrieve the order parse element and add parameters to the order
-    public void setOrder (OrderElement orderElement) throws JSONException {
-
-        JSONObject orderElem = new JSONObject();
-
-        JSONArray orderList = new JSONArray();
-        for (Menu menu : orderElement.getOrder()){
-            orderList.put(menu);
-        }
-        orderElem.put("orderList", orderList);
-
-        JSONArray drinks = new JSONArray();
-        for (DrinkTypes drink: orderElement.getDrinks()){
-            orderList.put(drink);
-        }
-        orderElem.put("drinks", drinks);
-
-        orderElem.put("deliveryLocation", orderElement.getDeliveryLocation());
-        orderElem.put("deliveryAddress", orderElement.getDeliveryAddress());
-        orderElement.put("orderedBy", orderElement.getDeliveryAddress());
-        orderElement.put("userOrderInformationsID", orderElement.getUserOrderInformationsID());
-
-
-        String orderElemString = JSONObject.string
-
-        this.put("orderElement", orderElem);
+    public void setOrder (ParseObject orderElement) {
+       // this.put("orderElement", orderElement);
+        this.put("orderElementPointer", orderElement);
         this.saveInBackground();
     }
 
     //Return Order in type ArrayListMenu
-    public OrderElement getOrder(){
-        return (OrderElement) this.get("orderElement");
+    public ParseObject getOrder(){
+        ParseObject order = (ParseObject) this.get("orderElementPointer");
+        try {
+            order.fetch();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return order;
     }
 
 }

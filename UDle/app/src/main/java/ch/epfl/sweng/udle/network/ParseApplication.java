@@ -51,7 +51,6 @@ public class ParseApplication extends Application {
 
       //Initialize the parse Order server object
       ParseObject.registerSubclass(ParseUserOrderInformations.class);
-      ParseObject.registerSubclass(ParseOrderElement.class);
       Parse.initialize(this, "9owjl8GmUsbfyoKtXhd5hK7QX8CUJVfuAvSLNoaY", "xd6XKHd9NxLfzFPbHQ5xaMHVzU1gfeLen0qCyI4F");
 
 

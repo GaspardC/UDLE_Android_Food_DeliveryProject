@@ -21,7 +21,6 @@ import ch.epfl.sweng.udle.Food.Orders;
  *
  *  Created by rodri on 23/10/2015
  * This class manages the User's information relevant to the order, order status, and contact info
- * One user can currently have one order.
  * One order exist per user per time period so we create one Order Parse Object per DataManager
  * Instance.
  *
@@ -39,11 +38,11 @@ public class DataManager {
     private static ParseUserOrderInformations userOrderInformations = null;
 
 
-    /*
-     * Because dataManager is now a static class, we don't need to keep relying on the
-     * constructor to be able to use the user end functionality. Having a separate function is
-     * a lot cleaner and more efficient.
-     *
+    /**
+     * Create two new entries in the database:
+     *    1st: Create a new entry in 'UserOrderInformations'. This entry is 'initialized', with Status=Waiting. Contains a pointer to the 2nd entry created (orderElement).
+     *    2nd: Create a new entry in 'odrerElement' with the order in Orders.getActiveOrder(). This entry contains a pointer to the 1st entry, to be able to retrieve the 'actors' of the order later on.
+     * This two entries are directly push to server.
      */
     public static void createNewParseUserOrderInformations(){
         userOrderInformations = new ParseUserOrderInformations();
@@ -55,20 +54,19 @@ public class DataManager {
         userOrderInformations.setExpectedTime(-1);
         userOrderInformations.setOrderStatus(OrderStatus.WAITING.toString());
         userOrderInformations.setDeliveryGuyNumber("No number assigned");
-        userOrderInformations.setOrder(orderElement);
+
+        orderElement.setUserOrderInformationsID(userOrderInformations.getObjectId());
+        ParseObject parseOrderElement = ParseOrderElement.createToServerAndGetId(orderElement);
+        userOrderInformations.setOrder(parseOrderElement);
 
     }
 
-    /*
+    /**
      *  Return objectId array of nearby restaurants. Relies on user current position
-     *  and position of the position of the restaurant and the maximum preffered distance between
-     *  them to determine if restaurant is suitable. Does not consider availability of restaurant.
-     *
-     *  WHEN I TRY TO RETURN ARRAYLIST<STRING> THE VALUE IS ALWAYS NULL???
+     *  and position of the restaurant to determine if restaurant is suitable.
+     *  Does not consider availability of restaurant.
      */
     public static void getRestaurantsNearTheUser() {
-
-        //Because this method is static, these fields may not be instantiated
         user = DataManager.getUser();
         userLocation = user.getParseGeoPoint("Location");
 
@@ -106,14 +104,13 @@ public class DataManager {
 
 
 
-    /*
-     *  Change status of order to reflect that it's currenty being delivered
+    /**
+     *  Change status of order to reflect that it's currenty being delivered.
      *
-     *  THESE ARE FUNCTIONS USED
      */
     public static void deliveryEnRoute(String objectId, int eta) {
-
         ParseUser user = getUser();
+
         String deliveringRestaurant = user.getUsername();
         String deliveryGuyNumber = user.getString("phone");
 
@@ -124,20 +121,15 @@ public class DataManager {
         userOrderInformations.setOrderStatus(OrderStatus.ENROUTE.toString());
     }
 
-    /*
-     *  Change status of order to reflect that it's currenty delivered
+    /**
+     *  Change status of order to reflect that it's currenty delivered. Order is finish.
      */
     public static void deliveryDelivered(String objectId) {
         ParseUserOrderInformations userOrderInformations = getParseUserObjectWithId(objectId);
-
-        if (userOrderInformations != null) {
-            if (userOrderInformations.getOrderStatus().equals(OrderStatus.ENROUTE.toString())) {
-                userOrderInformations.setOrderStatus(OrderStatus.DELIVERED.toString());
-            }
-        }
+        userOrderInformations.setOrderStatus(OrderStatus.DELIVERED.toString());
     }
 
-    /*
+    /**
      *  Return current parse user
      */
     public static ParseUser getUser(){
@@ -145,33 +137,41 @@ public class DataManager {
         return currentUser;
     }
 
-
+    /**
+     *  Return current parse username
+     */
     public static String getUserName(){
         ParseUser currentUser = ParseUser.getCurrentUser();
         return currentUser.getUsername();
     }
 
-    /*
-     *  Return current parse user location
+    /**
+     *  Return user location
      */
+    public static Location getUserLocation(){
+        ParseUser currentUser = getUser();
+        ParseGeoPoint parseGeoPoint = currentUser.getParseGeoPoint("Location");
 
-    public static ParseGeoPoint getUserLocation(){
-        ParseUser currentUser = ParseUser.getCurrentUser();
-        return currentUser.getParseGeoPoint("Location");
+        Location location = new Location("");
+        location.setLatitude(parseGeoPoint.getLatitude());
+        location.setLongitude(parseGeoPoint.getLongitude());
+
+        return location;
     }
 
-    /*
+    /**
      *  Return current user status - user or restaurant
      */
-
     public static boolean isCurrentUserARestaurant(){
         ParseUser currentUser = ParseUser.getCurrentUser();
         return currentUser.getBoolean("RestaurantOwner");
     }
 
 
-
-    //GET ORDERINFORMATIONS WITH ID
+    /**
+     * @param objectId String that identify a specif UserOrderInformations on the server
+     * @return The ParseUserOrderInformations specify in the serve by the given objectId parameter.
+     */
     private static ParseUserOrderInformations getParseUserObjectWithId(String objectId) {
         ParseUserOrderInformations parseUserOrderInformations = null;
 
@@ -189,16 +189,12 @@ public class DataManager {
         return parseUserOrderInformations;
     }
 
-    /*
-     * Start a query in the forground that returns the first object that matches with the order
-    * objectId.
-    * Each order has it's own unique objectId assigned by Parse, so we assume that there are
-    * no duplicates.
-    *
-    *
-    */
-    public static boolean isStatusWaitingForRestaurant(String objectId) {
 
+    /**
+     * @param objectId
+     * @return Confirm that the current status of the order, specify by the objectId given as parameter, is 'Waiting'.
+     */
+    public static boolean isStatusWaiting(String objectId) {
         ParseUserOrderInformations parseUserOrderInformations = getParseUserObjectWithId(objectId);
         String orderStatus = parseUserOrderInformations.getOrderStatus();
         return orderStatus.equals(OrderStatus.WAITING.toString());
@@ -206,7 +202,8 @@ public class DataManager {
 
 
 
-    /* Start a query of all the pending orders available within the restaurant's range.
+    /**
+     * Start a query of all the pending orders available within the restaurant's range.
      * Compile an arraylist of all the order element objects and return
      * Returns null if query fails.
      */
@@ -224,15 +221,13 @@ public class DataManager {
         try {
             List<ParseObject> OrderList = query.find();
 
-            for (ParseObject userOrder : OrderList) {
+                for (ParseObject userOrder : OrderList) {
 
-                userOrder.fetch();
                 //Cast to parseUserOrderInformations to use methods
                 ParseUserOrderInformations parseUserOrder = (ParseUserOrderInformations) userOrder;
 
-                //Get Client location - - - should be delivery location, not client's?
-                OrderElement orderElement = parseUserOrder.getOrder();
-
+                ParseObject parseOrderElement = parseUserOrder.getOrder();
+                OrderElement orderElement = ParseOrderElement.retrieveOrderElementFromParse(parseOrderElement);
 
                 Location location = orderElement.getDeliveryLocation();
                 ParseGeoPoint parseLocation = new ParseGeoPoint(location.getLatitude(), location.getLongitude());
@@ -246,16 +241,15 @@ public class DataManager {
                 }
             }
         }
-
         catch (Exception e) {
             //throw new IOException("Nhvvb");
         }
-
         return pendingOrders;
     }
 
 
-    /* Start a query of all the enRoute orders that the restaurant accept.
+    /**
+     *  Start a query of all the enRoute orders that the restaurant accept.
      * Compile an arraylist of all the order element objects and return
      * Returns null if query fails.
      */
@@ -274,15 +268,14 @@ public class DataManager {
             for (ParseObject userOrder : OrderList) {
                 ParseUserOrderInformations parseUserOrder = (ParseUserOrderInformations) userOrder;
 
-                //Get Client location - - - should be delivery location, not client's?
-                OrderElement orderElement = parseUserOrder.getOrder();
+                ParseObject parseOrderElement = parseUserOrder.getOrder();
+                OrderElement orderElement = ParseOrderElement.retrieveOrderElementFromParse(parseOrderElement);
                 currentOrders.add(orderElement);
             }
         }
         catch (Exception e) {
             //throw new IOException("Nhvvb");
         }
-
         return currentOrders;
     }
 }

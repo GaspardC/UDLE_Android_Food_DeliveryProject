@@ -7,8 +7,6 @@ import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -27,10 +25,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import ch.epfl.sweng.udle.Food.DrinkTypes;
-import ch.epfl.sweng.udle.Food.FoodTypes;
-import ch.epfl.sweng.udle.Food.Menu;
-import ch.epfl.sweng.udle.Food.OptionsTypes;
 import ch.epfl.sweng.udle.Food.OrderElement;
 import ch.epfl.sweng.udle.Food.Orders;
 import ch.epfl.sweng.udle.R;
@@ -41,9 +35,9 @@ import ch.epfl.sweng.udle.network.DataManager;
  * Activity reserved for restaurant user only
  *
  * In this activity the restaurant can visualize the orders around him.
- * He can both see the current orders (assigned to him) or the waiting orders (not yet validated by him)
+ * He can both see the current orders (assigned to him) or the waiting orders (not yet validated by a restaurant)
  *
- *The restaurant can visualize theses orders as pins on the map or as elements in a list
+ * The restaurant can visualize theses orders as pins on the map or as elements in a list
  *
  * He can interact with these orders by clicking on them
  */
@@ -54,11 +48,15 @@ public class DeliveryRestaurantMapActivity extends SlideMenuActivity {
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
     private boolean showMap = true;
     private ListView listView;
-    private ArrayList<OrderElement> waitingOrders = new ArrayList<>();
-    private ArrayList<OrderElement> currentOrders = new ArrayList<>();
+    private ArrayList<OrderElement> waitingOrders = new ArrayList<>(); //Orders in the restaurant range that have no restaurant assigned to. Status of order: Waiting
+    private ArrayList<OrderElement> currentOrders = new ArrayList<>(); //Orders that the restaurant already accept to deliverd. Status of order: EnRoute
+    private HashMap<Integer, OrderElement> objectIdHashMapForList; //HashMap between the index of order shown in the list view and the specific order.
+    private HashMap<String, OrderElement> objectIdHashMapForMap; //HashMap between the index of order shown in the map and the specific order.
 
-    final Handler h = new Handler();
+    final Handler h = new Handler(); //The list of waiting and current Orders is refresh each 'delay' milliseconds.
     final int delay = 30000; //30 seconds in milliseconds
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,30 +65,28 @@ public class DeliveryRestaurantMapActivity extends SlideMenuActivity {
 
         setUpMapIfNeeded();
 
-
         h.postDelayed(new Runnable() {
             public void run() {
-                Log.i("AAAAAAAAAAAAAaa", "=======================JJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJ=================================");
+                boolean waitingOrdersChange = changeInWaitingOrders();
+                boolean currentOrdersChange = changeInCurrentOrders();
 
-                if (changeInWaitingOrders() || changeInCurrentOrders()){
-                    Log.i("AAAAAAAAAAAAAaa", "=======================AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=================================");
-                    showWaitingOrders();
+                if (waitingOrdersChange || currentOrdersChange){
+                    showOrdersOnMap();
                     setUpListView();
                 }
-
                 h.postDelayed(this, delay);
             }
         }, 0);
-
-
     }
 
-    /*
-    Check if there was a change in the waiting orders for the restaurant.
-    If change => refresh the display
-    If no change => Do nothing
-     */
 
+    /**
+     *
+     * Check if there was a change in the waiting orders for the restaurant.
+     * If change => refresh the display
+     * If no change => Do nothing
+     *
+     */
     private boolean changeInWaitingOrders(){
         //Retrieve list from server
         ArrayList<OrderElement> waitingOrdersFromServe = DataManager.getPendingOrdersForARestaurantOwner();
@@ -112,17 +108,17 @@ public class DeliveryRestaurantMapActivity extends SlideMenuActivity {
         //Putting all objectIds of local waitingOrders list into a new list
         ArrayList<String> currentWaitingOrdersObjectID = new ArrayList<>();
         for (OrderElement orderElement: waitingOrders){
-            currentWaitingOrdersObjectID.add(orderElement.getObjectId());
+            currentWaitingOrdersObjectID.add(orderElement.getUserOrderInformationsID());
         }
 
         //Check for all orderElements in the server list if it already present locally. If yes, add 1 to 'checkSameList'
         for (OrderElement orderElement : waitingOrdersFromServe){
-            if (currentWaitingOrdersObjectID.contains(orderElement.getObjectId())){
+            if (currentWaitingOrdersObjectID.contains(orderElement.getUserOrderInformationsID())){
                 checkSameList ++;
             }
         }
 
-        if (waitingOrdersFromServe.size() == checkSameList){
+        if (waitingOrdersFromServe.size() != checkSameList){
             //Lists are not the same. Need to refresh
             waitingOrders = waitingOrdersFromServe;
             return true;
@@ -132,6 +128,15 @@ public class DeliveryRestaurantMapActivity extends SlideMenuActivity {
             return false;
         }
     }
+
+
+    /**
+     *
+     * Check if there was a change in the current orders for the restaurant.
+     * If change => refresh the display
+     * If no change => Do nothing
+     *
+     */
     private boolean changeInCurrentOrders(){
         //Retrieve list from server
         ArrayList<OrderElement> currentOrdersFromServe = DataManager.getCurrentOrdersForARestaurantOwner();
@@ -148,17 +153,17 @@ public class DeliveryRestaurantMapActivity extends SlideMenuActivity {
         //Putting all objectIds of local waitingOrders list into a new list
         ArrayList<String> currentCurrentOrdersObjectID = new ArrayList<>();
         for (OrderElement orderElement: currentOrders){
-            currentCurrentOrdersObjectID.add(orderElement.getObjectId());
+            currentCurrentOrdersObjectID.add(orderElement.getUserOrderInformationsID());
         }
 
         //Check for all orderElements in the server list if it already present locally. If yes, add 1 to 'checkSameList'
         for (OrderElement orderElement : currentOrdersFromServe){
-            if (currentCurrentOrdersObjectID.contains(orderElement.getObjectId())){
+            if (currentCurrentOrdersObjectID.contains(orderElement.getUserOrderInformationsID())){
                 checkSameList ++;
             }
         }
 
-        if (currentOrdersFromServe.size() == checkSameList){
+        if (currentOrdersFromServe.size() != checkSameList){
             //Lists are not the same. Need to refresh
             currentOrders = currentOrdersFromServe;
             return true;
@@ -168,15 +173,6 @@ public class DeliveryRestaurantMapActivity extends SlideMenuActivity {
             return false;
         }
     }
-
-
-
-
-
-
-
-
-
 
 
 
@@ -193,14 +189,14 @@ public class DeliveryRestaurantMapActivity extends SlideMenuActivity {
             populateListView();
         }
     }
-
-
     /**
      * method used to fill (and display) the current and waiting orders
      */
     private void populateListView() {
 
-        List<HashMap<String,String>> aList = new ArrayList<HashMap<String,String>>();
+        objectIdHashMapForList = new HashMap<>();
+
+        List<HashMap<String,String>> aList = new ArrayList<>();
         ArrayList<String> ordersAdress = new ArrayList<>();
         int i = 1;
         for(OrderElement order : waitingOrders) {
@@ -214,6 +210,7 @@ public class DeliveryRestaurantMapActivity extends SlideMenuActivity {
             hm.put("address", ordersAdress.get(i - 1));
             hm.put("image", Integer.toString(R.drawable.logoburger));
             aList.add(hm);
+            objectIdHashMapForList.put(i, order);
             i++;
         }
         for(OrderElement order : currentOrders) {
@@ -226,6 +223,7 @@ public class DeliveryRestaurantMapActivity extends SlideMenuActivity {
             hm.put("address", ordersAdress.get(i-1));
             hm.put("image", Integer.toString(R.drawable.logogreen) );
             aList.add(hm);
+            objectIdHashMapForList.put(i, order);
             i++;
         }
 
@@ -243,41 +241,34 @@ public class DeliveryRestaurantMapActivity extends SlideMenuActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-                //Open the browser here
-                HashMap<String, String> hm = (HashMap<String, String>) parent.getItemAtPosition(position);
-                String adress = hm.get("address");
+                OrderElement order = objectIdHashMapForList.get(position+1);
 
-                for (OrderElement order : waitingOrders) {
-                    if (order.getDeliveryAddress().equals(adress)) { //TODO: Instead of compare with the address, compare with the id of the command for example.
-                        goToDeliveryCommandDetail(order);
-                    }
+                boolean isCurrent = false;
+                if (currentOrders.contains(order)){
+                    isCurrent = true;
                 }
-                for (OrderElement order : currentOrders) {
-                    if (order.getDeliveryAddress().equals(adress)) { //TODO: Instead of compare with the address, compare with the id of the command for example.
-                        goToDeliveryCommandDetail(order);
-                    }
-                }
+
+                goToDeliveryCommandDetail(order, isCurrent);
             }
 
         });
     }
 
-                /**
-                 * Sets up the map if it is possible to do so (i.e., the Google Play services APK is correctly
-                 * installed) and the map has not already been instantiated.. This will ensure that we only ever
-                 * call {@link #setUpMap()} once when {@link #mMap} is not null.
-                 * <p/>
-                 * If it isn't installed {@link SupportMapFragment} (and
-                 * {@link com.google.android.gms.maps.MapView MapView}) will show a prompt for the user to
-                 * install/update the Google Play services APK on their device.
-                 * <p/>
-                 * A user can return to this FragmentActivity after following the prompt and correctly
-                 * installing/updating/enabling the Google Play services. Since the FragmentActivity may not
-                 * have been completely destroyed during this process (it is likely that it would only be
-                 * stopped or paused), {@link #onCreate(Bundle)} may not be called again so we should call this
-                 * method in {@link #onResume()} to guarantee that it will be called.
-                 */
-
+    /**
+     * Sets up the map if it is possible to do so (i.e., the Google Play services APK is correctly
+     * installed) and the map has not already been instantiated.. This will ensure that we only ever
+     * call {@link #setUpMap()} once when {@link #mMap} is not null.
+     * <p/>
+     * If it isn't installed {@link SupportMapFragment} (and
+     * {@link com.google.android.gms.maps.MapView MapView}) will show a prompt for the user to
+     * install/update the Google Play services APK on their device.
+     * <p/>
+     * A user can return to this FragmentActivity after following the prompt and correctly
+     * installing/updating/enabling the Google Play services. Since the FragmentActivity may not
+     * have been completely destroyed during this process (it is likely that it would only be
+     * stopped or paused), {@link #onCreate(Bundle)} may not be called again so we should call this
+     * method in {@link #onResume()} to guarantee that it will be called.
+     */
     private void setUpMapIfNeeded() {
         // Do a null check to confirm that we have not already instantiated the map.
         if (mMap == null) {
@@ -311,48 +302,66 @@ public class DeliveryRestaurantMapActivity extends SlideMenuActivity {
         mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
     }
 
-    private void showWaitingOrders(){
-        boolean initialised = false;
 
+
+    /**
+     * Display the waiting and the current orders on the Google Map.
+     * Display each order via a marker. Red color for waiting orders, Green for current ones.
+     */
+    private void showOrdersOnMap(){
         mMap.clear();
+        objectIdHashMapForMap = new HashMap<>();
+        int objectIdHashMapIndex = 1;
+
+        Location rlocation = DataManager.getUserLocation();
+        LatLng rLatLng = new LatLng(rlocation.getLatitude(), rlocation.getLongitude());
+        setCamera(rLatLng);
+
 
         for(OrderElement order : waitingOrders) {
             Location location = order.getDeliveryLocation();
-            String deliveryAddress = order.getDeliveryAddress();
             LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-            if (!initialised) {
-                setCamera(latLng); // should be set on the restaurant location
-                initialised = true;
-            }
+            String deliveryAddress = order.getDeliveryAddress();
+
+            String markerTitle = getResources().getString(R.string.WaitingOrders) +" #"+ objectIdHashMapIndex;
+            objectIdHashMapForMap.put(markerTitle, order);
+            objectIdHashMapIndex++;
+
             mMap.addMarker(new MarkerOptions()
                     .position(latLng)
-                    .title(getResources().getString(R.string.WaitingOrders))
+                    .title(markerTitle)
                     .snippet(deliveryAddress)
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
         }
         for(OrderElement order : currentOrders) {
             Location location = order.getDeliveryLocation();
-            String deliveryAddress = order.getDeliveryAddress();
             LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+            String deliveryAddress = order.getDeliveryAddress();
+
+            String markerTitle = getResources().getString(R.string.WaitingOrders) +" #"+ objectIdHashMapIndex;
+            objectIdHashMapForMap.put(markerTitle, order);
+            objectIdHashMapIndex++;
+
             mMap.addMarker(new MarkerOptions()
                     .position(latLng)
-                    .title(getResources().getString(R.string.ConfirmedOrders))
+                    .title(markerTitle)
                     .snippet(deliveryAddress)
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
         }
+
         mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             @Override
             public void onInfoWindowClick(Marker marker) {
-                for (OrderElement order : waitingOrders) {
-                    if (order.getDeliveryAddress().equals(marker.getSnippet())) { //TODO: Instead of compare with the address, compare with the id of the command for example.
-                        goToDeliveryCommandDetail(order);
-                    }
+                String markerTitle = marker.getTitle();
+                OrderElement order = objectIdHashMapForMap.get(markerTitle);
+
+                boolean isCurrent = false;
+                if (markerTitle.contains("Current")){
+                    isCurrent = true;
                 }
-                for (OrderElement order : currentOrders) {
-                    if (order.getDeliveryAddress().equals(marker.getSnippet())) { //TODO: Instead of compare with the address, compare with the id of the command for example.
-                        goToDeliveryCommandDetail(order);
-                    }
-                }
+
+                goToDeliveryCommandDetail(order, isCurrent);
+
             }
         });
     }
@@ -360,10 +369,10 @@ public class DeliveryRestaurantMapActivity extends SlideMenuActivity {
 
 
     /** Called when the user clicks the MenuMap_ValidatePosition button */
-    public void goToDeliveryCommandDetail(OrderElement order) {
+    public void goToDeliveryCommandDetail(OrderElement order, boolean isCurrent) {
         Orders.setActiveOrder(order);
         Intent intent = new Intent(this, DeliverCommandDetailActivity.class);
-        Orders.setActiveOrder(order);
+        intent.putExtra("isCurrent", isCurrent);
         startActivity(intent);
     }
 
