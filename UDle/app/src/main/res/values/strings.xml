@@ -31,7 +31,6 @@
     <string name="infotextwaiting">Please wait for a shop to accept your command</string>
     <string name="infotextwaitingConfirmed">Congrats, your order is coming for you</string>
 
-    <string name="ConfirmedOrders">Confirmed Order</string>
     <string name="WaitingOrders">Waiting Order</string>
 
 	<string name="sampleText">This is a sample text.</string>
@@ -64,5 +63,7 @@
     <string name="noMenuNoOptions">No menus selected. You need to select at least one menu in order to choose your options for it.</string>
     <string name="orderedBy">Ordered by: </string>
     <string name="OrderNotAvailable">Sorry, the order is no more available.</string>
+    <string name="listOrderRestaurantMap">listOrderRestaurantMap</string>
+    <string name="switchToListMode">Switch to List mode</string>
 
 </resources>

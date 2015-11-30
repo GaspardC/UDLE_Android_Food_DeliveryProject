@@ -1,18 +1,13 @@
 package ch.epfl.sweng.udle;
 
-import android.location.Location;
 import android.support.test.InstrumentationRegistry;
-import android.support.test.espresso.NoMatchingViewException;
 import android.support.test.espresso.matcher.ViewMatchers;
-import android.support.test.rule.ActivityTestRule;
 import android.support.test.uiautomator.UiDevice;
 import android.support.test.uiautomator.UiObject;
-import android.support.test.uiautomator.UiObjectNotFoundException;
 import android.support.test.uiautomator.UiSelector;
 import android.test.ActivityInstrumentationTestCase2;
 
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -21,7 +16,6 @@ import ch.epfl.sweng.udle.Food.OrderElement;
 import ch.epfl.sweng.udle.activities.DeliveryRestaurantMapActivity;
 import ch.epfl.sweng.udle.network.DataManager;
 
-import static android.support.test.InstrumentationRegistry.getInstrumentation;
 import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.Espresso.pressBack;
@@ -33,10 +27,8 @@ import static android.support.test.espresso.matcher.ViewMatchers.withEffectiveVi
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withTagKey;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static android.support.v4.content.res.TypedArrayUtils.getResourceId;
 import static org.hamcrest.Matchers.anything;
 import static org.hamcrest.Matchers.hasToString;
-import static org.hamcrest.Matchers.startsWith;
 
 /**
  * Created by rodri on 06/11/2015.
@@ -60,9 +52,7 @@ public class DeliveryRestaurantMapTest  extends ActivityInstrumentationTestCase2
 
     @Test
     public void testListInvisble(){
-
-            onView(withId(R.id.listOrderRestaurantMap)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.GONE)));
-
+        onView(withId(R.id.listOrderRestaurantMap)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.GONE)));
     }
     @Test
     public void testMapVisble(){
@@ -93,34 +83,12 @@ public class DeliveryRestaurantMapTest  extends ActivityInstrumentationTestCase2
     public void testButtonGoToNextActivityWhenClickOnAnOrder(){
 
         onView(withId(R.id.button_list_mode)).perform(click());
-        final ArrayList<OrderElement> waitingOrders = mActivity.getWaitingOrders(new ArrayList<OrderElement>());
-        String adress = waitingOrders.get(0).getDeliveryAddress();
+        final ArrayList<OrderElement> waitingOrders = DataManager.getWaitingOrdersForARestaurantOwner();
+
         for(int i=0;i<waitingOrders.size();i++){
             onData(anything()).inAdapterView(withContentDescription("listOrderRestaurantMap")).atPosition(i).perform(click());
             onView(withId(R.id.DeliverCommandDetail_recapListView)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
             pressBack();
         }
-
     }
-
-
-
-
-
-//    @Rule
-//    public ActivityTestRule<DeliveryRestaurantMapActivity> mActivityRule = new ActivityTestRule<>(
-//            DeliveryRestaurantMapActivity.class);
-
- /* Wait for method   DataManager.getPendingOrdersForARestaurantOwner() on master branch.
-    @Test
-    public void testQuizClientGetterSetter() throws UiObjectNotFoundException {
-        DeliveryRestaurantMapActivity activity = mActivityRule.getActivity();
-
-        ArrayList<OrderElement> waitingOrders = DataManager.getPendingOrdersForARestaurantOwner();
-        UiDevice device = UiDevice.getInstance(getInstrumentation());
-        for(OrderElement order : waitingOrders){
-            UiObject marker = device.findObject(new UiSelector().descriptionContains(order.getDeliveryAddress()));
-            marker.click();
-        }
-    }*/
 }

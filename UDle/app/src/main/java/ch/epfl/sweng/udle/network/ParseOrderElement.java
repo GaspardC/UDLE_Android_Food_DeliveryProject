@@ -28,7 +28,7 @@ public class ParseOrderElement {
      * Push this object to server.
      * Return the object.
      */
-    public static ParseObject createToServerAndGetId(OrderElement orderElement) {
+    public static ParseObject create(OrderElement orderElement) {
 
         ParseObject parseOrderElement = new ParseObject("OrderElement");
 
@@ -61,8 +61,6 @@ public class ParseOrderElement {
         parseOrderElement.put("orderedBy", orderElement.getOrderedUserName());
         parseOrderElement.put("userOrderInformationsId", orderElement.getUserOrderInformationsID());
 
-        //Save this new object to the server
-        parseOrderElement.saveInBackground();
         return parseOrderElement;
     }
 

@@ -98,7 +98,7 @@ public class DeliveryRestaurantMapActivity extends SlideMenuActivity {
      */
     private boolean changeInWaitingOrders(){
         //Retrieve list from server
-        ArrayList<OrderElement> waitingOrdersFromServe = DataManager.getPendingOrdersForARestaurantOwner();
+        ArrayList<OrderElement> waitingOrdersFromServe = DataManager.getWaitingOrdersForARestaurantOwner();
 
         if (waitingOrdersFromServe.size() == 0){
             if (waitingOrders.size() != 0){

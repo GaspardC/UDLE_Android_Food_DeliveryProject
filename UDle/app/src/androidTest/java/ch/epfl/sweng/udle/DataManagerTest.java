@@ -83,7 +83,7 @@ public class DataManagerTest {
     public void dataManagerRestaurantTest(){
         //setupRestaurantUser();
         ParseUser.enableAutomaticUser();
-        ArrayList<OrderElement> pendingOrders = dataManager.getPendingOrdersForARestaurantOwner();
+        ArrayList<OrderElement> pendingOrders = dataManager.getWaitingOrdersForARestaurantOwner();
 
     }
     */

@@ -56,7 +56,8 @@ public class DataManager {
         userOrderInformations.setDeliveryGuyNumber("No number assigned");
 
         orderElement.setUserOrderInformationsID(userOrderInformations.getObjectId());
-        ParseObject parseOrderElement = ParseOrderElement.createToServerAndGetId(orderElement);
+        ParseObject parseOrderElement = ParseOrderElement.create(orderElement);
+        parseOrderElement.saveInBackground();
         userOrderInformations.setOrder(parseOrderElement);
 
     }
@@ -207,7 +208,7 @@ public class DataManager {
      * Compile an arraylist of all the order element objects and return
      * Returns null if query fails.
      */
-    public static ArrayList<OrderElement> getPendingOrdersForARestaurantOwner() {
+    public static ArrayList<OrderElement> getWaitingOrdersForARestaurantOwner() {
         pendingOrders = new ArrayList<>();
 
         user = DataManager.getUser();
