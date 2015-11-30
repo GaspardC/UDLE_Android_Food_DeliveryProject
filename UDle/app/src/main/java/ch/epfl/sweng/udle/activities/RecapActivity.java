@@ -57,12 +57,19 @@ public class RecapActivity extends SlideMenuActivity {
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> arg0, View arg1, final int pos, long id) {
-                dlgAlert.setMessage(((HashMap<String, String>) listView.getAdapter().getItem(pos)).get("elem") + "\t?");
+                dlgAlert.setMessage(getResources().getString(R.string.removeMessage_2) + ((HashMap<String, String>) listView.getAdapter().getItem(pos)).get("elem") + "\t?");
                 dlgAlert.setTitle(R.string.removeMessage_1);
                 dlgAlert.setPositiveButton("Ok",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-                                deleteElement(pos);
+                                deleteElement(pos, false);
+                                dlgAlert.create().dismiss();
+                            }
+                        });
+                dlgAlert.setNeutralButton("Delete All",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                deleteElement(pos, true);
                                 dlgAlert.create().dismiss();
                             }
                         });
@@ -92,19 +99,18 @@ public class RecapActivity extends SlideMenuActivity {
         DrinkTypes.displayInRecap(list);
         ((SimpleAdapter)listView.getAdapter()).notifyDataSetChanged();
     }
-    public void deleteElement(int pos){
-        int numberOfElement = 0;
+
+    public void deleteElement(int pos, boolean deleteAll){
         boolean isMenu = false;
-        setDeleteAll(false);
+        int numberOfElement = 0;
+
         HashMap<String, String> elementToRemove = (HashMap<String, String>) listView.getAdapter().getItem(pos);
 
         String[] temp = elementToRemove.get("elem").split(" ");
         if (temp.length != 2)
             throw new IllegalArgumentException("elem not initialized correctly");
-
         numberOfElement = Integer.parseInt(temp[0]);
         String elem = temp[1];
-        //Toast.makeText(this, " "+numberOfElement, Toast.LENGTH_SHORT).show();
 
         for (FoodTypes food : FoodTypes.values()) {
             if (elem.equals(food.toString()))
@@ -114,7 +120,7 @@ public class RecapActivity extends SlideMenuActivity {
             //It's a drink
             for (DrinkTypes drink : DrinkTypes.values()) {
                 if (elem.equals(drink.toString())){
-                    if (numberOfElement > 1){
+                    if (numberOfElement > 1 && deleteAll){
                         for (int i = 0; i < numberOfElement; i++) {
                             order.removeToDrinks(drink);
                         }
@@ -125,26 +131,59 @@ public class RecapActivity extends SlideMenuActivity {
             }
         }else{
             // It's a menu
-            String[] temp2 = elementToRemove.get("options").split(" ; ");
-            ArrayList<OptionsTypes> tempListOption = new ArrayList<>();
-            for (int j = 0; j < temp2.length; j++){
-                for (OptionsTypes options : OptionsTypes.values()) {
-                    if (temp2[j].equals(options.toString()))
-                        tempListOption.add(options);
-                }
-            }
-            for(Menu menu : order.getOrder()) {
-                if (elem.equals(menu.getFood().toString())){
-                    if(compareLists(menu.getOptions(),tempListOption)) {
-                        order.removeToFood(menu);
-                        break;
+            String optionOfElemToRemove = elementToRemove.get("options");
+            if (optionOfElemToRemove.equals(getResources().getString(R.string.removeMessage_3))){
+                ArrayList<Menu> toDelete = new ArrayList<>();
+                for(Menu menu : order.getOrder()) {
+                    if (elem.equals(menu.getFood().toString())){
+                        if(menu.getOptions().size()==0) {
+                            if (deleteAll){
+                                toDelete.add(menu);
+                            }else {
+                                toDelete.add(menu);
+                                break;
+                            }
+                        }
                     }
                 }
+                // Now we suppress them
+                for(Menu menu : toDelete) {
+                    order.removeToFood(menu);
+                }
+            }else{
+                if(optionOfElemToRemove.startsWith(getResources().getString(R.string.removeMessage_4))){
+                    optionOfElemToRemove = optionOfElemToRemove.substring(getResources().getString(R.string.removeMessage_4).length());
+                    String[] temp2 = optionOfElemToRemove.split(" ; ");
+                    ArrayList<OptionsTypes> tempListOption = new ArrayList<>();
+                    for (int j = 0; j < temp2.length; j++){
+                        for (OptionsTypes options : OptionsTypes.values()) {
+                            if (temp2[j].equals(options.toString()))
+                                tempListOption.add(options);
+                        }
+                    }
+                    ArrayList<Menu> toDelete = new ArrayList<>();
+                    for(Menu menu : order.getOrder()) {
+                        if (elem.equals(menu.getFood().toString())){
+                            if(compareLists(menu.getOptions(),tempListOption)) {
+                                if (deleteAll){
+                                    toDelete.add(menu);
+                                }else {
+                                    toDelete.add(menu);
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    // Now we suppress them
+                    for(Menu menu : toDelete) {
+                        order.removeToFood(menu);
+                    }
+                }else
+                    throw new IllegalArgumentException("elem options not set correctly");
             }
         }
         update();
     }
-
     public boolean compareLists(ArrayList<OptionsTypes> a, ArrayList<OptionsTypes> b){
         if (a == null && b == null) return true;
         if ((a.size() != b.size()) || (a == null && b!= null) || (a != null && b== null)){
