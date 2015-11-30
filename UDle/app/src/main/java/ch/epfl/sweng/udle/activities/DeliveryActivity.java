@@ -15,6 +15,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import ch.epfl.sweng.udle.Food.Orders;
 import ch.epfl.sweng.udle.R;
+import ch.epfl.sweng.udle.activities.SlideMenu.SlideMenuActivity;
 
 public class DeliveryActivity extends SlideMenuActivity {
 
@@ -26,7 +27,6 @@ public class DeliveryActivity extends SlideMenuActivity {
         setContentView(R.layout.activity_delivery);
         setUpMapIfNeeded();
         placeMarkers();
-        slideMenuItems.add(new NavItem("Special Delivery", "option added from the child activity", R.mipmap.ic_launcher));
     }
 
     public void callDeliveryGuy(View view){

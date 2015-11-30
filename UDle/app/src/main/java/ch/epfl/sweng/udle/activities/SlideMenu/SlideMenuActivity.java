@@ -1,11 +1,10 @@
-package ch.epfl.sweng.udle.activities;
+package ch.epfl.sweng.udle.activities.SlideMenu;
 
 /*
 took most of the code from there
 http://codetheory.in/android-navigation-drawer/
 */
 
-import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.LayoutRes;
 import android.support.v4.widget.DrawerLayout;
@@ -13,26 +12,25 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.AccessToken;
-import com.facebook.Profile;
 import com.facebook.login.widget.ProfilePictureView;
 
 import java.util.ArrayList;
 
 import ch.epfl.sweng.udle.R;
+import ch.epfl.sweng.udle.activities.DeliveryRestaurantMapActivity;
+import ch.epfl.sweng.udle.activities.HelpActivity.HelpActivity;
+import ch.epfl.sweng.udle.activities.MapActivity;
+import ch.epfl.sweng.udle.activities.ProfileActivity;
 import ch.epfl.sweng.udle.network.DataManager;
 
 /**
@@ -77,6 +75,7 @@ public abstract class SlideMenuActivity extends AppCompatActivity {
             }
         }));
         slideMenuItems.add(new NavItem(getString(R.string.restaurantMode), getString(R.string.restaurantModeDesc), R.mipmap.ic_launcher, DeliveryRestaurantMapActivity.class));
+        slideMenuItems.add(new NavItem(getString(R.string.help), getString(R.string.helpDesc), R.drawable.ic_help, HelpActivity.class));
 
 
         mTitle = mDrawerTitle = getTitle();//
@@ -216,107 +215,3 @@ public abstract class SlideMenuActivity extends AppCompatActivity {
     }
 }
 
-class NavItem {
-    String name;
-    String description;
-    int icon;
-    Class<?> linkedActivity = null;
-    Runnable action = null;
-
-    /**
-     * Create a NavItem.
-     *
-     * If you want to launch a new activity, you may want to use
-     * @see #NavItem(String, String, int, Class)
-     *
-     * @param name name of the item
-     * @param description short description, will be visible under the name
-     * @param icon
-     * @param action action performed when the item is clicked. It will be run <b>synchronously</b>
-     */
-    public NavItem(String name, String description, int icon, Runnable action){
-        this.name = name;
-        this.description = description;
-        this.icon = icon;
-        this.action = action;
-    }
-    /**
-     * @param name name of the item
-     * @param description short description, will be visible under the name
-     * @param icon
-     * @param linkedActivity Activity launched when the item is clicked
-     */
-    public NavItem(String name, String description, int icon, Class<?> linkedActivity){
-        this.name = name;
-        this.description = description;
-        this.icon = icon;
-        this.linkedActivity = linkedActivity;
-    }
-    /**<b>
-     *  The NavItem created will have no effect !
-     * </b>
-     * <p>
-     *  To set an effect, you must add it to
-     *  @see SlideMenuActivity#selectItemFromList(int)
-     * </p>
-     *
-     * @param name name of the item
-     * @param description short description, will be visible under the name
-     * @param icon
-     */
-    public NavItem(String name, String description, int icon){
-        this.name = name;
-        this.description = description;
-        this.icon = icon;
-    }
-}
-
-class DrawerListAdapter extends BaseAdapter {
-    private static String TAG = DrawerListAdapter.class.getSimpleName();
-
-    Context mContext;
-    ArrayList<NavItem> mNavItems;
-
-    public DrawerListAdapter(Context context, ArrayList<NavItem> navItems) {
-        mContext = context;
-        mNavItems = navItems;
-    }
-
-    @Override
-    public int getCount() {
-        return mNavItems.size();
-    }
-
-    @Override
-    public Object getItem(int position) {
-        return mNavItems.get(position);
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return 0;
-    }
-
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        View view;
-
-        if (convertView == null) {
-            LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            view = inflater.inflate(R.layout.drawer_item, null);
-        }
-        else {
-            view = convertView;
-        }
-
-        TextView titleView = (TextView) view.findViewById(R.id.title);
-        TextView subtitleView = (TextView) view.findViewById(R.id.subTitle);
-        ImageView iconView = (ImageView) view.findViewById(R.id.icon);
-
-        titleView.setText( mNavItems.get(position).name);
-        subtitleView.setText( mNavItems.get(position).description);
-        iconView.setImageResource(mNavItems.get(position).icon);
-
-        return view;
-    }
-}

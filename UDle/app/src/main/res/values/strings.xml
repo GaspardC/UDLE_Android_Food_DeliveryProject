@@ -63,5 +63,8 @@
 
     <string name="noMenuNoOptions">No menus selected. You need to select at least one menu in order to choose your options for it.</string>
     <string name="orderedBy">Ordered by: </string>
+    <string name="help1">first help page</string>
+    <string name="help">Help</string>
+    <string name="helpDesc">How to use Udle</string>
 
 </resources>
