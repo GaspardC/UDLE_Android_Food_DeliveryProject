@@ -64,6 +64,6 @@
     <string name="noMenuNoOptions">No menus selected. You need to select at least one menu in order to choose your options for it.</string>
     <string name="orderedBy">Ordered by: </string>
     <string name="No_orders_for_now">No orders for now </string>
-    <string name="Wait_a_moment"> Wait a moment please</string>
+    <string name="Wait_a_moment">Wait a moment please</string>
 
 </resources>

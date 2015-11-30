@@ -32,6 +32,7 @@ import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.Espresso.pressBack;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static android.support.test.espresso.matcher.ViewMatchers.withEffectiveVisibility;
@@ -42,6 +43,7 @@ import static android.support.v4.content.res.TypedArrayUtils.getResourceId;
 import static android.support.v4.content.res.TypedArrayUtils.getString;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.anything;
+import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.hasToString;
 import static org.hamcrest.Matchers.startsWith;
@@ -114,8 +116,16 @@ public class DeliveryRestaurantMapTest  extends ActivityInstrumentationTestCase2
         mActivity.resetCurrentOrder();
         mActivity.resetWaitingOrders();
         onView(withId(R.id.button_list_mode)).perform(click());
-        onView(allOf(withText("No orders for now ")));
-        onView(allOf(withText(" Wait a moment please ")));
+        onData(anything())
+                .inAdapterView(withContentDescription("listOrderRestaurant"))
+                .atPosition(0)
+                .check(matches(hasDescendant(withText("No orders for now "))));
+
+        onData(anything())
+                .inAdapterView(withContentDescription("listOrderRestaurant"))
+                .atPosition(0)
+                .check(matches(hasDescendant(withText("Wait a moment please"))));
+
     }
 
     public OrderElement getOrderElement (){
