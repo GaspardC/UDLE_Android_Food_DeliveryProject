@@ -63,5 +63,8 @@
 
     <string name="noMenuNoOptions">No menus selected. You need to select at least one menu in order to choose your options for it.</string>
     <string name="orderedBy">Ordered by: </string>
+    <string name="back">back</string>
+    <string name="currentOrders">Current Orders</string>
+    <string name="currentOrdersDetail">see your current orders</string>
 
 </resources>

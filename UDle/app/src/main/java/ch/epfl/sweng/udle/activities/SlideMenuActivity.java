@@ -78,6 +78,8 @@ public abstract class SlideMenuActivity extends AppCompatActivity {
         }));
         slideMenuItems.add(new NavItem(getString(R.string.restaurantMode), getString(R.string.restaurantModeDesc), R.mipmap.ic_launcher, DeliveryRestaurantMapActivity.class));
 
+        slideMenuItems.add(new NavItem(getString(R.string.currentOrders), getString(R.string.currentOrdersDetail), R.mipmap.ic_launcher, CurrentOrdersActivity.class));
+
 
         mTitle = mDrawerTitle = getTitle();//
 
