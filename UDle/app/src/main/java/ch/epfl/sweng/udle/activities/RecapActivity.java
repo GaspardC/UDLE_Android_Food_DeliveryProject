@@ -11,6 +11,7 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -98,6 +99,10 @@ public class RecapActivity extends SlideMenuActivity {
         Menu.displayInRecap(list);
         DrinkTypes.displayInRecap(list);
         ((SimpleAdapter)listView.getAdapter()).notifyDataSetChanged();
+        if (list.size() == 0){
+            Toast.makeText(this, getString(R.string.NoMenuSelected), Toast.LENGTH_SHORT).show();
+            onBackPressed();
+        }
     }
 
     public void deleteElement(int pos, boolean deleteAll){
