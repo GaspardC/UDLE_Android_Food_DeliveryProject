@@ -68,8 +68,8 @@ public class DeliveryRestaurantMapActivity extends SlideMenuActivity {
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
     private boolean showMap = true;
     private ListView listView;
-    final ArrayList<OrderElement> waitingOrders = getWaitingOrders(new ArrayList<OrderElement>());
-    final ArrayList<OrderElement> currentOrders = Orders.getCurrentOrders();
+    ArrayList<OrderElement> waitingOrders = getWaitingOrders(new ArrayList<OrderElement>());
+    ArrayList<OrderElement> currentOrders = Orders.getCurrentOrders();
 
 
 
@@ -85,7 +85,13 @@ public class DeliveryRestaurantMapActivity extends SlideMenuActivity {
 
     }
 
-
+    /* These to methods aer use only for testing */
+    public void resetCurrentOrder(){
+        this.currentOrders = null;
+    }
+    public void resetWaitingOrders(){
+        this.waitingOrders = null;
+    }
 
     private void setUpListView() {
         listView = (ListView) findViewById(R.id.listOrderRestaurantMap);

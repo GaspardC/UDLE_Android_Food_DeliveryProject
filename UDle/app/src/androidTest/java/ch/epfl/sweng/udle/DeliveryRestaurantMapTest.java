@@ -39,7 +39,10 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withTagKey;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static android.support.v4.content.res.TypedArrayUtils.getResourceId;
+import static android.support.v4.content.res.TypedArrayUtils.getString;
+import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.anything;
+import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.hasToString;
 import static org.hamcrest.Matchers.startsWith;
 
@@ -102,11 +105,17 @@ public class DeliveryRestaurantMapTest  extends ActivityInstrumentationTestCase2
         onView(withId(R.id.button_list_mode)).perform(click());
         final ArrayList<OrderElement> waitingOrders = mActivity.getWaitingOrders(new ArrayList<OrderElement>());
         final ArrayList<OrderElement> currentOrders = Orders.getCurrentOrders();
-            onData(anything()).inAdapterView(withContentDescription("listOrderRestaurant")).atPosition(currentOrders.size() + waitingOrders.size() -1).perform(click());
+            onData(anything()).inAdapterView(withContentDescription("listOrderRestaurant")).atPosition(currentOrders.size() + waitingOrders.size() - 1).perform(click());
             onView(withId(R.id.DeliverCommandDetail_recapListView)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
             pressBack();
-
-
+    }
+    @Test
+    public void testIfNoOrders(){
+        mActivity.resetCurrentOrder();
+        mActivity.resetWaitingOrders();
+        onView(withId(R.id.button_list_mode)).perform(click());
+        onView(allOf(withText("No orders for now ")));
+        onView(allOf(withText(" Wait a moment please ")));
     }
 
     public OrderElement getOrderElement (){
