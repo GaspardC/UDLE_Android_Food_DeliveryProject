@@ -22,11 +22,14 @@ import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseUser;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -67,6 +70,7 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
         autoCompView.setOnItemClickListener(this);
         CheckEnableGPS();
         setUpMapIfNeeded();
+        placeMarkers();
         hideKeyborad();
     }
 
@@ -90,6 +94,7 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
             startActivity(login);
         }
         CheckEnableGPS();
+        placeMarkers();
     }
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
         String str = (String) adapterView.getItemAtPosition(position);
@@ -168,6 +173,43 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
         // Zoom in the Google Map
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
     }
+
+    private void placeMarkers(){
+        Location deliveryLocation;
+        String deliveryAddress;
+
+        if (Orders.getActiveOrder() != null){
+            deliveryLocation = Orders.getActiveOrder().getDeliveryLocation();
+            deliveryAddress = Orders.getActiveOrder().getDeliveryAddress();
+            LatLng latLng = new LatLng(deliveryLocation.getLatitude(), deliveryLocation.getLongitude());
+            mMap.addMarker(new MarkerOptions()
+                            .position(latLng)
+                            .title(getResources().getString(R.string.markerTitle))
+                            .snippet(deliveryAddress)
+                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
+            );
+        }
+        ArrayList<OrderElement> currentOrd = Orders.getCurrentOrders();
+        if (currentOrd == null){
+            return;
+        }
+        if (currentOrd.size() == 0)
+            return;
+        for(OrderElement orderElem : currentOrd) {
+            if (orderElem!=null) {
+                deliveryLocation = orderElem.getDeliveryLocation();
+                deliveryAddress = orderElem.getDeliveryAddress();
+                LatLng latLng = new LatLng(deliveryLocation.getLatitude(), deliveryLocation.getLongitude());
+                mMap.addMarker(new MarkerOptions()
+                                .position(latLng)
+                                .title(getResources().getString(R.string.markerTitle))
+                                .snippet(deliveryAddress)
+                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
+                );
+            }
+        }
+    }
+
 
     private String getCompleteAddressString(double latitude, double longitude) {
         String Address = "";
