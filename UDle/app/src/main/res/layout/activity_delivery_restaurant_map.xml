@@ -27,7 +27,7 @@
         android:id="@+id/listOrderRestaurantMap"
         android:layout_marginTop="30dp"
         android:layout_weight="0.9"
-        android:contentDescription="listOrderRestaurantMap"
+        android:contentDescription="listOrderRestaurant"
 
 
         />

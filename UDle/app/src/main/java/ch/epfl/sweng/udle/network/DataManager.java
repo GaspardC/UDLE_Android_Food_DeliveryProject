@@ -159,6 +159,11 @@ public class DataManager {
         userOrderInformations.saveInBackground();
     }
 
+    public static boolean isARestaurant(){
+        if (ParseUser.getCurrentUser() == null) return false;
+        return DataManager.getUser().getBoolean("RestaurantOwner");
+    }
+
 
     /*
      *  Change status of order to reflect that it's currenty being delivered

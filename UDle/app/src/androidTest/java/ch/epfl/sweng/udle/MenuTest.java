@@ -16,6 +16,7 @@ import static junit.framework.Assert.fail;
  */
 public class MenuTest {
 
+
     FoodTypes food = FoodTypes.KEBAB;
     ArrayList<OptionsTypes> options = new ArrayList<>();
 

@@ -53,7 +53,7 @@ public class DataManagerTest {
 */
 
     //Simulate a situation where the order is created and is now ready to push onto a server.
-    @Test
+/*    @Test
     public void dataManagerUserTest(){
         //setupClientUser();
         ParseUser.enableAutomaticUser();
@@ -71,5 +71,5 @@ public class DataManagerTest {
         ParseUser.enableAutomaticUser();
         ArrayList<OrderElement> pendingOrders = dataManager.getPendingOrdersForARestaurantOwner();
 
-    }
+    }*/
 }
