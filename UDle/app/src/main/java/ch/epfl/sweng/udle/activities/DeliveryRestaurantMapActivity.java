@@ -68,8 +68,12 @@ public class DeliveryRestaurantMapActivity extends SlideMenuActivity {
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
     private boolean showMap = true;
     private ListView listView;
-    final ArrayList<OrderElement> waitingOrders = getWaitingOrders(new ArrayList<OrderElement>());
-    final ArrayList<OrderElement> currentOrders = Orders.getCurrentOrders();
+    ArrayList<OrderElement> waitingOrders = getWaitingOrders(new ArrayList<OrderElement>());
+    ArrayList<OrderElement> currentOrders = Orders.getCurrentOrders();
+
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,7 +85,13 @@ public class DeliveryRestaurantMapActivity extends SlideMenuActivity {
 
     }
 
-
+    /* These to methods aer use only for testing */
+    public void resetCurrentOrder(){
+        this.currentOrders = null;
+    }
+    public void resetWaitingOrders(){
+        this.waitingOrders = null;
+    }
 
     private void setUpListView() {
         listView = (ListView) findViewById(R.id.listOrderRestaurantMap);
@@ -103,31 +113,48 @@ public class DeliveryRestaurantMapActivity extends SlideMenuActivity {
         List<HashMap<String,String>> aList = new ArrayList<HashMap<String,String>>();
         ArrayList<String> ordersAdress = new ArrayList<>();
         int i = 1;
-        for(OrderElement order : waitingOrders) {
 
-            Location location = order.getDeliveryLocation();
-            String deliveryAddress = order.getDeliveryAddress();
-            LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-            ordersAdress.add(deliveryAddress);
-            HashMap<String, String> hm = new HashMap<String,String>();
-            hm.put("numCommande", "#" + i+" ");
-            hm.put("address", ordersAdress.get(i - 1));
-            hm.put("image", Integer.toString(R.drawable.logoburger));
-            aList.add(hm);
-            i++;
+        if(waitingOrders!=null){
+            for(OrderElement order : waitingOrders) {
+
+                Location location = order.getDeliveryLocation();
+                String deliveryAddress = order.getDeliveryAddress();
+                LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+                ordersAdress.add(deliveryAddress);
+                HashMap<String, String> hm = new HashMap<String,String>();
+                hm.put("numCommande", "#" + i+" ");
+                hm.put("address", ordersAdress.get(i - 1));
+                hm.put("image", Integer.toString(R.drawable.logoburger));
+                aList.add(hm);
+                i++;
+            }
+
         }
-        for(OrderElement order : currentOrders) {
-            Location location = order.getDeliveryLocation();
-            String deliveryAddress = order.getDeliveryAddress();
-            LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-            ordersAdress.add(deliveryAddress);
-            HashMap<String, String> hm = new HashMap<String,String>();
-            hm.put("numCommande", "#" + i+" ");
-            hm.put("address", ordersAdress.get(i-1));
-            hm.put("image", Integer.toString(R.drawable.logogreen) );
-            aList.add(hm);
-            i++;
+        if(currentOrders!=null){
+            for(OrderElement order : currentOrders) {
+                Location location = order.getDeliveryLocation();
+                String deliveryAddress = order.getDeliveryAddress();
+                LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+                ordersAdress.add(deliveryAddress);
+                HashMap<String, String> hm = new HashMap<String,String>();
+                hm.put("numCommande", "#" + i+" ");
+                hm.put("address", ordersAdress.get(i-1));
+                hm.put("image", Integer.toString(R.drawable.logogreen) );
+                aList.add(hm);
+                i++;
+            }
         }
+
+
+
+        if(aList.isEmpty()){
+            HashMap<String, String> hm = new HashMap<String,String>();
+            hm.put("numCommande", getString(R.string.No_orders_for_now) + " ");
+            hm.put("address",getString(R.string.Wait_a_moment));
+            hm.put("image", Integer.toString(R.drawable.burger) );
+            aList.add(hm);
+        }
+
 
         // Keys used in Hashmap
         String[] from = { "image","numCommande", "address" };
@@ -213,43 +240,66 @@ public class DeliveryRestaurantMapActivity extends SlideMenuActivity {
 
     private void showWaitingOrders(){
         boolean initialised = false;
-        for(OrderElement order : waitingOrders) {
-            Location location = order.getDeliveryLocation();
-            String deliveryAddress = order.getDeliveryAddress();
-            LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-            if (!initialised) {
-                setCamera(latLng); // should be set on the restaurant location
-                initialised = true;
+        if(waitingOrders != null){
+            for(OrderElement order : waitingOrders) {
+                Location location = order.getDeliveryLocation();
+                String deliveryAddress = order.getDeliveryAddress();
+                LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+                if (!initialised) {
+                    setCamera(latLng); // should be set on the restaurant location
+                    initialised = true;
+                }
+                mMap.addMarker(new MarkerOptions()
+                        .position(latLng)
+                        .title(getResources().getString(R.string.WaitingOrders))
+                        .snippet(deliveryAddress)
+                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)))
+                        .showInfoWindow();
+
             }
-            mMap.addMarker(new MarkerOptions()
-                    .position(latLng)
-                    .title(getResources().getString(R.string.WaitingOrders))
-                    .snippet(deliveryAddress)
-                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
         }
-        for(OrderElement order : currentOrders) {
-            Location location = order.getDeliveryLocation();
-            String deliveryAddress = order.getDeliveryAddress();
-            LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-            mMap.addMarker(new MarkerOptions()
-                    .position(latLng)
-                    .title(getResources().getString(R.string.ConfirmedOrders))
-                    .snippet(deliveryAddress)
-                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+
+        if(currentOrders!=null){
+            for(OrderElement order : currentOrders) {
+                Location location = order.getDeliveryLocation();
+                String deliveryAddress = order.getDeliveryAddress();
+                LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+                mMap.addMarker(new MarkerOptions()
+                        .position(latLng)
+                        .title(getResources().getString(R.string.ConfirmedOrders))
+                        .snippet(deliveryAddress)
+                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+            }
         }
+
+        if(currentOrders == null && waitingOrders == null){
+            LatLng locResto = new LatLng(DataManager.getUserLocation().getLatitude(),DataManager.getUserLocation().getLongitude());
+            mMap.addMarker(new MarkerOptions()
+                    .position(locResto)
+                    .title(getString(R.string.No_orders_for_now) + " ")
+                    .snippet(getString(R.string.Wait_a_moment))
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+            setCamera(locResto);
+        }
+
         mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             @Override
             public void onInfoWindowClick(Marker marker) {
-                for (OrderElement order : waitingOrders) {
-                    if (order.getDeliveryAddress().equals(marker.getSnippet())) { //TODO: Instead of compare with the address, compare with the id of the command for example.
-                        goToDeliveryCommandDetail(order);
+                if(waitingOrders!=null){
+                    for (OrderElement order : waitingOrders) {
+                        if (order.getDeliveryAddress().equals(marker.getSnippet())) { //TODO: Instead of compare with the address, compare with the id of the command for example.
+                            goToDeliveryCommandDetail(order);
+                        }
                     }
                 }
-                for (OrderElement order : currentOrders) {
-                    if (order.getDeliveryAddress().equals(marker.getSnippet())) { //TODO: Instead of compare with the address, compare with the id of the command for example.
-                        goToDeliveryCommandDetail(order);
+                if(currentOrders!=null){
+                    for (OrderElement order : currentOrders) {
+                        if (order.getDeliveryAddress().equals(marker.getSnippet())) { //TODO: Instead of compare with the address, compare with the id of the command for example.
+                            goToDeliveryCommandDetail(order);
+                        }
                     }
                 }
+
             }
         });
     }

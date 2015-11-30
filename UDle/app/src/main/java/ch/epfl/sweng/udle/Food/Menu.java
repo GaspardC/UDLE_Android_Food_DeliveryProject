@@ -97,7 +97,7 @@ public class Menu {
             Menu menu = menusInRecap.get(i);
             int menuNbr = menuNumbers.get(i);
 
-            String food = String.valueOf(menuNbr) + "x " + menu.getFood().toString();
+            String food = String.valueOf(menuNbr) + " " + menu.getFood().toString();
             double priceNbr = menuNbr * menu.getFood().getPrice();
             String price = String.format("%.2f", priceNbr);
             price = price + Orders.getMoneyDevise();
