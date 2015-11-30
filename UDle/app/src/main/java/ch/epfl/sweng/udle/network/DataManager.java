@@ -249,6 +249,11 @@ public class DataManager {
     }
 
 
+    public static boolean isARestaurant(){
+        if (ParseUser.getCurrentUser() == null) return false;
+        return DataManager.getUser().getBoolean("RestaurantOwner");
+    }
+
     /**
      *  Start a query of all the enRoute orders that the restaurant accept.
      * Compile an arraylist of all the order element objects and return

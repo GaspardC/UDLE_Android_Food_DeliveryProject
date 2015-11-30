@@ -50,8 +50,6 @@ public class PaymentActivity extends SlideMenuActivity {
     }
 
     public void payment_button_click(View view) {
-
-
         EditText cardNumber = (EditText) findViewById(R.id.payment_cardNumber);
         EditText cardExpDate = (EditText) findViewById(R.id.payment_expDate);
         EditText cardSecurityNumber = (EditText) findViewById(R.id.payment_securityNumber);

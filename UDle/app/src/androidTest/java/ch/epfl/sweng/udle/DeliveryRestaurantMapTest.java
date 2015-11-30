@@ -1,10 +1,8 @@
 package ch.epfl.sweng.udle;
 
+import android.location.Location;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.matcher.ViewMatchers;
-import android.support.test.uiautomator.UiDevice;
-import android.support.test.uiautomator.UiObject;
-import android.support.test.uiautomator.UiSelector;
 import android.test.ActivityInstrumentationTestCase2;
 
 import org.junit.Before;
@@ -12,7 +10,12 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 
+import ch.epfl.sweng.udle.Food.DrinkTypes;
+import ch.epfl.sweng.udle.Food.FoodTypes;
+import ch.epfl.sweng.udle.Food.Menu;
+import ch.epfl.sweng.udle.Food.OptionsTypes;
 import ch.epfl.sweng.udle.Food.OrderElement;
+import ch.epfl.sweng.udle.Food.Orders;
 import ch.epfl.sweng.udle.activities.DeliveryRestaurantMapActivity;
 import ch.epfl.sweng.udle.network.DataManager;
 
@@ -21,14 +24,13 @@ import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.Espresso.pressBack;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static android.support.test.espresso.matcher.ViewMatchers.withEffectiveVisibility;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withTagKey;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.anything;
-import static org.hamcrest.Matchers.hasToString;
 
 /**
  * Created by rodri on 06/11/2015.
@@ -46,6 +48,8 @@ public class DeliveryRestaurantMapTest  extends ActivityInstrumentationTestCase2
         super.setUp();
         injectInstrumentation(InstrumentationRegistry.getInstrumentation());
         mActivity = getActivity();
+        Orders.setActiveOrder(getOrderElement());
+        Orders.activeOrderToCurrentOrder(Orders.getActiveOrder());
     }
 
 
@@ -83,12 +87,63 @@ public class DeliveryRestaurantMapTest  extends ActivityInstrumentationTestCase2
     public void testButtonGoToNextActivityWhenClickOnAnOrder(){
 
         onView(withId(R.id.button_list_mode)).perform(click());
-        final ArrayList<OrderElement> waitingOrders = DataManager.getWaitingOrdersForARestaurantOwner();
 
-        for(int i=0;i<waitingOrders.size();i++){
-            onData(anything()).inAdapterView(withContentDescription("listOrderRestaurantMap")).atPosition(i).perform(click());
-            onView(withId(R.id.DeliverCommandDetail_recapListView)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
-            pressBack();
-        }
+        final ArrayList<OrderElement> waitingOrders = DataManager.getWaitingOrdersForARestaurantOwner();
+        final ArrayList<OrderElement> currentOrders = DataManager.getCurrentOrdersForARestaurantOwner();
+        onData(anything()).inAdapterView(withContentDescription("listOrderRestaurantMap")).atPosition(currentOrders.size() + waitingOrders.size() - 1).perform(click());
+        onView(withId(R.id.DeliverCommandDetail_recapListView)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
+        pressBack();
     }
+    @Test
+    public void testIfNoOrders(){
+        mActivity.resetCurrentOrder();
+        mActivity.resetWaitingOrders();
+        onView(withId(R.id.button_list_mode)).perform(click());
+        onData(anything())
+                .inAdapterView(withContentDescription("listOrderRestaurantMap"))
+                .atPosition(0)
+                .check(matches(hasDescendant(withText("No orders for now "))));
+
+        onData(anything())
+                .inAdapterView(withContentDescription("listOrderRestaurantMap"))
+                .atPosition(0)
+                .check(matches(hasDescendant(withText("Wait a moment please"))));
+
+    }
+
+    public OrderElement getOrderElement (){
+        Menu menu1 = new Menu();
+        menu1.setFood(FoodTypes.KEBAB);
+        menu1.addToOptions(OptionsTypes.KETCHUP);
+        menu1.addToOptions(OptionsTypes.SALAD);
+        OrderElement orderElement1 = new OrderElement();
+        orderElement1.addMenu(menu1);
+        orderElement1.addToDrinks(DrinkTypes.BEER);
+        Location location1 = new Location("");
+        location1.setLatitude(46.519);
+        location1.setLongitude(6.566);
+        orderElement1.setDeliveryLocation(location1);
+        orderElement1.setDeliveryAddress("Address test, 1022, Switwerland");
+        orderElement1.setOrderedUserName("User Name 1");
+        return orderElement1;
+    }
+
+
+
+//    @Rule
+//    public ActivityTestRule<DeliveryRestaurantMapActivity> mActivityRule = new ActivityTestRule<>(
+//            DeliveryRestaurantMapActivity.class);
+
+ /* Wait for method   DataManager.getPendingOrdersForARestaurantOwner() on master branch.
+    @Test
+    public void testQuizClientGetterSetter() throws UiObjectNotFoundException {
+        DeliveryRestaurantMapActivity activity = mActivityRule.getActivity();
+
+        ArrayList<OrderElement> waitingOrders = DataManager.getPendingOrdersForARestaurantOwner();
+        UiDevice device = UiDevice.getInstance(getInstrumentation());
+        for(OrderElement order : waitingOrders){
+            UiObject marker = device.findObject(new UiSelector().descriptionContains(order.getDeliveryAddress()));
+            marker.click();
+        }
+    }*/
 }

@@ -111,12 +111,14 @@ public class DeliverCommandDetailTest{
 
     public void setUpIntentAndActivityForNewOrders() {
         Intent i = new Intent();
+        i.putExtra("isCurrent", false);
         Orders.setActiveOrder(orderElement);
         mActivityRule.launchActivity(i);
     }
 
     public void setUpIntentAndActivityForEnRouteOrders() {
         Intent i = new Intent();
+        i.putExtra("isCurrent", true);
         Orders.setActiveOrder(orderElement);
         Orders.activeOrderToCurrentOrder(orderElement);
 

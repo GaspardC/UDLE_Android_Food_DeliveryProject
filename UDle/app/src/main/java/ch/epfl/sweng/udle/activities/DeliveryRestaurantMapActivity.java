@@ -59,6 +59,7 @@ public class DeliveryRestaurantMapActivity extends SlideMenuActivity {
 
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -183,10 +184,13 @@ public class DeliveryRestaurantMapActivity extends SlideMenuActivity {
         }
     }
 
-
-
-
-
+    /* These to methods aer use only for testing */
+    public void resetCurrentOrder(){
+        this.currentOrders = null;
+    }
+    public void resetWaitingOrders(){
+        this.waitingOrders = null;
+    }
 
     private void setUpListView() {
         listView = (ListView) findViewById(R.id.listOrderRestaurantMap);
@@ -208,33 +212,49 @@ public class DeliveryRestaurantMapActivity extends SlideMenuActivity {
         List<HashMap<String,String>> aList = new ArrayList<>();
         ArrayList<String> ordersAdress = new ArrayList<>();
         int i = 1;
-        for(OrderElement order : waitingOrders) {
 
-            Location location = order.getDeliveryLocation();
-            String deliveryAddress = order.getDeliveryAddress();
-            LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-            ordersAdress.add(deliveryAddress);
-            HashMap<String, String> hm = new HashMap<String,String>();
-            hm.put("numCommande", "#" + i+" ");
-            hm.put("address", ordersAdress.get(i - 1));
-            hm.put("image", Integer.toString(R.drawable.logoburger));
-            aList.add(hm);
-            objectIdHashMapForList.put(i, order);
-            i++;
+        if(waitingOrders!=null){
+            for(OrderElement order : waitingOrders) {
+
+                Location location = order.getDeliveryLocation();
+                String deliveryAddress = order.getDeliveryAddress();
+                LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+                ordersAdress.add(deliveryAddress);
+                HashMap<String, String> hm = new HashMap<String,String>();
+                hm.put("numCommande", "#" + i+" ");
+                hm.put("address", ordersAdress.get(i - 1));
+                hm.put("image", Integer.toString(R.drawable.logoburger));
+                aList.add(hm);
+                objectIdHashMapForList.put(i,order);
+                i++;
+            }
         }
-        for(OrderElement order : currentOrders) {
-            Location location = order.getDeliveryLocation();
-            String deliveryAddress = order.getDeliveryAddress();
-            LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-            ordersAdress.add(deliveryAddress);
-            HashMap<String, String> hm = new HashMap<String,String>();
-            hm.put("numCommande", "#" + i+" ");
-            hm.put("address", ordersAdress.get(i-1));
-            hm.put("image", Integer.toString(R.drawable.logogreen) );
-            aList.add(hm);
-            objectIdHashMapForList.put(i, order);
-            i++;
+        if(currentOrders!=null){
+            for(OrderElement order : currentOrders) {
+                Location location = order.getDeliveryLocation();
+                String deliveryAddress = order.getDeliveryAddress();
+                LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+                ordersAdress.add(deliveryAddress);
+                HashMap<String, String> hm = new HashMap<String,String>();
+                hm.put("numCommande", "#" + i+" ");
+                hm.put("address", ordersAdress.get(i-1));
+                hm.put("image", Integer.toString(R.drawable.logogreen) );
+                aList.add(hm);
+                objectIdHashMapForList.put(i,order);
+                i++;
+            }
         }
+
+
+
+        if(aList.isEmpty()){
+            HashMap<String, String> hm = new HashMap<String,String>();
+            hm.put("numCommande", getString(R.string.No_orders_for_now) + " ");
+            hm.put("address",getString(R.string.Wait_a_moment));
+            hm.put("image", Integer.toString(R.drawable.burger) );
+            aList.add(hm);
+        }
+
 
         // Keys used in Hashmap
         String[] from = { "image","numCommande", "address" };
@@ -312,7 +332,6 @@ public class DeliveryRestaurantMapActivity extends SlideMenuActivity {
     }
 
 
-
     /**
      * Display the waiting and the current orders on the Google Map.
      * Display each order via a marker. Red color for waiting orders, Green for current ones.
@@ -361,6 +380,7 @@ public class DeliveryRestaurantMapActivity extends SlideMenuActivity {
         mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             @Override
             public void onInfoWindowClick(Marker marker) {
+
                 String markerTitle = marker.getTitle();
                 OrderElement order = objectIdHashMapForMap.get(markerTitle);
 
@@ -370,7 +390,6 @@ public class DeliveryRestaurantMapActivity extends SlideMenuActivity {
                 }
 
                 goToDeliveryCommandDetail(order, isCurrent);
-
             }
         });
     }

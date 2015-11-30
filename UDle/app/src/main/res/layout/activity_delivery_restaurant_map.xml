@@ -28,8 +28,6 @@
         android:layout_marginTop="30dp"
         android:layout_weight="0.9"
         android:contentDescription="@string/listOrderRestaurantMap"
-
-
         />
     <Button
         android:layout_width="fill_parent"

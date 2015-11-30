@@ -78,6 +78,7 @@ public class RecapActivity extends SlideMenuActivity {
             }
         });
     }
+
     protected void update(){
         order = Orders.getActiveOrder();
         String moneyDevise = Orders.getMoneyDevise();

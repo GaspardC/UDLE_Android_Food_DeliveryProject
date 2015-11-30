@@ -101,18 +101,19 @@ public class Menu {
             Menu menu = menusInRecap.get(i);
             int menuNbr = menuNumbers.get(i);
 
-            String food = String.valueOf(menuNbr) + "x " + menu.getFood().toString();
+            String food = String.valueOf(menuNbr) + " " + menu.getFood().toString();
             double priceNbr = menuNbr * menu.getFood().getPrice();
             String price = String.format("%.2f", priceNbr);
             price = price + Orders.getMoneyDevise();
 
             String option;
             if (menu.getOptions().size() == 0){
-              //  option = "No options selected.";
-                option = Resources.getSystem().getString(R.string.noMenuNoOptions);
+              //  option = Resources.getSystem().getString(R.string.noOptions);
+                option = "No options.";
             }
             else{
-                option = "Options:  ";
+                //option = Resources.getSystem().getString(R.string.options);
+                option = "Option: ";
                 for( OptionsTypes opt : menu.getOptions()){
                     option = option + opt.toString() + " ; " ;
                 }
