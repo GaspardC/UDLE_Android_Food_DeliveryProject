@@ -64,7 +64,7 @@ public class PaymentActivity extends SlideMenuActivity {
             //function to get status based on orderId
             DataManager.createNewParseUserOrderInformations();
 
-            Intent intent =  new Intent(this, MapActivity.class);
+            Intent intent =  new Intent(this, WaitingActivity.class);
             startActivity(intent);
         }
     }
