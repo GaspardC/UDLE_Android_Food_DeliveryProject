@@ -65,11 +65,7 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
 
-        Orders.setActiveOrder(orderElement);
-
-        listeMarkers = new ArrayList<Marker>();
-
-        listeMarkers = new ArrayList<Marker>();
+        listeMarkers = new ArrayList<>();
 
         markerLayout = (LinearLayout) findViewById(R.id.locationMarker);
         markerHidden = false;

@@ -32,6 +32,7 @@
     <string name="infotextwaitingConfirmed">Congrats, your order is coming for you</string>
 
     <string name="WaitingOrders">Waiting Order</string>
+    <string name="ConfirmOrders">Confirmed Order</string>
 
 	<string name="sampleText">This is a sample text.</string>
 	<string name="openSlideMenu">Open slide menu</string>

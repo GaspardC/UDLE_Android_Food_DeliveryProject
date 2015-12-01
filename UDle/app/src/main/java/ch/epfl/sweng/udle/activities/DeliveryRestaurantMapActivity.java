@@ -368,7 +368,7 @@ public class DeliveryRestaurantMapActivity extends SlideMenuActivity {
             LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
             String deliveryAddress = order.getDeliveryAddress();
 
-            String markerTitle = getResources().getString(R.string.WaitingOrders) +" #"+ objectIdHashMapIndex;
+            String markerTitle = getResources().getString(R.string.ConfirmOrders) +" #"+ objectIdHashMapIndex;
             objectIdHashMapForMap.put(markerTitle, order);
             objectIdHashMapIndex++;
 
@@ -387,7 +387,7 @@ public class DeliveryRestaurantMapActivity extends SlideMenuActivity {
                 OrderElement order = objectIdHashMapForMap.get(markerTitle);
 
                 boolean isCurrent = false;
-                if (markerTitle.contains("Current")) {
+                if (markerTitle.contains(getResources().getString(R.string.ConfirmOrders))) {
                     isCurrent = true;
                 }
 
@@ -400,16 +400,16 @@ public class DeliveryRestaurantMapActivity extends SlideMenuActivity {
 
     /** Called when the user clicks the MenuMap_ValidatePosition button */
     public void goToDeliveryCommandDetail(OrderElement order, boolean isCurrent) {
-        if (DataManager.isStatusWaiting(order.getUserOrderInformationsID())){
+        if ( DataManager.isStatusWaiting(order.getUserOrderInformationsID())){
+            Toast.makeText(getApplicationContext(), getString(R.string.OrderNotAvailable),
+                    Toast.LENGTH_SHORT).show();
+            restartHandlerTimerForRefresh();
+        }
+        else{
             Orders.setActiveOrder(order);
             Intent intent = new Intent(this, DeliverCommandDetailActivity.class);
             intent.putExtra("isCurrent", isCurrent);
             startActivity(intent);
-        }
-        else{
-            Toast.makeText(getApplicationContext(), getString(R.string.OrderNotAvailable),
-                    Toast.LENGTH_SHORT).show();
-            restartHandlerTimerForRefresh();
         }
     }
 
