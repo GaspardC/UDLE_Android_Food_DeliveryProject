@@ -25,6 +25,7 @@ import ch.epfl.sweng.udle.Food.OptionsTypes;
 import ch.epfl.sweng.udle.Food.OrderElement;
 import ch.epfl.sweng.udle.Food.Orders;
 import ch.epfl.sweng.udle.R;
+import ch.epfl.sweng.udle.activities.MenuOptionsDrinks.MainActivity;
 
 public class RecapActivity extends SlideMenuActivity {
     AlertDialog.Builder dlgAlert;
@@ -86,7 +87,11 @@ public class RecapActivity extends SlideMenuActivity {
             }
         });
     }
-
+    @Override
+    public void onBackPressed(){
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+    }
     protected void update(){
         order = Orders.getActiveOrder();
         String moneyDevise = Orders.getMoneyDevise();

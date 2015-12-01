@@ -25,6 +25,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseUser;
@@ -42,6 +43,7 @@ import ch.epfl.sweng.udle.network.DataManager;
 
 public class MapActivity extends SlideMenuActivity implements AdapterView.OnItemClickListener {
 
+    private ArrayList<Marker> listeMarkers;
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
     private Location location = new Location("");
     private LinearLayout markerLayout;
@@ -59,7 +61,7 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
 
-
+        listeMarkers = new ArrayList<Marker>();
         markerLayout = (LinearLayout) findViewById(R.id.locationMarker);
         dlgAlert = new AlertDialog.Builder(this);
         data = new DataManager();
@@ -175,6 +177,11 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
     }
 
     private void placeMarkers(){
+        for (Marker marker: listeMarkers) {
+            marker.remove();
+        }
+        listeMarkers.clear();
+
         Location deliveryLocation;
         String deliveryAddress;
 
@@ -182,12 +189,13 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
             deliveryLocation = Orders.getActiveOrder().getDeliveryLocation();
             deliveryAddress = Orders.getActiveOrder().getDeliveryAddress();
             LatLng latLng = new LatLng(deliveryLocation.getLatitude(), deliveryLocation.getLongitude());
-            mMap.addMarker(new MarkerOptions()
+            Marker marker = mMap.addMarker(new MarkerOptions()
                             .position(latLng)
                             .title(getResources().getString(R.string.markerTitle))
                             .snippet(deliveryAddress)
                             .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
             );
+            listeMarkers.add(marker);
         }
         ArrayList<OrderElement> currentOrd = Orders.getCurrentOrders();
         if (currentOrd == null){
@@ -200,12 +208,13 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
                 deliveryLocation = orderElem.getDeliveryLocation();
                 deliveryAddress = orderElem.getDeliveryAddress();
                 LatLng latLng = new LatLng(deliveryLocation.getLatitude(), deliveryLocation.getLongitude());
-                mMap.addMarker(new MarkerOptions()
+                Marker marker = mMap.addMarker(new MarkerOptions()
                                 .position(latLng)
                                 .title(getResources().getString(R.string.markerTitle))
                                 .snippet(deliveryAddress)
                                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
                 );
+                listeMarkers.add(marker);
             }
         }
     }
