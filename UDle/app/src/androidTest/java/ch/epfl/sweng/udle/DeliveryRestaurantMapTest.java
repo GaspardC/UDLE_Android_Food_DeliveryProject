@@ -5,6 +5,10 @@ import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.matcher.ViewMatchers;
 import android.test.ActivityInstrumentationTestCase2;
 
+import com.parse.LogInCallback;
+import com.parse.ParseException;
+import com.parse.ParseUser;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -45,6 +49,9 @@ public class DeliveryRestaurantMapTest  extends ActivityInstrumentationTestCase2
 
     @Before
     public void setUp() throws Exception {
+
+        ParseUser.logIn("resto1", "000000");
+
         super.setUp();
         injectInstrumentation(InstrumentationRegistry.getInstrumentation());
         mActivity = getActivity();
