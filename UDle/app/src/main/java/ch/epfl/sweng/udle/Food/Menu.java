@@ -107,7 +107,7 @@ public class Menu {
                 option = "No options selected.";
             }
             else{
-                option = "Options:  ";
+                option = "Options: ";
                 for( OptionsTypes opt : menu.getOptions()){
                     option = option + opt.toString() + " ; " ;
                 }
