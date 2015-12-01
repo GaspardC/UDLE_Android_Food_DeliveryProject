@@ -41,7 +41,7 @@ import ch.epfl.sweng.udle.activities.MenuOptionsDrinks.MainActivity;
 import ch.epfl.sweng.udle.network.DataManager;
 
 
-public class MapActivity extends SlideMenuActivity implements AdapterView.OnItemClickListener {
+public class MapActivity extends SlideMenuActivity implements AdapterView.OnItemClickListener, GoogleMap.OnMarkerClickListener {
 
     private ArrayList<Marker> listeMarkers;
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
@@ -55,6 +55,8 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
     private DataManager data;
     private boolean dlgAlertcountCreated = false;
     private String nonNullLocationProvider = "nonNullLocationProvider";
+    private boolean markerHidden = true;
+    private boolean afterFirstChange = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +65,7 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
 
         listeMarkers = new ArrayList<Marker>();
         markerLayout = (LinearLayout) findViewById(R.id.locationMarker);
+        markerHidden = false;
         dlgAlert = new AlertDialog.Builder(this);
         data = new DataManager();
         autoCompView = (AutoCompleteTextView) findViewById(R.id.autoCompleteTextView2);
@@ -72,6 +75,7 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
         autoCompView.setOnItemClickListener(this);
         CheckEnableGPS();
         setUpMapIfNeeded();
+        mMap.setOnMarkerClickListener(this);
         placeMarkers();
         hideKeyborad();
     }
@@ -344,8 +348,27 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
                     LatLng LatLng = mMap.getCameraPosition().target;
                     setDeliveryAddressLocation(LatLng, getCompleteAddressString(location.getLatitude(), location.getLongitude()), true);
                 }
+                if (markerHidden && afterFirstChange){
+                    markerLayout.setVisibility(LinearLayout.VISIBLE);
+                    markerHidden = false;
+                    afterFirstChange = false;
+                }else{
+                    afterFirstChange = true;
+                }
             }
         });
+    }
+
+    @Override
+    public boolean onMarkerClick(final Marker mar) {
+        if(true) {
+            // if marker source is clicked
+            markerLayout.setVisibility(LinearLayout.INVISIBLE );
+            markerHidden = true;
+            afterFirstChange = false;
+            return false;
+        }
+        return false;
     }
 
     private void storeNearbyRestaurants(){

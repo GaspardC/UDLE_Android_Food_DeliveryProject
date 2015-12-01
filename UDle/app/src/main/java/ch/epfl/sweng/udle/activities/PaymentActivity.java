@@ -63,7 +63,7 @@ public class PaymentActivity extends SlideMenuActivity {
                     Toast.LENGTH_SHORT).show();
         }
         else{
-            Intent intent =  new Intent(this, MapActivity.class);
+            Intent intent =  new Intent(this, WaitingActivity.class);
             startActivity(intent);
         }
     }
