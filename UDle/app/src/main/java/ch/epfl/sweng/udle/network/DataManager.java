@@ -257,6 +257,80 @@ public class DataManager {
     }
 
 
+
+    public static ArrayList<OrderElement> getWaitingOrdersForAClient() {
+        pendingOrders = new ArrayList<>();
+
+        user = DataManager.getUser();
+        try {
+            user.fetch();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        //Start Query
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("ParseUserOrderInformations");
+        query.whereEqualTo("orderStatus", OrderStatus.WAITING.toString());
+        String id = user.getObjectId();
+        query.whereEqualTo("user", user);
+
+        try {
+            List<ParseObject> OrderList = query.find();
+
+            for (ParseObject userOrder : OrderList) {
+
+                //Cast to parseUserOrderInformations to use methods
+                ParseUserOrderInformations parseUserOrder = (ParseUserOrderInformations) userOrder;
+
+                ParseObject parseOrderElement = parseUserOrder.getOrder();
+                OrderElement orderElement = ParseOrderElement.retrieveOrderElementFromParse(parseOrderElement);
+
+                pendingOrders.add(orderElement);
+            }
+        }
+        catch (Exception e) {
+            //throw new IOException("Nhvvb");
+        }
+        return pendingOrders;
+    }
+
+
+    public static ArrayList<OrderElement> getEnRouteOrdersForAClient() {
+        ArrayList<OrderElement> enRouteOrders = new ArrayList<>();
+
+        user = DataManager.getUser();
+        try {
+            user.fetch();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        //Start Query
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("ParseUserOrderInformations");
+        query.whereEqualTo("orderStatus", OrderStatus.ENROUTE.toString());
+        query.whereEqualTo("user", user);
+
+        try {
+            List<ParseObject> OrderList = query.find();
+
+            for (ParseObject userOrder : OrderList) {
+
+                //Cast to parseUserOrderInformations to use methods
+                ParseUserOrderInformations parseUserOrder = (ParseUserOrderInformations) userOrder;
+
+                ParseObject parseOrderElement = parseUserOrder.getOrder();
+                OrderElement orderElement = ParseOrderElement.retrieveOrderElementFromParse(parseOrderElement);
+
+                enRouteOrders.add(orderElement);
+            }
+        }
+        catch (Exception e) {
+            //throw new IOException("Nhvvb");
+        }
+        return enRouteOrders;
+    }
+
+
     public static boolean isARestaurant(){
         if (ParseUser.getCurrentUser() == null) return false;
         return DataManager.getUser().getBoolean("RestaurantOwner");
@@ -291,5 +365,11 @@ public class DataManager {
             //throw new IOException("Nhvvb");
         }
         return currentOrders;
+    }
+
+    public static boolean isMyCommand(String userOrderInformationsID) {
+        ParseUserOrderInformations parseUserOrderInformations = getParseUserObjectWithId(userOrderInformationsID);
+        String restaurantName = parseUserOrderInformations.getString("deliveringRestaurant");
+        return (restaurantName.equals(getUserName()));
     }
 }

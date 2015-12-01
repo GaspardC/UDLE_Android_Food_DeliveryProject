@@ -403,7 +403,13 @@ public class DeliveryRestaurantMapActivity extends SlideMenuActivity {
         if (DataManager.isStatusWaiting(order.getUserOrderInformationsID())){
             Orders.setActiveOrder(order);
             Intent intent = new Intent(this, DeliverCommandDetailActivity.class);
-            intent.putExtra("isCurrent", isCurrent);
+             intent.putExtra("isCurrent", isCurrent);
+            startActivity(intent);
+        }
+        else if (!DataManager.isStatusWaiting(order.getUserOrderInformationsID()) && DataManager.isMyCommand(order.getUserOrderInformationsID())){
+            Orders.setActiveOrder(order);
+            Intent intent = new Intent(this, DeliverCommandDetailActivity.class);
+            intent.putExtra("isCurrent", true);
             startActivity(intent);
         }
         else{
