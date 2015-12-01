@@ -41,6 +41,10 @@
     <string name="restaurantModeDesc">go to restaurant map activity</string>
     <string name="about">About</string>
     <string name="removeMessage_1">"Remove :"</string>
+    <string name="removeMessage_2">"One of the "</string>
+    <string name="removeMessage_3">"No options selected."</string>
+    <string name="removeMessage_4">"Options: "</string>
+    <string name="removeMessage_5">"No options selected."</string>
     <string name="notImplemented">Not implemented</string>
     <string name="TitleAlertBack">Give up the order"</string>
     <string name="MessageAlertBack">Are you sure you want to go back? This will delete your order</string>

@@ -113,7 +113,8 @@ public class Menu {
             }
             else{
                 //option = Resources.getSystem().getString(R.string.options);
-                option = "Option: ";
+                option = "Options: ";
+
                 for( OptionsTypes opt : menu.getOptions()){
                     option = option + opt.toString() + " ; " ;
                 }

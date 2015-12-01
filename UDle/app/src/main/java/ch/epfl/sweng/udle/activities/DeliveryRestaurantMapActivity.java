@@ -186,10 +186,10 @@ public class DeliveryRestaurantMapActivity extends SlideMenuActivity {
 
     /* These to methods aer use only for testing */
     public void resetCurrentOrder(){
-        this.currentOrders = null;
+        this.currentOrders = new ArrayList<OrderElement> ();
     }
     public void resetWaitingOrders(){
-        this.waitingOrders = null;
+        this.waitingOrders = new ArrayList<OrderElement> ();
     }
 
     private void setUpListView() {
