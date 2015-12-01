@@ -82,7 +82,7 @@ public class DeliveryRestaurantMapTest  extends ActivityInstrumentationTestCase2
         onView(withId(R.id.button_list_mode)).perform(click());
         onView(withId((R.id.button_list_mode))).check(matches(withText("Switch to List Mode")));
     }
-
+/*
     @Test
     public void testButtonGoToNextActivityWhenClickOnAnOrder(){
 
@@ -94,7 +94,7 @@ public class DeliveryRestaurantMapTest  extends ActivityInstrumentationTestCase2
         onView(withId(R.id.DeliverCommandDetail_recapListView)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
         pressBack();
     }
-    @Test
+  */  @Test
     public void testIfNoOrders(){
         mActivity.resetCurrentOrder();
         mActivity.resetWaitingOrders();
