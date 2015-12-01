@@ -54,8 +54,11 @@ public class DataManager {
         userOrderInformations.setExpectedTime(-1);
         userOrderInformations.setOrderStatus(OrderStatus.WAITING.toString());
         userOrderInformations.setDeliveryGuyNumber("No number assigned");
-
-        orderElement.setUserOrderInformationsID(userOrderInformations.getObjectId());
+        String objectId = userOrderInformations.getObjectId();
+        while (objectId == null){
+            objectId = userOrderInformations.getObjectId();
+        }
+        orderElement.setUserOrderInformationsID(objectId);
         ParseObject parseOrderElement = ParseOrderElement.create(orderElement);
         parseOrderElement.saveInBackground();
         userOrderInformations.setOrder(parseOrderElement);
@@ -212,6 +215,11 @@ public class DataManager {
         pendingOrders = new ArrayList<>();
 
         user = DataManager.getUser();
+        try {
+            user.fetch();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         userLocation = user.getParseGeoPoint("Location");
         maxDeliveryDistance = (double) ((Integer) user.getNumber("maxDeliveryDistanceKm"));
 
