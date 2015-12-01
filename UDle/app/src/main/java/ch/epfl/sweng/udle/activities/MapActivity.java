@@ -66,9 +66,6 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
         setContentView(R.layout.activity_map);
 
         listeMarkers = new ArrayList<Marker>();
-
-        listeMarkers = new ArrayList<Marker>();
-
         markerLayout = (LinearLayout) findViewById(R.id.locationMarker);
         markerHidden = false;
         dlgAlert = new AlertDialog.Builder(this);
