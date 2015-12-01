@@ -1,10 +1,9 @@
 package ch.epfl.sweng.udle.network;
 
 import com.parse.ParseClassName;
+import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
-
-import ch.epfl.sweng.udle.Food.OrderElement;
 
 /**
  * Created by skalli93 on 11/1/15.
@@ -19,30 +18,24 @@ import ch.epfl.sweng.udle.Food.OrderElement;
 @ParseClassName("ParseUserOrderInformations")
 public class ParseUserOrderInformations extends ParseObject {
 
-    /*
-     * Contructor takes in the current location latitude and longitude and initializes user info.
-     * USER info gathered from ParseUser Method
-     *
-     */
-
     public ParseUserOrderInformations() {
-        ParseUser currentUser = ParseUser.getCurrentUser();
-        if ((currentUser != null)) {
-            this.put("user", currentUser);
-        }
-
-        this.setDeliveryGuyNumber("");
-        this.setOrderStatus("waiting for restaurant");
-        this.setExpectedTime(0);
-
+        //A default constructor is required.
     }
 
     //Get current user
     public ParseUser getUser() {
-
-        return (ParseUser) this.get("user");
+        ParseUser user = (ParseUser) this.get("user");
+        try {
+            user.fetch();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return user;
     }
 
+    public void setUser(ParseUser value){
+        this.put("user", value);
+    }
 
     //Return the contact info for the guy delivering the food
     public String getDeliveryGuyNumber() {
@@ -54,6 +47,7 @@ public class ParseUserOrderInformations extends ParseObject {
     public void setDeliveryGuyNumber(String value) {
 
         this.put("deliveryGuyNumber", value);
+        this.saveInBackground();
     }
 
     //Return the name of the restaurant delivering
@@ -66,6 +60,7 @@ public class ParseUserOrderInformations extends ParseObject {
     public void setParseDeliveringRestaurant(String value) {
 
         this.put("deliveringRestaurant", value);
+        this.saveInBackground();
     }
 
 
@@ -79,6 +74,7 @@ public class ParseUserOrderInformations extends ParseObject {
     public void setExpectedTime(int value) {
 
         this.put("expectedTime", value);
+        this.saveInBackground();
     }
 
 
@@ -90,20 +86,26 @@ public class ParseUserOrderInformations extends ParseObject {
 
     //Change Order Status when order is made
     public void setOrderStatus(String orderStatus) {
-
         this.put("orderStatus", orderStatus);
+        this.saveInBackground();
     }
 
     //Retrieve the order parse element and add parameters to the order
-    public void setOrder (OrderElement orderElement){
-
-        this.put("order", orderElement);
+    public void setOrder (ParseObject orderElement) {
+       // this.put("orderElement", orderElement);
+        this.put("orderElementPointer", orderElement);
+        this.saveInBackground();
     }
 
     //Return Order in type ArrayListMenu
-    public OrderElement getOrder(){
-
-        return (OrderElement) this.get("order");
+    public ParseObject getOrder(){
+        ParseObject order = (ParseObject) this.get("orderElementPointer");
+        try {
+            order.fetch();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return order;
     }
 
 }

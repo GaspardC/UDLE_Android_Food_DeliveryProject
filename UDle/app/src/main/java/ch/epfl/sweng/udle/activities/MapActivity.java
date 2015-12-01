@@ -22,11 +22,16 @@ import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.parse.ParseGeoPoint;
+import com.parse.ParseObject;
 import com.parse.ParseUser;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -39,6 +44,7 @@ import ch.epfl.sweng.udle.network.DataManager;
 
 public class MapActivity extends SlideMenuActivity implements AdapterView.OnItemClickListener {
 
+    private ArrayList<Marker> listeMarkers;
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
     private Location location = new Location("");
     private LinearLayout markerLayout;
@@ -47,19 +53,21 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
     private GooglePlacesAutocompleteAdapter googleAdapter;
     private AlertDialog.Builder dlgAlert;
     private boolean displayGpsMessage = true;
-    private DataManager data;
     private boolean dlgAlertcountCreated = false;
     private String nonNullLocationProvider = "nonNullLocationProvider";
+    private OrderElement orderElement = new OrderElement();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
 
+        Orders.setActiveOrder(orderElement);
+
+        listeMarkers = new ArrayList<Marker>();
 
         markerLayout = (LinearLayout) findViewById(R.id.locationMarker);
         dlgAlert = new AlertDialog.Builder(this);
-        data = new DataManager();
         autoCompView = (AutoCompleteTextView) findViewById(R.id.autoCompleteTextView2);
         googleAdapter = new GooglePlacesAutocompleteAdapter(this, R.layout.list_item);
         autoCompView.setAdapter(googleAdapter);
@@ -67,6 +75,7 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
         autoCompView.setOnItemClickListener(this);
         CheckEnableGPS();
         setUpMapIfNeeded();
+        placeMarkers();
         hideKeyborad();
     }
 
@@ -90,6 +99,7 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
             startActivity(login);
         }
         CheckEnableGPS();
+        placeMarkers();
     }
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
         String str = (String) adapterView.getItemAtPosition(position);
@@ -101,7 +111,7 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
     /** Called when the user clicks the MenuMap_ValidatePosition button */
     public void goToMenuActivity(View view) {
         if(isLocationInitialised() && !getDeliveryAdress().equals("")) {
-            OrderElement orderElement = new OrderElement();
+            orderElement = new OrderElement();
             orderElement.setDeliveryLocation(getLocation());
             orderElement.setDeliveryAddress(getDeliveryAdress());
             orderElement.setOrderedUserName(DataManager.getUserName());
@@ -109,7 +119,8 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
             storeNearbyRestaurants();
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
-        }else {
+        }
+        else {
             Toast.makeText(this, R.string.incorrectLocation, Toast.LENGTH_SHORT).show();
         }
     }
@@ -168,6 +179,50 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
         // Zoom in the Google Map
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
     }
+
+    private void placeMarkers(){
+        for (Marker marker: listeMarkers) {
+            marker.remove();
+        }
+        listeMarkers.clear();
+
+        Location deliveryLocation;
+        String deliveryAddress;
+
+        if (Orders.getActiveOrder() != null){
+            deliveryLocation = Orders.getActiveOrder().getDeliveryLocation();
+            deliveryAddress = Orders.getActiveOrder().getDeliveryAddress();
+            LatLng latLng = new LatLng(deliveryLocation.getLatitude(), deliveryLocation.getLongitude());
+            Marker marker = mMap.addMarker(new MarkerOptions()
+                            .position(latLng)
+                            .title(getResources().getString(R.string.markerTitle))
+                            .snippet(deliveryAddress)
+                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
+            );
+            listeMarkers.add(marker);
+        }
+        ArrayList<OrderElement> currentOrd = Orders.getCurrentOrders();
+        if (currentOrd == null){
+            return;
+        }
+        if (currentOrd.size() == 0)
+            return;
+        for(OrderElement orderElem : currentOrd) {
+            if (orderElem!=null) {
+                deliveryLocation = orderElem.getDeliveryLocation();
+                deliveryAddress = orderElem.getDeliveryAddress();
+                LatLng latLng = new LatLng(deliveryLocation.getLatitude(), deliveryLocation.getLongitude());
+                Marker marker = mMap.addMarker(new MarkerOptions()
+                                .position(latLng)
+                                .title(getResources().getString(R.string.markerTitle))
+                                .snippet(deliveryAddress)
+                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
+                );
+                listeMarkers.add(marker);
+            }
+        }
+    }
+
 
     private String getCompleteAddressString(double latitude, double longitude) {
         String Address = "";
@@ -303,9 +358,8 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
         ParseUser currentUser = DataManager.getUser();
         currentUser.put("Location", currentLocation);
 
-        //Find nearby restaurants
-        boolean nearbyRestaurantStatus = DataManager.getRestaurantLocationsNearTheUser();
-        Log.d("OSid", String.valueOf(nearbyRestaurantStatus));
-
+        //Find nearby restaurants and store in server
+        //NEED TO CHANGE THIS DEPENDING ON HOW WE USE NEARBY RESTAURANTS
+        DataManager.getRestaurantsNearTheUser();
     }
 }

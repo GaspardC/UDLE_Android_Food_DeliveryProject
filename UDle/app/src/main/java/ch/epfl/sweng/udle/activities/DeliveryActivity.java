@@ -26,7 +26,9 @@ public class DeliveryActivity extends SlideMenuActivity {
         setContentView(R.layout.activity_delivery);
         setUpMapIfNeeded();
         placeMarkers();
+/*
         slideMenuItems.add(new NavItem("Special Delivery", "option added from the child activity", R.mipmap.ic_launcher));
+*/
     }
 
     public void callDeliveryGuy(View view){

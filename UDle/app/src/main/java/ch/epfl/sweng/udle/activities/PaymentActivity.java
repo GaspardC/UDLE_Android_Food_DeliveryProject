@@ -3,9 +3,8 @@ package ch.epfl.sweng.udle.activities;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ListAdapter;
@@ -15,16 +14,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
 import ch.epfl.sweng.udle.Food.DrinkTypes;
 import ch.epfl.sweng.udle.Food.Menu;
-import ch.epfl.sweng.udle.Food.OptionsTypes;
 import ch.epfl.sweng.udle.Food.OrderElement;
 import ch.epfl.sweng.udle.Food.Orders;
 import ch.epfl.sweng.udle.R;
+import ch.epfl.sweng.udle.network.DataManager;
 
 public class PaymentActivity extends SlideMenuActivity {
 
@@ -52,8 +50,6 @@ public class PaymentActivity extends SlideMenuActivity {
     }
 
     public void payment_button_click(View view) {
-
-
         EditText cardNumber = (EditText) findViewById(R.id.payment_cardNumber);
         EditText cardExpDate = (EditText) findViewById(R.id.payment_expDate);
         EditText cardSecurityNumber = (EditText) findViewById(R.id.payment_securityNumber);
@@ -63,7 +59,12 @@ public class PaymentActivity extends SlideMenuActivity {
                     Toast.LENGTH_SHORT).show();
         }
         else{
-            Intent intent =  new Intent(this, WaitingActivity.class);
+            //Return objectId from
+            //Store it in OrderElement
+            //function to get status based on orderId
+            DataManager.createNewParseUserOrderInformations();
+
+            Intent intent =  new Intent(this, MapActivity.class);
             startActivity(intent);
         }
     }
