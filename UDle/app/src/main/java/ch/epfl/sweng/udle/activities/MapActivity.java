@@ -28,6 +28,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.parse.ParseGeoPoint;
+import com.parse.ParseObject;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
@@ -52,9 +53,10 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
     private GooglePlacesAutocompleteAdapter googleAdapter;
     private AlertDialog.Builder dlgAlert;
     private boolean displayGpsMessage = true;
-    private DataManager data;
     private boolean dlgAlertcountCreated = false;
     private String nonNullLocationProvider = "nonNullLocationProvider";
+    private OrderElement orderElement = new OrderElement();
+
     private boolean markerHidden = true;
     private boolean afterFirstChange = true;
 
@@ -63,11 +65,12 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
 
+
         listeMarkers = new ArrayList<Marker>();
+
         markerLayout = (LinearLayout) findViewById(R.id.locationMarker);
         markerHidden = false;
         dlgAlert = new AlertDialog.Builder(this);
-        data = new DataManager();
         autoCompView = (AutoCompleteTextView) findViewById(R.id.autoCompleteTextView2);
         googleAdapter = new GooglePlacesAutocompleteAdapter(this, R.layout.list_item);
         autoCompView.setAdapter(googleAdapter);
@@ -112,7 +115,7 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
     /** Called when the user clicks the MenuMap_ValidatePosition button */
     public void goToMenuActivity(View view) {
         if(isLocationInitialised() && !getDeliveryAdress().equals("")) {
-            OrderElement orderElement = new OrderElement();
+            orderElement = new OrderElement();
             orderElement.setDeliveryLocation(getLocation());
             orderElement.setDeliveryAddress(getDeliveryAdress());
             orderElement.setOrderedUserName(DataManager.getUserName());
@@ -120,7 +123,8 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
             storeNearbyRestaurants();
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
-        }else {
+        }
+        else {
             Toast.makeText(this, R.string.incorrectLocation, Toast.LENGTH_SHORT).show();
         }
     }
@@ -377,9 +381,8 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
         ParseUser currentUser = DataManager.getUser();
         currentUser.put("Location", currentLocation);
 
-        //Find nearby restaurants
-        boolean nearbyRestaurantStatus = DataManager.getRestaurantLocationsNearTheUser();
-        Log.d("OSid", String.valueOf(nearbyRestaurantStatus));
-
+        //Find nearby restaurants and store in server
+        //NEED TO CHANGE THIS DEPENDING ON HOW WE USE NEARBY RESTAURANTS
+        DataManager.getRestaurantsNearTheUser();
     }
 }

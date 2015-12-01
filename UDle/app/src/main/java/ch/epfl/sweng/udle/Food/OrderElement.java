@@ -2,31 +2,27 @@ package ch.epfl.sweng.udle.Food;
 
 import android.location.Location;
 
-import com.parse.ParseObject;
-
 import java.util.ArrayList;
 
 /**
  * Created by rodri on 23/10/2015.
  */
-public class OrderElement  {
 
-    private ArrayList<Menu> orderList;
-    private ArrayList<DrinkTypes> drinks;
+public class OrderElement {
 
-    private Location deliveryLocation;
-    private String deliveryAddress;
+    private ArrayList<Menu> orderList = new ArrayList<>();
+    private ArrayList<DrinkTypes> drinks = new ArrayList<>();
 
-    private String orderedBy;
+    private Location deliveryLocation = null;
+    private String deliveryAddress = "";
+
+    private String orderedBy = "";
+
+    private String userOrderInformationsID = "";
 
 
 
     public OrderElement(){
-        this.orderList = new ArrayList<>();
-        this.drinks = new ArrayList<>();
-        this.deliveryLocation = null;
-        this.deliveryAddress = "";
-        this.orderedBy = "";
     }
 
 
@@ -115,4 +111,12 @@ public class OrderElement  {
     public void setOrderedUserName(String userName){
         this.orderedBy = userName;
     }
+
+    public String getUserOrderInformationsID() {
+        return userOrderInformationsID;
+    }
+    public void setUserOrderInformationsID(String value){
+        this.userOrderInformationsID = value;
+    }
+
 }

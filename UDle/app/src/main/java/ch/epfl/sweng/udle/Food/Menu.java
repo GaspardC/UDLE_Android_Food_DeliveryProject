@@ -1,8 +1,12 @@
 package ch.epfl.sweng.udle.Food;
 
+import android.content.res.Resources;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import ch.epfl.sweng.udle.R;
 
 /**
  * Created by rodri on 23/10/2015.
@@ -104,10 +108,13 @@ public class Menu {
 
             String option;
             if (menu.getOptions().size() == 0){
-                option = "No options selected.";
+              //  option = Resources.getSystem().getString(R.string.noOptions);
+                option = "No options.";
             }
             else{
+                //option = Resources.getSystem().getString(R.string.options);
                 option = "Options: ";
+
                 for( OptionsTypes opt : menu.getOptions()){
                     option = option + opt.toString() + " ; " ;
                 }

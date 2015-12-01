@@ -29,7 +29,6 @@ import com.parse.ParseObject;
 
 import ch.epfl.sweng.udle.Food.OrderElement;
 
-
 public class ParseApplication extends Application {
 
 

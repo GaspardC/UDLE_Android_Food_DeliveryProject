@@ -30,6 +30,7 @@ public class Options_ExpandableListAdapter extends BaseExpandableListAdapter {
     //Group count is the numbers of menus.
     @Override
     public int getGroupCount() {
+
         int nbrMenus = Orders.getActiveOrder().getOrder().size();
 
         if (nbrMenus != nbrMenusToDisplay){ //If a menu was added/removed, need to 'refresh' the options list
