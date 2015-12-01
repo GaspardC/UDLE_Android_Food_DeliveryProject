@@ -58,7 +58,9 @@ public class DeliveryRestaurantMapActivity extends SlideMenuActivity {
     final int delay = 30000; //30 seconds in milliseconds
 
 
-
+    public void setWaitingOrdersForTesting(ArrayList<OrderElement> orderElements){
+        waitingOrders = orderElements;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

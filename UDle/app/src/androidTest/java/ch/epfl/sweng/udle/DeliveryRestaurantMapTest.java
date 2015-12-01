@@ -48,8 +48,11 @@ public class DeliveryRestaurantMapTest  extends ActivityInstrumentationTestCase2
         super.setUp();
         injectInstrumentation(InstrumentationRegistry.getInstrumentation());
         mActivity = getActivity();
+        ArrayList<OrderElement> orderElements = new ArrayList<>();
         Orders.setActiveOrder(getOrderElement());
         Orders.activeOrderToCurrentOrder(Orders.getActiveOrder());
+        orderElements.add(getOrderElement());
+        mActivity.setWaitingOrdersForTesting(orderElements);
     }
 
 
