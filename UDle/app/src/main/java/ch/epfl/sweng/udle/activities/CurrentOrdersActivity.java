@@ -253,55 +253,6 @@ public class CurrentOrdersActivity extends SlideMenuActivity {
         startActivity(intent);
     }
 
-    /*private void setUpListView() {
-        listView = (ListView) findViewById(R.id.listCurrentOrders);
-        listView.setVisibility(View.VISIBLE);
-        populateListView();
-    }
-    private void populateListView() {
-        List<HashMap<String,String>> aList = new ArrayList<HashMap<String,String>>();
-        ArrayList<String> ordersAdress = new ArrayList<>();
-        int i = 1;
-        for(OrderElement order : currentOrders) {
-            Location location = order.getDeliveryLocation();
-            String deliveryAddress = order.getDeliveryAddress();
-            LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-            ordersAdress.add(deliveryAddress);
-            HashMap<String, String> hm = new HashMap<String,String>();
-            hm.put("numCommande", "#" + i+" ");
-            hm.put("address", ordersAdress.get(i-1));
-            hm.put("image", Integer.toString(R.drawable.logogreen) );
-            aList.add(hm);
-            i++;
-        }
-    // Keys used in Hashmap
-        String[] from = { "image","numCommande", "address" };
-    //Link the adapter to the xml items
-        int[] to = { R.id.iconListDelivery,R.id.numCommandeDeliveryRestaurant,R.id.addressDelivery};
-    // Instantiating an adapter to store each items
-    // R.layout.listView_layout defines the layout of each item
-        SimpleAdapter adapter = new SimpleAdapter(this, aList, R.layout.list_item_restaurant_delivery, from, to);
-        listView.setAdapter(adapter);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
-                //Open the browser here
-                HashMap<String, String> hm = (HashMap<String, String>) parent.getItemAtPosition(position);
-                String adress = hm.get("address");
-                for (OrderElement order : currentOrders) {
-                    if (order.getDeliveryAddress().equals(adress)) { //TODO: Instead of compare with the address, compare with the id of the command for example.
-                        goToCurrentOrdersCommandDetail(order);
-                    }
-                }
-            }
-        });
-    }
-    public void goToCurrentOrdersCommandDetail(OrderElement order) {
-        Orders.setActiveOrder(order);
-        Intent intent = new Intent(this, CurrentOrdersDetailActivity.class);
-        Orders.setActiveOrder(order);
-        startActivity(intent);
-    }*/
 
     @Override
     protected void onPause() {
