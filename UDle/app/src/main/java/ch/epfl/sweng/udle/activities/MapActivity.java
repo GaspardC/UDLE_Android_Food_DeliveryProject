@@ -95,8 +95,7 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
     /** Called when the user clicks the MenuMap_ValidatePosition button */
     public void goToDeliveryCommandDetail(OrderElement order, boolean isCurrent) {
             Orders.setActiveOrder(order);
-/*            Intent intent = new Intent(this, DeliverCommandDetailActivity.class);
-            intent.putExtra("isCurrent", isCurrent);*/
+
         Intent intent = new Intent(this, RecapActivity.class);
         intent.putExtra("fromMapActivity",true);
         startActivity(intent);
@@ -157,7 +156,7 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
             LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
             String deliveryAddress = order.getDeliveryAddress();
 
-            String markerTitle = getResources().getString(R.string.WaitingOrders) +" #"+ objectIdHashMapIndex;
+            String markerTitle = getResources().getString(R.string.ConfirmOrders) +" #"+ objectIdHashMapIndex;
             objectIdHashMapForMap.put(markerTitle, order);
             objectIdHashMapIndex++;
 

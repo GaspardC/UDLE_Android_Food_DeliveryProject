@@ -400,22 +400,18 @@ public class DeliveryRestaurantMapActivity extends SlideMenuActivity {
 
     /** Called when the user clicks the MenuMap_ValidatePosition button */
     public void goToDeliveryCommandDetail(OrderElement order, boolean isCurrent) {
-        if ( DataManager.isStatusWaiting(order.getUserOrderInformationsID())){
+
+        if (isCurrent || DataManager.isStatusWaiting(order.getUserOrderInformationsID())){
+            Orders.setActiveOrder(order);
+            Intent intent = new Intent(this, DeliverCommandDetailActivity.class);
+            intent.putExtra("isCurrent", isCurrent);
+            startActivity(intent);
+        }
+
+        else{
             Toast.makeText(getApplicationContext(), getString(R.string.OrderNotAvailable),
                     Toast.LENGTH_SHORT).show();
             restartHandlerTimerForRefresh();
-        }
-        else{
-            Orders.setActiveOrder(order);
-            Intent intent = new Intent(this, DeliverCommandDetailActivity.class);
-             intent.putExtra("isCurrent", isCurrent);
-            startActivity(intent);
-        }
-        else if (!DataManager.isStatusWaiting(order.getUserOrderInformationsID()) && DataManager.isMyCommand(order.getUserOrderInformationsID())){
-            Orders.setActiveOrder(order);
-            Intent intent = new Intent(this, DeliverCommandDetailActivity.class);
-            intent.putExtra("isCurrent", true);
-            startActivity(intent);
         }
     }
 

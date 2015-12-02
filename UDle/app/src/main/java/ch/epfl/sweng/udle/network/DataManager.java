@@ -163,6 +163,11 @@ public class DataManager {
         return location;
     }
 
+    public static String getExpectedTime(String id){
+        ParseUserOrderInformations parseOrder = getParseUserObjectWithId(id);
+        return parseOrder.getExpectedTime();
+    }
+
     /**
      *  Return current user status - user or restaurant
      */

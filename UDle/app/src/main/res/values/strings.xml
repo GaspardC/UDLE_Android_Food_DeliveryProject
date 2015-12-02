@@ -78,5 +78,8 @@
     <string name="No_orders_for_now">No orders for now </string>
     <string name="Wait_a_moment">Wait a moment please</string>
     <string name="options">"Options:  "</string>
+    <string name="status">Status</string>
+    <string name="enRoute">En Route</string>
+    <string name="expectedTime_min">Expected time (min)</string>
 
 </resources>
