@@ -97,7 +97,7 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
             Orders.setActiveOrder(order);
 
         Intent intent = new Intent(this, RecapActivity.class);
-        intent.putExtra("fromMapActivity",true);
+        intent.putExtra("from","Map");
         startActivity(intent);
     }
 
@@ -582,5 +582,11 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
         //Find nearby restaurants and store in server
         //NEED TO CHANGE THIS DEPENDING ON HOW WE USE NEARBY RESTAURANTS
         DataManager.getRestaurantsNearTheUser();
+    }
+
+    @Override
+    protected void onPause() {
+        handler.removeCallbacksAndMessages(null);
+        super.onPause();
     }
 }

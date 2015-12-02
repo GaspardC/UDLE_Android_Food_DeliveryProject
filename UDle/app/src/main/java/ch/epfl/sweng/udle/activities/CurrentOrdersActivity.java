@@ -3,6 +3,7 @@ package ch.epfl.sweng.udle.activities;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -21,6 +22,7 @@ import ch.epfl.sweng.udle.Food.OptionsTypes;
 import ch.epfl.sweng.udle.Food.OrderElement;
 import ch.epfl.sweng.udle.Food.Orders;
 import ch.epfl.sweng.udle.R;
+import ch.epfl.sweng.udle.network.DataManager;
 
 /**
  * Based on DeliveryRestaurantMapActivity's code.
@@ -28,16 +30,230 @@ import ch.epfl.sweng.udle.R;
 public class CurrentOrdersActivity extends SlideMenuActivity {
 
     private ListView listView;
-    final ArrayList<OrderElement> currentOrders = getCurentOrders(new ArrayList<OrderElement>());
+    private HashMap<Integer, OrderElement> objectIdHashMapForList; //HashMap between the index of order shown in the list view and the specific order.
+    final Handler handler = new Handler(); //The list of waiting and current Orders is refresh each 'delay' milliseconds.
+    final int delay = 30000; //30 seconds in milliseconds
+    private ArrayList<OrderElement> waitingOrders = new ArrayList<>(); //Orders in the restaurant range that have no restaurant assigned to. Status of order: Waiting
+    private ArrayList<OrderElement> currentOrders = new ArrayList<>(); //Orders that the restaurant already accept to deliverd. Status of order: EnRoute
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_current_orders);
+        handler.postDelayed(getMapRunnable(), 0);
+
         setUpListView();
     }
 
+    /**
+     * @return Runnable: Each 'delay' milliseconds, call the function run function. This run function check if orders need to be refresh and do it if needed.
+     */
+    private Runnable getMapRunnable(){
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                boolean waitingOrdersChange = changeInWaitingOrders();
+                boolean currentOrdersChange = changeInCurrentOrders();
+
+                if (waitingOrdersChange || currentOrdersChange) {
+                    setUpListView();
+                }
+                handler.postDelayed(this, delay);
+            }
+        };
+        return runnable;
+    }
+
+    /**
+     *
+     * Check if there was a change in the current orders for the restaurant.
+     * If change => refresh the display
+     * If no change => Do nothing
+     *
+     */
+    private boolean changeInCurrentOrders(){
+        //Retrieve list from server
+        ArrayList<OrderElement> currentOrdersFromServe = DataManager.getEnRouteOrdersForAClient();
+
+        if (currentOrdersFromServe.size() == 0){
+            currentOrders = currentOrdersFromServe;
+            return true;
+        }
+
+        //In order to check if there was a change or not, we compare the objectID of the list retrieve from server and the one already on device.
+        //So use this int to see if the retrieved list is the same or not has the local one.
+        int checkSameList = 0;
+
+        //Putting all objectIds of local waitingOrders list into a new list
+        ArrayList<String> currentCurrentOrdersObjectID = new ArrayList<>();
+        for (OrderElement orderElement: currentOrders){
+            currentCurrentOrdersObjectID.add(orderElement.getUserOrderInformationsID());
+        }
+
+        //Check for all orderElements in the server list if it already present locally. If yes, add 1 to 'checkSameList'
+        for (OrderElement orderElement : currentOrdersFromServe){
+            if (currentCurrentOrdersObjectID.contains(orderElement.getUserOrderInformationsID())){
+                checkSameList ++;
+            }
+        }
+
+        if (currentOrdersFromServe.size() != checkSameList){
+            //Lists are not the same. Need to refresh
+            currentOrders = currentOrdersFromServe;
+            return true;
+        }
+        else {
+            //Server list is the same as the displayed one. Do nothing.
+            return false;
+        }
+    }
+
+
     private void setUpListView() {
+            listView = (ListView) findViewById(R.id.listCurrentOrders);
+            populateListView();
+        }
+
+    /**
+     * method used to fill (and display) the current and waiting orders
+     */
+    private void populateListView() {
+
+        objectIdHashMapForList = new HashMap<>();
+
+        List<HashMap<String,String>> aList = new ArrayList<>();
+        ArrayList<String> ordersAdress = new ArrayList<>();
+        int i = 1;
+
+        if(waitingOrders!=null){
+            for(OrderElement order : waitingOrders) {
+
+                Location location = order.getDeliveryLocation();
+                String deliveryAddress = order.getDeliveryAddress();
+                LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+                ordersAdress.add(deliveryAddress);
+                HashMap<String, String> hm = new HashMap<String,String>();
+                hm.put("numCommande", "#" + i+" ");
+                hm.put("address", ordersAdress.get(i - 1));
+                hm.put("image", Integer.toString(R.drawable.logoburger));
+                aList.add(hm);
+                objectIdHashMapForList.put(i,order);
+                i++;
+            }
+        }
+        if(currentOrders!=null){
+            for(OrderElement order : currentOrders) {
+                Location location = order.getDeliveryLocation();
+                String deliveryAddress = order.getDeliveryAddress();
+                LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+                ordersAdress.add(deliveryAddress);
+                HashMap<String, String> hm = new HashMap<String,String>();
+                hm.put("numCommande", "#" + i+" ");
+                hm.put("address", ordersAdress.get(i-1));
+                hm.put("image", Integer.toString(R.drawable.logogreen) );
+                aList.add(hm);
+                objectIdHashMapForList.put(i,order);
+                i++;
+            }
+        }
+
+
+
+        if(aList.isEmpty()){
+            HashMap<String, String> hm = new HashMap<String,String>();
+            hm.put("numCommande", getString(R.string.No_orders_for_now) + " ");
+            hm.put("address",getString(R.string.Wait_a_moment));
+            hm.put("image", Integer.toString(R.drawable.burger) );
+            aList.add(hm);
+        }
+
+
+        // Keys used in Hashmap
+        String[] from = { "image","numCommande", "address" };
+
+        //Link the adapter to the xml items
+        int[] to = { R.id.iconListDelivery,R.id.numCommandeDeliveryRestaurant,R.id.addressDelivery};
+
+        // Instantiating an adapter to store each items
+        // R.layout.listView_layout defines the layout of each item
+        SimpleAdapter adapter = new SimpleAdapter(this, aList, R.layout.list_item_restaurant_delivery, from, to);
+
+        listView.setAdapter(adapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+                OrderElement order = objectIdHashMapForList.get(position+1);
+
+                boolean isCurrent = false;
+                if (currentOrders.contains(order)){
+                    isCurrent = true;
+                }
+
+                goToDeliveryCommandDetail(order, isCurrent);
+            }
+
+        });
+    }
+
+
+    /**
+     *
+     * Check if there was a change in the waiting orders for the restaurant.
+     * If change => refresh the display
+     * If no change => Do nothing
+     *
+     */
+    private boolean changeInWaitingOrders(){
+        //Retrieve list from server
+        ArrayList<OrderElement> waitingOrdersFromServe = DataManager.getWaitingOrdersForAClient();
+
+        if (waitingOrdersFromServe.size() == 0){
+            if (waitingOrders.size() != 0){
+                waitingOrders = waitingOrdersFromServe;
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
+
+        //In order to check if there was a change or not, we compare the objectID of the list retrieve from server and the one already on device.
+        //So use this int to see if the retrieved list is the same or not has the local one.
+        int checkSameList = 0;
+
+        //Putting all objectIds of local waitingOrders list into a new list
+        ArrayList<String> currentWaitingOrdersObjectID = new ArrayList<>();
+        for (OrderElement orderElement: waitingOrders){
+            currentWaitingOrdersObjectID.add(orderElement.getUserOrderInformationsID());
+        }
+
+        //Check for all orderElements in the server list if it already present locally. If yes, add 1 to 'checkSameList'
+        for (OrderElement orderElement : waitingOrdersFromServe){
+            if (currentWaitingOrdersObjectID.contains(orderElement.getUserOrderInformationsID())){
+                checkSameList ++;
+            }
+        }
+
+        if (waitingOrdersFromServe.size() != checkSameList){
+            //Lists are not the same. Need to refresh
+            waitingOrders = waitingOrdersFromServe;
+            return true;
+        }
+        else {
+            //Server list is the same as the displayed one. Do nothing.
+            return false;
+        }
+    }
+    /** Called when the user clicks the MenuMap_ValidatePosition button */
+    public void goToDeliveryCommandDetail(OrderElement order, boolean isCurrent) {
+        Orders.setActiveOrder(order);
+
+        Intent intent = new Intent(this, RecapActivity.class);
+        intent.putExtra("from","Current");
+        startActivity(intent);
+    }
+
+    /*private void setUpListView() {
         listView = (ListView) findViewById(R.id.listCurrentOrders);
         listView.setVisibility(View.VISIBLE);
         populateListView();
@@ -58,18 +274,18 @@ public class CurrentOrdersActivity extends SlideMenuActivity {
             aList.add(hm);
             i++;
         }
-// Keys used in Hashmap
+    // Keys used in Hashmap
         String[] from = { "image","numCommande", "address" };
-//Link the adapter to the xml items
+    //Link the adapter to the xml items
         int[] to = { R.id.iconListDelivery,R.id.numCommandeDeliveryRestaurant,R.id.addressDelivery};
-// Instantiating an adapter to store each items
-// R.layout.listView_layout defines the layout of each item
+    // Instantiating an adapter to store each items
+    // R.layout.listView_layout defines the layout of each item
         SimpleAdapter adapter = new SimpleAdapter(this, aList, R.layout.list_item_restaurant_delivery, from, to);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-//Open the browser here
+                //Open the browser here
                 HashMap<String, String> hm = (HashMap<String, String>) parent.getItemAtPosition(position);
                 String adress = hm.get("address");
                 for (OrderElement order : currentOrders) {
@@ -85,61 +301,12 @@ public class CurrentOrdersActivity extends SlideMenuActivity {
         Intent intent = new Intent(this, CurrentOrdersDetailActivity.class);
         Orders.setActiveOrder(order);
         startActivity(intent);
+    }*/
+
+    @Override
+    protected void onPause() {
+        handler.removeCallbacksAndMessages(null);
+        super.onPause();
     }
-    /** JUST FOR TEST**/
-    public ArrayList<OrderElement> getCurentOrders(ArrayList<OrderElement> orders){
-//return DataManager.getPendingOrdersForARestaurantOwner(); TODO: When DataManager is uptaded to the master
-//BASIC DATA FOR TESTS
-        Menu menu1 = new Menu();
-        menu1.setFood(FoodTypes.KEBAB);
-        menu1.addToOptions(OptionsTypes.KETCHUP);
-        menu1.addToOptions(OptionsTypes.SALAD);
-        OrderElement orderElement1 = new OrderElement();
-        orderElement1.addMenu(menu1);
-        orderElement1.addToDrinks(DrinkTypes.BEER);
-        Location location1 = new Location("");
-        location1.setLatitude(46.519);
-        location1.setLongitude(6.566);
-        orderElement1.setDeliveryLocation(location1);
-        orderElement1.setDeliveryAddress("Address for the deliver 1, 1002 SwEng");
-        orderElement1.setOrderedUserName("User Name");
-        orders.add(orderElement1);
-        Menu menu2 = new Menu();
-        menu2.setFood(FoodTypes.BURGER);
-        menu2.addToOptions(OptionsTypes.OIGNON);
-        menu2.addToOptions(OptionsTypes.TOMATO);
-        OrderElement orderElement2 = new OrderElement();
-        orderElement2.addMenu(menu2);
-        orderElement2.addToDrinks(DrinkTypes.COCA);
-        orderElement2.addToDrinks(DrinkTypes.WATER);
-        Location location2 = new Location("");
-        location2.setLatitude(46.539);
-        location2.setLongitude(6.556);
-        orderElement2.setDeliveryLocation(location2);
-        orderElement2.setDeliveryAddress("Address for the deliver 2, 1002 SwEng");
-        orderElement2.setOrderedUserName("User Name2");
-        orders.add(orderElement2);
-        Menu menu3 = new Menu();
-        menu3.setFood(FoodTypes.BURGER);
-        menu3.addToOptions(OptionsTypes.OIGNON);
-        menu3.addToOptions(OptionsTypes.TOMATO);
-        Menu menu3b = new Menu();
-        menu3b.setFood(FoodTypes.KEBAB);
-        menu3b.addToOptions(OptionsTypes.OIGNON);
-        menu3b.addToOptions(OptionsTypes.TOMATO);
-        menu3b.addToOptions(OptionsTypes.ALGERIENNE);
-        OrderElement orderElement3 = new OrderElement();
-        orderElement3.addMenu(menu3);
-        orderElement3.addMenu(menu3b);
-        orderElement3.addToDrinks(DrinkTypes.BEER);
-        orderElement3.addToDrinks(DrinkTypes.WATER);
-        Location location3 = new Location("");
-        location3.setLatitude(46.639);
-        location3.setLongitude(6.496);
-        orderElement3.setDeliveryLocation(location3);
-        orderElement3.setDeliveryAddress("Address for the deliver 3, 1002 SwEng");
-        orderElement3.setOrderedUserName("User Name3");
-        orders.add(orderElement3);
-        return orders;
-    }
+
 }

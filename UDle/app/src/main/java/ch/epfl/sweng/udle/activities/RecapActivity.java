@@ -41,7 +41,7 @@ public class RecapActivity extends SlideMenuActivity {
     private TextView deliveryAddress;
     private TextView priceTextView;
     private List<HashMap<String, String>> list;
-    private boolean fromMapActivity = false; //state if the activity has been launch directly by MapActivity default no (by MenuActivity)
+    private String from = ""; //state if the activity has been launch directly by MapActivity default no (by MenuActivity)
     private LinearLayout expected_time_layout;
     private LinearLayout status_layout;
 
@@ -100,8 +100,8 @@ public class RecapActivity extends SlideMenuActivity {
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
         if (bundle != null){
-             fromMapActivity = bundle.getBoolean("fromMapActivity");
-            if(fromMapActivity){
+             from = bundle.getString("from");
+            if(from.equals("Map") || from.equals("Current")){
                 confirmButton.setVisibility(View.GONE);
                 String expectedTime = DataManager.getExpectedTime(order.getUserOrderInformationsID());
                 if(!expectedTime.equals("-1")){
@@ -127,12 +127,16 @@ public class RecapActivity extends SlideMenuActivity {
     }
     @Override
     public void onBackPressed(){
-        if(!fromMapActivity){
-            Intent intent = new Intent(this, MainActivity.class);
+        if(from.equals("Current")){
+            Intent intent = new Intent(this, CurrentOrdersActivity.class);
+            startActivity(intent);
+        }
+        else if(from.equals("Map")){
+            Intent intent = new Intent(this, MapActivity.class);
             startActivity(intent);
         }
         else{
-            Intent intent = new Intent(this, MapActivity.class);
+            Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
         }
 
