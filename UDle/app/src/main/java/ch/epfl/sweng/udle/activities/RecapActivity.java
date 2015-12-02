@@ -37,6 +37,7 @@ public class RecapActivity extends SlideMenuActivity {
     private TextView deliveryAddress;
     private TextView priceTextView;
     private List<HashMap<String, String>> list;
+    private boolean fromMapActivity = false; //state if the activity has been launch directly by MapActivity default no (by MenuActivity)
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,11 +87,25 @@ public class RecapActivity extends SlideMenuActivity {
                 return true;
             }
         });
+
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
+        if (bundle != null){
+             fromMapActivity = bundle.getBoolean("fromMapActivity");
+
+        }
     }
     @Override
     public void onBackPressed(){
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
+        if(!fromMapActivity){
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+        }
+        else{
+            Intent intent = new Intent(this, MapActivity.class);
+            startActivity(intent);
+        }
+
     }
     protected void update(){
         order = Orders.getActiveOrder();
