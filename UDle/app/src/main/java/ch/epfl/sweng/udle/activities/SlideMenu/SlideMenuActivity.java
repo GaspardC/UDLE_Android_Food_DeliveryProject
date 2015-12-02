@@ -61,7 +61,7 @@ public abstract class SlideMenuActivity extends AppCompatActivity {
         setTheme(R.style.SlideMenuTheme);
         super.onCreate(savedInstanceState);
         setTheme(R.style.SlideMenuTheme);
-        super.setContentView(R.layout.actitivity_slidemenu);
+        super.setContentView(R.layout.activity_slidemenu);
 
         //Go to lo login
         slideMenuItems.add(new NavItem(getString(R.string.profile), getString(R.string.settings), R.mipmap.ic_launcher, ProfileActivity.class));
@@ -75,7 +75,14 @@ public abstract class SlideMenuActivity extends AppCompatActivity {
             }
         }));
         slideMenuItems.add(new NavItem(getString(R.string.restaurantMode), getString(R.string.restaurantModeDesc), R.mipmap.ic_launcher, DeliveryRestaurantMapActivity.class));
-        slideMenuItems.add(new NavItem(getString(R.string.help), getString(R.string.helpDesc), R.drawable.ic_help, HelpActivity.class));
+        slideMenuItems.add(new NavItem(getString(R.string.help), getString(R.string.helpDesc), R.drawable.ic_help, new Runnable() {
+            @Override
+            public void run() {
+                Intent newActivity = new Intent(getApplicationContext(), HelpActivity.class);
+                newActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(newActivity);
+            }
+        }));
 
 
         mTitle = mDrawerTitle = getTitle();//

@@ -7,7 +7,7 @@
     android:paddingBottom="@dimen/com_parse_ui_vertical_margin"
     android:gravity="center"
     android:orientation="vertical"
-    android:background="@drawable/background_cityy_night"
+    android:background="@drawable/background_city_night"
     >
 
     <include
