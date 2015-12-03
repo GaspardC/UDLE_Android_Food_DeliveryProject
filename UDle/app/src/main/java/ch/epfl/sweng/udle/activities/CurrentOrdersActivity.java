@@ -1,9 +1,12 @@
 package ch.epfl.sweng.udle.activities;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
+import android.service.chooser.ChooserTargetService;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -31,18 +34,35 @@ public class CurrentOrdersActivity extends SlideMenuActivity {
 
     private ListView listView;
     private HashMap<Integer, OrderElement> objectIdHashMapForList; //HashMap between the index of order shown in the list view and the specific order.
-    final Handler handler = new Handler(); //The list of waiting and current Orders is refresh each 'delay' milliseconds.
+    Handler handler; //The list of waiting and current Orders is refresh each 'delay' milliseconds.
     final int delay = 30000; //30 seconds in milliseconds
     private ArrayList<OrderElement> waitingOrders = new ArrayList<>(); //Orders in the restaurant range that have no restaurant assigned to. Status of order: Waiting
     private ArrayList<OrderElement> currentOrders = new ArrayList<>(); //Orders that the restaurant already accept to deliverd. Status of order: EnRoute
+    private ProgressDialog progress;
+    private boolean waitingOrdersChange;
+    private boolean currentOrdersChange;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_current_orders);
+
+
+        handler =  new Handler(){
+            public void handleMessage(Message msg)
+            {
+                // To dismiss the dialog
+                progress.dismiss();
+                if (waitingOrdersChange || currentOrdersChange) {
+                    setUpListView();
+                }
+            }
+        };
         handler.postDelayed(getMapRunnable(), 0);
 
+
         setUpListView();
+
     }
 
     /**
@@ -52,13 +72,27 @@ public class CurrentOrdersActivity extends SlideMenuActivity {
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                boolean waitingOrdersChange = changeInWaitingOrders();
-                boolean currentOrdersChange = changeInCurrentOrders();
 
-                if (waitingOrdersChange || currentOrdersChange) {
-                    setUpListView();
-                }
+
+
+                new Thread() {
+
+                    @Override
+                    public void run() {
+                         waitingOrdersChange = changeInWaitingOrders();
+                         currentOrdersChange = changeInCurrentOrders();
+
+                        handler.sendEmptyMessage(0); // interact with UI
+                    };
+
+            }.start();
+
                 handler.postDelayed(this, delay);
+                progress = new ProgressDialog(CurrentOrdersActivity.this);
+                progress.setTitle("Loading");
+                progress.setMessage("Wait while loading...");
+                progress.show();
+
             }
         };
         return runnable;
@@ -96,6 +130,7 @@ public class CurrentOrdersActivity extends SlideMenuActivity {
                 checkSameList ++;
             }
         }
+
 
         if (currentOrdersFromServe.size() != checkSameList){
             //Lists are not the same. Need to refresh
