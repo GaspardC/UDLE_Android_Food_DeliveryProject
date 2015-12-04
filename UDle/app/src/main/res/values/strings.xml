@@ -31,7 +31,6 @@
     <string name="infotextwaiting">Please wait for a shop to accept your command</string>
     <string name="infotextwaitingConfirmed">Congrats, your order is coming for you</string>
 
-    <string name="ConfirmedOrders">Confirmed Order</string>
     <string name="WaitingOrders">Waiting Order</string>
 
 	<string name="sampleText">This is a sample text.</string>
@@ -42,6 +41,10 @@
     <string name="restaurantModeDesc">go to restaurant map activity</string>
     <string name="about">About</string>
     <string name="removeMessage_1">"Remove :"</string>
+    <string name="removeMessage_2">"One of the "</string>
+    <string name="removeMessage_3">"No options."</string>
+    <string name="removeMessage_4">"Options: "</string>
+    <string name="removeMessage_5">"No options selected."</string>
     <string name="notImplemented">Not implemented</string>
     <string name="TitleAlertBack">Give up the order"</string>
     <string name="MessageAlertBack">Are you sure you want to go back? This will delete your order</string>
@@ -62,9 +65,17 @@
     <string name="facebook_app_id">1483920968589089</string>
 
     <string name="noMenuNoOptions">No menus selected. You need to select at least one menu in order to choose your options for it.</string>
+    <string name="noOptions">No options</string>
     <string name="orderedBy">Ordered by: </string>
     <string name="help1">first help page</string>
     <string name="help">Help</string>
     <string name="helpDesc">How to use Udle</string>
+
+    <string name="OrderNotAvailable">Sorry, the order is no more available.</string>
+    <string name="listOrderRestaurantMap">listOrderRestaurantMap</string>
+    <string name="switchToListMode">Switch to List mode</string>
+    <string name="No_orders_for_now">No orders for now </string>
+    <string name="Wait_a_moment">Wait a moment please</string>
+    <string name="options">"Options:  "</string>
 
 </resources>

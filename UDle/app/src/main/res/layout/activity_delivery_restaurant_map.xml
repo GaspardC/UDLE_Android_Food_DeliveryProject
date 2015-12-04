@@ -27,14 +27,12 @@
         android:id="@+id/listOrderRestaurantMap"
         android:layout_marginTop="30dp"
         android:layout_weight="0.9"
-        android:contentDescription="listOrderRestaurantMap"
-
-
+        android:contentDescription="@string/listOrderRestaurantMap"
         />
     <Button
         android:layout_width="fill_parent"
         android:layout_height="0dp"
-        android:text="Switch to List mode"
+        android:text="@string/switchToListMode"
         android:id="@+id/button_list_mode"
         android:onClick="switchOrderList"
         android:layout_weight="0.1"

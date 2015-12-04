@@ -24,6 +24,8 @@ import android.widget.Toast;
 import com.facebook.AccessToken;
 import com.facebook.login.widget.ProfilePictureView;
 
+import com.parse.ParseUser;
+
 import java.util.ArrayList;
 
 import ch.epfl.sweng.udle.R;
@@ -50,7 +52,7 @@ public abstract class SlideMenuActivity extends AppCompatActivity {
     RelativeLayout slideMenu_frame;
     RelativeLayout content_frame;
 
-    protected ArrayList<NavItem> slideMenuItems = new ArrayList<>();
+    protected ArrayList<NavItem> slideMenuItems = new ArrayList(20);
 
 
     private CharSequence mDrawerTitle;
@@ -63,10 +65,17 @@ public abstract class SlideMenuActivity extends AppCompatActivity {
         setTheme(R.style.SlideMenuTheme);
         super.setContentView(R.layout.activity_slidemenu);
 
+        //set menu items
         //Go to lo login
         slideMenuItems.add(new NavItem(getString(R.string.profile), getString(R.string.settings), R.mipmap.ic_launcher, ProfileActivity.class));
+
         //home
         slideMenuItems.add(new NavItem(getString(R.string.home), getString(R.string.orderNow), R.mipmap.ic_launcher, MapActivity.class));
+
+        if(DataManager.isARestaurant()){
+            slideMenuItems.add(new NavItem(getString(R.string.restaurantMode), getString(R.string.restaurantModeDesc), R.drawable.logogreen, DeliveryRestaurantMapActivity.class));
+        }
+
         slideMenuItems.add(new NavItem(getString(R.string.about), getString(R.string.notImplemented), R.mipmap.ic_launcher, new Runnable() {
             @Override
             public void run() {
@@ -74,7 +83,6 @@ public abstract class SlideMenuActivity extends AppCompatActivity {
                 Log.d(TAG, "Toast created inside (new Runnable()).run()");
             }
         }));
-        slideMenuItems.add(new NavItem(getString(R.string.restaurantMode), getString(R.string.restaurantModeDesc), R.mipmap.ic_launcher, DeliveryRestaurantMapActivity.class));
         slideMenuItems.add(new NavItem(getString(R.string.help), getString(R.string.helpDesc), R.drawable.ic_help, new Runnable() {
             @Override
             public void run() {
@@ -86,9 +94,15 @@ public abstract class SlideMenuActivity extends AppCompatActivity {
 
 
         mTitle = mDrawerTitle = getTitle();//
-
+        TextView helloTextView = (TextView) findViewById(R.id.hello);
+        if (ParseUser.getCurrentUser() !=null){
+            helloTextView.setText("Hello "+ DataManager.getUserName());
+        }
+        else{
+            helloTextView.setText("Hello ");
+        }
         TextView username = (TextView) findViewById(R.id.SlideMenu_userName);
-        username.setText(DataManager.getUserName());
+        username.setText("yours settings");
 
         avatar = (ProfilePictureView) findViewById(R.id.avatar);
         AccessToken accessToken = AccessToken.getCurrentAccessToken();
@@ -104,6 +118,16 @@ public abstract class SlideMenuActivity extends AppCompatActivity {
         content_frame = (RelativeLayout) findViewById(R.id.content_frame);
         // slide menu list container
         slideMenuList = (ListView) findViewById(R.id.slideMenu_items);
+
+        RelativeLayout profileBox = (RelativeLayout) findViewById(R.id.profileBox);
+        profileBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Go to lo login
+                Intent intent = new Intent(SlideMenuActivity.this, ProfileActivity.class);
+                startActivity(intent);
+            }
+        });
 
 
         //adapter between logical NavItems and graphical representation

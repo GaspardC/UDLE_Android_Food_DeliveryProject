@@ -22,6 +22,7 @@ import ch.epfl.sweng.udle.Food.OrderElement;
 import ch.epfl.sweng.udle.Food.Orders;
 import ch.epfl.sweng.udle.R;
 import ch.epfl.sweng.udle.activities.SlideMenu.SlideMenuActivity;
+import ch.epfl.sweng.udle.network.DataManager;
 
 public class PaymentActivity extends SlideMenuActivity {
 
@@ -49,8 +50,6 @@ public class PaymentActivity extends SlideMenuActivity {
     }
 
     public void payment_button_click(View view) {
-
-
         EditText cardNumber = (EditText) findViewById(R.id.payment_cardNumber);
         EditText cardExpDate = (EditText) findViewById(R.id.payment_expDate);
         EditText cardSecurityNumber = (EditText) findViewById(R.id.payment_securityNumber);
@@ -60,6 +59,11 @@ public class PaymentActivity extends SlideMenuActivity {
                     Toast.LENGTH_SHORT).show();
         }
         else{
+            //Return objectId from
+            //Store it in OrderElement
+            //function to get status based on orderId
+            DataManager.createNewParseUserOrderInformations();
+
             Intent intent =  new Intent(this, WaitingActivity.class);
             startActivity(intent);
         }

@@ -27,6 +27,7 @@ public class MainActivity extends SlideMenuActivity {
         setContentView(R.layout.activity_main);
 
 
+
         // Creating The Toolbar and setting it as the Toolbar for the activity
 
 /*        toolbar = (Toolbar) findViewById(R.id.tool_bar);
