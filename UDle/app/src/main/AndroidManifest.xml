@@ -56,8 +56,12 @@
         <activity android:name=".activities.DeliveryRestaurantMapActivity"
             android:theme="@style/SlideMenuTheme">
         </activity>
+        <activity android:name=".activities.CurrentOrdersActivity"
+            android:theme="@style/SlideMenuTheme">
+        </activity>
         <activity android:name=".activities.DeliverCommandDetailActivity" >
         </activity>
+
         <application
             android:allowBackup="true"
             android:name=".android.ParseApplication" >

@@ -66,44 +66,43 @@ public class DataManager {
     }
 
     /**
-     *  Return objectId array of nearby restaurants. Relies on user current position
+     *  Return true if a restaurant is near the user and store objectId array of nearby restaurants in server.
+     *  Relies on user current position
      *  and position of the restaurant to determine if restaurant is suitable.
      *  Does not consider availability of restaurant.
      */
-    public static void getRestaurantsNearTheUser() {
+    public static boolean getRestaurantsNearTheUser() {
         user = DataManager.getUser();
         userLocation = user.getParseGeoPoint("Location");
+        Boolean restaurantAvailable = false;
 
         //Start Query
         ParseQuery<ParseUser> query = ParseUser.getQuery();
         query.whereEqualTo("RestaurantOwner", true);
-        query.findInBackground(new FindCallback<ParseUser>() {
-            public void done(List<ParseUser> listOfRestaurants, ParseException e) {
-                if (e == null) {
+        try {
+            List<ParseUser> listOfRestaurants =  query.find();
+            for (ParseUser restaurantUser : listOfRestaurants) {
 
-                    // The query was successful.
-                    nearbyRestaurants = new ArrayList<String>();
-                    for (ParseUser restaurantUser : listOfRestaurants) {
+                //Calculate distance between restaraunt and clients
+                ParseGeoPoint restaurantLocation = restaurantUser.getParseGeoPoint("Location");
+                double distance = restaurantLocation.distanceInKilometersTo(userLocation);
 
-                        //Calculate distance between restaraunt and clients
-                        ParseGeoPoint restaurantLocation = restaurantUser.getParseGeoPoint("Location");
-                        double distance = restaurantLocation.distanceInKilometersTo(userLocation);
-
-                        double restaurantMaxDeliveryDistance = (double) ((Integer) restaurantUser.get("maxDeliveryDistanceKm"));
-                        //Add to nearby restaurants list if they are within limits
-                        if (distance <= restaurantMaxDeliveryDistance) {
-                            nearbyRestaurants.add(restaurantUser.getObjectId());
-                        }
-
-                    }
-                    user.put("ArrayOfNearRestaurant", nearbyRestaurants);
-                    user.saveInBackground();
-
-                } else {
-                    // Something went wrong.
+                double restaurantMaxDeliveryDistance = (double) ((Integer) restaurantUser.get("maxDeliveryDistanceKm"));
+                //Add to nearby restaurants list if they are within limits
+                if (distance <= restaurantMaxDeliveryDistance) {
+                    nearbyRestaurants.add(restaurantUser.getObjectId());
+                    restaurantAvailable = true;
                 }
+
             }
-        });
+            user.put("ArrayOfNearRestaurant", nearbyRestaurants);
+            user.saveInBackground();
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return restaurantAvailable;
     }
 
 
@@ -161,6 +160,11 @@ public class DataManager {
         location.setLongitude(parseGeoPoint.getLongitude());
 
         return location;
+    }
+
+    public static String getExpectedTime(String id){
+        ParseUserOrderInformations parseOrder = getParseUserObjectWithId(id);
+        return parseOrder.getExpectedTime();
     }
 
     /**
@@ -230,7 +234,7 @@ public class DataManager {
         try {
             List<ParseObject> OrderList = query.find();
 
-                for (ParseObject userOrder : OrderList) {
+            for (ParseObject userOrder : OrderList) {
 
                 //Cast to parseUserOrderInformations to use methods
                 ParseUserOrderInformations parseUserOrder = (ParseUserOrderInformations) userOrder;
@@ -254,6 +258,80 @@ public class DataManager {
             //throw new IOException("Nhvvb");
         }
         return pendingOrders;
+    }
+
+
+
+    public static ArrayList<OrderElement> getWaitingOrdersForAClient() {
+        pendingOrders = new ArrayList<>();
+
+        user = DataManager.getUser();
+        try {
+            user.fetch();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        //Start Query
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("ParseUserOrderInformations");
+        query.whereEqualTo("orderStatus", OrderStatus.WAITING.toString());
+        String id = user.getObjectId();
+        query.whereEqualTo("user", user);
+
+        try {
+            List<ParseObject> OrderList = query.find();
+
+            for (ParseObject userOrder : OrderList) {
+
+                //Cast to parseUserOrderInformations to use methods
+                ParseUserOrderInformations parseUserOrder = (ParseUserOrderInformations) userOrder;
+
+                ParseObject parseOrderElement = parseUserOrder.getOrder();
+                OrderElement orderElement = ParseOrderElement.retrieveOrderElementFromParse(parseOrderElement);
+
+                pendingOrders.add(orderElement);
+            }
+        }
+        catch (Exception e) {
+            //throw new IOException("Nhvvb");
+        }
+        return pendingOrders;
+    }
+
+
+    public static ArrayList<OrderElement> getEnRouteOrdersForAClient() {
+        ArrayList<OrderElement> enRouteOrders = new ArrayList<>();
+
+        user = DataManager.getUser();
+        try {
+            user.fetch();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        //Start Query
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("ParseUserOrderInformations");
+        query.whereEqualTo("orderStatus", OrderStatus.ENROUTE.toString());
+        query.whereEqualTo("user", user);
+
+        try {
+            List<ParseObject> OrderList = query.find();
+
+            for (ParseObject userOrder : OrderList) {
+
+                //Cast to parseUserOrderInformations to use methods
+                ParseUserOrderInformations parseUserOrder = (ParseUserOrderInformations) userOrder;
+
+                ParseObject parseOrderElement = parseUserOrder.getOrder();
+                OrderElement orderElement = ParseOrderElement.retrieveOrderElementFromParse(parseOrderElement);
+
+                enRouteOrders.add(orderElement);
+            }
+        }
+        catch (Exception e) {
+            //throw new IOException("Nhvvb");
+        }
+        return enRouteOrders;
     }
 
 
@@ -291,5 +369,11 @@ public class DataManager {
             //throw new IOException("Nhvvb");
         }
         return currentOrders;
+    }
+
+    public static boolean isMyCommand(String userOrderInformationsID) {
+        ParseUserOrderInformations parseUserOrderInformations = getParseUserObjectWithId(userOrderInformationsID);
+        String restaurantName = parseUserOrderInformations.getString("deliveringRestaurant");
+        return (restaurantName.equals(getUserName()));
     }
 }

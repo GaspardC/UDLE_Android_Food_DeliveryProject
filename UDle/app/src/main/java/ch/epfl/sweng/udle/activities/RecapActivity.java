@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -26,6 +28,8 @@ import ch.epfl.sweng.udle.Food.OrderElement;
 import ch.epfl.sweng.udle.Food.Orders;
 import ch.epfl.sweng.udle.R;
 import ch.epfl.sweng.udle.activities.MenuOptionsDrinks.MainActivity;
+import ch.epfl.sweng.udle.network.DataManager;
+import ch.epfl.sweng.udle.network.ParseUserOrderInformations;
 
 public class RecapActivity extends SlideMenuActivity {
     AlertDialog.Builder dlgAlert;
@@ -37,6 +41,9 @@ public class RecapActivity extends SlideMenuActivity {
     private TextView deliveryAddress;
     private TextView priceTextView;
     private List<HashMap<String, String>> list;
+    private String from = ""; //state if the activity has been launch directly by MapActivity default no (by MenuActivity)
+    private LinearLayout expected_time_layout;
+    private LinearLayout status_layout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +53,9 @@ public class RecapActivity extends SlideMenuActivity {
         deliveryName = (TextView) findViewById(R.id.RecapActivity_deliveryName);
         deliveryAddress = (TextView) findViewById(R.id.RecapActivity_deliveryAddress);
         priceTextView = (TextView) findViewById(R.id.RecapActivity_totalCost);
+        expected_time_layout = (LinearLayout) findViewById(R.id.RecapActivity_expected_time_layout);
+        status_layout = (LinearLayout) findViewById(R.id.RecapActivity_status_layout);
+        Button confirmButton = (Button) findViewById(R.id.RecapActivity_recapConfirm);
 
         list = new ArrayList<>();
 
@@ -86,11 +96,50 @@ public class RecapActivity extends SlideMenuActivity {
                 return true;
             }
         });
+
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
+        if (bundle != null){
+             from = bundle.getString("from");
+            if(from.equals("Map") || from.equals("Current")){
+                confirmButton.setVisibility(View.GONE);
+                String expectedTime = DataManager.getExpectedTime(order.getUserOrderInformationsID());
+                if(!expectedTime.equals("-1")){
+                    expected_time_layout.setVisibility(View.VISIBLE);
+                    status_layout.setVisibility(View.VISIBLE);
+                    TextView text = (TextView) findViewById(R.id.RecapActivity_expected_time);
+                    text.setText(expectedTime);
+                    TextView textStatus = (TextView) findViewById(R.id.RecapActivity_status);
+                    textStatus.setText(R.string.enRoute);
+                }
+                else{
+                    status_layout.setVisibility(View.VISIBLE);
+                    TextView textStatus = (TextView) findViewById(R.id.RecapActivity_status);
+                    textStatus.setText(R.string.WaitingOrders);
+                }
+            }
+        }
+        else{
+            confirmButton.setVisibility(View.VISIBLE);
+            expected_time_layout.setVisibility(View.GONE);
+            status_layout.setVisibility(View.GONE);
+        }
     }
     @Override
     public void onBackPressed(){
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
+        if(from.equals("Current")){
+            Intent intent = new Intent(this, CurrentOrdersActivity.class);
+            startActivity(intent);
+        }
+        else if(from.equals("Map")){
+            Intent intent = new Intent(this, MapActivity.class);
+            startActivity(intent);
+        }
+        else{
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+        }
+
     }
     protected void update(){
         order = Orders.getActiveOrder();
@@ -101,7 +150,7 @@ public class RecapActivity extends SlideMenuActivity {
         deliveryAddress.setText(address);
         priceTextView.setText(String.format("%.2f", order.getTotalCost()) + moneyDevise);
         list.clear();
-        Menu.displayInRecap(list);
+        Menu.displayInRecap(list, getResources().getString(R.string.noOptions),getResources().getString(R.string.options));
         DrinkTypes.displayInRecap(list);
         ((SimpleAdapter)listView.getAdapter()).notifyDataSetChanged();
         if (list.size() == 0){
