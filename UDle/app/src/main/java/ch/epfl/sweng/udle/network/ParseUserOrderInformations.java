@@ -5,6 +5,10 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * Created by skalli93 on 11/1/15.
  * This class is designed to abstract the parse user interface and communicate directly with the
@@ -65,15 +69,28 @@ public class ParseUserOrderInformations extends ParseObject {
 
 
     //Return the ETA of the food delivery
-    public int getExpectedTime() {
+    public String getExpectedTime() {
 
-        return (int) this.getNumber("expectedTime");
+        return  this.getString("expectedTime");
     }
 
     //Set the ETA for the food delivery
     public void setExpectedTime(int value) {
 
-        this.put("expectedTime", value);
+        if(value == -1){
+            this.put("expectedTime", "-1");
+        }
+        else{
+            Date d = new Date();
+
+            SimpleDateFormat fmt = new SimpleDateFormat("HH:mm, dd/MM");
+            int time = (value* 60 * 1000);
+            Date deliveryDate = new Date(d.getTime() + (time));
+
+            String date = fmt.format(deliveryDate);
+            this.put("expectedTime", date);
+        }
+
         this.saveInBackground();
     }
 
