@@ -49,12 +49,12 @@ public class CurrentOrdersActivity extends SlideMenuActivity {
     private ProgressDialog progress;
     private boolean waitingOrdersChange;
     private boolean currentOrdersChange;
+    private boolean activityNotOnScreen;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_current_orders);
-
 
         handler =  new Handler(){
             public void handleMessage(Message msg)
@@ -64,7 +64,9 @@ public class CurrentOrdersActivity extends SlideMenuActivity {
                 if (waitingOrdersChange || currentOrdersChange) {
                     setUpListView();
                     if (currentOrdersChange){
-                        displayNotification();
+                        if (activityNotOnScreen){
+                            displayNotification();
+                        }
                     }
                 }
             }
@@ -74,6 +76,18 @@ public class CurrentOrdersActivity extends SlideMenuActivity {
 
         setUpListView();
 
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        activityNotOnScreen = true;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        activityNotOnScreen = false;
     }
 
     private void displayNotification() {
