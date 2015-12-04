@@ -58,6 +58,8 @@ public class DeliveryRestaurantMapActivity extends SlideMenuActivity {
 
     Handler handler = new Handler(); //The list of waiting and current Orders is refresh each 'delay' milliseconds.
     final int delay = 30000; //30 seconds in milliseconds
+    Handler handlerRefresh = new Handler();
+    private int timeLeftForRefresh;
     private ProgressDialog progress;
     private boolean waitingOrdersChange;
     private boolean currentOrdersChange;
@@ -78,14 +80,18 @@ public class DeliveryRestaurantMapActivity extends SlideMenuActivity {
             public void handleMessage(Message msg) {
                 // To dismiss the dialog
                 progress.dismiss();
+                handlerRefresh.removeCallbacksAndMessages(null);
                 if (waitingOrdersChange || currentOrdersChange) {
                     showOrdersOnMap();
                     setUpListView();
                 }
+                timeLeftForRefresh = delay/1000;
+                handlerRefresh.postDelayed(getRefreshRunnable(),0);
             }
         };
 
         handler.postDelayed(getMapRunnable(), 0);
+
     }
 
     /**
@@ -110,6 +116,24 @@ public class DeliveryRestaurantMapActivity extends SlideMenuActivity {
                 progress.setTitle(getString(R.string.Loading));
                 progress.setMessage(getString(R.string.checkingForNewOrders));
                 progress.show();
+            }
+        };
+        return runnable;
+    }
+
+    /**
+     * @return Runnable who takes care of changing the text on the 'Refresh' button
+     */
+    private Runnable getRefreshRunnable(){
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                Button refreshButton = (Button) findViewById(R.id.RestaurantMap_button_refresh);
+                String timeLeft = String.valueOf(timeLeftForRefresh);
+                String textRefresh = getResources().getString(R.string.Refresh) + " (00:" + timeLeft + ")";
+                refreshButton.setText(textRefresh);
+                timeLeftForRefresh -= 1;
+                handlerRefresh.postDelayed(this, 1000);
             }
         };
         return runnable;
@@ -468,6 +492,13 @@ public class DeliveryRestaurantMapActivity extends SlideMenuActivity {
             buttonSwitch.setText("Switch to List Mode");
 
         }
+    }
+
+    /**
+     * Called when user click on the 'Refresh' button
+     */
+    public void refreshAll(View view){
+        restartHandlerTimerForRefresh();
     }
 
     /** Disable back button here
