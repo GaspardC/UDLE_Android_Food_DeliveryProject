@@ -81,5 +81,8 @@
     <string name="status">Status</string>
     <string name="enRoute">En Route</string>
     <string name="expectedTime_min">Expected time (min)</string>
+    <string name="Loading">Loading</string>
+    <string name="checkingForNewOrders">Checking for new orders...</string>
+    <string name="waitWhileLoading">Wait while loading...</string>
 
 </resources>

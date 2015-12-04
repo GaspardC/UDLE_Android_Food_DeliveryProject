@@ -1,9 +1,11 @@
 package ch.epfl.sweng.udle.activities;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -54,8 +56,11 @@ public class DeliveryRestaurantMapActivity extends SlideMenuActivity {
     private HashMap<Integer, OrderElement> objectIdHashMapForList; //HashMap between the index of order shown in the list view and the specific order.
     private HashMap<String, OrderElement> objectIdHashMapForMap; //HashMap between the index of order shown in the map and the specific order.
 
-    final Handler handler = new Handler(); //The list of waiting and current Orders is refresh each 'delay' milliseconds.
+    Handler handler = new Handler(); //The list of waiting and current Orders is refresh each 'delay' milliseconds.
     final int delay = 30000; //30 seconds in milliseconds
+    private ProgressDialog progress;
+    private boolean waitingOrdersChange;
+    private boolean currentOrdersChange;
 
 
     public void setWaitingOrdersForTesting(ArrayList<OrderElement> orderElements){
@@ -69,6 +74,17 @@ public class DeliveryRestaurantMapActivity extends SlideMenuActivity {
 
         setUpMapIfNeeded();
 
+        handler =  new Handler(){
+            public void handleMessage(Message msg) {
+                // To dismiss the dialog
+                progress.dismiss();
+                if (waitingOrdersChange || currentOrdersChange) {
+                    showOrdersOnMap();
+                    setUpListView();
+                }
+            }
+        };
+
         handler.postDelayed(getMapRunnable(), 0);
     }
 
@@ -79,14 +95,21 @@ public class DeliveryRestaurantMapActivity extends SlideMenuActivity {
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                boolean waitingOrdersChange = changeInWaitingOrders();
-                boolean currentOrdersChange = changeInCurrentOrders();
+                new Thread(){
+                    @Override
+                    public void run(){
+                        waitingOrdersChange = changeInWaitingOrders();
+                        currentOrdersChange = changeInCurrentOrders();
 
-                if (waitingOrdersChange || currentOrdersChange) {
-                    showOrdersOnMap();
-                    setUpListView();
-                }
+                        handler.sendEmptyMessage(0);
+                    }
+                }.start();
+
                 handler.postDelayed(this, delay);
+                progress = new ProgressDialog(DeliveryRestaurantMapActivity.this);
+                progress.setTitle(getString(R.string.Loading));
+                progress.setMessage(getString(R.string.checkingForNewOrders));
+                progress.show();
             }
         };
         return runnable;

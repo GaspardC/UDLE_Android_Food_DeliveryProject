@@ -89,8 +89,8 @@ public class CurrentOrdersActivity extends SlideMenuActivity {
 
                 handler.postDelayed(this, delay);
                 progress = new ProgressDialog(CurrentOrdersActivity.this);
-                progress.setTitle("Loading");
-                progress.setMessage("Wait while loading...");
+                progress.setTitle(getResources().getString(R.string.Loading));
+                progress.setMessage(getString(R.string.waitWhileLoading));
                 progress.show();
 
             }
