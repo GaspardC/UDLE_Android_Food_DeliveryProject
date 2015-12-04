@@ -10,6 +10,7 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -31,6 +32,7 @@ import com.parse.ParseObject;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
@@ -56,18 +58,21 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
     private boolean dlgAlertcountCreated = false;
     private String nonNullLocationProvider = "nonNullLocationProvider";
     private OrderElement orderElement = new OrderElement();
-
+    final Handler handler = new Handler(); //The list of waiting and current Orders is refresh each 'delay' milliseconds.
+    final int delay = 30000; //30 seconds in milliseconds
     private boolean markerHidden = true;
     private boolean afterFirstChange = true;
+    private ArrayList<OrderElement> waitingOrders = new ArrayList<>(); //Orders in the restaurant range that have no restaurant assigned to. Status of order: Waiting
+    private ArrayList<OrderElement> currentOrders = new ArrayList<>(); //Orders that the restaurant already accept to deliverd. Status of order: EnRoute
+    private HashMap<Integer, OrderElement> objectIdHashMapForList; //HashMap between the index of order shown in the list view and the specific order.
+    private HashMap<String, OrderElement> objectIdHashMapForMap; //HashMap between the index of order shown in the map and the specific order.
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
 
-
-        listeMarkers = new ArrayList<Marker>();
-
+        listeMarkers = new ArrayList<>();
         markerLayout = (LinearLayout) findViewById(R.id.locationMarker);
         markerHidden = false;
         dlgAlert = new AlertDialog.Builder(this);
@@ -78,10 +83,203 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
         autoCompView.setOnItemClickListener(this);
         CheckEnableGPS();
         setUpMapIfNeeded();
+
         mMap.setOnMarkerClickListener(this);
         placeMarkers();
         hideKeyborad();
+        handler.postDelayed(getMapRunnable(), 0);
+
     }
+
+
+    /** Called when the user clicks the MenuMap_ValidatePosition button */
+    public void goToDeliveryCommandDetail(OrderElement order, boolean isCurrent) {
+            Orders.setActiveOrder(order);
+
+        Intent intent = new Intent(this, RecapActivity.class);
+        intent.putExtra("from","Map");
+        startActivity(intent);
+    }
+
+    /**
+     * @return Runnable: Each 'delay' milliseconds, call the function run function. This run function check if orders need to be refresh and do it if needed.
+     */
+    private Runnable getMapRunnable(){
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                boolean waitingOrdersChange = changeInWaitingOrders();
+                boolean currentOrdersChange = changeInCurrentOrders();
+
+                if (waitingOrdersChange || currentOrdersChange) {
+                    showOrdersOnMap();
+//                    setUpListView();
+                }
+                handler.postDelayed(this, delay);
+            }
+        };
+        return runnable;
+    }
+
+
+    /**
+     * Display the waiting and the current orders on the Google Map.
+     * Display each order via a marker. Red color for waiting orders, Green for current ones.
+     */
+    private void showOrdersOnMap(){
+        mMap.clear();
+        objectIdHashMapForMap = new HashMap<>();
+        int objectIdHashMapIndex = 1;
+
+        Location rlocation = DataManager.getUserLocation();
+        LatLng rLatLng = new LatLng(rlocation.getLatitude(), rlocation.getLongitude());
+        setCamera(rLatLng);
+
+
+        for(OrderElement order : waitingOrders) {
+            Location location = order.getDeliveryLocation();
+            LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+            String deliveryAddress = order.getDeliveryAddress();
+
+            String markerTitle = getResources().getString(R.string.WaitingOrders) +" #"+ objectIdHashMapIndex;
+            objectIdHashMapForMap.put(markerTitle, order);
+            objectIdHashMapIndex++;
+
+            mMap.addMarker(new MarkerOptions()
+                    .position(latLng)
+                    .title(markerTitle)
+                    .snippet(deliveryAddress)
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+        }
+        for(OrderElement order : currentOrders) {
+            Location location = order.getDeliveryLocation();
+            LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+            String deliveryAddress = order.getDeliveryAddress();
+
+            String markerTitle = getResources().getString(R.string.ConfirmOrders) +" #"+ objectIdHashMapIndex;
+            objectIdHashMapForMap.put(markerTitle, order);
+            objectIdHashMapIndex++;
+
+            mMap.addMarker(new MarkerOptions()
+                    .position(latLng)
+                    .title(markerTitle)
+                    .snippet(deliveryAddress)
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+        }
+
+        mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+            @Override
+            public void onInfoWindowClick(Marker marker) {
+
+                String markerTitle = marker.getTitle();
+                OrderElement order = objectIdHashMapForMap.get(markerTitle);
+
+                boolean isCurrent = false;
+                if (markerTitle.contains("Current")) {
+                    isCurrent = true;
+                }
+
+                goToDeliveryCommandDetail(order, isCurrent);
+            }
+        });
+    }
+
+    /**
+     *
+     * Check if there was a change in the waiting orders for the restaurant.
+     * If change => refresh the display
+     * If no change => Do nothing
+     *
+     */
+    private boolean changeInWaitingOrders(){
+        //Retrieve list from server
+        ArrayList<OrderElement> waitingOrdersFromServe = DataManager.getWaitingOrdersForAClient();
+
+        if (waitingOrdersFromServe.size() == 0){
+            if (waitingOrders.size() != 0){
+                waitingOrders = waitingOrdersFromServe;
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
+
+        //In order to check if there was a change or not, we compare the objectID of the list retrieve from server and the one already on device.
+        //So use this int to see if the retrieved list is the same or not has the local one.
+        int checkSameList = 0;
+
+        //Putting all objectIds of local waitingOrders list into a new list
+        ArrayList<String> currentWaitingOrdersObjectID = new ArrayList<>();
+        for (OrderElement orderElement: waitingOrders){
+            currentWaitingOrdersObjectID.add(orderElement.getUserOrderInformationsID());
+        }
+
+        //Check for all orderElements in the server list if it already present locally. If yes, add 1 to 'checkSameList'
+        for (OrderElement orderElement : waitingOrdersFromServe){
+            if (currentWaitingOrdersObjectID.contains(orderElement.getUserOrderInformationsID())){
+                checkSameList ++;
+            }
+        }
+
+        if (waitingOrdersFromServe.size() != checkSameList){
+            //Lists are not the same. Need to refresh
+            waitingOrders = waitingOrdersFromServe;
+            return true;
+        }
+        else {
+            //Server list is the same as the displayed one. Do nothing.
+            return false;
+        }
+    }
+
+
+
+    /**
+     *
+     * Check if there was a change in the current orders for the restaurant.
+     * If change => refresh the display
+     * If no change => Do nothing
+     *
+     */
+    private boolean changeInCurrentOrders(){
+        //Retrieve list from server
+        ArrayList<OrderElement> currentOrdersFromServe = DataManager.getEnRouteOrdersForAClient();
+
+        if (currentOrdersFromServe.size() == 0){
+            currentOrders = currentOrdersFromServe;
+            return true;
+        }
+
+        //In order to check if there was a change or not, we compare the objectID of the list retrieve from server and the one already on device.
+        //So use this int to see if the retrieved list is the same or not has the local one.
+        int checkSameList = 0;
+
+        //Putting all objectIds of local waitingOrders list into a new list
+        ArrayList<String> currentCurrentOrdersObjectID = new ArrayList<>();
+        for (OrderElement orderElement: currentOrders){
+            currentCurrentOrdersObjectID.add(orderElement.getUserOrderInformationsID());
+        }
+
+        //Check for all orderElements in the server list if it already present locally. If yes, add 1 to 'checkSameList'
+        for (OrderElement orderElement : currentOrdersFromServe){
+            if (currentCurrentOrdersObjectID.contains(orderElement.getUserOrderInformationsID())){
+                checkSameList ++;
+            }
+        }
+
+        if (currentOrdersFromServe.size() != checkSameList){
+            //Lists are not the same. Need to refresh
+            currentOrders = currentOrdersFromServe;
+            return true;
+        }
+        else {
+            //Server list is the same as the displayed one. Do nothing.
+            return false;
+        }
+    }
+
+
 
     public void setDeliveryAdress(String addr){
         deliveryAddress = addr;
@@ -114,18 +312,22 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
 
     /** Called when the user clicks the MenuMap_ValidatePosition button */
     public void goToMenuActivity(View view) {
-        if(isLocationInitialised() && !getDeliveryAdress().equals("")) {
-            orderElement = new OrderElement();
-            orderElement.setDeliveryLocation(getLocation());
-            orderElement.setDeliveryAddress(getDeliveryAdress());
-            orderElement.setOrderedUserName(DataManager.getUserName());
-            Orders.setActiveOrder(orderElement);
-            storeNearbyRestaurants();
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
+        if (storeNearbyRestaurants()){
+            if(isLocationInitialised() && !getDeliveryAdress().equals("")) {
+                orderElement = new OrderElement();
+                orderElement.setDeliveryLocation(getLocation());
+                orderElement.setDeliveryAddress(getDeliveryAdress());
+                orderElement.setOrderedUserName(DataManager.getUserName());
+                Orders.setActiveOrder(orderElement);
+                Intent intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
+            }
+            else {
+                Toast.makeText(this, R.string.incorrectLocation, Toast.LENGTH_SHORT).show();
+            }
         }
-        else {
-            Toast.makeText(this, R.string.incorrectLocation, Toast.LENGTH_SHORT).show();
+        else{
+            Toast.makeText(this, R.string.noRestaurantAvailable, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -375,7 +577,7 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
         return false;
     }
 
-    private void storeNearbyRestaurants(){
+    private boolean storeNearbyRestaurants(){
         //Put current location in parse.com
         ParseGeoPoint currentLocation = new ParseGeoPoint(location.getLatitude(), location.getLongitude());
         ParseUser currentUser = DataManager.getUser();
@@ -383,6 +585,12 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
 
         //Find nearby restaurants and store in server
         //NEED TO CHANGE THIS DEPENDING ON HOW WE USE NEARBY RESTAURANTS
-        DataManager.getRestaurantsNearTheUser();
+        return DataManager.getRestaurantsNearTheUser();
+    }
+
+    @Override
+    protected void onPause() {
+        handler.removeCallbacksAndMessages(null);
+        super.onPause();
     }
 }

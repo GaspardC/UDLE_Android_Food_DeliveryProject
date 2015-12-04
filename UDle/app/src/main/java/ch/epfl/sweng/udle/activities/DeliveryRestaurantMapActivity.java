@@ -1,9 +1,14 @@
 package ch.epfl.sweng.udle.activities;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.location.Location;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -55,8 +60,13 @@ public class DeliveryRestaurantMapActivity extends SlideMenuActivity {
     private HashMap<Integer, OrderElement> objectIdHashMapForList; //HashMap between the index of order shown in the list view and the specific order.
     private HashMap<String, OrderElement> objectIdHashMapForMap; //HashMap between the index of order shown in the map and the specific order.
 
-    final Handler handler = new Handler(); //The list of waiting and current Orders is refresh each 'delay' milliseconds.
+    Handler handler = new Handler(); //The list of waiting and current Orders is refresh each 'delay' milliseconds.
     final int delay = 30000; //30 seconds in milliseconds
+    Handler handlerRefresh = new Handler();
+    private int timeLeftForRefresh;
+    private ProgressDialog progress;
+    private boolean waitingOrdersChange;
+    private boolean currentOrdersChange;
 
 
     public void setWaitingOrdersForTesting(ArrayList<OrderElement> orderElements){
@@ -70,7 +80,22 @@ public class DeliveryRestaurantMapActivity extends SlideMenuActivity {
 
         setUpMapIfNeeded();
 
+        handler =  new Handler(){
+            public void handleMessage(Message msg) {
+                // To dismiss the dialog
+                progress.dismiss();
+                handlerRefresh.removeCallbacksAndMessages(null);
+                if (waitingOrdersChange || currentOrdersChange) {
+                    showOrdersOnMap();
+                    setUpListView();
+                }
+                timeLeftForRefresh = delay/1000;
+                handlerRefresh.postDelayed(getRefreshRunnable(), 0);
+            }
+        };
+
         handler.postDelayed(getMapRunnable(), 0);
+
     }
 
     /**
@@ -80,14 +105,39 @@ public class DeliveryRestaurantMapActivity extends SlideMenuActivity {
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                boolean waitingOrdersChange = changeInWaitingOrders();
-                boolean currentOrdersChange = changeInCurrentOrders();
+                new Thread(){
+                    @Override
+                    public void run(){
+                        waitingOrdersChange = changeInWaitingOrders();
+                        currentOrdersChange = changeInCurrentOrders();
 
-                if (waitingOrdersChange || currentOrdersChange) {
-                    showOrdersOnMap();
-                    setUpListView();
-                }
+                        handler.sendEmptyMessage(0);
+                    }
+                }.start();
+
                 handler.postDelayed(this, delay);
+                progress = new ProgressDialog(DeliveryRestaurantMapActivity.this);
+                progress.setTitle(getString(R.string.Loading));
+                progress.setMessage(getString(R.string.checkingForNewOrders));
+                progress.show();
+            }
+        };
+        return runnable;
+    }
+
+    /**
+     * @return Runnable who takes care of changing the text on the 'Refresh' button
+     */
+    private Runnable getRefreshRunnable(){
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                Button refreshButton = (Button) findViewById(R.id.RestaurantMap_button_refresh);
+                String timeLeft = String.valueOf(timeLeftForRefresh);
+                String textRefresh = getResources().getString(R.string.Refresh) + " (00:" + timeLeft + ")";
+                refreshButton.setText(textRefresh);
+                timeLeftForRefresh -= 1;
+                handlerRefresh.postDelayed(this, 1000);
             }
         };
         return runnable;
@@ -103,6 +153,7 @@ public class DeliveryRestaurantMapActivity extends SlideMenuActivity {
     private boolean changeInWaitingOrders(){
         //Retrieve list from server
         ArrayList<OrderElement> waitingOrdersFromServe = DataManager.getWaitingOrdersForARestaurantOwner();
+        Boolean newOrder = false;
 
         if (waitingOrdersFromServe.size() == 0){
             if (waitingOrders.size() != 0){
@@ -129,11 +180,19 @@ public class DeliveryRestaurantMapActivity extends SlideMenuActivity {
             if (currentWaitingOrdersObjectID.contains(orderElement.getUserOrderInformationsID())){
                 checkSameList ++;
             }
+            else {
+                newOrder = true;
+            }
         }
 
         if (waitingOrdersFromServe.size() != checkSameList){
             //Lists are not the same. Need to refresh
             waitingOrders = waitingOrdersFromServe;
+            if (newOrder){
+                Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+                Ringtone r = RingtoneManager.getRingtone(getApplicationContext(), notification);
+                r.play();
+            }
             return true;
         }
         else {
@@ -369,7 +428,7 @@ public class DeliveryRestaurantMapActivity extends SlideMenuActivity {
             LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
             String deliveryAddress = order.getDeliveryAddress();
 
-            String markerTitle = getResources().getString(R.string.WaitingOrders) +" #"+ objectIdHashMapIndex;
+            String markerTitle = getResources().getString(R.string.ConfirmOrders) +" #"+ objectIdHashMapIndex;
             objectIdHashMapForMap.put(markerTitle, order);
             objectIdHashMapIndex++;
 
@@ -388,7 +447,7 @@ public class DeliveryRestaurantMapActivity extends SlideMenuActivity {
                 OrderElement order = objectIdHashMapForMap.get(markerTitle);
 
                 boolean isCurrent = false;
-                if (markerTitle.contains("Current")) {
+                if (markerTitle.contains(getResources().getString(R.string.ConfirmOrders))) {
                     isCurrent = true;
                 }
 
@@ -401,12 +460,14 @@ public class DeliveryRestaurantMapActivity extends SlideMenuActivity {
 
     /** Called when the user clicks the MenuMap_ValidatePosition button */
     public void goToDeliveryCommandDetail(OrderElement order, boolean isCurrent) {
-        if (DataManager.isStatusWaiting(order.getUserOrderInformationsID())){
+
+        if (isCurrent || DataManager.isStatusWaiting(order.getUserOrderInformationsID())){
             Orders.setActiveOrder(order);
             Intent intent = new Intent(this, DeliverCommandDetailActivity.class);
             intent.putExtra("isCurrent", isCurrent);
             startActivity(intent);
         }
+
         else{
             Toast.makeText(getApplicationContext(), getString(R.string.OrderNotAvailable),
                     Toast.LENGTH_SHORT).show();
@@ -444,6 +505,13 @@ public class DeliveryRestaurantMapActivity extends SlideMenuActivity {
             buttonSwitch.setText("Switch to List Mode");
 
         }
+    }
+
+    /**
+     * Called when user click on the 'Refresh' button
+     */
+    public void refreshAll(View view){
+        restartHandlerTimerForRefresh();
     }
 
     /** Disable back button here

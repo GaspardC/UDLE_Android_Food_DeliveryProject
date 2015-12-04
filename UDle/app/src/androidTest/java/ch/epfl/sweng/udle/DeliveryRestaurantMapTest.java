@@ -6,6 +6,7 @@ import android.support.test.espresso.matcher.ViewMatchers;
 import android.test.ActivityInstrumentationTestCase2;
 
 import com.parse.LogInCallback;
+import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 
@@ -92,19 +93,9 @@ public class DeliveryRestaurantMapTest  extends ActivityInstrumentationTestCase2
         onView(withId(R.id.button_list_mode)).perform(click());
         onView(withId((R.id.button_list_mode))).check(matches(withText("Switch to List Mode")));
     }
-/*
+
+
     @Test
-    public void testButtonGoToNextActivityWhenClickOnAnOrder(){
-
-        onView(withId(R.id.button_list_mode)).perform(click());
-
-        final ArrayList<OrderElement> waitingOrders = DataManager.getWaitingOrdersForARestaurantOwner();
-        final ArrayList<OrderElement> currentOrders = DataManager.getCurrentOrdersForARestaurantOwner();
-        onData(anything()).inAdapterView(withContentDescription("listOrderRestaurantMap")).atPosition(currentOrders.size() + waitingOrders.size() - 1).perform(click());
-        onView(withId(R.id.DeliverCommandDetail_recapListView)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
-        pressBack();
-    }
-  */  @Test
     public void testIfNoOrders(){
         mActivity.resetCurrentOrder();
         mActivity.resetWaitingOrders();

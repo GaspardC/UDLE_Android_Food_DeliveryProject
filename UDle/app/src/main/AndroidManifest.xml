@@ -56,6 +56,9 @@
         <activity android:name=".activities.DeliveryRestaurantMapActivity"
             android:theme="@style/SlideMenuTheme">
         </activity>
+        <activity android:name=".activities.CurrentOrdersActivity"
+            android:theme="@style/SlideMenuTheme">
+        </activity>
         <activity android:name=".activities.DeliverCommandDetailActivity" >
         </activity>
         <activity android:name=".activities.HelpActivity.HelpActivity"

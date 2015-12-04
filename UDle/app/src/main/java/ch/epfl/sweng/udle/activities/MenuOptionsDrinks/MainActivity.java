@@ -4,6 +4,7 @@ import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 
+import ch.epfl.sweng.udle.Food.Orders;
 import ch.epfl.sweng.udle.HorizontalSlideLibrary.SlidingTabLayout;
 import ch.epfl.sweng.udle.R;
 import ch.epfl.sweng.udle.activities.SlideMenu.SlideMenuActivity;
@@ -62,5 +63,9 @@ public class MainActivity extends SlideMenuActivity {
 
     }
 
-
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Orders.setActiveOrder(null);
+    }
 }
