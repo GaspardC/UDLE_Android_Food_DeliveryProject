@@ -150,7 +150,7 @@ public class RecapActivity extends SlideMenuActivity {
         deliveryAddress.setText(address);
         priceTextView.setText(String.format("%.2f", order.getTotalCost()) + moneyDevise);
         list.clear();
-        Menu.displayInRecap(list);
+        Menu.displayInRecap(list, getResources().getString(R.string.noOptions),getResources().getString(R.string.options));
         DrinkTypes.displayInRecap(list);
         ((SimpleAdapter)listView.getAdapter()).notifyDataSetChanged();
         if (list.size() == 0){

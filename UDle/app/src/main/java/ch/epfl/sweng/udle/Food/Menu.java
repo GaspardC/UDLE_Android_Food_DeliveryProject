@@ -78,7 +78,7 @@ public class Menu {
 
     }
 
-    public static void displayInRecap(List<HashMap<String, String>> list){
+    public static void displayInRecap(List<HashMap<String, String>> list, String noOption, String options){
         ArrayList<Menu> menusInRecap = new ArrayList<>();
         ArrayList<Integer> menuNumbers = new ArrayList<>();
 
@@ -108,12 +108,11 @@ public class Menu {
 
             String option;
             if (menu.getOptions().size() == 0){
-              //  option = Resources.getSystem().getString(R.string.noOptions);
-                option = "No options.";
+                option = noOption;
             }
             else{
                 //option = Resources.getSystem().getString(R.string.options);
-                option = "Options: ";
+                option = options;
 
                 for( OptionsTypes opt : menu.getOptions()){
                     option = option + opt.toString() + " ; " ;

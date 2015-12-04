@@ -41,7 +41,7 @@ public class WaitingActivity extends SlideMenuActivity {
         startAnimation(burgerImage);
 
         List<HashMap<String, String>> list = new ArrayList<>();
-        Menu.displayInRecap(list);
+        Menu.displayInRecap(list,getResources().getString(R.string.noOptions),getResources().getString(R.string.options));
         DrinkTypes.displayInRecap(list);
 
         ListAdapter adapter = new SimpleAdapter(this, list,
