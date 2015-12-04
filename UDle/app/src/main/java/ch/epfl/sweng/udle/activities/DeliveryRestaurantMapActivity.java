@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.location.Location;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
-import android.media.SoundPool;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;

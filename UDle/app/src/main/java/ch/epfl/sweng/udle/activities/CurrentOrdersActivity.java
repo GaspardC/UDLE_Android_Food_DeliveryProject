@@ -1,12 +1,20 @@
 package ch.epfl.sweng.udle.activities;
 
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
+import android.app.TaskStackBuilder;
+import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.service.chooser.ChooserTargetService;
+import android.support.v4.app.NotificationCompat;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -55,6 +63,9 @@ public class CurrentOrdersActivity extends SlideMenuActivity {
                 progress.dismiss();
                 if (waitingOrdersChange || currentOrdersChange) {
                     setUpListView();
+                    if (currentOrdersChange){
+                        displayNotification();
+                    }
                 }
             }
         };
@@ -63,6 +74,39 @@ public class CurrentOrdersActivity extends SlideMenuActivity {
 
         setUpListView();
 
+    }
+
+    private void displayNotification() {
+        NotificationCompat.Builder mBuilder =
+                new NotificationCompat.Builder(this)
+                        .setSmallIcon(R.drawable.logo2)
+                        .setContentTitle(getString(R.string.notificationTitle))
+                        .setContentText(getString(R.string.notificationText));
+        // Creates an explicit intent for an Activity in your app
+        Intent resultIntent = new Intent(this, CurrentOrdersActivity.class);
+
+        // The stack builder object will contain an artificial back stack for the
+        // started Activity.
+        // This ensures that navigating backward from the Activity leads out of
+        // your application to the Home screen.
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+        // Adds the back stack for the Intent (but not the Intent itself)
+        stackBuilder.addParentStack(CurrentOrdersActivity.class);
+        // Adds the Intent that starts the Activity to the top of the stack
+        stackBuilder.addNextIntent(resultIntent);
+        PendingIntent resultPendingIntent =
+                stackBuilder.getPendingIntent(
+                        0,
+                        PendingIntent.FLAG_UPDATE_CURRENT
+                );
+        mBuilder.setContentIntent(resultPendingIntent);
+        NotificationManager mNotificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        // mId allows you to update the notification later on.
+        mNotificationManager.notify(1, mBuilder.build());
+        Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        Ringtone r = RingtoneManager.getRingtone(getApplicationContext(), notification);
+        r.play();
     }
 
     /**
@@ -284,15 +328,7 @@ public class CurrentOrdersActivity extends SlideMenuActivity {
         Orders.setActiveOrder(order);
 
         Intent intent = new Intent(this, RecapActivity.class);
-        intent.putExtra("from","Current");
+        intent.putExtra("from", "Current");
         startActivity(intent);
     }
-
-
-    @Override
-    protected void onPause() {
-        handler.removeCallbacksAndMessages(null);
-        super.onPause();
-    }
-
 }

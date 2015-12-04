@@ -85,5 +85,7 @@
     <string name="checkingForNewOrders">Checking for new orders...</string>
     <string name="waitWhileLoading">Wait while loading...</string>
     <string name="Refresh">Refresh</string>
+    <string name="notificationTitle">Order accepted</string>
+    <string name="notificationText">Your order was accepted. Click to see details.</string>
 
 </resources>

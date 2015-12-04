@@ -89,7 +89,7 @@ public class WaitingActivity extends SlideMenuActivity {
     }
 
     public void orderAccepted_button_click(View view) {
-        Intent intent =  new Intent(this, MapActivity.class);
+        Intent intent =  new Intent(this, CurrentOrdersActivity.class);
         startActivity(intent);
     }
 
