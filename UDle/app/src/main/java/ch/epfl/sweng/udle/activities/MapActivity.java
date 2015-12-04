@@ -312,18 +312,22 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
 
     /** Called when the user clicks the MenuMap_ValidatePosition button */
     public void goToMenuActivity(View view) {
-        if(isLocationInitialised() && !getDeliveryAdress().equals("")) {
-            orderElement = new OrderElement();
-            orderElement.setDeliveryLocation(getLocation());
-            orderElement.setDeliveryAddress(getDeliveryAdress());
-            orderElement.setOrderedUserName(DataManager.getUserName());
-            Orders.setActiveOrder(orderElement);
-            storeNearbyRestaurants();
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
+        if (storeNearbyRestaurants()){
+            if(isLocationInitialised() && !getDeliveryAdress().equals("")) {
+                orderElement = new OrderElement();
+                orderElement.setDeliveryLocation(getLocation());
+                orderElement.setDeliveryAddress(getDeliveryAdress());
+                orderElement.setOrderedUserName(DataManager.getUserName());
+                Orders.setActiveOrder(orderElement);
+                Intent intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
+            }
+            else {
+                Toast.makeText(this, R.string.incorrectLocation, Toast.LENGTH_SHORT).show();
+            }
         }
-        else {
-            Toast.makeText(this, R.string.incorrectLocation, Toast.LENGTH_SHORT).show();
+        else{
+            Toast.makeText(this, R.string.noRestaurantAvailable, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -573,7 +577,7 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
         return false;
     }
 
-    private void storeNearbyRestaurants(){
+    private boolean storeNearbyRestaurants(){
         //Put current location in parse.com
         ParseGeoPoint currentLocation = new ParseGeoPoint(location.getLatitude(), location.getLongitude());
         ParseUser currentUser = DataManager.getUser();
@@ -581,7 +585,7 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
 
         //Find nearby restaurants and store in server
         //NEED TO CHANGE THIS DEPENDING ON HOW WE USE NEARBY RESTAURANTS
-        DataManager.getRestaurantsNearTheUser();
+        return DataManager.getRestaurantsNearTheUser();
     }
 
     @Override

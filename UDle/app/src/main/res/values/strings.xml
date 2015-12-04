@@ -87,5 +87,6 @@
     <string name="Refresh">Refresh</string>
     <string name="notificationTitle">Order accepted</string>
     <string name="notificationText">Your order was accepted. Click to see details.</string>
+    <string name="noRestaurantAvailable">Sorry, no restaurants are available right now. Try later.</string>
 
 </resources>
