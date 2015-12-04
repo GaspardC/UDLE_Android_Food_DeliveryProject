@@ -191,7 +191,7 @@ public class RecapActivity extends SlideMenuActivity {
         }else{
             // It's a menu
             String optionOfElemToRemove = elementToRemove.get("options");
-            if (optionOfElemToRemove.equals(getResources().getString(R.string.removeMessage_3))){
+            if (optionOfElemToRemove.equals(getResources().getString(R.string.noOptions))){
                 ArrayList<Menu> toDelete = new ArrayList<>();
                 for(Menu menu : order.getOrder()) {
                     if (elem.equals(menu.getFood().toString())){
