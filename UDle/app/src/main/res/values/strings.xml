@@ -77,5 +77,7 @@
     <string name="No_orders_for_now">No orders for now </string>
     <string name="Wait_a_moment">Wait a moment please</string>
     <string name="options">"Options:  "</string>
+    <string name="help_page">"Help page "</string>
+    <string name="test_help_1">Help page 1</string>
 
 </resources>

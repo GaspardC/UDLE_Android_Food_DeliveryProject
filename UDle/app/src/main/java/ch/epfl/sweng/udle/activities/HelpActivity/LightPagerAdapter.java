@@ -58,6 +58,7 @@ public class LightPagerAdapter extends PagerAdapter {
 
         ImageView imageView = (ImageView) itemView.findViewById(R.id.help_page_imageView);
         imageView.setImageBitmap(decodeSampledBitmapFromResource(contextResources, imgResources[position], 100, 100));
+        imageView.setContentDescription(context.getString(R.string.help_page) + position);
         container.addView(itemView);
 
         return itemView;
