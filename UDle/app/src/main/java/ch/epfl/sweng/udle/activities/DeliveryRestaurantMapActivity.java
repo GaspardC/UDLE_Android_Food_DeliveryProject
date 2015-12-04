@@ -3,6 +3,10 @@ package ch.epfl.sweng.udle.activities;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.location.Location;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.media.SoundPool;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -86,7 +90,7 @@ public class DeliveryRestaurantMapActivity extends SlideMenuActivity {
                     setUpListView();
                 }
                 timeLeftForRefresh = delay/1000;
-                handlerRefresh.postDelayed(getRefreshRunnable(),0);
+                handlerRefresh.postDelayed(getRefreshRunnable(), 0);
             }
         };
 
@@ -149,6 +153,7 @@ public class DeliveryRestaurantMapActivity extends SlideMenuActivity {
     private boolean changeInWaitingOrders(){
         //Retrieve list from server
         ArrayList<OrderElement> waitingOrdersFromServe = DataManager.getWaitingOrdersForARestaurantOwner();
+        Boolean newOrder = false;
 
         if (waitingOrdersFromServe.size() == 0){
             if (waitingOrders.size() != 0){
@@ -175,11 +180,19 @@ public class DeliveryRestaurantMapActivity extends SlideMenuActivity {
             if (currentWaitingOrdersObjectID.contains(orderElement.getUserOrderInformationsID())){
                 checkSameList ++;
             }
+            else {
+                newOrder = true;
+            }
         }
 
         if (waitingOrdersFromServe.size() != checkSameList){
             //Lists are not the same. Need to refresh
             waitingOrders = waitingOrdersFromServe;
+            if (newOrder){
+                Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+                Ringtone r = RingtoneManager.getRingtone(getApplicationContext(), notification);
+                r.play();
+            }
             return true;
         }
         else {
