@@ -146,10 +146,12 @@ public class CurrentOrdersActivity extends SlideMenuActivity {
             }.start();
 
                 handler.postDelayed(this, delay);
-                progress = new ProgressDialog(CurrentOrdersActivity.this);
-                progress.setTitle(getResources().getString(R.string.Loading));
-                progress.setMessage(getString(R.string.waitWhileLoading));
-                progress.show();
+                if (!activityNotOnScreen){
+                    progress = new ProgressDialog(CurrentOrdersActivity.this);
+                    progress.setTitle(getResources().getString(R.string.Loading));
+                    progress.setMessage(getString(R.string.waitWhileLoading));
+                    progress.show();
+                }
 
             }
         };
