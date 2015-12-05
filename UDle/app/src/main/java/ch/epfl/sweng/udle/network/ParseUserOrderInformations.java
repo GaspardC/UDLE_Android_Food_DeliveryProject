@@ -5,7 +5,6 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -154,7 +153,7 @@ public class ParseUserOrderInformations extends ParseObject {
         this.saveInBackground();
     }
 
-git
+
     /**
      * @return The order corresponding with this userOrderInformatins as a ParseObject. Still Need to convert it into an OrderElement
      */
