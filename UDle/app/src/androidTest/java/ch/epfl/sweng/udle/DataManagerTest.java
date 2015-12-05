@@ -1,9 +1,7 @@
 package ch.epfl.sweng.udle;
 
 import android.location.Location;
-import android.provider.ContactsContract;
 
-import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -11,9 +9,7 @@ import com.parse.ParseUser;
 
 import org.junit.Test;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import ch.epfl.sweng.udle.Food.DrinkTypes;
@@ -23,12 +19,9 @@ import ch.epfl.sweng.udle.Food.OptionsTypes;
 import ch.epfl.sweng.udle.Food.OrderElement;
 import ch.epfl.sweng.udle.Food.Orders;
 import ch.epfl.sweng.udle.network.DataManager;
-import ch.epfl.sweng.udle.network.OrderStatus;
-import ch.epfl.sweng.udle.network.ParseOrderElement;
 import ch.epfl.sweng.udle.network.ParseUserOrderInformations;
 
 import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.fail;
 
 /**
  * Created by skalli93 on 11/10/15.
