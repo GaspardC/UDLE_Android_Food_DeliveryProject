@@ -6,6 +6,8 @@ import java.util.List;
 
 /**
  * Created by rodri on 23/10/2015.
+ *
+ * Represents all the drinks in the app, with the name and the price.
  */
 public enum DrinkTypes {
 
@@ -22,15 +24,27 @@ public enum DrinkTypes {
         this.price = price;
     }
 
+    /**
+     * @return Price of the drink
+     */
     public Double getPrice(){
         return price;
     }
 
+
+    /**
+     * @return String representation of the drink (The name of the drink).
+     */
     public String toString(){
         return name;
     }
 
 
+    /**
+     * Add the Drinks display in recap into the HashMap responsible of the display of the all recap.
+     *
+     * @param list HashMap used in the recaps of the order
+     */
     public static void displayInRecap(List<HashMap<String, String>> list){
         for(DrinkTypes drinkType : DrinkTypes.values()){
             int nbaOccurrences = Collections.frequency(Orders.getActiveOrder().getDrinks(), drinkType);
