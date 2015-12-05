@@ -2,9 +2,7 @@ package ch.epfl.sweng.udle.network;
 
 
 import android.location.Location;
-import android.util.Log;
 
-import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
@@ -29,13 +27,66 @@ import ch.epfl.sweng.udle.Food.Orders;
  */
 
 public class DataManager {
-    private static double maxDeliveryDistance;
-    private static ParseUser user;
-    private static ParseGeoPoint userLocation;
-    private static ArrayList<OrderElement> pendingOrders;
-    private static ArrayList<OrderElement> currentOrders;
-    private static ArrayList<String> nearbyRestaurants = new ArrayList<>();
-    private static ParseUserOrderInformations userOrderInformations = null;
+
+    /**
+     *  Return current parse user
+     */
+    public static ParseUser getUser(){
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        return currentUser;
+    }
+
+    /**
+     *  Return current parse username
+     */
+    public static String getUserName(){
+        ParseUser currentUser = getUser();
+        return currentUser.getUsername();
+    }
+
+    /**
+     *  Return user location as stored in server
+     */
+    public static Location getUserLocation(){
+        ParseUser currentUser = getUser();
+        ParseGeoPoint parseGeoPoint = currentUser.getParseGeoPoint("Location");
+
+        Location location = new Location("");
+        location.setLatitude(parseGeoPoint.getLatitude());
+        location.setLongitude(parseGeoPoint.getLongitude());
+
+        return location;
+    }
+
+    /**
+     * Set the location of the user in the server
+     * @param location Location to store in the server
+     */
+    public static void setUserLocation(Location location) {
+        ParseGeoPoint currentLocation = new ParseGeoPoint(location.getLatitude(), location.getLongitude());
+        ParseUser currentUser = getUser();
+        currentUser.put("Location", currentLocation);
+    }
+
+    /**
+     * @param id ObjectId of the ParseUserOrderInformation on the server
+     * @return ExpectedTime enter by the restaurant for the specified object.
+     */
+    public static String getExpectedTime(String id){
+        ParseUserOrderInformations parseOrder = getParseUserObjectWithId(id);
+        return parseOrder.getExpectedTime();
+    }
+
+
+    /**
+     * @param objectId
+     * @return Confirm that the current status of the order, specify by the objectId given as parameter, is 'Waiting'.
+     */
+    public static boolean isStatusWaiting(String objectId) {
+        ParseUserOrderInformations parseUserOrderInformations = getParseUserObjectWithId(objectId);
+        String orderStatus = parseUserOrderInformations.getOrderStatus();
+        return orderStatus.equals(OrderStatus.WAITING.toString());
+    }
 
 
     /**
@@ -45,7 +96,7 @@ public class DataManager {
      * This two entries are directly push to server.
      */
     public static void createNewParseUserOrderInformations(){
-        userOrderInformations = new ParseUserOrderInformations();
+        ParseUserOrderInformations userOrderInformations = new ParseUserOrderInformations();
 
         OrderElement orderElement = Orders.getActiveOrder();
 
@@ -62,8 +113,61 @@ public class DataManager {
         ParseObject parseOrderElement = ParseOrderElement.create(orderElement);
         parseOrderElement.saveInBackground();
         userOrderInformations.setOrder(parseOrderElement);
-
+        Orders.setActiveOrder(orderElement);
     }
+
+
+    /**
+     * Change status of order to reflect that it's currenty being delivered.
+     * @param objectId id of the ParseUserObject
+     * @param eta ExpectedTime for the delivery
+     */
+    public static void deliveryEnRoute(String objectId, int eta) {
+        ParseUser user = getUser();
+
+        String deliveringRestaurant = user.getUsername();
+        String deliveryGuyNumber = user.getString("phone");
+
+        ParseUserOrderInformations userOrderInformations = getParseUserObjectWithId(objectId);
+        userOrderInformations.setDeliveryGuyNumber(deliveryGuyNumber);
+        userOrderInformations.setParseDeliveringRestaurant(deliveringRestaurant);
+        userOrderInformations.setExpectedTime(eta);
+        userOrderInformations.setOrderStatus(OrderStatus.ENROUTE.toString());
+    }
+
+    /**
+     * Change status of order to reflect that it's currenty delivered. Order is finish.
+     * @param objectId id of the ParseUserObject
+     */
+    public static void deliveryDelivered(String objectId) {
+        ParseUserOrderInformations userOrderInformations = getParseUserObjectWithId(objectId);
+        userOrderInformations.setOrderStatus(OrderStatus.DELIVERED.toString());
+    }
+
+
+
+    /**
+     * @param objectId String that identify a specif UserOrderInformations on the server
+     * @return The ParseUserOrderInformations specify in the server by the given objectId parameter.
+     */
+    public static ParseUserOrderInformations getParseUserObjectWithId(String objectId) {
+        ParseUserOrderInformations parseUserOrderInformations;
+
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("ParseUserOrderInformations");
+        query.whereEqualTo("objectId",objectId);
+
+        try {
+            parseUserOrderInformations = (ParseUserOrderInformations) query.getFirst();
+        }
+
+        catch (Exception e) {
+            throw new IllegalStateException(e);
+        }
+
+        return parseUserOrderInformations;
+    }
+
+
 
     /**
      *  Return true if a restaurant is near the user and store objectId array of nearby restaurants in server.
@@ -72,9 +176,10 @@ public class DataManager {
      *  Does not consider availability of restaurant.
      */
     public static boolean getRestaurantsNearTheUser() {
-        user = DataManager.getUser();
-        userLocation = user.getParseGeoPoint("Location");
+        ParseUser user = DataManager.getUser();
+        ParseGeoPoint userLocation = user.getParseGeoPoint("Location");
         Boolean restaurantAvailable = false;
+        ArrayList<String> nearbyRestaurants = new ArrayList<>();
 
         //Start Query
         ParseQuery<ParseUser> query = ParseUser.getQuery();
@@ -106,108 +211,90 @@ public class DataManager {
     }
 
 
-
     /**
-     *  Change status of order to reflect that it's currenty being delivered.
-     *
+     * Start a query of all the waiting orders of the client.
+     * Compile an arraylist of all the order element objects and return.
+     * Returns null if query fails.
      */
-    public static void deliveryEnRoute(String objectId, int eta) {
-        ParseUser user = getUser();
+    public static ArrayList<OrderElement> getWaitingOrdersForAClient() {
+        ArrayList<OrderElement> pendingOrders = new ArrayList<>();
 
-        String deliveringRestaurant = user.getUsername();
-        String deliveryGuyNumber = user.getString("phone");
+        ParseUser user = DataManager.getUser();
+        try {
+            user.fetch();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
-        ParseUserOrderInformations userOrderInformations = getParseUserObjectWithId(objectId);
-        userOrderInformations.setDeliveryGuyNumber(deliveryGuyNumber);
-        userOrderInformations.setParseDeliveringRestaurant(deliveringRestaurant);
-        userOrderInformations.setExpectedTime(eta);
-        userOrderInformations.setOrderStatus(OrderStatus.ENROUTE.toString());
-    }
-
-    /**
-     *  Change status of order to reflect that it's currenty delivered. Order is finish.
-     */
-    public static void deliveryDelivered(String objectId) {
-        ParseUserOrderInformations userOrderInformations = getParseUserObjectWithId(objectId);
-        userOrderInformations.setOrderStatus(OrderStatus.DELIVERED.toString());
-    }
-
-    /**
-     *  Return current parse user
-     */
-    public static ParseUser getUser(){
-        ParseUser currentUser = ParseUser.getCurrentUser();
-        return currentUser;
-    }
-
-    /**
-     *  Return current parse username
-     */
-    public static String getUserName(){
-        ParseUser currentUser = ParseUser.getCurrentUser();
-        return currentUser.getUsername();
-    }
-
-    /**
-     *  Return user location
-     */
-    public static Location getUserLocation(){
-        ParseUser currentUser = getUser();
-        ParseGeoPoint parseGeoPoint = currentUser.getParseGeoPoint("Location");
-
-        Location location = new Location("");
-        location.setLatitude(parseGeoPoint.getLatitude());
-        location.setLongitude(parseGeoPoint.getLongitude());
-
-        return location;
-    }
-
-    public static String getExpectedTime(String id){
-        ParseUserOrderInformations parseOrder = getParseUserObjectWithId(id);
-        return parseOrder.getExpectedTime();
-    }
-
-    /**
-     *  Return current user status - user or restaurant
-     */
-    public static boolean isCurrentUserARestaurant(){
-        ParseUser currentUser = ParseUser.getCurrentUser();
-        return currentUser.getBoolean("RestaurantOwner");
-    }
-
-
-    /**
-     * @param objectId String that identify a specif UserOrderInformations on the server
-     * @return The ParseUserOrderInformations specify in the serve by the given objectId parameter.
-     */
-    private static ParseUserOrderInformations getParseUserObjectWithId(String objectId) {
-        ParseUserOrderInformations parseUserOrderInformations = null;
-
+        //Start Query
         ParseQuery<ParseObject> query = ParseQuery.getQuery("ParseUserOrderInformations");
-        query.whereEqualTo("objectId",objectId);
+        query.whereEqualTo("orderStatus", OrderStatus.WAITING.toString());
+        String id = user.getObjectId();
+        query.whereEqualTo("user", user);
 
         try {
-            parseUserOrderInformations = (ParseUserOrderInformations) query.getFirst();
-        }
+            List<ParseObject> OrderList = query.find();
 
+            for (ParseObject userOrder : OrderList) {
+
+                //Cast to parseUserOrderInformations to use methods
+                ParseUserOrderInformations parseUserOrder = (ParseUserOrderInformations) userOrder;
+
+                ParseObject parseOrderElement = parseUserOrder.getOrder();
+                OrderElement orderElement = ParseOrderElement.retrieveOrderElementFromParse(parseOrderElement);
+
+                pendingOrders.add(orderElement);
+            }
+        }
         catch (Exception e) {
-            //throw new IOException("QUERY NOT WORKING");
+            throw new IllegalStateException(e);
         }
-
-        return parseUserOrderInformations;
+        return pendingOrders;
     }
 
 
     /**
-     * @param objectId
-     * @return Confirm that the current status of the order, specify by the objectId given as parameter, is 'Waiting'.
+     * Start a query of all the enRoute orders of the client.
+     * Compile an arraylist of all the order element objects and return.
+     * Returns null if query fails.
      */
-    public static boolean isStatusWaiting(String objectId) {
-        ParseUserOrderInformations parseUserOrderInformations = getParseUserObjectWithId(objectId);
-        String orderStatus = parseUserOrderInformations.getOrderStatus();
-        return orderStatus.equals(OrderStatus.WAITING.toString());
+    public static ArrayList<OrderElement> getEnRouteOrdersForAClient() {
+        ArrayList<OrderElement> enRouteOrders = new ArrayList<>();
+
+        ParseUser user = DataManager.getUser();
+        try {
+            user.fetch();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        //Start Query
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("ParseUserOrderInformations");
+        query.whereEqualTo("orderStatus", OrderStatus.ENROUTE.toString());
+        query.whereEqualTo("user", user);
+
+        try {
+            List<ParseObject> OrderList = query.find();
+
+            for (ParseObject userOrder : OrderList) {
+
+                //Cast to parseUserOrderInformations to use methods
+                ParseUserOrderInformations parseUserOrder = (ParseUserOrderInformations) userOrder;
+
+                ParseObject parseOrderElement = parseUserOrder.getOrder();
+                OrderElement orderElement = ParseOrderElement.retrieveOrderElementFromParse(parseOrderElement);
+
+                enRouteOrders.add(orderElement);
+            }
+        }
+        catch (Exception e) {
+            throw new IllegalStateException(e);
+        }
+        return enRouteOrders;
     }
 
+
+    /*              RESTAURANT METHODS                       */
 
 
     /**
@@ -216,16 +303,16 @@ public class DataManager {
      * Returns null if query fails.
      */
     public static ArrayList<OrderElement> getWaitingOrdersForARestaurantOwner() {
-        pendingOrders = new ArrayList<>();
+        ArrayList<OrderElement> pendingOrders = new ArrayList<>();
 
-        user = DataManager.getUser();
+        ParseUser user = DataManager.getUser();
         try {
             user.fetch();
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        userLocation = user.getParseGeoPoint("Location");
-        maxDeliveryDistance = (double) ((Integer) user.getNumber("maxDeliveryDistanceKm"));
+        ParseGeoPoint userLocation = user.getParseGeoPoint("Location");
+        double maxDeliveryDistance = (double) ((Integer) user.getNumber("maxDeliveryDistanceKm"));
 
         //Start Query
         ParseQuery<ParseObject> query = ParseQuery.getQuery("ParseUserOrderInformations");
@@ -255,90 +342,12 @@ public class DataManager {
             }
         }
         catch (Exception e) {
-            //throw new IOException("Nhvvb");
+            throw new IllegalStateException(e);
         }
+
         return pendingOrders;
     }
 
-
-
-    public static ArrayList<OrderElement> getWaitingOrdersForAClient() {
-        pendingOrders = new ArrayList<>();
-
-        user = DataManager.getUser();
-        try {
-            user.fetch();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        //Start Query
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("ParseUserOrderInformations");
-        query.whereEqualTo("orderStatus", OrderStatus.WAITING.toString());
-        String id = user.getObjectId();
-        query.whereEqualTo("user", user);
-
-        try {
-            List<ParseObject> OrderList = query.find();
-
-            for (ParseObject userOrder : OrderList) {
-
-                //Cast to parseUserOrderInformations to use methods
-                ParseUserOrderInformations parseUserOrder = (ParseUserOrderInformations) userOrder;
-
-                ParseObject parseOrderElement = parseUserOrder.getOrder();
-                OrderElement orderElement = ParseOrderElement.retrieveOrderElementFromParse(parseOrderElement);
-
-                pendingOrders.add(orderElement);
-            }
-        }
-        catch (Exception e) {
-            //throw new IOException("Nhvvb");
-        }
-        return pendingOrders;
-    }
-
-
-    public static ArrayList<OrderElement> getEnRouteOrdersForAClient() {
-        ArrayList<OrderElement> enRouteOrders = new ArrayList<>();
-
-        user = DataManager.getUser();
-        try {
-            user.fetch();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        //Start Query
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("ParseUserOrderInformations");
-        query.whereEqualTo("orderStatus", OrderStatus.ENROUTE.toString());
-        query.whereEqualTo("user", user);
-
-        try {
-            List<ParseObject> OrderList = query.find();
-
-            for (ParseObject userOrder : OrderList) {
-
-                //Cast to parseUserOrderInformations to use methods
-                ParseUserOrderInformations parseUserOrder = (ParseUserOrderInformations) userOrder;
-
-                ParseObject parseOrderElement = parseUserOrder.getOrder();
-                OrderElement orderElement = ParseOrderElement.retrieveOrderElementFromParse(parseOrderElement);
-
-                enRouteOrders.add(orderElement);
-            }
-        }
-        catch (Exception e) {
-            //throw new IOException("Nhvvb");
-        }
-        return enRouteOrders;
-    }
-
-
-    public static boolean isARestaurant(){
-        if (ParseUser.getCurrentUser() == null) return false;
-        return DataManager.getUser().getBoolean("RestaurantOwner");
-    }
 
     /**
      *  Start a query of all the enRoute orders that the restaurant accept.
@@ -346,8 +355,8 @@ public class DataManager {
      * Returns null if query fails.
      */
     public static ArrayList<OrderElement> getCurrentOrdersForARestaurantOwner() {
-        currentOrders = new ArrayList<>();
-        user = DataManager.getUser();
+        ArrayList<OrderElement> currentOrders = new ArrayList<>();
+        ParseUser user = DataManager.getUser();
 
         //Start Query
         ParseQuery<ParseObject> query = ParseQuery.getQuery("ParseUserOrderInformations");
@@ -366,14 +375,25 @@ public class DataManager {
             }
         }
         catch (Exception e) {
-            //throw new IOException("Nhvvb");
+            throw new IllegalStateException(e);
         }
         return currentOrders;
     }
 
-    public static boolean isMyCommand(String userOrderInformationsID) {
-        ParseUserOrderInformations parseUserOrderInformations = getParseUserObjectWithId(userOrderInformationsID);
-        String restaurantName = parseUserOrderInformations.getString("deliveringRestaurant");
-        return (restaurantName.equals(getUserName()));
+    /**
+     * @return True if the user is register as a Restautant
+     */
+    public static boolean isARestaurant(){
+        if (ParseUser.getCurrentUser() == null){
+            return false;
+        }
+        ParseUser user = DataManager.getUser();
+        try {
+            user.fetch();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return user.getBoolean("RestaurantOwner");
     }
+
 }
