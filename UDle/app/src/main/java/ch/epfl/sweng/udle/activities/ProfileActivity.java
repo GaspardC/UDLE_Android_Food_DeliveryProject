@@ -84,6 +84,9 @@ public class ProfileActivity extends SlideMenuActivity {
     });
   }
 
+  /**
+   * Show either the login/logout layout in function of the status of the user
+   */
   @Override
   protected void onStart() {
     super.onStart();
@@ -113,36 +116,9 @@ public class ProfileActivity extends SlideMenuActivity {
     }
     else{
       if(currentUser.getBoolean("RestaurantOwner")){
-        orderNowButton.setVisibility(View.GONE);
-        seekBarRestaurantDistance.setVisibility(View.VISIBLE);
-        seekBarValue.setVisibility(View.VISIBLE);
-        int seekbarValueInit = currentUser.getInt("maxDeliveryDistanceKm");
-        if(0 != seekbarValueInit){
-            seekBarRestaurantDistance.setProgress(seekbarValueInit);
-            seekBarValue.setText("Radius of delivery : " + String.valueOf(seekbarValueInit) + " km");
-          }
 
-          final int[] seekvalue = {0};
+        setSeekBar();
 
-          seekBarRestaurantDistance.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener(){
-
-              @Override
-              public void onProgressChanged(SeekBar seekBar, int progress,
-                                            boolean fromUser) {
-                  seekBarValue.setText("Radius of delivery : "+String.valueOf(progress) + " km");
-                  seekvalue[0] = progress;
-              }
-
-              @Override
-              public void onStartTrackingTouch(SeekBar seekBar) {
-              }
-
-              @Override
-              public void onStopTrackingTouch(SeekBar seekBar) {
-                  currentUser.put("maxDeliveryDistanceKm", seekvalue[0]);
-                  currentUser.saveInBackground();
-              }
-          });
 
   }
       else{
@@ -154,6 +130,48 @@ public class ProfileActivity extends SlideMenuActivity {
     }
   }
 
+  /**
+   * Use to display, init the seekbar which is used by the restaurant to set the radius of their delivery area
+   * It can be an integer between 0 and 30 km and it is automatically sent to the server
+   */
+  private void setSeekBar() {
+
+    orderNowButton.setVisibility(View.GONE);
+    seekBarRestaurantDistance.setVisibility(View.VISIBLE);
+    seekBarValue.setVisibility(View.VISIBLE);
+    int seekbarValueInit = currentUser.getInt("maxDeliveryDistanceKm");
+    if(0 != seekbarValueInit){
+      seekBarRestaurantDistance.setProgress(seekbarValueInit);
+      seekBarValue.setText("Radius of delivery : " + String.valueOf(seekbarValueInit) + " km");
+    }
+
+    final int[] seekvalue = {0};
+
+    seekBarRestaurantDistance.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener(){
+
+      @Override
+      public void onProgressChanged(SeekBar seekBar, int progress,
+                                    boolean fromUser) {
+        seekBarValue.setText("Radius of delivery : "+String.valueOf(progress) + " km");
+        seekvalue[0] = progress;
+      }
+
+      @Override
+      public void onStartTrackingTouch(SeekBar seekBar) {
+      }
+
+      @Override
+      public void onStopTrackingTouch(SeekBar seekBar) {
+        currentUser.put("maxDeliveryDistanceKm", seekvalue[0]);
+        currentUser.saveInBackground();
+      }
+    });
+  }
+
+  /**
+   * @param view Button Begin
+   *             Use to begin when the user has logged in successfully
+   */
   public void goToMapActivity(View view){
     Intent intent = new Intent(this, MapActivity.class);
     startActivity(intent);
