@@ -210,8 +210,8 @@ public class RecapActivity extends SlideMenuActivity {
                     order.removeToFood(menu);
                 }
             }else{
-                if(optionOfElemToRemove.startsWith(getResources().getString(R.string.removeMessage_4))){
-                    optionOfElemToRemove = optionOfElemToRemove.substring(getResources().getString(R.string.removeMessage_4).length());
+                if(optionOfElemToRemove.startsWith(getResources().getString(R.string.options))){
+                    optionOfElemToRemove = optionOfElemToRemove.substring(getResources().getString(R.string.options).length());
                     String[] temp2 = optionOfElemToRemove.split(" ; ");
                     ArrayList<OptionsTypes> tempListOption = new ArrayList<>();
                     for (int j = 0; j < temp2.length; j++){
