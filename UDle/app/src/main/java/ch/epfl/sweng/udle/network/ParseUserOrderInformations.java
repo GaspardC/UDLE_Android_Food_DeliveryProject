@@ -158,6 +158,11 @@ public class ParseUserOrderInformations extends ParseObject {
      * @return The order corresponding with this userOrderInformatins as a ParseObject. Still Need to convert it into an OrderElement
      */
     public ParseObject getOrder(){
+        try {
+            this.fetch();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         ParseObject order = (ParseObject) this.get("orderElementPointer");
 
         if (order == null){

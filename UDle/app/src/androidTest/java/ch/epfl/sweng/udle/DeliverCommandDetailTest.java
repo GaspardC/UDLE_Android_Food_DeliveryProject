@@ -98,7 +98,7 @@ public class DeliverCommandDetailTest{
         onView(withText(R.string.expectedTimeTooBig)).inRoot(withDecorView(not(is(mActivityRule.getActivity().getWindow().getDecorView())))).check(matches(isDisplayed()));
     }
 
-    @Test
+/*    @Test
     public void clickWithExpectedTime() throws ParseException {
         String objectID = setUpIntentAndActivityForNewOrdersServer();
         onView(withId(R.id.DeliverCommandDetail_expectedTime)).perform(typeText("15"));
@@ -106,7 +106,7 @@ public class DeliverCommandDetailTest{
         onView(withId(R.id.DeliveryMap_GoogleMaps)).check(matches(isDisplayed()));
         deleteParseUserOrderInformation(objectID);
     }
-
+*/
 
 
     @Test
