@@ -22,6 +22,8 @@ import static android.support.test.espresso.matcher.ViewMatchers.*;
  */
 public class HelpTest extends ActivityInstrumentationTestCase2<HelpActivity> {
 
+    private HelpActivity activity;
+
     public HelpTest() {
         super(HelpActivity.class);
     }
@@ -29,22 +31,26 @@ public class HelpTest extends ActivityInstrumentationTestCase2<HelpActivity> {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
+        activity = getActivity();
         injectInstrumentation(InstrumentationRegistry.getInstrumentation());
     }
 
     @Test
     public void testImageDisplay(){
-        getActivity();
         onView(withId(R.id.help_page_imageView)).check(matches(isDisplayed()));
     }
 
+    /**
+     * Test if a right-to-left swipe changes the image.
+     *
+     * This test will work only if the test activity contains at least two images.
+     *
+     */
     @Test
     public void testImageChange() {
-        getActivity();
-        onView(withId(R.id.help_page_imageView)).check(matches(isDisplayed()));
-        onView(withId(R.id.help_page_imageView)).perform(swipeLeft());
-        onView(withId(R.id.help_page_imageView)).perform(swipeRight());
         onView(withId(R.id.help_page_imageView)).check(matches(withContentDescription(getActivity().getResources().getString(R.string.help_page) + "0")));
+        onView(withId(R.id.help_page_imageView)).perform(swipeLeft());
+        onView(withId(R.id.help_page_imageView)).check(matches(withContentDescription(getActivity().getResources().getString(R.string.help_page) + "1")));
     }
 
 }
