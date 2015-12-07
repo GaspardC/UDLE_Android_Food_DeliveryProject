@@ -27,7 +27,6 @@ import com.parse.Parse;
 import com.parse.ParseFacebookUtils;
 import com.parse.ParseObject;
 
-import ch.epfl.sweng.udle.Food.OrderElement;
 
 public class ParseApplication extends Application {
 

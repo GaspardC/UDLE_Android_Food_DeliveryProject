@@ -44,8 +44,8 @@ public class OrderElementTest {
     public void initTest(){
         OrderElement orderElement = new OrderElement();
 
-        assertEquals(orderList, orderElement.getOrder());
-        assertEquals(drinks, orderElement.getDrinks());
+        assertEquals(0, orderElement.getOrder().size());
+        assertEquals(0, orderElement.getDrinks().size());
         assertEquals(deliveryLocation, orderElement.getDeliveryLocation());
         assertEquals(deliveryAddress, orderElement.getDeliveryAddress());
     }
@@ -64,8 +64,10 @@ public class OrderElementTest {
         ArrayList<Menu> menus = orderElmement.getOrder();
         for (int i=0 ; i < menus.size() ; i++){
             Menu men = orderList.get(i);
-            assertEquals(men.getFood(), menus.get(i).getFood());
-            assertEquals(men.getOptions(), menus.get(i).getOptions());
+            assertEquals(men.getFood().toString(), menus.get(i).getFood().toString());
+            for(int j=0; j < men.getOptions().size(); j++){
+                assertEquals(men.getOptions().get(j).toString(), menus.get(i).getOptions().get(j).toString());
+            }
         }
     }
 
@@ -88,12 +90,25 @@ public class OrderElementTest {
         ArrayList<Menu> menus = orderElmement.getOrder();
         for (int i=0 ; i < menus.size() ; i++){
             Menu men = orderList.get(i);
-            assertEquals(men.getFood(), menus.get(i).getFood());
-            assertEquals(men.getOptions(), menus.get(i).getOptions());
+            assertEquals(men.getFood().toString(), menus.get(i).getFood().toString());
+            for(int j=0; j < men.getOptions().size(); j++){
+                assertEquals(men.getOptions().get(j).toString(), menus.get(i).getOptions().get(j).toString());
+            }
         }
     }
 
 
+    @Test
+    public void deliveryLocation(){
+        OrderElement orderElement = new OrderElement();
+        Location location = new Location("");
+        location.setLatitude(20.0111);
+        location.setLongitude(55.234322);
+        orderElement.setDeliveryLocation(location);
+
+        assertEquals(20.0111, orderElement.getDeliveryLocation().getLatitude());
+        assertEquals(55.234322, orderElement.getDeliveryLocation().getLongitude());
+    }
     @Test
     public void nullDeliveryLocation(){
         OrderElement orderElement = new OrderElement();
@@ -161,6 +176,145 @@ public class OrderElementTest {
             fail("Null drink doesn't thrown an exception");
         } catch (IllegalArgumentException e){
             //goood
+        }
+    }
+
+    @Test
+    public void removeDrink(){
+        OrderElement orderElement = new OrderElement();
+        orderElement.addToDrinks(DrinkTypes.BEER);
+        orderElement.addToDrinks(DrinkTypes.BEER);
+        orderElement.addToDrinks(DrinkTypes.COCA);
+        orderElement.addToDrinks(DrinkTypes.WATER);
+        orderElement.addToDrinks(DrinkTypes.WATER);
+        orderElement.addToDrinks(DrinkTypes.WATER);
+        orderElement.addToDrinks(DrinkTypes.WATER);
+
+        orderElement.removeToDrinks(DrinkTypes.COCA);
+
+        assertEquals(6, orderElement.getDrinks().size());
+        assertEquals(false, orderElement.getDrinks().contains(DrinkTypes.COCA));
+    }
+    @Test
+    public void removeDrinksNotIn(){
+        OrderElement orderElement = new OrderElement();
+        orderElement.addToDrinks(DrinkTypes.BEER);
+        orderElement.removeToDrinks(DrinkTypes.ORANGINA);
+        assertEquals(1, orderElement.getDrinks().size());
+    }
+    @Test
+    public void removeDrinksNull(){
+        OrderElement orderElement = new OrderElement();
+        orderElement.addToDrinks(DrinkTypes.BEER);
+        try{
+            orderElement.removeToDrinks(null);
+            fail("Remove drinks null fail");
+        } catch (IllegalArgumentException e){
+            //Good
+        }
+    }
+
+
+    @Test
+    public void removeFood(){
+        OrderElement orderElement = new OrderElement();
+        Menu menu1 = new Menu();
+        menu1.setFood(FoodTypes.KEBAB);
+        orderElement.addMenu(menu1);
+        orderElement.addMenu(menu1);
+        orderElement.removeToFood(menu1);
+
+        assertEquals(1, orderElement.getOrder().size());
+    }
+    @Test
+    public void removeFoodNotIn(){
+        OrderElement orderElement = new OrderElement();
+        Menu menu1 = new Menu();
+        menu1.setFood(FoodTypes.KEBAB);
+        orderElement.addMenu(menu1);
+        orderElement.addMenu(menu1);
+        Menu menu2 = new Menu();
+        menu2.setFood(FoodTypes.BURGER);
+        orderElement.removeToFood(menu2);
+        assertEquals(2, orderElement.getOrder().size());
+    }
+    @Test
+    public void removeFoodNull(){
+        OrderElement orderElement = new OrderElement();
+        Menu menu1 = new Menu();
+        menu1.setFood(FoodTypes.KEBAB);
+        orderElement.addMenu(menu1);
+        try{
+            orderElement.removeToFood(null);
+            fail("Remove food null fail");
+        } catch (IllegalArgumentException e){
+            //Good
+        }
+    }
+
+    @Test
+    public void getUSerNameOrder(){
+        OrderElement orderElement = new OrderElement();
+        assertEquals("", orderElement.getOrderedUserName());
+    }
+    @Test
+    public void setUserName(){
+        OrderElement orderElement = new OrderElement();
+        orderElement.setOrderedUserName("Test user name udle");
+        assertEquals("Test user name udle", orderElement.getOrderedUserName());
+    }
+    @Test
+    public void setuserNameNull(){
+        OrderElement orderElement = new OrderElement();
+        try{
+            orderElement.setOrderedUserName(null);
+            fail("Null username orders do error");
+        } catch (IllegalArgumentException e){
+            //Good
+        }
+    }
+    @Test
+    public void setuserNameEmpty(){
+        OrderElement orderElement = new OrderElement();
+        try{
+            orderElement.setOrderedUserName("");
+            fail("Empty username orders do error");
+        } catch (IllegalArgumentException e){
+            //Good
+        }
+    }
+
+
+
+    @Test
+    public void getUserOrderInfoId(){
+        OrderElement orderElement = new OrderElement();
+        assertEquals("", orderElement.getUserOrderInformationsID());
+    }
+    @Test
+    public void setUserOrderInfoId(){
+        OrderElement orderElement = new OrderElement();
+        orderElement.setUserOrderInformationsID("111222555555");
+        assertEquals("111222555555", orderElement.getUserOrderInformationsID());
+    }
+    @Test
+    public void setUserOrderInfoIdNull(){
+        OrderElement orderElement = new OrderElement();
+        try{
+            orderElement.setUserOrderInformationsID(null);
+            fail("Null userOrderID orders do error");
+        } catch (IllegalArgumentException e){
+            //Good
+        }
+    }
+    @Test
+    public void setUserOrderInfoIdEmpty(){
+        OrderElement orderElement = new OrderElement();
+        try{
+            orderElement.setUserOrderInformationsID("");
+            fail("Empty userOrderID orders do error");
+        } catch (IllegalArgumentException e){
+            //Good
         }
     }
 

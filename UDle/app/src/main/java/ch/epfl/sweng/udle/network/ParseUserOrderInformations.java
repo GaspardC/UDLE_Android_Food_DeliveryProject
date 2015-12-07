@@ -5,7 +5,6 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -13,22 +12,26 @@ import java.util.Date;
  * Created by skalli93 on 11/1/15.
  * This class is designed to abstract the parse user interface and communicate directly with the
  * parse server. Every getter and setter pair represents a column's methods in the parse server.
- *
- * There will be one Parse User Order Information per user per session.
- * Data manager will handle the different rows available of this class.
- *
  */
 
 @ParseClassName("ParseUserOrderInformations")
 public class ParseUserOrderInformations extends ParseObject {
 
+    /**
+     * Default constructor is required by Parse.
+     */
     public ParseUserOrderInformations() {
-        //A default constructor is required.
+        //Empty
     }
 
-    //Get current user
+    /**
+     * @return User associated with this parseUserOrder
+     */
     public ParseUser getUser() {
         ParseUser user = (ParseUser) this.get("user");
+        if (user == null){
+            throw new InternalError("Internal error: User retrieve is corrupted.");
+        }
         try {
             user.fetch();
         } catch (ParseException e) {
@@ -37,54 +40,87 @@ public class ParseUserOrderInformations extends ParseObject {
         return user;
     }
 
-    public void setUser(ParseUser value){
-        this.put("user", value);
+    /**
+     * @param newUser ParseUser who will receive the order.
+     */
+    public void setUser(ParseUser newUser){
+        if (newUser == null){
+            throw new IllegalArgumentException("Try to set user with a illegal value.");
+        }
+        this.put("user", newUser);
+        this.saveInBackground();
     }
 
-    //Return the contact info for the guy delivering the food
+    /**
+     * @return The contact info for the guy delivering the food
+     */
     public String getDeliveryGuyNumber() {
-
-        return this.getString("deliveryGuyNumber");
+        String number = this.getString("deliveryGuyNumber");
+        if (number == null){
+            throw new InternalError("Number is not assigined for this user.");
+        }
+        return number;
     }
 
-    //Set the contact info for the guy delivering the food
-    public void setDeliveryGuyNumber(String value) {
-
-        this.put("deliveryGuyNumber", value);
+    /**
+     * @param newNumber The contact info for the guy delivering the food
+     */
+    public void setDeliveryGuyNumber(String newNumber) {
+        if (newNumber == null){
+            throw new IllegalArgumentException("Illegal string given for the delivery guy number.");
+        }
+        this.put("deliveryGuyNumber", newNumber);
         this.saveInBackground();
     }
 
-    //Return the name of the restaurant delivering
+
+    /**
+     * @return the name of the restaurant delivering
+     */
     public String getParseDeliveringRestaurant(){
-
-        return this.getString("deliveringRestaurant");
+        String restaurantName = this.getString("deliveringRestaurant");
+        if (restaurantName == null){
+            throw new InternalError("Delivering restaurant is not correctly set.");
+        }
+        return restaurantName;
     }
 
-    //Set the name of the restaurant delivering
-    public void setParseDeliveringRestaurant(String value) {
-
-        this.put("deliveringRestaurant", value);
+    /**
+     * @param restaurantName The name of the restaurant delivering for this order.
+     */
+    public void setParseDeliveringRestaurant(String restaurantName) {
+        if (restaurantName == null  || restaurantName.equals("")){
+            throw new IllegalArgumentException("Try ti set a wrong value for restaurant delivering.");
+        }
+        this.put("deliveringRestaurant", restaurantName);
         this.saveInBackground();
     }
 
 
-    //Return the ETA of the food delivery
+    /**
+     * @return The expected time (e.g 20:40, 12.04) of the order delivery
+     */
     public String getExpectedTime() {
-
-        return  this.getString("expectedTime");
+        String time = this.getString("expectedTime");
+        if (time == null){
+            throw new InternalError("The expected time cannot be retrieved.");
+        }
+        return  time;
     }
 
-    //Set the ETA for the food delivery
-    public void setExpectedTime(int value) {
 
-        if(value == -1){
+    /**
+     * @param expectedTime Th expected time in minutes for the delivery
+     */
+    public void setExpectedTime(int expectedTime) {
+        if(expectedTime == -1){
             this.put("expectedTime", "-1");
         }
         else{
             Date d = new Date();
 
             SimpleDateFormat fmt = new SimpleDateFormat("HH:mm, dd/MM");
-            int time = (value* 60 * 1000);
+            int time = (expectedTime* 60 * 1000);
             Date deliveryDate = new Date(d.getTime() + (time));
 
             String date = fmt.format(deliveryDate);
@@ -95,28 +131,38 @@ public class ParseUserOrderInformations extends ParseObject {
     }
 
 
-    // Retrieve current order status based on pre-defined strings
+    /**
+     * @return Current order status based on pre-defined strings
+     */
     public String getOrderStatus() {
-
-        return this.getString("orderStatus");
+        String status = this.getString("orderStatus");
+        if (status == null){
+            throw new InternalError("Order Status is not set internally.");
+        }
+        return status;
     }
 
-    //Change Order Status when order is made
+    /**
+     * @param orderStatus String reflecting the actual status of the order
+     */
     public void setOrderStatus(String orderStatus) {
+        if (orderStatus == null || orderStatus.equals("")){
+            throw new IllegalArgumentException("Try to set the order status to a wrong value.");
+        }
         this.put("orderStatus", orderStatus);
         this.saveInBackground();
     }
 
-    //Retrieve the order parse element and add parameters to the order
-    public void setOrder (ParseObject orderElement) {
-       // this.put("orderElement", orderElement);
-        this.put("orderElementPointer", orderElement);
-        this.saveInBackground();
-    }
 
-    //Return Order in type ArrayListMenu
+    /**
+     * @return The order corresponding with this userOrderInformatins as a ParseObject. Still Need to convert it into an OrderElement
+     */
     public ParseObject getOrder(){
         ParseObject order = (ParseObject) this.get("orderElementPointer");
+
+        if (order == null){
+            throw new InternalError("Order is not set correctly for this userOrder.");
+        }
         try {
             order.fetch();
         } catch (ParseException e) {
@@ -125,4 +171,15 @@ public class ParseUserOrderInformations extends ParseObject {
         return order;
     }
 
+
+    /**
+     * @param orderElement ParseObject representing the orderElement of this userOrderInformations.
+     */
+    public void setOrder (ParseObject orderElement) {
+        if (orderElement == null){
+            throw new IllegalArgumentException("Try to set the order to a invalidl value");
+        }
+        this.put("orderElementPointer", orderElement);
+        this.saveInBackground();
+    }
 }
