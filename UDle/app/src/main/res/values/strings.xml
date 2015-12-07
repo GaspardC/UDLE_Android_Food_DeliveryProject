@@ -29,7 +29,7 @@
     <string name="confirm">Confirm</string>
     <string name="descriptionBurgerRotating">image stop rotating when order accepted</string>
     <string name="infotextwaiting">Please wait for a shop to accept your command</string>
-    <string name="infotextwaitingConfirmed">Congrats, your order is coming for you</string>
+    <string name="infotextwaitingConfirmed">Congrats, your order is being sent...</string>
 
     <string name="WaitingOrders">Waiting Order</string>
     <string name="ConfirmOrders">Confirmed Order</string>
@@ -88,5 +88,7 @@
     <string name="notificationTitle">Order accepted</string>
     <string name="notificationText">Your order was accepted. Click to see details.</string>
     <string name="noRestaurantAvailable">Sorry, no restaurants are available right now. Try later.</string>
+    <string name="payment_activity_title">Payment Info</string>
+    <string name="recap_of_your_order">Recap of your order :</string>
 
 </resources>
