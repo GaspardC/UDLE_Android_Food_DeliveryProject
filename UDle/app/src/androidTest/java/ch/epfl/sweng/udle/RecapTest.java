@@ -287,4 +287,51 @@ public class RecapTest extends ActivityInstrumentationTestCase2<RecapActivity> {
             }
         }
     }
+
+    @Test
+    public void testDeleteAllOnDrinks(){
+        addDrinks();
+        final RecapActivity activity = getActivity();
+        onView(withText("4 Beer")).check(matches(isDisplayed()));
+        onView(withText("2 Coca")).check(matches(isDisplayed()));
+        onView(withText("1 Water")).check(matches(isDisplayed()));
+
+        final int mActivePosition = 2;
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                activity.deleteElement(mActivePosition, true);
+            }
+        });
+        try{
+            onView(withText("4 Beer")).check(matches(isDisplayed()));
+            fail("Should be deleted");
+        }catch (Exception e){
+            // Works
+        }
+    }
+
+    @Test
+    public void testDeleteOneOnDrinks(){
+        addDrinks();
+        final RecapActivity activity = getActivity();
+        onView(withText("4 Beer")).check(matches(isDisplayed()));
+        onView(withText("2 Coca")).check(matches(isDisplayed()));
+        onView(withText("1 Water")).check(matches(isDisplayed()));
+
+        final int mActivePosition = 2;
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                activity.deleteElement(mActivePosition, false);
+            }
+        });
+        try{
+            onView(withText("4 Beer")).check(matches(isDisplayed()));
+            fail("Should be deleted");
+        }catch (Exception e){
+            onView(withText("3 Beer")).check(matches(isDisplayed()));
+        }
+    }
+
 }
