@@ -67,6 +67,27 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
     private HashMap<Integer, OrderElement> objectIdHashMapForList; //HashMap between the index of order shown in the list view and the specific order.
     private HashMap<String, OrderElement> objectIdHashMapForMap; //HashMap between the index of order shown in the map and the specific order.
 
+    private int timeBetweenAddrRequest = 333;
+    private boolean firstTimeCalled = true;
+    final Handler handler2 = new Handler();
+    private final Runnable  r = new Runnable () {
+        @Override
+        public void run() {
+            if (isLocationInitialised() || !displayGpsMessage) {
+                googleAdapter.setEnableAutocomplete(false);
+                LatLng LatLng = mMap.getCameraPosition().target;
+                setDeliveryAddressLocation(LatLng, getCompleteAddressString(LatLng.latitude, LatLng.longitude), true);
+            }
+            if (markerHidden && afterFirstChange){
+                markerLayout.setVisibility(LinearLayout.VISIBLE);
+                markerHidden = false;
+                afterFirstChange = false;
+            }else{
+                afterFirstChange = true;
+            }
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -549,17 +570,12 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
         mMap.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
             @Override
             public void onCameraChange(CameraPosition arg0) {
-                if (isLocationInitialised() || !displayGpsMessage) {
-                    googleAdapter.setEnableAutocomplete(false);
-                    LatLng LatLng = mMap.getCameraPosition().target;
-                    setDeliveryAddressLocation(LatLng, getCompleteAddressString(location.getLatitude(), location.getLongitude()), true);
-                }
-                if (markerHidden && afterFirstChange){
-                    markerLayout.setVisibility(LinearLayout.VISIBLE);
-                    markerHidden = false;
-                    afterFirstChange = false;
-                }else{
-                    afterFirstChange = true;
+                if (firstTimeCalled) {
+                    handler2.postDelayed(r, timeBetweenAddrRequest);
+                    firstTimeCalled = false;
+                }else {
+                    handler2.removeCallbacks(r);
+                    handler2.postDelayed(r, timeBetweenAddrRequest);
                 }
             }
         });
