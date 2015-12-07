@@ -214,4 +214,77 @@ public class RecapTest extends ActivityInstrumentationTestCase2<RecapActivity> {
             // Works
         }
     }
+
+    @Test
+    public void testDeleteOneOnMenusWithoutOptions(){
+        addMenus_2();
+        final RecapActivity activity = getActivity();
+        onView(withText("2 Kebab")).check(matches(isDisplayed()));
+        onView(withText("1 Burger")).check(matches(isDisplayed()));
+
+        final ListView mList = (ListView) activity.findViewById(R.id.RecapActivity_recapListView);
+        final int mActivePosition = 0;
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                activity.deleteElement(mActivePosition, false);
+            }
+        });
+        try{
+            onView(withText("2 Kebab")).check(matches(isDisplayed()));
+            fail("Should be deleted");
+        }catch (Exception e){
+            onView(withText("1 Kebab")).check(matches(isDisplayed()));
+            onView(withText("1 Burger")).check(matches(isDisplayed()));
+            final int mActivePosition_2 = 1;
+            activity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    activity.deleteElement(mActivePosition_2, false);
+                }
+            });
+            try{
+                onView(withText("1 Burger")).check(matches(isDisplayed()));
+                fail("Should be deleted");
+            }catch (Exception e_1){
+                // Works
+            }
+        }
+    }
+
+    @Test
+    public void testDeleteOneOnMenusWithOptions(){
+        addMenus_3();
+        final RecapActivity activity = getActivity();
+        onView(withText("2 Burger")).check(matches(isDisplayed()));
+        onView(withText("1 Kebab")).check(matches(isDisplayed()));
+
+        final int mActivePosition = 0;
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                activity.deleteElement(mActivePosition, false);
+            }
+        });
+        try{
+            onView(withText("2 Burger")).check(matches(isDisplayed()));
+            fail("Should be deleted");
+        }catch (Exception e){
+            onView(withText("1 Burger")).check(matches(isDisplayed()));
+            onView(withText("1 Kebab")).check(matches(isDisplayed()));
+            final int mActivePosition_2 = 1;
+            activity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    activity.deleteElement(mActivePosition_2, false);
+                }
+            });
+            try{
+                onView(withText("1 Kebab")).check(matches(isDisplayed()));
+                fail("Should be deleted");
+            }catch (Exception e_1){
+                // Works
+            }
+        }
+    }
 }
