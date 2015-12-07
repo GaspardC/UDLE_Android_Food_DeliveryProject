@@ -29,6 +29,7 @@ import com.parse.ParseUser;
 import java.util.ArrayList;
 
 import ch.epfl.sweng.udle.R;
+import ch.epfl.sweng.udle.activities.CurrentOrdersActivity;
 import ch.epfl.sweng.udle.activities.DeliveryRestaurantMapActivity;
 import ch.epfl.sweng.udle.activities.HelpActivity.HelpActivity;
 import ch.epfl.sweng.udle.activities.MapActivity;

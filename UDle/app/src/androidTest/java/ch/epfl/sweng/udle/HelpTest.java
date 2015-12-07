@@ -1,8 +1,6 @@
 package ch.epfl.sweng.udle;
 
 import android.support.test.InstrumentationRegistry;
-import android.support.test.espresso.action.ViewActions;
-import android.support.test.espresso.assertion.ViewAssertions;
 import android.test.ActivityInstrumentationTestCase2;
 import android.view.View;
 import android.widget.ImageView;
@@ -44,8 +42,8 @@ public class HelpTest extends ActivityInstrumentationTestCase2<HelpActivity> {
     public void testImageChange() {
         getActivity();
         onView(withId(R.id.help_page_imageView)).check(matches(isDisplayed()));
-        onView(withId(R.id.help_page_imageView)).perform(swipeRight());
         onView(withId(R.id.help_page_imageView)).perform(swipeLeft());
+        onView(withId(R.id.help_page_imageView)).perform(swipeRight());
         onView(withId(R.id.help_page_imageView)).check(matches(withContentDescription(getActivity().getResources().getString(R.string.help_page) + "0")));
     }
 
