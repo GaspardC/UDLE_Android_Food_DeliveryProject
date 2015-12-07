@@ -9,37 +9,21 @@ import android.widget.Button;
 
 import com.parse.ParseObject;
 
-import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
 
-import ch.epfl.sweng.udle.Food.DrinkTypes;
 import ch.epfl.sweng.udle.Food.FoodTypes;
 import ch.epfl.sweng.udle.Food.Menu;
-import ch.epfl.sweng.udle.Food.OptionsTypes;
 import ch.epfl.sweng.udle.Food.OrderElement;
 import ch.epfl.sweng.udle.Food.Orders;
 import ch.epfl.sweng.udle.activities.PaymentActivity;
-import ch.epfl.sweng.udle.activities.RecapActivity;
 import ch.epfl.sweng.udle.activities.WaitingActivity;
-import ch.epfl.sweng.udle.network.DataManager;
 import ch.epfl.sweng.udle.network.ParseOrderElement;
 
 import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static java.util.regex.Pattern.matches;
-
-import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.action.ViewActions.typeText;
-import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
 /**
  * Created by Abdes on 07/12/2015.
@@ -144,7 +128,7 @@ public class PaymentTest extends ActivityInstrumentationTestCase2<PaymentActivit
             }
         });
         //Watch for the timeout
-        WaitingActivity nextActivity = (WaitingActivity) getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 5000);
+        WaitingActivity nextActivity = (WaitingActivity) getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 15000);
         // next activity is opened and captured.
         if (shouldBeTrue)
             assertNotNull(nextActivity);
