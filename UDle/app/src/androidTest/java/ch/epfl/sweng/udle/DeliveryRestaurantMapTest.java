@@ -3,6 +3,10 @@ package ch.epfl.sweng.udle;
 import android.location.Location;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.matcher.ViewMatchers;
+import android.support.test.uiautomator.UiDevice;
+import android.support.test.uiautomator.UiObject;
+import android.support.test.uiautomator.UiObjectNotFoundException;
+import android.support.test.uiautomator.UiSelector;
 import android.test.ActivityInstrumentationTestCase2;
 
 import com.parse.LogInCallback;
@@ -51,7 +55,7 @@ public class DeliveryRestaurantMapTest  extends ActivityInstrumentationTestCase2
     @Before
     public void setUp() throws Exception {
 
-        ParseUser.logIn("resto1", "000000");
+        ParseUser.logIn("test deliveryRestaurantMap", "test");
 
         super.setUp();
         injectInstrumentation(InstrumentationRegistry.getInstrumentation());
@@ -63,6 +67,14 @@ public class DeliveryRestaurantMapTest  extends ActivityInstrumentationTestCase2
         mActivity.setWaitingOrdersForTesting(orderElements);
     }
 
+
+
+    @Test
+    public void testMarkerClickable() throws UiObjectNotFoundException, InterruptedException {
+        UiDevice device = UiDevice.getInstance(getInstrumentation());
+        UiObject marker = device.findObject(new UiSelector().descriptionContains("Address test, 1022, Switwerland"));
+        marker.click();
+    }
 
 
     @Test
@@ -129,22 +141,4 @@ public class DeliveryRestaurantMapTest  extends ActivityInstrumentationTestCase2
         return orderElement1;
     }
 
-
-
-//    @Rule
-//    public ActivityTestRule<DeliveryRestaurantMapActivity> mActivityRule = new ActivityTestRule<>(
-//            DeliveryRestaurantMapActivity.class);
-
- /* Wait for method   DataManager.getPendingOrdersForARestaurantOwner() on master branch.
-    @Test
-    public void testQuizClientGetterSetter() throws UiObjectNotFoundException {
-        DeliveryRestaurantMapActivity activity = mActivityRule.getActivity();
-
-        ArrayList<OrderElement> waitingOrders = DataManager.getPendingOrdersForARestaurantOwner();
-        UiDevice device = UiDevice.getInstance(getInstrumentation());
-        for(OrderElement order : waitingOrders){
-            UiObject marker = device.findObject(new UiSelector().descriptionContains(order.getDeliveryAddress()));
-            marker.click();
-        }
-    }*/
 }

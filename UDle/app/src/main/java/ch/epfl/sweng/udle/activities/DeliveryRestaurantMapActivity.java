@@ -68,9 +68,6 @@ public class DeliveryRestaurantMapActivity extends SlideMenuActivity {
     private boolean currentOrdersChange;
 
 
-    public void setWaitingOrdersForTesting(ArrayList<OrderElement> orderElements){
-        waitingOrders = orderElements;
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -245,14 +242,10 @@ public class DeliveryRestaurantMapActivity extends SlideMenuActivity {
         }
     }
 
-    /* These to methods aer use only for testing */
-    public void resetCurrentOrder(){
-        this.currentOrders = new ArrayList<OrderElement> ();
-    }
-    public void resetWaitingOrders(){
-        this.waitingOrders = new ArrayList<OrderElement> ();
-    }
 
+    /**
+     * Check if listView need to be display and do it if necessary.
+     */
     private void setUpListView() {
         listView = (ListView) findViewById(R.id.listOrderRestaurantMap);
         if(showMap){
@@ -372,6 +365,10 @@ public class DeliveryRestaurantMapActivity extends SlideMenuActivity {
         }
     }
 
+    /**
+     * Zoom out in the map from a given point
+     * @param latLng Latitude and longitude of the map center point
+     */
     private void setCamera(LatLng latLng) {
         // Show the argument location in Google Map
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
@@ -397,7 +394,7 @@ public class DeliveryRestaurantMapActivity extends SlideMenuActivity {
      * Display the waiting and the current orders on the Google Map.
      * Display each order via a marker. Red color for waiting orders, Green for current ones.
      */
-    private void showOrdersOnMap(){
+    public void showOrdersOnMap(){
         mMap.clear();
         objectIdHashMapForMap = new HashMap<>();
         int objectIdHashMapIndex = 1;
@@ -479,7 +476,7 @@ public class DeliveryRestaurantMapActivity extends SlideMenuActivity {
      */
     public void restartHandlerTimerForRefresh(){
         handler.removeCallbacksAndMessages(null);
-        handler.postDelayed(getMapRunnable(),0);
+        handler.postDelayed(getMapRunnable(), 0);
     }
 
 
@@ -524,5 +521,19 @@ public class DeliveryRestaurantMapActivity extends SlideMenuActivity {
         handler.removeCallbacksAndMessages(null);
         super.onPause();
     }
+
+
+
+    /* These to methods aer use only for testing */
+    public void resetCurrentOrder(){
+        this.currentOrders = new ArrayList<> ();
+    }
+    public void resetWaitingOrders(){
+        this.waitingOrders = new ArrayList<> ();
+    }
+    public void setWaitingOrdersForTesting(ArrayList<OrderElement> orderElements){
+        waitingOrders = orderElements;
+    }
+
 }
 
