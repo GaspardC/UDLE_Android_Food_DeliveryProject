@@ -44,7 +44,6 @@
     <string name="removeMessage_1">"Remove :"</string>
     <string name="removeMessage_2">"One of the "</string>
     <string name="removeMessage_3">"No options."</string>
-    <string name="removeMessage_4">"Options: "</string>
     <string name="removeMessage_5">"No options selected."</string>
     <string name="notImplemented">Not implemented</string>
     <string name="TitleAlertBack">Give up the order"</string>
