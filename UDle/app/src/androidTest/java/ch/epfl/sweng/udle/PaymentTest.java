@@ -8,7 +8,9 @@ import android.test.ActivityInstrumentationTestCase2;
 import android.widget.Button;
 
 import com.parse.ParseObject;
+import com.parse.ParseUser;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -33,8 +35,11 @@ public class PaymentTest extends ActivityInstrumentationTestCase2<PaymentActivit
     public PaymentTest(){
         super(PaymentActivity.class);
     }
+
+
     @Override
     public void setUp() throws Exception {
+        ParseUser.logIn("restaurant3", "test");
         ParseObject parseOrderElement = ParseOrderElement.create(getOrderElement());
         OrderElement orderElement = ParseOrderElement.retrieveOrderElementFromParse(parseOrderElement);
         Orders.setActiveOrder(orderElement);
