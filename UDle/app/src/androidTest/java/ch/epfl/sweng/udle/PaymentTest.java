@@ -54,7 +54,7 @@ public class PaymentTest extends ActivityInstrumentationTestCase2<PaymentActivit
         try{
             testOpenNextActivity(myActivity, false);
         }catch(Exception e){
-            //works
+            fail("Should not start Waiting Activity");
         }
     }
 
@@ -69,7 +69,7 @@ public class PaymentTest extends ActivityInstrumentationTestCase2<PaymentActivit
         try{
             testOpenNextActivity(myActivity, false);
         }catch(Exception e){
-            //works
+            fail("Should not start Waiting Activity");
         }
     }
 
@@ -84,7 +84,7 @@ public class PaymentTest extends ActivityInstrumentationTestCase2<PaymentActivit
         try{
             testOpenNextActivity(myActivity, false);
         }catch(Exception e){
-            //works
+            fail("Should not start Waiting Activity");
         }
     }
 
@@ -99,7 +99,7 @@ public class PaymentTest extends ActivityInstrumentationTestCase2<PaymentActivit
         try{
             testOpenNextActivity(myActivity, false);
         }catch(Exception e){
-            //works
+            fail("Should not start Waiting Activity");
         }
     }
 
@@ -114,7 +114,7 @@ public class PaymentTest extends ActivityInstrumentationTestCase2<PaymentActivit
         try{
             testOpenNextActivity(myActivity, true);
         }catch(Exception e){
-            //works
+            fail("Should start Waiting Activity");
         }
     }
     public void testOpenNextActivity(final PaymentActivity myActivity, boolean shouldBeTrue) {
@@ -128,13 +128,13 @@ public class PaymentTest extends ActivityInstrumentationTestCase2<PaymentActivit
             }
         });
         //Watch for the timeout
-        WaitingActivity nextActivity = (WaitingActivity) getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 15000);
+        WaitingActivity nextActivity = (WaitingActivity) getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 10000);
         // next activity is opened and captured.
-        if (shouldBeTrue)
+        if (shouldBeTrue) {
             assertNotNull(nextActivity);
-        else
+            nextActivity .finish();
+        }else
             assertNull(nextActivity);
-        nextActivity .finish();
     }
 
     private OrderElement getOrderElement(){
