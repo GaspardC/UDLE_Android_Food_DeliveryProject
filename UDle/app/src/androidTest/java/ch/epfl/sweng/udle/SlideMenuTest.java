@@ -19,12 +19,12 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 /**
  * Created by Johan on 07.12.2015.
  */
-public class SlideMenuTest extends ActivityInstrumentationTestCase2<DeliveryActivity> {
+public class SlideMenuTest extends ActivityInstrumentationTestCase2<HelpActivity> {
 
-    private DeliveryActivity activity;
+    private HelpActivity activity;
 
     public SlideMenuTest() {
-        super(DeliveryActivity.class);
+        super(HelpActivity.class);
     }
 
     @Override
