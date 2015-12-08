@@ -69,6 +69,7 @@ public class mapActivityTest extends ActivityInstrumentationTestCase2<MapActivit
 
     @Test
     public void testAutocompView() throws InterruptedException {
+        Thread.sleep(3000);
         final AutoCompleteTextView autocomp = (AutoCompleteTextView) myActivity.findViewById(R.id.autoCompleteTextView2);
         myActivity.runOnUiThread(new Runnable() {
             @Override
