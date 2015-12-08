@@ -54,11 +54,65 @@ public class LightPagerAdapter extends PagerAdapter {
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-        View itemView = inflater.inflate(R.layout.help_page, container, false);
-
-        ImageView imageView = (ImageView) itemView.findViewById(R.id.help_page_imageView);
-        imageView.setImageBitmap(decodeSampledBitmapFromResource(contextResources, imgResources[position], 100, 100));
-        imageView.setContentDescription(context.getString(R.string.help_page) + position);
+        View itemView;
+        ImageView imageView;
+        switch (position){
+            case 0:
+                itemView = inflater.inflate(R.layout.help_page_0, container, false);
+                imageView = (ImageView) itemView.findViewById(R.id.help_page_0_imageView);
+                imageView.setContentDescription(context.getString(R.string.help_page) + position);
+                break;
+            case 1:
+                itemView = inflater.inflate(R.layout.help_page_1, container, false);
+                imageView = (ImageView) itemView.findViewById(R.id.help_page_1_imageView);
+                imageView.setContentDescription(context.getString(R.string.help_page) + position);
+                break;
+            case 2:
+                itemView = inflater.inflate(R.layout.help_page_2, container, false);
+                imageView = (ImageView) itemView.findViewById(R.id.help_page_2_imageView);
+                imageView.setContentDescription(context.getString(R.string.help_page) + position);
+                break;
+            case 3:
+                itemView = inflater.inflate(R.layout.help_page_3, container, false);
+                imageView = (ImageView) itemView.findViewById(R.id.help_page_3_imageView);
+                imageView.setContentDescription(context.getString(R.string.help_page) + position);
+                break;
+            case 4:
+                itemView = inflater.inflate(R.layout.help_page_4, container, false);
+                imageView = (ImageView) itemView.findViewById(R.id.help_page_4_imageView);
+                imageView.setContentDescription(context.getString(R.string.help_page) + position);
+                break;
+            case 5:
+                itemView = inflater.inflate(R.layout.help_page_5, container, false);
+                imageView = (ImageView) itemView.findViewById(R.id.help_page_5_imageView);
+                imageView.setContentDescription(context.getString(R.string.help_page) + position);
+                break;
+            case 6:
+                itemView = inflater.inflate(R.layout.help_page_6, container, false);
+                imageView = (ImageView) itemView.findViewById(R.id.help_page_6_imageView);
+                imageView.setContentDescription(context.getString(R.string.help_page) + position);
+                break;
+            case 7:
+                itemView = inflater.inflate(R.layout.help_page_7, container, false);
+                imageView = (ImageView) itemView.findViewById(R.id.help_page_7_imageView);
+                imageView.setContentDescription(context.getString(R.string.help_page) + position);
+                break;
+            case 8:
+                itemView = inflater.inflate(R.layout.help_page_8, container, false);
+                imageView = (ImageView) itemView.findViewById(R.id.help_page_8_imageView);
+                imageView.setContentDescription(context.getString(R.string.help_page) + position);
+                break;
+            case 9:
+                itemView = inflater.inflate(R.layout.help_page_9, container, false);
+                imageView = (ImageView) itemView.findViewById(R.id.help_page_9_imageView);
+                imageView.setContentDescription(context.getString(R.string.help_page) + position);
+                break;
+            default:
+                itemView = inflater.inflate(R.layout.help_page, container, false);
+                imageView = (ImageView) itemView.findViewById(R.id.help_page_imageView);
+                imageView.setImageBitmap(decodeSampledBitmapFromResource(contextResources, imgResources[position], 100, 100));
+                imageView.setContentDescription(context.getString(R.string.help_page) + position);
+        }
         container.addView(itemView);
 
         return itemView;
