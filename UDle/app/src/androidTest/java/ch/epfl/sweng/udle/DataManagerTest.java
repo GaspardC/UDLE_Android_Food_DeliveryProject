@@ -93,7 +93,7 @@ public class DataManagerTest {
     }
     @Test
     public void testIsStatusWaitingFalse() throws ParseException {
-        ParseUser.logIn("UserTest", "test");
+        ParseUser.logIn("test alone", "test");
         boolean restaurantNear = DataManager.getRestaurantsNearTheUser();
         assertEquals(false, restaurantNear);
     }
