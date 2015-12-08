@@ -1,14 +1,8 @@
 package ch.epfl.sweng.udle;
 
-import android.support.test.InstrumentationRegistry;
-import android.test.ActivityInstrumentationTestCase2;
-import android.view.View;
-import android.widget.ImageView;
-
-import junit.framework.TestResult;
-
-import org.hamcrest.Matcher;
-import org.junit.Test;
+import android.content.Intent;
+import android.support.test.rule.ActivityTestRule;
+import org.junit.*;
 
 import ch.epfl.sweng.udle.activities.HelpActivity.HelpActivity;
 
@@ -20,23 +14,18 @@ import static android.support.test.espresso.matcher.ViewMatchers.*;
 /**
  * Created by Johan on 04.12.2015.
  */
-public class HelpTest extends ActivityInstrumentationTestCase2<HelpActivity> {
+public class HelpTest {
 
+    public ActivityTestRule<HelpActivity> mActivityRule = new ActivityTestRule<>(HelpActivity.class, false);
     private HelpActivity activity;
 
-    public HelpTest() {
-        super(HelpActivity.class);
-    }
-
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
-        activity = getActivity();
-        injectInstrumentation(InstrumentationRegistry.getInstrumentation());
+    @Before
+    public void setUp() throws Exception {
+        activity = mActivityRule.launchActivity(new Intent());
     }
 
     @Test
-    public void testImageDisplay(){
+    public void imageDisplay(){
         onView(withId(R.id.help_page_0_imageView)).check(matches(isDisplayed()));
     }
 
@@ -44,13 +33,29 @@ public class HelpTest extends ActivityInstrumentationTestCase2<HelpActivity> {
      * Test if a right-to-left swipe changes the image.
      *
      * This test will work only if the test activity contains at least two images.
-     *
      */
     @Test
-    public void testImageChange() {
+    public void imageChange() {
         onView(withId(R.id.help_page_0_imageView)).check(matches(isDisplayed()));
         onView(withId(R.id.help_page_0_imageView)).perform(swipeLeft());
         onView(withId(R.id.help_page_1_imageView)).check(matches(isDisplayed()));
+    }
+
+    /**
+     * Test if the app does not crash when swiping to the far end of help pages.
+     */
+    @Test
+    public void swipeToEnd() {
+        onView(withId(R.id.help_pager)).perform(swipeLeft());
+        onView(withId(R.id.help_pager)).perform(swipeLeft());
+        onView(withId(R.id.help_pager)).perform(swipeLeft());
+        onView(withId(R.id.help_pager)).perform(swipeLeft());
+        onView(withId(R.id.help_pager)).perform(swipeLeft());
+        onView(withId(R.id.help_pager)).perform(swipeLeft());
+        onView(withId(R.id.help_pager)).perform(swipeLeft());
+        onView(withId(R.id.help_pager)).perform(swipeLeft());
+        onView(withId(R.id.help_pager)).perform(swipeLeft());
+        onView(withId(R.id.help_pager)).perform(swipeLeft());
     }
 
 }

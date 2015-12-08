@@ -1,48 +1,53 @@
 package ch.epfl.sweng.udle;
 
-import android.support.test.InstrumentationRegistry;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.test.espresso.matcher.ViewMatchers;
-import android.test.ActivityInstrumentationTestCase2;
+import android.support.test.rule.ActivityTestRule;
 
-import org.junit.Test;
+import org.junit.*;
 
-import ch.epfl.sweng.udle.activities.DeliveryActivity;
-import ch.epfl.sweng.udle.activities.HelpActivity.HelpActivity;
+import ch.epfl.sweng.udle.activities.SlideMenu.SlideMenuActivity;
 
-import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.action.ViewActions.swipeRight;
-import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static android.support.test.espresso.matcher.ViewMatchers.withEffectiveVisibility;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static android.support.test.espresso.Espresso.*;
+import static android.support.test.espresso.action.ViewActions.*;
+import static android.support.test.espresso.assertion.ViewAssertions.*;
+import static android.support.test.espresso.matcher.ViewMatchers.*;
 
 /**
  * Created by Johan on 07.12.2015.
  */
-public class SlideMenuTest extends ActivityInstrumentationTestCase2<HelpActivity> {
+public class SlideMenuTest {
 
-    private HelpActivity activity;
+    public ActivityTestRule<LightActivity> mActivityRule = new ActivityTestRule<>(LightActivity.class, false);
+    private LightActivity activity;
 
-    public SlideMenuTest() {
-        super(HelpActivity.class);
-    }
-
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
-        activity = getActivity();
-        injectInstrumentation(InstrumentationRegistry.getInstrumentation());
+    @Before
+    public void setUp() throws Exception {
+        activity = mActivityRule.launchActivity(new Intent());
     }
 
     @Test
-    public void testVisibility(){
-        onView(withId(R.id.content_frame)).check(matches(isDisplayed()));
+    public void visibility(){
+        onView(withId(R.id.help_page_imageView)).check(matches(isCompletelyDisplayed()));
         onView(withId(R.id.slideMenu_frame)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.INVISIBLE)));
     }
 
     @Test
-    public void testOpening(){
-        onView(withId(R.id.content_frame)).perform(swipeRight());
+    public void swipeOpeningClosing(){
+        onView(withId(R.id.help_page_imageView)).perform(swipeRight());
         onView(withId(R.id.slideMenu_frame)).check(matches(isDisplayed()));
+        onView(withId(R.id.help_page_imageView)).perform(swipeLeft());
+        onView(withId(R.id.help_page_imageView)).check(matches(isCompletelyDisplayed()));
+        onView(withId(R.id.slideMenu_frame)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.INVISIBLE)));
+    }
+}
+
+class LightActivity extends SlideMenuActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.help_page);
     }
 }
