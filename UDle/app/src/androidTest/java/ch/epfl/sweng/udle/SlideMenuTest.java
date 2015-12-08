@@ -1,5 +1,6 @@
 package ch.epfl.sweng.udle;
 
+import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.matcher.ViewMatchers;
 import android.test.ActivityInstrumentationTestCase2;
 
@@ -20,14 +21,15 @@ public class SlideMenuTest extends ActivityInstrumentationTestCase2<HelpActivity
 
     private HelpActivity activity;
 
-    public SlideMenuTest(Class<HelpActivity> activityClass) {
-        super(activityClass);
+    public SlideMenuTest() {
+        super(HelpActivity.class);
     }
 
     @Override
     protected void setUp() throws Exception {
         super.setUp();
         activity = getActivity();
+        injectInstrumentation(InstrumentationRegistry.getInstrumentation());
     }
 
     @Test
