@@ -149,7 +149,7 @@ public class Menu {
             double priceNbr = menuNbr * menu.getFood().getPrice();
             String price = String.format("%.2f", priceNbr);
             price = price + Orders.getMoneyDevise();
-
+            price = price.replace(",",".");
             String option;
             if (menu.getOptions().size() == 0){
                 option = noOption;
