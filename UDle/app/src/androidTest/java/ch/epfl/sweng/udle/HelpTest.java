@@ -37,7 +37,7 @@ public class HelpTest extends ActivityInstrumentationTestCase2<HelpActivity> {
 
     @Test
     public void testImageDisplay(){
-        onView(withId(R.id.help_page_1_imageView)).check(matches(isDisplayed()));
+        onView(withId(R.id.help_page_0_imageView)).check(matches(isDisplayed()));
     }
 
     /**
@@ -48,9 +48,9 @@ public class HelpTest extends ActivityInstrumentationTestCase2<HelpActivity> {
      */
     @Test
     public void testImageChange() {
-        onView(withId(R.id.help_page_0_imageView)).check(matches(withContentDescription(getActivity().getResources().getString(R.string.help_page) + "0")));
+        onView(withId(R.id.help_page_0_imageView)).check(matches(isDisplayed()));
         onView(withId(R.id.help_page_0_imageView)).perform(swipeLeft());
-        onView(withId(R.id.help_page_1_imageView)).check(matches(withContentDescription(getActivity().getResources().getString(R.string.help_page) + "1")));
+        onView(withId(R.id.help_page_1_imageView)).check(matches(isDisplayed()));
     }
 
 }
