@@ -35,7 +35,9 @@ public class OptionsFragment extends Fragment {
 
         Options_ExpandableListAdapter adapter = new Options_ExpandableListAdapter(inflater);
         expandableListView.setAdapter(adapter);
+/*
         expandableListView.expandGroup(0);
+*/
 
 
         return layout;
