@@ -15,7 +15,7 @@
 
     <string name="MenuMap_SearchHint">Search the desired delivery address</string>
     <string name="NoCardInformation">Please, fill in your card information</string>
-    <string name="ValidatePosition">Order here</string>
+    <string name="ValidatePosition">Start an order</string>
     <string name="NoMenuSelected">You need to select at least one menu</string>
     <string name="title_activity_maps">Map</string>
     <string name="buttonCallDeliveryGuy">Call Delivery Guy</string>
