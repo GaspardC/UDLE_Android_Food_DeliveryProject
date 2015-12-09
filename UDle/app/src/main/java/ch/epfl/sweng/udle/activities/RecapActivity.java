@@ -130,7 +130,7 @@ public class RecapActivity extends SlideMenuActivity {
     }
     @Override
     public void onBackPressed(){
-        if(from.equals("Current")){
+        if(from.equals("Current") || from.equals("Delivered")){
             Intent intent = new Intent(this, CurrentOrdersActivity.class);
             startActivity(intent);
         }
@@ -263,4 +263,6 @@ public class RecapActivity extends SlideMenuActivity {
         Intent intent = new Intent(this, PaymentActivity.class);
         startActivity(intent);
     }
+
+
 }
