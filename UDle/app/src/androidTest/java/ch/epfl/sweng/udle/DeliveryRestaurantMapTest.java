@@ -3,6 +3,10 @@ package ch.epfl.sweng.udle;
 import android.location.Location;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.matcher.ViewMatchers;
+import android.support.test.uiautomator.UiDevice;
+import android.support.test.uiautomator.UiObject;
+import android.support.test.uiautomator.UiObjectNotFoundException;
+import android.support.test.uiautomator.UiSelector;
 import android.test.ActivityInstrumentationTestCase2;
 
 import com.parse.LogInCallback;
@@ -51,7 +55,7 @@ public class DeliveryRestaurantMapTest  extends ActivityInstrumentationTestCase2
     @Before
     public void setUp() throws Exception {
 
-        ParseUser.logIn("resto1", "000000");
+        ParseUser.logIn("test deliveryRestaurantMap", "test");
 
         super.setUp();
         injectInstrumentation(InstrumentationRegistry.getInstrumentation());
@@ -61,12 +65,21 @@ public class DeliveryRestaurantMapTest  extends ActivityInstrumentationTestCase2
         Orders.activeOrderToCurrentOrder(Orders.getActiveOrder());
         orderElements.add(getOrderElement());
         mActivity.setWaitingOrdersForTesting(orderElements);
+        Thread.sleep(10000);
     }
 
 
 
     @Test
-    public void testListInvisble(){
+    public void testMarkerClickable() throws UiObjectNotFoundException, InterruptedException {
+        UiDevice device = UiDevice.getInstance(getInstrumentation());
+        UiObject marker = device.findObject(new UiSelector().descriptionContains("Address test, 1022, Switwerland"));
+        marker.click();
+    }
+
+
+    @Test
+    public void testListInvisble() throws InterruptedException {
         onView(withId(R.id.listOrderRestaurantMap)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.GONE)));
     }
     @Test
@@ -85,18 +98,16 @@ public class DeliveryRestaurantMapTest  extends ActivityInstrumentationTestCase2
     }
 
     @Test
-    public void testButtonTextAfterClick(){
-
+    public void testButtonTextAfterClick() throws InterruptedException {
         onView(withId((R.id.button_list_mode))).check(matches(withText("Switch to List mode")));
         onView(withId(R.id.button_list_mode)).perform(click());
         onView(withId((R.id.button_list_mode))).check(matches(withText("Switch to Map Mode")));
         onView(withId(R.id.button_list_mode)).perform(click());
-        onView(withId((R.id.button_list_mode))).check(matches(withText("Switch to List Mode")));
     }
 
 
     @Test
-    public void testIfNoOrders(){
+    public void testIfNoOrders() throws InterruptedException {
         mActivity.resetCurrentOrder();
         mActivity.resetWaitingOrders();
         onView(withId(R.id.button_list_mode)).perform(click());
@@ -129,22 +140,4 @@ public class DeliveryRestaurantMapTest  extends ActivityInstrumentationTestCase2
         return orderElement1;
     }
 
-
-
-//    @Rule
-//    public ActivityTestRule<DeliveryRestaurantMapActivity> mActivityRule = new ActivityTestRule<>(
-//            DeliveryRestaurantMapActivity.class);
-
- /* Wait for method   DataManager.getPendingOrdersForARestaurantOwner() on master branch.
-    @Test
-    public void testQuizClientGetterSetter() throws UiObjectNotFoundException {
-        DeliveryRestaurantMapActivity activity = mActivityRule.getActivity();
-
-        ArrayList<OrderElement> waitingOrders = DataManager.getPendingOrdersForARestaurantOwner();
-        UiDevice device = UiDevice.getInstance(getInstrumentation());
-        for(OrderElement order : waitingOrders){
-            UiObject marker = device.findObject(new UiSelector().descriptionContains(order.getDeliveryAddress()));
-            marker.click();
-        }
-    }*/
 }

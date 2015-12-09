@@ -44,7 +44,6 @@
     <string name="removeMessage_1">"Remove :"</string>
     <string name="removeMessage_2">"One of the "</string>
     <string name="removeMessage_3">"No options."</string>
-    <string name="removeMessage_4">"Options: "</string>
     <string name="removeMessage_5">"No options selected."</string>
     <string name="notImplemented">Not implemented</string>
     <string name="TitleAlertBack">Give up the order"</string>
@@ -92,5 +91,7 @@
     <string name="notificationTitle">Order accepted</string>
     <string name="notificationText">Your order was accepted. Click to see details.</string>
     <string name="noRestaurantAvailable">Sorry, no restaurants are available right now. Try later.</string>
+    <string name="expectedTimeNegative">Please enter a positive number</string>
+    <string name="expectedTimeTooBig">Expected time must be smaller than 60 minutes</string>
 
 </resources>

@@ -1,8 +1,11 @@
 package ch.epfl.sweng.udle;
 
+import android.content.Intent;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.action.ViewActions;
 import android.test.ActivityInstrumentationTestCase2;
+import android.widget.AdapterView;
+import android.widget.ListView;
 
 import org.junit.Test;
 
@@ -86,6 +89,39 @@ public class RecapTest extends ActivityInstrumentationTestCase2<RecapActivity> {
         Orders.setActiveOrder(orderElement);
     }
 
+    public void addMenus_2(){
+        OrderElement orderElement = new OrderElement();
+        Menu KebabAlone = new Menu();
+        KebabAlone.setFood(FoodTypes.KEBAB);
+        orderElement.addMenu(KebabAlone);
+        orderElement.addMenu(KebabAlone);
+        Menu BurgerAlone = new Menu();
+        BurgerAlone.setFood(FoodTypes.BURGER);
+        orderElement.addMenu(BurgerAlone);
+
+        Orders.setActiveOrder(orderElement);
+    }
+
+    public void addMenus_3(){
+        OrderElement orderElement = new OrderElement();
+
+        Menu BurgerEverything = new Menu();
+        BurgerEverything.setFood(FoodTypes.BURGER);
+        for (OptionsTypes foodTypes : OptionsTypes.values()){
+            BurgerEverything.addToOptions(foodTypes);
+        };
+
+        Menu KebabEverything = new Menu();
+        KebabEverything.setFood(FoodTypes.KEBAB);
+        for (OptionsTypes foodTypes : OptionsTypes.values()){
+            KebabEverything.addToOptions(foodTypes);
+        };
+        orderElement.addMenu(BurgerEverything);
+        orderElement.addMenu(BurgerEverything);
+        orderElement.addMenu(KebabEverything);
+        Orders.setActiveOrder(orderElement);
+    }
+
 
     @Test
     public void testUserName(){
@@ -127,6 +163,175 @@ public class RecapTest extends ActivityInstrumentationTestCase2<RecapActivity> {
         }
         onView(withText(everything)).check(matches(isDisplayed()));
 */
+    }
+
+    @Test
+    public void testDeleteAllOnMenusWithoutOptions(){
+        addMenus_2();
+        final RecapActivity activity = getActivity();
+        onView(withText("2 Kebab")).check(matches(isDisplayed()));
+        onView(withText("1 Burger")).check(matches(isDisplayed()));
+
+        final ListView mList = (ListView) activity.findViewById(R.id.RecapActivity_recapListView);
+        final int mActivePosition = 0;
+        mList.performItemClick(
+                mList.getChildAt(mActivePosition),
+                mActivePosition,
+                mList.getAdapter().getItemId(mActivePosition));
+
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                activity.deleteElement(mActivePosition, true);
+            }
+        });
+        try{
+            onView(withText("2 Kebab")).check(matches(isDisplayed()));
+            fail("Should be deleted");
+        }catch (Exception e){
+            // Works
+        }
+    }
+
+    @Test
+    public void testDeleteAllOnMenusWithOptions(){
+        addMenus_3();
+        final RecapActivity activity = getActivity();
+        onView(withText("2 Burger")).check(matches(isDisplayed()));
+        onView(withText("1 Kebab")).check(matches(isDisplayed()));
+
+        final int mActivePosition = 0;
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                activity.deleteElement(mActivePosition, true);
+            }
+        });
+        try{
+            onView(withText("2 Burger")).check(matches(isDisplayed()));
+            fail("Should be deleted");
+        }catch (Exception e){
+            // Works
+        }
+    }
+
+    @Test
+    public void testDeleteOneOnMenusWithoutOptions(){
+        addMenus_2();
+        final RecapActivity activity = getActivity();
+        onView(withText("2 Kebab")).check(matches(isDisplayed()));
+        onView(withText("1 Burger")).check(matches(isDisplayed()));
+
+        final ListView mList = (ListView) activity.findViewById(R.id.RecapActivity_recapListView);
+        final int mActivePosition = 0;
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                activity.deleteElement(mActivePosition, false);
+            }
+        });
+        try{
+            onView(withText("2 Kebab")).check(matches(isDisplayed()));
+            fail("Should be deleted");
+        }catch (Exception e){
+            onView(withText("1 Kebab")).check(matches(isDisplayed()));
+            onView(withText("1 Burger")).check(matches(isDisplayed()));
+            final int mActivePosition_2 = 1;
+            activity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    activity.deleteElement(mActivePosition_2, false);
+                }
+            });
+            try{
+                onView(withText("1 Burger")).check(matches(isDisplayed()));
+                fail("Should be deleted");
+            }catch (Exception e_1){
+                // Works
+            }
+        }
+    }
+
+    @Test
+    public void testDeleteOneOnMenusWithOptions(){
+        addMenus_3();
+        final RecapActivity activity = getActivity();
+        onView(withText("2 Burger")).check(matches(isDisplayed()));
+        onView(withText("1 Kebab")).check(matches(isDisplayed()));
+
+        final int mActivePosition = 0;
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                activity.deleteElement(mActivePosition, false);
+            }
+        });
+        try{
+            onView(withText("2 Burger")).check(matches(isDisplayed()));
+            fail("Should be deleted");
+        }catch (Exception e){
+            onView(withText("1 Burger")).check(matches(isDisplayed()));
+            onView(withText("1 Kebab")).check(matches(isDisplayed()));
+            final int mActivePosition_2 = 1;
+            activity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    activity.deleteElement(mActivePosition_2, false);
+                }
+            });
+            try{
+                onView(withText("1 Kebab")).check(matches(isDisplayed()));
+                fail("Should be deleted");
+            }catch (Exception e_1){
+                // Works
+            }
+        }
+    }
+
+    @Test
+    public void testDeleteAllOnDrinks(){
+        addDrinks();
+        final RecapActivity activity = getActivity();
+        onView(withText("4 Beer")).check(matches(isDisplayed()));
+        onView(withText("2 Coca")).check(matches(isDisplayed()));
+        onView(withText("1 Water")).check(matches(isDisplayed()));
+
+        final int mActivePosition = 2;
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                activity.deleteElement(mActivePosition, true);
+            }
+        });
+        try{
+            onView(withText("4 Beer")).check(matches(isDisplayed()));
+            fail("Should be deleted");
+        }catch (Exception e){
+            // Works
+        }
+    }
+
+    @Test
+    public void testDeleteOneOnDrinks(){
+        addDrinks();
+        final RecapActivity activity = getActivity();
+        onView(withText("4 Beer")).check(matches(isDisplayed()));
+        onView(withText("2 Coca")).check(matches(isDisplayed()));
+        onView(withText("1 Water")).check(matches(isDisplayed()));
+
+        final int mActivePosition = 2;
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                activity.deleteElement(mActivePosition, false);
+            }
+        });
+        try{
+            onView(withText("4 Beer")).check(matches(isDisplayed()));
+            fail("Should be deleted");
+        }catch (Exception e){
+            onView(withText("3 Beer")).check(matches(isDisplayed()));
+        }
     }
 
 }

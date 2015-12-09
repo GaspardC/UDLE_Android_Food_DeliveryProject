@@ -4,7 +4,13 @@ import android.content.Intent;
 import android.location.Location;
 import android.support.test.rule.ActivityTestRule;
 
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+
 import org.junit.Test;
+
+import java.util.List;
 
 import ch.epfl.sweng.udle.Food.DrinkTypes;
 import ch.epfl.sweng.udle.Food.FoodTypes;
@@ -13,6 +19,8 @@ import ch.epfl.sweng.udle.Food.OptionsTypes;
 import ch.epfl.sweng.udle.Food.OrderElement;
 import ch.epfl.sweng.udle.Food.Orders;
 import ch.epfl.sweng.udle.activities.DeliverCommandDetailActivity;
+import ch.epfl.sweng.udle.network.DataManager;
+import ch.epfl.sweng.udle.network.ParseUserOrderInformations;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
@@ -22,6 +30,7 @@ import static android.support.test.espresso.matcher.RootMatchers.withDecorView;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static junit.framework.Assert.assertEquals;
 import static org.hamcrest.Matchers.is;
 
 import static org.hamcrest.Matchers.not;
@@ -80,22 +89,35 @@ public class DeliverCommandDetailTest{
         onView(withId(R.id.DeliverCommandDetail_acceptCommand)).perform(click());
         onView(withText(R.string.expectedTimeNotValid)).inRoot(withDecorView(not(is(mActivityRule.getActivity().getWindow().getDecorView())))).check(matches(isDisplayed()));
     }
+    @Test
+    public void clickWithExpectedTimeBig() {
+        setUpIntentAndActivityForNewOrders();
+        onView(withId(R.id.DeliverCommandDetail_expectedTime)).perform(typeText("150"));
+        onView(withId(R.id.DeliverCommandDetail_acceptCommand)).check(matches(withText(R.string.acceptCommand)));
+        onView(withId(R.id.DeliverCommandDetail_acceptCommand)).perform(click());
+        onView(withText(R.string.expectedTimeTooBig)).inRoot(withDecorView(not(is(mActivityRule.getActivity().getWindow().getDecorView())))).check(matches(isDisplayed()));
+    }
 
 /*    @Test
-    public void clickWithExpectedTime(){
-        setUpIntentAndActivityForNewOrders();
+    public void clickWithExpectedTime() throws ParseException {
+        String objectID = setUpIntentAndActivityForNewOrdersServer();
         onView(withId(R.id.DeliverCommandDetail_expectedTime)).perform(typeText("15"));
         onView(withId(R.id.DeliverCommandDetail_acceptCommand)).perform(click());
         onView(withId(R.id.DeliveryMap_GoogleMaps)).check(matches(isDisplayed()));
+        deleteParseUserOrderInformation(objectID);
     }
+*/
+
+
     @Test
-    public void clickToFinishOrder(){
-        setUpIntentAndActivityForEnRouteOrders();
+    public void clickToFinishOrder() throws ParseException {
+        String objectID = setUpIntentAndActivityForEnRouteOrdersServer();
         onView(withId(R.id.DeliverCommandDetail_commandDelivered)).check(matches(withText(R.string.commandDelivered)));
         onView(withId(R.id.DeliverCommandDetail_commandDelivered)).perform(click());
         onView(withId(R.id.DeliveryMap_GoogleMaps)).check(matches(isDisplayed()));
+        deleteParseUserOrderInformation(objectID);
     }
-*/
+
     @Test
     public void clickToAcceptOrderConfirmButtonNotShown(){
         setUpIntentAndActivityForNewOrders();
@@ -124,6 +146,59 @@ public class DeliverCommandDetailTest{
 
         Orders.setActiveOrder(orderElement); //Selected the second time (Status: 'En route'
         mActivityRule.launchActivity(i);
+    }
+
+    private String setUpIntentAndActivityForNewOrdersServer(){
+        Intent i = new Intent();
+        i.putExtra("isCurrent", false);
+
+        OrderElement orderElement = getOrderElement();
+        Orders.setActiveOrder(orderElement);
+        DataManager.createNewParseUserOrderInformations();
+        String objectId = Orders.getActiveOrder().getUserOrderInformationsID();
+
+
+        Orders.setActiveOrder(orderElement);
+        mActivityRule.launchActivity(i);
+
+        return objectId;
+    }
+    private String setUpIntentAndActivityForEnRouteOrdersServer(){
+        Intent i = new Intent();
+        i.putExtra("isCurrent", true);
+
+        OrderElement orderElement = getOrderElement();
+        Orders.setActiveOrder(orderElement);
+
+        DataManager.createNewParseUserOrderInformations();
+        String objectId = Orders.getActiveOrder().getUserOrderInformationsID();
+
+        DataManager.deliveryEnRoute(objectId, 55);
+        Orders.activeOrderToCurrentOrder(orderElement);
+
+        Orders.setActiveOrder(orderElement);
+        mActivityRule.launchActivity(i);
+
+        return objectId;
+    }
+    private void deleteParseUserOrderInformation(String objectId) throws ParseException {
+
+        ParseUserOrderInformations parseUserOrderInformations = DataManager.getParseUserObjectWithId(objectId);
+        parseUserOrderInformations.getOrder().delete();
+
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("ParseUserOrderInformations");
+        query.whereEqualTo("objectId", objectId);
+        try {
+            List<ParseObject> OrderList = query.find();
+
+            for (ParseObject userOrder : OrderList) {
+                ParseUserOrderInformations parseUserOrder = (ParseUserOrderInformations) userOrder;
+                parseUserOrder.delete();
+            }
+        }
+        catch (Exception e) {
+            throw new IllegalStateException(e);
+        }
     }
 
     public OrderElement getOrderElement (){

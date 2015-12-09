@@ -199,14 +199,7 @@ public class MenuFragment extends Fragment{
 
     /** Called when the user clicks the 'Next' button */
     public void goToOptionsActivity() {
-        int nbrMenus = Orders.getActiveOrder().getOrder().size();
-        if(nbrMenus < 1){
-            Toast.makeText(super.getActivity().getApplicationContext(), getString(R.string.NoMenuSelected),
-                    Toast.LENGTH_SHORT).show();
-        }
-        else{
-            pager.setCurrentItem(1);
-        }
+        pager.setCurrentItem(1);
     }
 
 

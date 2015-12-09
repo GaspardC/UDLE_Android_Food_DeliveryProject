@@ -1,15 +1,12 @@
 package ch.epfl.sweng.udle.Food;
 
-import android.content.res.Resources;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import ch.epfl.sweng.udle.R;
-
 /**
  * Created by rodri on 23/10/2015.
+ * A Menu represent a food (kebab, burger) with the options (e.g salad, tomato)
  */
 public class Menu {
 
@@ -22,10 +19,16 @@ public class Menu {
     }
 
 
+    /**
+     * @return The foodType (Burger or Kebab)
+     */
     public FoodTypes getFood() {
         return food;
     }
 
+    /**
+     * @param food The foodType for this menu (Kebab or burger)
+     */
     public void setFood(FoodTypes food) {
         if (food == null) {
             throw new IllegalArgumentException("Try to set the foodType of a menu to null.");
@@ -34,10 +37,17 @@ public class Menu {
     }
 
 
+    /**
+     * @return An ArrayList of all options (Salad, Tomato, Ketchup) for this Menu.
+     */
     public ArrayList<OptionsTypes> getOptions() {
         return options;
     }
 
+
+    /**
+     * @param option Option to add for this menu
+     */
     public void addToOptions(OptionsTypes option) {
         if (option == null) {
             throw new IllegalArgumentException("Try to add a null option to the optionsType List.");
@@ -47,6 +57,9 @@ public class Menu {
         }
     }
 
+    /**
+     * @param option The option to remove the this menu
+     */
     public void removeFromOptions(OptionsTypes option) {
         if (option == null) {
             throw new IllegalArgumentException("Try to remove a null option to the optionsType List.");
@@ -56,7 +69,20 @@ public class Menu {
         }
     }
 
+    /**
+     * Overide the equals object.
+     * In order to check if two menus are equals, check the food and all the options.
+     * @param menu The menu to compare with the current one
+     * @return True is the two menu are equals, false otherway.
+     */
     public boolean equals(Menu menu) {
+        if (menu == null  ||  menu.isEmpty()){
+            throw new IllegalArgumentException("Invalid menu passd in parameter.");
+        }
+        if (isEmpty()){
+            throw new IllegalStateException("The menu is still empty.");
+        }
+
         int equalityCheckNbr = 0;
 
         if (this.food.toString().equals(menu.food.toString())){
@@ -78,6 +104,24 @@ public class Menu {
 
     }
 
+    /**
+     * @return True if the menu is empty ( no food and no options)
+     */
+    public boolean isEmpty(){
+        if (this.food == null && this.options.isEmpty()){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
+    /**
+     * Add display in recap for ALL Menu in the order into the HashMap responsible of the display of the all recap.
+     * @param list HashMap used in the recaps of the order
+     * @param noOption String to display under the Food type if no option are selected for the menu
+     * @param options String to display under the Food type if at least 1 option is selected for the menu
+     */
     public static void displayInRecap(List<HashMap<String, String>> list, String noOption, String options){
         ArrayList<Menu> menusInRecap = new ArrayList<>();
         ArrayList<Integer> menuNumbers = new ArrayList<>();
@@ -105,7 +149,7 @@ public class Menu {
             double priceNbr = menuNbr * menu.getFood().getPrice();
             String price = String.format("%.2f", priceNbr);
             price = price + Orders.getMoneyDevise();
-
+            price = price.replace(",",".");
             String option;
             if (menu.getOptions().size() == 0){
                 option = noOption;
