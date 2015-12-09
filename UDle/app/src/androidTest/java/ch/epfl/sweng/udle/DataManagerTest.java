@@ -1,12 +1,15 @@
 package ch.epfl.sweng.udle;
 
 import android.location.Location;
+import android.support.test.InstrumentationRegistry;
 
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
