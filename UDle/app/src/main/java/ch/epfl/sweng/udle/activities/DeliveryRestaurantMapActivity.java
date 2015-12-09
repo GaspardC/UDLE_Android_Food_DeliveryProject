@@ -522,6 +522,15 @@ public class DeliveryRestaurantMapActivity extends SlideMenuActivity {
         super.onPause();
     }
 
+    public void onDestroy(){
+        super.onDestroy();
+        if(progress!=null)
+            if(progress.isShowing()){
+                progress.cancel();
+            }
+
+    }
+
 
 
     /* These to methods aer use only for testing */
@@ -534,6 +543,7 @@ public class DeliveryRestaurantMapActivity extends SlideMenuActivity {
     public void setWaitingOrdersForTesting(ArrayList<OrderElement> orderElements){
         waitingOrders = orderElements;
     }
+
 
 }
 

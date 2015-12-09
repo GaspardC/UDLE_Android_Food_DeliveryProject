@@ -7,10 +7,8 @@ import android.support.test.espresso.action.ViewActions;
 import android.test.ActivityInstrumentationTestCase2;
 import android.widget.Button;
 
-import com.parse.ParseObject;
 import com.parse.ParseUser;
 
-import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -21,11 +19,13 @@ import ch.epfl.sweng.udle.Food.OrderElement;
 import ch.epfl.sweng.udle.Food.Orders;
 import ch.epfl.sweng.udle.activities.PaymentActivity;
 import ch.epfl.sweng.udle.activities.WaitingActivity;
-import ch.epfl.sweng.udle.network.ParseOrderElement;
+import ch.epfl.sweng.udle.network.DataManager;
 
 import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
 /**
  * Created by Abdes on 07/12/2015.
@@ -40,15 +40,17 @@ public class PaymentTest extends ActivityInstrumentationTestCase2<PaymentActivit
     @Override
     public void setUp() throws Exception {
         ParseUser.logIn("restaurant3", "test");
-        ParseObject parseOrderElement = ParseOrderElement.create(getOrderElement());
-        OrderElement orderElement = ParseOrderElement.retrieveOrderElementFromParse(parseOrderElement);
+        OrderElement orderElement = getOrderElement();
         Orders.setActiveOrder(orderElement);
-        ParseUser.logIn("restaurant3", "test");
+        DataManager.createNewParseUserOrderInformations();
         super.setUp();
         ViewActions.closeSoftKeyboard();
         injectInstrumentation(InstrumentationRegistry.getInstrumentation());
     }
+    @Override
+    protected void tearDown (){
 
+    }
     @Test
     public void testAllInfoInvalid() {
         PaymentActivity myActivity = getActivity();
@@ -109,6 +111,7 @@ public class PaymentTest extends ActivityInstrumentationTestCase2<PaymentActivit
         }
     }
 
+
     @Test
     public void testAllInfoValid() {
         PaymentActivity myActivity = getActivity();
@@ -125,16 +128,10 @@ public class PaymentTest extends ActivityInstrumentationTestCase2<PaymentActivit
     }
     public void testOpenNextActivity(final PaymentActivity myActivity, boolean shouldBeTrue) {
         Instrumentation.ActivityMonitor activityMonitor = getInstrumentation().addMonitor(WaitingActivity.class.getName(), null, false);
-        final Button button = (Button) myActivity.findViewById(R.id.button);
-        myActivity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                // click button and open next activity.
-                button.performClick();
-            }
-        });
+        final Button button = (Button) myActivity.findViewById(R.id.button_payment_confirm);
+        onView(withId((R.id.button_payment_confirm))).perform(click());
         //Watch for the timeout
-        WaitingActivity nextActivity = (WaitingActivity) getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 10000);
+        WaitingActivity nextActivity = (WaitingActivity) getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 2000);
         // next activity is opened and captured.
         if (shouldBeTrue) {
             assertNotNull(nextActivity);
@@ -163,5 +160,7 @@ public class PaymentTest extends ActivityInstrumentationTestCase2<PaymentActivit
         menuList.add(menu);
         return menuList;
     }
+
+
 
 }

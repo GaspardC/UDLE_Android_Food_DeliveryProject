@@ -62,5 +62,6 @@
         android:layout_height="0dp"
         android:text="@string/ValidatePosition"
         android:layout_weight="10"
-        android:onClick="goToMenuActivity" />
+        android:onClick="goToMenuActivity"
+        android:textAllCaps="false"/>
 </LinearLayout>

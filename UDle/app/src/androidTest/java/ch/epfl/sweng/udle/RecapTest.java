@@ -9,6 +9,8 @@ import android.widget.ListView;
 
 import org.junit.Test;
 
+import java.util.ArrayList;
+
 import ch.epfl.sweng.udle.Food.DrinkTypes;
 import ch.epfl.sweng.udle.Food.FoodTypes;
 import ch.epfl.sweng.udle.Food.Menu;
@@ -39,6 +41,7 @@ public class RecapTest extends ActivityInstrumentationTestCase2<RecapActivity> {
     public void setUp() throws Exception {
         super.setUp();
         injectInstrumentation(InstrumentationRegistry.getInstrumentation());
+
     }
 
     public void addDrinks(){

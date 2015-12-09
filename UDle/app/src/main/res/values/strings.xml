@@ -15,7 +15,7 @@
 
     <string name="MenuMap_SearchHint">Search the desired delivery address</string>
     <string name="NoCardInformation">Please, fill in your card information</string>
-    <string name="ValidatePosition">Validate Position</string>
+    <string name="ValidatePosition">Start an order</string>
     <string name="NoMenuSelected">You need to select at least one menu</string>
     <string name="title_activity_maps">Map</string>
     <string name="buttonCallDeliveryGuy">Call Delivery Guy</string>
@@ -29,7 +29,7 @@
     <string name="confirm">Confirm</string>
     <string name="descriptionBurgerRotating">image stop rotating when order accepted</string>
     <string name="infotextwaiting">Please wait for a shop to accept your command</string>
-    <string name="infotextwaitingConfirmed">Congrats, your order is coming for you</string>
+    <string name="infotextwaitingConfirmed">Congrats, your order is being sent...</string>
 
     <string name="WaitingOrders">Waiting Order</string>
     <string name="ConfirmOrders">Confirmed Order</string>
@@ -63,7 +63,6 @@
     <string name="parse_app_id">9owjl8GmUsbfyoKtXhd5hK7QX8CUJVfuAvSLNoaY</string>
     <string name="parse_client_key">xd6XKHd9NxLfzFPbHQ5xaMHVzU1gfeLen0qCyI4F</string>
     <string name="facebook_app_id">1483920968589089</string>
-
     <string name="noMenuNoOptions">No menus selected. You need to select at least one menu in order to choose your options for it.</string>
     <string name="noOptions">No options</string>
     <string name="orderedBy">Ordered by: </string>
@@ -87,7 +86,12 @@
     <string name="notificationTitle">Order accepted</string>
     <string name="notificationText">Your order was accepted. Click to see details.</string>
     <string name="noRestaurantAvailable">Sorry, no restaurants are available right now. Try later.</string>
+    <string name="payment_activity_title">Payment Info</string>
+    <string name="recap_of_your_order">Recap of your order :</string>
     <string name="expectedTimeNegative">Please enter a positive number</string>
     <string name="expectedTimeTooBig">Expected time must be smaller than 60 minutes</string>
+    <string name="adressTest">rue de bourg</string>
+
+    <string name="Delievered">Delievered</string>
 
 </resources>

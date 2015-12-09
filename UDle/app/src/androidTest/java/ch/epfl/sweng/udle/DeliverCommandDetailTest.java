@@ -110,10 +110,11 @@ public class DeliverCommandDetailTest{
 
 
     @Test
-    public void clickToFinishOrder() throws ParseException {
+    public void clickToFinishOrder() throws ParseException, InterruptedException {
         String objectID = setUpIntentAndActivityForEnRouteOrdersServer();
         onView(withId(R.id.DeliverCommandDetail_commandDelivered)).check(matches(withText(R.string.commandDelivered)));
         onView(withId(R.id.DeliverCommandDetail_commandDelivered)).perform(click());
+        Thread.sleep(10000);
         onView(withId(R.id.DeliveryMap_GoogleMaps)).check(matches(isDisplayed()));
         deleteParseUserOrderInformation(objectID);
     }

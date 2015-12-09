@@ -32,14 +32,25 @@ import ch.epfl.sweng.udle.R;
 
 public class WaitingActivity extends SlideMenuActivity {
 
+    private static final long ANIMATION_TIME_BURGER_ROTATION = 3000;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_waiting);
 
+        //start the rotating burger
         ImageView burgerImage = (ImageView)findViewById(R.id.burgerImage);
         startAnimation(burgerImage);
 
+        setLittleRecap();
+    }
+
+    /**
+     * Use to display a brief recap just above the payment api
+     */
+    private void setLittleRecap() {
         List<HashMap<String, String>> list = new ArrayList<>();
         Menu.displayInRecap(list,getResources().getString(R.string.noOptions),getResources().getString(R.string.options));
         DrinkTypes.displayInRecap(list);
@@ -50,20 +61,27 @@ public class WaitingActivity extends SlideMenuActivity {
                 new int[] {R.id.RecapElem, R.id.RecapPriceElem, R.id.RecapOptionsString});
         ListView listView = (ListView) findViewById(R.id.WaitingActivity_recapList);
         listView.setAdapter(adapter);
-
     }
 
+    /**
+     * @param image  it is the logo of the app, the Udle burger
+     * It is use to stop the image rotating and goes to the next activity, current orders
+     *
+     */
     private void stopAnimation(ImageView image) {
 
         image.setAnimation(null);
-//        image.setBackgroundColor(ContextCompat.getColor(this, R.color.validateColor));
-//        image.setColorFilter(ContextCompat.getColor(this, R.color.validateColor), android.graphics.PorterDuff.Mode.MULTIPLY);
         image.setImageResource(R.drawable.rainbowburger);
-        TextView textInfo = (TextView) findViewById(R.id.textView7);
-        textInfo.setText(R.string.infotextwaitingConfirmed);
 
+/*        //go to next activity : current Orders
+        Intent intent =  new Intent(this, CurrentOrdersActivity.class);
+        startActivity(intent);*/
     }
 
+    /**
+     * @param image  it is the logo of the app, the UDle burger
+     * Show the user that its payment has been register, make the burger rotate for 3 seconds
+     */
     private void startAnimation(ImageView image) {
         // Step1 : create the  RotateAnimation object
         Animation anim = new RotateAnimation(0.0f, 360.0f,
@@ -78,41 +96,29 @@ public class WaitingActivity extends SlideMenuActivity {
         // Step 3: Start animating the image
         image.startAnimation(anim);
 
-
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-            stopAnimation((ImageView)findViewById(R.id.burgerImage));
+                stopAnimation((ImageView) findViewById(R.id.burgerImage));
             }
-        }, 6000);
+        }, ANIMATION_TIME_BURGER_ROTATION);
     }
 
-    public void orderAccepted_button_click(View view) {
-        Intent intent =  new Intent(this, CurrentOrdersActivity.class);
-        startActivity(intent);
-    }
 
+    /**
+     * Disable the back button at this stage, the payment has been already accepted
+     */
     @Override
     public void onBackPressed() {
 
-        new AlertDialog.Builder(WaitingActivity.this)
-                .setTitle(R.string.TitleAlertBack)
-                .setMessage(R.string.MessageAlertBack)
-                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        // continue with delete
-                        Intent intent =  new Intent(WaitingActivity.this, MapActivity.class);
-                        startActivity(intent);
-                    }
-                })
-                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        // do nothing
-                    }
-                })
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .show();
+    }
 
+
+
+    public void orderAccepted_button_click(View view) {
+        //go to next activity : current Orders
+        Intent intent =  new Intent(this, CurrentOrdersActivity.class);
+        startActivity(intent);
     }
 }

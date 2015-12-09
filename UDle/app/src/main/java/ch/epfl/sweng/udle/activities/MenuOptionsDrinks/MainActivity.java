@@ -68,6 +68,9 @@ public class MainActivity extends SlideMenuActivity {
 
     }
 
+    /**
+     * orders set to null in order to prevent from a bug in the previous mapActivity
+     */
     @Override
     public void onBackPressed() {
         super.onBackPressed();

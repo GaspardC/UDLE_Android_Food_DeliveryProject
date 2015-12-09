@@ -46,9 +46,11 @@ public class CurrentOrdersActivity extends SlideMenuActivity {
     final int delay = 30000; //30 seconds in milliseconds
     private ArrayList<OrderElement> waitingOrders = new ArrayList<>(); //Orders in the restaurant range that have no restaurant assigned to. Status of order: Waiting
     private ArrayList<OrderElement> currentOrders = new ArrayList<>(); //Orders that the restaurant already accept to deliverd. Status of order: EnRoute
+    private ArrayList<OrderElement> deliveredOrders = new ArrayList<>();
     private ProgressDialog progress;
     private boolean waitingOrdersChange;
     private boolean currentOrdersChange;
+    private boolean deliveredOrdersChange;
     private boolean activityNotOnScreen;
 
     @Override
@@ -139,6 +141,7 @@ public class CurrentOrdersActivity extends SlideMenuActivity {
                     public void run() {
                          waitingOrdersChange = changeInWaitingOrders();
                          currentOrdersChange = changeInCurrentOrders();
+                         deliveredOrdersChange = changeInDeliveredOrders();
 
                         handler.sendEmptyMessage(0); // interact with UI
                     };
@@ -156,6 +159,44 @@ public class CurrentOrdersActivity extends SlideMenuActivity {
             }
         };
         return runnable;
+    }
+
+    private boolean changeInDeliveredOrders() {
+        //Retrieve list from server
+        ArrayList<OrderElement> deliveredOrdersFromServe = DataManager.getDeliveredOrdersForAClient();
+
+        if (deliveredOrdersFromServe.size() == 0){
+            deliveredOrders = deliveredOrdersFromServe;
+            return true;
+        }
+
+        //In order to check if there was a change or not, we compare the objectID of the list retrieve from server and the one already on device.
+        //So use this int to see if the retrieved list is the same or not has the local one.
+        int checkSameList = 0;
+
+        //Putting all objectIds of local waitingOrders list into a new list
+        ArrayList<String> deliveredOrdersObjectID = new ArrayList<>();
+        for (OrderElement orderElement: deliveredOrders){
+            deliveredOrdersObjectID.add(orderElement.getUserOrderInformationsID());
+        }
+
+        //Check for all orderElements in the server list if it already present locally. If yes, add 1 to 'checkSameList'
+        for (OrderElement orderElement : deliveredOrdersFromServe){
+            if (deliveredOrdersObjectID.contains(orderElement.getUserOrderInformationsID())){
+                checkSameList ++;
+            }
+        }
+
+
+        if (deliveredOrdersFromServe.size() != checkSameList){
+            //Lists are not the same. Need to refresh
+            deliveredOrders = deliveredOrdersFromServe;
+            return true;
+        }
+        else {
+            //Server list is the same as the displayed one. Do nothing.
+            return false;
+        }
     }
 
     /**
@@ -179,14 +220,14 @@ public class CurrentOrdersActivity extends SlideMenuActivity {
         int checkSameList = 0;
 
         //Putting all objectIds of local waitingOrders list into a new list
-        ArrayList<String> currentCurrentOrdersObjectID = new ArrayList<>();
+        ArrayList<String> currentOrdersObjectID = new ArrayList<>();
         for (OrderElement orderElement: currentOrders){
-            currentCurrentOrdersObjectID.add(orderElement.getUserOrderInformationsID());
+            currentOrdersObjectID.add(orderElement.getUserOrderInformationsID());
         }
 
         //Check for all orderElements in the server list if it already present locally. If yes, add 1 to 'checkSameList'
         for (OrderElement orderElement : currentOrdersFromServe){
-            if (currentCurrentOrdersObjectID.contains(orderElement.getUserOrderInformationsID())){
+            if (currentOrdersObjectID.contains(orderElement.getUserOrderInformationsID())){
                 checkSameList ++;
             }
         }
@@ -217,19 +258,16 @@ public class CurrentOrdersActivity extends SlideMenuActivity {
         objectIdHashMapForList = new HashMap<>();
 
         List<HashMap<String,String>> aList = new ArrayList<>();
-        ArrayList<String> ordersAdress = new ArrayList<>();
+        ArrayList<String> orderAddress = new ArrayList<>();
         int i = 1;
 
         if(waitingOrders!=null){
             for(OrderElement order : waitingOrders) {
-
-                Location location = order.getDeliveryLocation();
                 String deliveryAddress = order.getDeliveryAddress();
-                LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-                ordersAdress.add(deliveryAddress);
+                orderAddress.add(deliveryAddress);
                 HashMap<String, String> hm = new HashMap<String,String>();
                 hm.put("numCommande", "#" + i+" ");
-                hm.put("address", ordersAdress.get(i - 1));
+                hm.put("address", orderAddress.get(i - 1));
                 hm.put("image", Integer.toString(R.drawable.logoburger));
                 aList.add(hm);
                 objectIdHashMapForList.put(i,order);
@@ -238,14 +276,25 @@ public class CurrentOrdersActivity extends SlideMenuActivity {
         }
         if(currentOrders!=null){
             for(OrderElement order : currentOrders) {
-                Location location = order.getDeliveryLocation();
                 String deliveryAddress = order.getDeliveryAddress();
-                LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-                ordersAdress.add(deliveryAddress);
+                orderAddress.add(deliveryAddress);
                 HashMap<String, String> hm = new HashMap<String,String>();
                 hm.put("numCommande", "#" + i+" ");
-                hm.put("address", ordersAdress.get(i-1));
+                hm.put("address", orderAddress.get(i - 1));
                 hm.put("image", Integer.toString(R.drawable.logogreen) );
+                aList.add(hm);
+                objectIdHashMapForList.put(i,order);
+                i++;
+            }
+        }
+        if(deliveredOrders!=null){
+            for(OrderElement order : deliveredOrders) {
+                String deliveryAddress = order.getDeliveryAddress();
+                orderAddress.add(deliveryAddress);
+                HashMap<String, String> hm = new HashMap<String,String>();
+                hm.put("numCommande", "#" + i+" ");
+                hm.put("address", orderAddress.get(i - 1));
+                hm.put("image", Integer.toString(R.drawable.logosilver) );
                 aList.add(hm);
                 objectIdHashMapForList.put(i,order);
                 i++;
@@ -279,12 +328,12 @@ public class CurrentOrdersActivity extends SlideMenuActivity {
                                     int position, long id) {
                 OrderElement order = objectIdHashMapForList.get(position+1);
 
-                boolean isCurrent = false;
-                if (currentOrders.contains(order)){
-                    isCurrent = true;
+                boolean isDelivered = false;
+                if (deliveredOrders.contains(order)){
+                    isDelivered = true;
                 }
 
-                goToDeliveryCommandDetail(order, isCurrent);
+                goToDeliveryCommandDetail(order, isDelivered);
             }
 
         });
@@ -340,11 +389,16 @@ public class CurrentOrdersActivity extends SlideMenuActivity {
         }
     }
     /** Called when the user clicks the MenuMap_ValidatePosition button */
-    public void goToDeliveryCommandDetail(OrderElement order, boolean isCurrent) {
+    public void goToDeliveryCommandDetail(OrderElement order, boolean isDelivered) {
         Orders.setActiveOrder(order);
 
         Intent intent = new Intent(this, RecapActivity.class);
-        intent.putExtra("from", "Current");
+        if (isDelivered){
+            intent.putExtra("from", "Delivered");
+        }
+        else{
+            intent.putExtra("from", "Current");
+        }
         startActivity(intent);
     }
 }

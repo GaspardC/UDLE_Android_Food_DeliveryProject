@@ -47,9 +47,11 @@ public class MenuFragment extends Fragment{
     }
 
 
+    /**
+     * If kebabs was already added to the order, add them and show the price.
+     * If not, just set the price and the kebab numbers to 0
+     */
     private void kebabInit(){
-        //If kebabs was already added to the order, add them and show the price.
-        //If not, just set the price and the kebab numbers to 0
         OrderElement orderElement = Orders.getActiveOrder();
         int nbrKebab = 0;
         if (orderElement != null){
@@ -98,6 +100,10 @@ public class MenuFragment extends Fragment{
         });
     }
 
+    /**
+     * @param nbr number of kebab
+     * Calcul of the total cost of kebabs
+     */
     private void computeKebabPrice(int nbr){
         double kebabPrice = FoodTypes.KEBAB.getPrice();
         double price = nbr*kebabPrice;
@@ -106,8 +112,10 @@ public class MenuFragment extends Fragment{
     }
 
 
-
-
+    /**
+     *  If burgers was already added to the order, add them and show the price.
+     * If not, just set the price and the burger numbers to 0
+     */
     private void burgerInit(){
         //If burgers were already added to the order, add them and show the price.
         //If not, just set the price and the burger numbers to 0
@@ -159,6 +167,10 @@ public class MenuFragment extends Fragment{
         });
     }
 
+    /**
+     * @param nbr number of burgers
+     * Calcul of the burger price and display it
+     */
     private void computeBurgerPrice(int nbr){
         double burgerPrice = FoodTypes.BURGER.getPrice();
         double price = nbr*burgerPrice;
@@ -178,6 +190,10 @@ public class MenuFragment extends Fragment{
         menus.add(newOne);
     }
 
+    /**
+     * @param foodTypes KEBAB or BURGER type
+     *                  use to remove an item
+     */
     private void removeOneMenu(FoodTypes foodTypes){
         OrderElement orderElement = Orders.getActiveOrder();
         ArrayList<Menu> menus = orderElement.getOrder();
@@ -195,14 +211,18 @@ public class MenuFragment extends Fragment{
     }
 
 
-
-
-    /** Called when the user clicks the 'Next' button */
+    /**
+     *  Called when the user clicks the 'Next' button
+    */
     public void goToOptionsActivity() {
         pager.setCurrentItem(1);
     }
 
 
+    /**
+     * @param pager use to change the current fragment
+     *              the parameter is set to then be used to change the current fragment
+     */
     public void setPager(ViewPager pager) {
         this.pager = pager;
     }

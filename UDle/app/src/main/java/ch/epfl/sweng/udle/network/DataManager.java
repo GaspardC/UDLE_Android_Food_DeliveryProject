@@ -259,7 +259,7 @@ public class DataManager {
      * Returns null if query fails.
      */
     public static ArrayList<OrderElement> getEnRouteOrdersForAClient() {
-        ArrayList<OrderElement> enRouteOrders = new ArrayList<>();
+        ArrayList<OrderElement> deliveredOrders = new ArrayList<>();
 
         ParseUser user = DataManager.getUser();
         try {
@@ -284,6 +284,47 @@ public class DataManager {
                 ParseObject parseOrderElement = parseUserOrder.getOrder();
                 OrderElement orderElement = ParseOrderElement.retrieveOrderElementFromParse(parseOrderElement);
 
+                deliveredOrders.add(orderElement);
+            }
+        }
+        catch (Exception e) {
+            throw new IllegalStateException(e);
+        }
+        return deliveredOrders;
+    }
+
+
+    /**
+     * Start a query of all the enRoute orders of the client.
+     * Compile an arraylist of all the order element objects and return.
+     * Returns null if query fails.
+     */
+    public static ArrayList<OrderElement> getDeliveredOrdersForAClient() {
+        ArrayList<OrderElement> enRouteOrders = new ArrayList<>();
+
+        ParseUser user = DataManager.getUser();
+        try {
+            user.fetch();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        //Start Query
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("ParseUserOrderInformations");
+        query.whereEqualTo("orderStatus", OrderStatus.DELIVERED.toString());
+        query.whereEqualTo("user", user);
+
+        try {
+            List<ParseObject> OrderList = query.find();
+
+            for (ParseObject userOrder : OrderList) {
+
+                //Cast to parseUserOrderInformations to use methods
+                ParseUserOrderInformations parseUserOrder = (ParseUserOrderInformations) userOrder;
+
+                ParseObject parseOrderElement = parseUserOrder.getOrder();
+                OrderElement orderElement = ParseOrderElement.retrieveOrderElementFromParse(parseOrderElement);
+
                 enRouteOrders.add(orderElement);
             }
         }
@@ -292,6 +333,7 @@ public class DataManager {
         }
         return enRouteOrders;
     }
+
 
 
     /*              RESTAURANT METHODS                       */
