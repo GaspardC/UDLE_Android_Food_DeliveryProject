@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.support.test.rule.ActivityTestRule;
 import org.junit.*;
 
+import java.util.concurrent.locks.ReentrantLock;
+
 import ch.epfl.sweng.udle.activities.HelpActivity.HelpActivity;
 
 import static android.support.test.espresso.Espresso.*;
@@ -18,10 +20,18 @@ public class HelpTest {
 
     public ActivityTestRule<HelpActivity> mActivityRule = new ActivityTestRule<>(HelpActivity.class, false);
     private HelpActivity activity;
+    ReentrantLock sequential = new ReentrantLock();
 
     @Before
     public void setUp() throws Exception {
+        sequential.lock();
         activity = mActivityRule.launchActivity(new Intent());
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        activity.finish();
+        sequential.unlock();
     }
 
     @Test
