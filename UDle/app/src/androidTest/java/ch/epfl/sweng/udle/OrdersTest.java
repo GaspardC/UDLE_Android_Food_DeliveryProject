@@ -127,34 +127,7 @@ public class OrdersTest {
         }
     }
 
-    @Test
-    public void currentToFinish(){
-        OrderElement orderElement = new OrderElement();
-        Menu menu = new Menu();
-        menu.setFood(FoodTypes.KEBAB);
-        menu.addToOptions(OptionsTypes.ALGERIENNE);
-        orderElement.addMenu(menu);
-        Menu menu1 = new Menu();
-        menu1.setFood(FoodTypes.KEBAB);
-        menu1.addToOptions(OptionsTypes.ALGERIENNE);
-        orderElement.addMenu(menu1);
-        orderElement.addToDrinks(DrinkTypes.BEER);
-        orderElement.addToDrinks(DrinkTypes.WATER);
 
-        Orders orders = new Orders();
-        orders.setActiveOrder(orderElement);
-        orders.activeOrderToCurrentOrder(orderElement);
-        try{
-            Orders.currentOrderFinished(orderElement);
-            for (OrderElement order : orders.getOldOrders()){
-                assertEquals(orderElement, order);
-            }
-            assertEquals(null, orders.getActiveOrder());
-            assertEquals(0, orders.getCurrentOrders().size());
-        } catch (IllegalArgumentException e){
-            fail();
-        }
-    }
     @Test
     public void notInCurrentToFinish(){
         OrderElement orderElement = new OrderElement();

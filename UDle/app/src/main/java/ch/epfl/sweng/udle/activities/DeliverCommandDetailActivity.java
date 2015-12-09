@@ -92,9 +92,21 @@ public class DeliverCommandDetailActivity extends AppCompatActivity {
         }
         else{
             int eta = Integer.parseInt(expectedTime.getText().toString());
-            DataManager.deliveryEnRoute(order.getUserOrderInformationsID(), eta);
-            Intent intent = new Intent(this, DeliveryRestaurantMapActivity.class);
-            startActivity(intent);
+            if (eta <= 0){
+                Toast.makeText(getApplicationContext(), getString(R.string.expectedTimeNegative),
+                        Toast.LENGTH_SHORT).show();
+            }
+            else {
+                if (eta > 60){
+                    Toast.makeText(getApplicationContext(), getString(R.string.expectedTimeTooBig),
+                            Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    DataManager.deliveryEnRoute(order.getUserOrderInformationsID(), eta);
+                    Intent intent = new Intent(this, DeliveryRestaurantMapActivity.class);
+                    startActivity(intent);
+                }
+            }
         }
     }
 
