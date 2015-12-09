@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ListAdapter;
@@ -22,6 +21,7 @@ import ch.epfl.sweng.udle.Food.Menu;
 import ch.epfl.sweng.udle.Food.OrderElement;
 import ch.epfl.sweng.udle.Food.Orders;
 import ch.epfl.sweng.udle.R;
+import ch.epfl.sweng.udle.activities.SlideMenu.SlideMenuActivity;
 import ch.epfl.sweng.udle.network.DataManager;
 
 public class PaymentActivity extends SlideMenuActivity {
