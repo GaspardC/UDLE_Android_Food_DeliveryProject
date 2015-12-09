@@ -263,6 +263,25 @@ public class MenuTest {
     }
 
     @Test
+    public void testEmptyTrue(){
+        Menu menu = new Menu();
+        assertEquals(true, menu.isEmpty());
+    }
+    @Test
+    public void testEmptyTrue2(){
+        Menu menu = new Menu();
+        menu.addToOptions(OptionsTypes.MAYO);
+        assertEquals(false, menu.isEmpty());
+    }
+    @Test
+    public void testEmptyTrueOptions(){
+        Menu menu = new Menu();
+        menu.setFood(FoodTypes.KEBAB);
+        assertEquals(false, menu.isEmpty());
+    }
+
+
+    @Test
     public void testDisplayInRecap(){
         Menu menu1 = new Menu();
         menu1.addToOptions(OptionsTypes.OIGNON);
