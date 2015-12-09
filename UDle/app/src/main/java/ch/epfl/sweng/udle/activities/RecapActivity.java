@@ -99,23 +99,26 @@ public class RecapActivity extends SlideMenuActivity {
 
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
-        if (bundle != null){
-             from = bundle.getString("from");
-            if(from.equals("Map") || from.equals("Current")){
-                confirmButton.setVisibility(View.GONE);
-                String expectedTime = DataManager.getExpectedTime(order.getUserOrderInformationsID());
-                if(!expectedTime.equals("-1")){
-                    expected_time_layout.setVisibility(View.VISIBLE);
-                    status_layout.setVisibility(View.VISIBLE);
-                    TextView text = (TextView) findViewById(R.id.RecapActivity_expected_time);
-                    text.setText(expectedTime);
-                    TextView textStatus = (TextView) findViewById(R.id.RecapActivity_status);
-                    textStatus.setText(R.string.enRoute);
-                }
-                else{
-                    status_layout.setVisibility(View.VISIBLE);
+        if (bundle != null) {
+            from = bundle.getString("from");
+            confirmButton.setVisibility(View.GONE);
+            String expectedTime = DataManager.getExpectedTime(order.getUserOrderInformationsID());
+            if (!expectedTime.equals("-1")) {
+                expected_time_layout.setVisibility(View.VISIBLE);
+                status_layout.setVisibility(View.VISIBLE);
+                TextView text = (TextView) findViewById(R.id.RecapActivity_expected_time);
+                text.setText(expectedTime);
+                TextView textStatus = (TextView) findViewById(R.id.RecapActivity_status);
+                textStatus.setText(R.string.enRoute);
+            } else {
+                status_layout.setVisibility(View.VISIBLE);
+                if (from.equals("Current")) {
                     TextView textStatus = (TextView) findViewById(R.id.RecapActivity_status);
                     textStatus.setText(R.string.WaitingOrders);
+                }
+                if (from.equals("Delivered")) {
+                    TextView textStatus = (TextView) findViewById(R.id.RecapActivity_status);
+                    textStatus.setText(R.string.Delievered);
                 }
             }
         }

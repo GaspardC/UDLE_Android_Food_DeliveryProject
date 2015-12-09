@@ -98,7 +98,6 @@ public class DataManagerTest {
         assertEquals(false, restaurantNear);
     }
 
-
     @Test
     public void testWaitingOrdersNull() throws ParseException {
         ParseUser.logIn("user test alone", "test");

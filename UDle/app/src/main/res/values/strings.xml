@@ -90,5 +90,6 @@
     <string name="recap_of_your_order">Recap of your order :</string>
     <string name="expectedTimeNegative">Please enter a positive number</string>
     <string name="expectedTimeTooBig">Expected time must be smaller than 60 minutes</string>
+    <string name="Delievered">Delievered</string>
 
 </resources>
