@@ -555,8 +555,12 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
         Criteria criteria = new Criteria();
         // Get the name of the best provider
         String provider = locationManager.getBestProvider(criteria, true);
+        Location loc = locationManager.getLastKnownLocation(provider);
+        if (loc == null){
+            loc = new Location("");
+        }
         // Get Current Location
-        setLocation(locationManager.getLastKnownLocation(provider));
+        setLocation(loc);
         // set map type
         mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 
