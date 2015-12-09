@@ -3,12 +3,6 @@ package ch.epfl.sweng.udle;
 import android.app.Instrumentation;
 import android.location.Location;
 import android.support.test.InstrumentationRegistry;
-import android.support.test.espresso.action.ViewActions;
-import android.support.test.espresso.matcher.ViewMatchers;
-import android.support.test.uiautomator.UiDevice;
-import android.support.test.uiautomator.UiObject;
-import android.support.test.uiautomator.UiObjectNotFoundException;
-import android.support.test.uiautomator.UiSelector;
 import android.test.ActivityInstrumentationTestCase2;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -16,37 +10,25 @@ import android.widget.Button;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 
-import org.junit.Before;
+
 import org.junit.Test;
 
 import java.util.ArrayList;
-import java.util.Map;
 
-import ch.epfl.sweng.udle.Food.DrinkTypes;
 import ch.epfl.sweng.udle.Food.FoodTypes;
 import ch.epfl.sweng.udle.Food.Menu;
-import ch.epfl.sweng.udle.Food.OptionsTypes;
 import ch.epfl.sweng.udle.Food.OrderElement;
 import ch.epfl.sweng.udle.Food.Orders;
-import ch.epfl.sweng.udle.activities.DeliveryRestaurantMapActivity;
 import ch.epfl.sweng.udle.activities.MapActivity;
 import ch.epfl.sweng.udle.activities.MenuOptionsDrinks.MainActivity;
-import ch.epfl.sweng.udle.activities.PaymentActivity;
-import ch.epfl.sweng.udle.activities.WaitingActivity;
 import ch.epfl.sweng.udle.network.ParseOrderElement;
 
-import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
-import static android.support.test.espresso.matcher.ViewMatchers.withEffectiveVisibility;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static org.hamcrest.Matchers.anything;
 
 /**
  * Created by Abdes on 08/12/2015.
@@ -105,6 +87,32 @@ public class mapActivityTest extends ActivityInstrumentationTestCase2<MapActivit
             } catch (Exception e_1) {
                 fail("Should start Menu Activity");
             }
+        }
+    }
+
+    @Test
+    public void testRealAddress() throws InterruptedException {
+        Thread.sleep(5000);
+        checkGps();
+        final AutoCompleteTextView autocomp = (AutoCompleteTextView) myActivity.findViewById(R.id.autoCompleteTextView2);
+        myActivity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                autocomp.setText(R.string.adressTest);
+            }
+        });
+        Thread.sleep(5000);
+        myActivity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                onView(withText(autocomp.getAdapter().getItem(0).toString())).check(matches(isDisplayed()));
+                onView(withText(autocomp.getAdapter().getItem(0).toString())).perform((click()));
+            }
+        });
+        try {
+            testOpenNextActivity(myActivity, true);
+        } catch (Exception e_1) {
+            fail("Should start Menu Activity");
         }
     }
 
