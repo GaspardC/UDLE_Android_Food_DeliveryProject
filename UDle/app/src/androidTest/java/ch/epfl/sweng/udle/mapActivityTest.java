@@ -99,13 +99,7 @@ public class mapActivityTest extends ActivityInstrumentationTestCase2<MapActivit
     @Test
     public void testButtonAfterClick() throws InterruptedException {
         Thread.sleep(3000);
-        if (!checkGps()) {
-            try{
-                testOpenNextActivity(myActivity, false);
-            }catch(Exception e){
-                fail("Should not start Menu Activity");
-            }
-        }else {
+        if (checkGps()) {
             try {
                 testOpenNextActivity(myActivity, true);
             } catch (Exception e_1) {
