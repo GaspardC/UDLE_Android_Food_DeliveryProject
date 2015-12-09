@@ -53,6 +53,7 @@ public class mapActivityTest extends ActivityInstrumentationTestCase2<MapActivit
     public void setUp() throws Exception {
         ParseUser.logIn("restaurant2", "test");
         super.setUp();
+        Orders.setActiveOrder(null);
         injectInstrumentation(InstrumentationRegistry.getInstrumentation());
         myActivity = getActivity();
     }
