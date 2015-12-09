@@ -43,6 +43,7 @@ public class PaymentTest extends ActivityInstrumentationTestCase2<PaymentActivit
         ParseObject parseOrderElement = ParseOrderElement.create(getOrderElement());
         OrderElement orderElement = ParseOrderElement.retrieveOrderElementFromParse(parseOrderElement);
         Orders.setActiveOrder(orderElement);
+        ParseUser.logIn("restaurant3", "test");
         super.setUp();
         ViewActions.closeSoftKeyboard();
         injectInstrumentation(InstrumentationRegistry.getInstrumentation());

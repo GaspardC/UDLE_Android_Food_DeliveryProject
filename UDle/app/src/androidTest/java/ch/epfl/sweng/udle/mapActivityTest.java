@@ -53,6 +53,7 @@ import static org.hamcrest.Matchers.anything;
  */
 public class mapActivityTest extends ActivityInstrumentationTestCase2<MapActivity> {
     private MapActivity myActivity;
+    private OrderElement orderElement;
 
     public mapActivityTest() {
         super(MapActivity.class);
@@ -60,7 +61,8 @@ public class mapActivityTest extends ActivityInstrumentationTestCase2<MapActivit
 
     public void setUp() throws Exception {
         ParseObject parseOrderElement = ParseOrderElement.create(getOrderElement());
-        OrderElement orderElement = ParseOrderElement.retrieveOrderElementFromParse(parseOrderElement);
+        orderElement = ParseOrderElement.retrieveOrderElementFromParse(parseOrderElement);
+        ParseUser.logIn("restaurant3", "test");
         Orders.setActiveOrder(orderElement);
         super.setUp();
         injectInstrumentation(InstrumentationRegistry.getInstrumentation());
@@ -68,8 +70,15 @@ public class mapActivityTest extends ActivityInstrumentationTestCase2<MapActivit
     }
 
     @Test
+    public void checkGpsPopUp() throws InterruptedException {
+        // If no error and gps disabled, means that the pop up appeared and was dismissed correctly
+        checkGps();
+    }
+
+    @Test
     public void testAutocompView() throws InterruptedException {
-        Thread.sleep(3000);
+        Thread.sleep(5000);
+        checkGps();
         final AutoCompleteTextView autocomp = (AutoCompleteTextView) myActivity.findViewById(R.id.autoCompleteTextView2);
         myActivity.runOnUiThread(new Runnable() {
             @Override
@@ -81,16 +90,27 @@ public class mapActivityTest extends ActivityInstrumentationTestCase2<MapActivit
     }
 
     @Test
-    public void testMapVisble(){
+    public void testMapVisble() throws InterruptedException {
+        Thread.sleep(3000);
+        checkGps();
         onView(withId(R.id.MenuMap_GoogleMaps)).check(matches(isDisplayed()));
     }
 
     @Test
-    public void testButtonTextAfterClick(){
-        try{
-            testOpenNextActivity(myActivity, true);
-        }catch(Exception e){
-            fail("Should start Menu Activity");
+    public void testButtonAfterClick() throws InterruptedException {
+        Thread.sleep(3000);
+        if (!checkGps()) {
+            try{
+                testOpenNextActivity(myActivity, false);
+            }catch(Exception e){
+                fail("Should not start Menu Activity");
+            }
+        }else {
+            try {
+                testOpenNextActivity(myActivity, true);
+            } catch (Exception e_1) {
+                fail("Should start Menu Activity");
+            }
         }
     }
 
@@ -133,6 +153,23 @@ public class mapActivityTest extends ActivityInstrumentationTestCase2<MapActivit
         menu.setFood(FoodTypes.KEBAB);
         menuList.add(menu);
         return menuList;
+    }
+
+    private Boolean checkGps(){
+        try{
+            onView(withText(R.string.mapActivityNoGps)).check(matches(isDisplayed()));
+            onView(withText("No")).perform((click()));
+            Thread.sleep(3000);
+            try{
+                onView(withText(R.string.mapActivityNoGps)).check(matches(isDisplayed()));
+                fail("Should closed");
+            }catch (Exception e_1){
+                return false;
+            }
+        }catch (Exception e){
+            return true;
+        }
+        return true;
     }
 
 }
