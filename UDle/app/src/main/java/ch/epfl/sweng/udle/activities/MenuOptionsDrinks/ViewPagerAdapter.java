@@ -34,7 +34,11 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
 
     }
 
-    //This method return the fragment for the every position in the View Pager
+    /**
+     * @param position number of fragment
+     * @return This method return the fragment for the every position in the View Pager
+     */
+
     @Override
     public Fragment getItem(int position) {
         if(position == 0) // if the position is 0 we are returning the First tab
@@ -58,15 +62,21 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
 
     }
 
-    // This method return the titles for the Tabs in the Tab Strip
 
+
+    /**
+     * @param position number of fragment
+     * @return This method return the titles for the Tabs in the Tab Strip
+     */
     @Override
     public CharSequence getPageTitle(int position) {
         return Titles[position];
     }
 
-    // This method return the Number of tabs for the tabs Strip
 
+    /**
+     * @return This method return the Number of tabs for the tabs Strip
+     */
     @Override
     public int getCount() {
         return NumbOfTabs;
@@ -77,7 +87,10 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
     }
 
 
-    //Use this method to show/hide 'noMenuSelected' message in Options Layer
+    /**
+     * @param container
+     * Use this method to show/hide 'noMenuSelected' message in Options Layer
+     */
     @Override
     public void startUpdate(ViewGroup container) {
         View view = container.findViewById(R.id.Layout_Options);

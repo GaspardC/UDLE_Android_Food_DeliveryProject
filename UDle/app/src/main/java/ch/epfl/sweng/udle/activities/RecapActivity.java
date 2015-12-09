@@ -100,9 +100,9 @@ public class RecapActivity extends SlideMenuActivity {
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
         if (bundle != null){
-             from = bundle.getString("from");
+            from = bundle.getString("from");
+            confirmButton.setVisibility(View.GONE);
             if(from.equals("Map") || from.equals("Current")){
-                confirmButton.setVisibility(View.GONE);
                 String expectedTime = DataManager.getExpectedTime(order.getUserOrderInformationsID());
                 if(!expectedTime.equals("-1")){
                     expected_time_layout.setVisibility(View.VISIBLE);
@@ -118,6 +118,13 @@ public class RecapActivity extends SlideMenuActivity {
                     textStatus.setText(R.string.WaitingOrders);
                 }
             }
+            else{
+                if (from.equals("Delivered")){
+                    status_layout.setVisibility(View.VISIBLE);
+                    TextView textStatus = (TextView) findViewById(R.id.RecapActivity_status);
+                    textStatus.setText(R.string.Delievered);
+                }
+            }
         }
         else{
             confirmButton.setVisibility(View.VISIBLE);
@@ -125,9 +132,11 @@ public class RecapActivity extends SlideMenuActivity {
             status_layout.setVisibility(View.GONE);
         }
     }
+
+
     @Override
     public void onBackPressed(){
-        if(from.equals("Current")){
+        if(from.equals("Current") || from.equals("Delivered")){
             Intent intent = new Intent(this, CurrentOrdersActivity.class);
             startActivity(intent);
         }
@@ -260,4 +269,6 @@ public class RecapActivity extends SlideMenuActivity {
         Intent intent = new Intent(this, PaymentActivity.class);
         startActivity(intent);
     }
+
+
 }

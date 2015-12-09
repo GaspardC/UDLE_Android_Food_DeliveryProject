@@ -83,7 +83,8 @@ public class DeliveryRestaurantMapTest  extends ActivityInstrumentationTestCase2
         onView(withId(R.id.listOrderRestaurantMap)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.GONE)));
     }
     @Test
-    public void testMapVisble(){
+    public void testMapVisble() throws InterruptedException {
+        Thread.sleep(5000);
         onView(withId(R.id.DeliveryMap_GoogleMaps)).check(matches(isDisplayed()));
     }
 

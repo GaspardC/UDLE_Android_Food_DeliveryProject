@@ -3,7 +3,9 @@ package ch.epfl.sweng.udle;
 import android.app.Instrumentation;
 import android.location.Location;
 import android.support.test.InstrumentationRegistry;
+import android.support.test.espresso.Espresso;
 import android.test.ActivityInstrumentationTestCase2;
+import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 
@@ -23,29 +25,33 @@ import ch.epfl.sweng.udle.activities.MapActivity;
 import ch.epfl.sweng.udle.activities.MenuOptionsDrinks.MainActivity;
 import ch.epfl.sweng.udle.network.ParseOrderElement;
 
+import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.RootMatchers.withDecorView;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static android.support.test.espresso.matcher.ViewMatchers.withClassName;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static org.hamcrest.Matchers.anything;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.core.IsNot.not;
 
 /**
  * Created by Abdes on 08/12/2015.
  */
 public class mapActivityTest extends ActivityInstrumentationTestCase2<MapActivity> {
     private MapActivity myActivity;
-    private OrderElement orderElement;
 
     public mapActivityTest() {
         super(MapActivity.class);
     }
 
     public void setUp() throws Exception {
-        ParseObject parseOrderElement = ParseOrderElement.create(getOrderElement());
-        orderElement = ParseOrderElement.retrieveOrderElementFromParse(parseOrderElement);
-        ParseUser.logIn("restaurant3", "test");
-        Orders.setActiveOrder(orderElement);
+        ParseUser.logIn("restaurant2", "test");
         super.setUp();
         injectInstrumentation(InstrumentationRegistry.getInstrumentation());
         myActivity = getActivity();
@@ -102,18 +108,18 @@ public class mapActivityTest extends ActivityInstrumentationTestCase2<MapActivit
             }
         });
         Thread.sleep(5000);
-        myActivity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                onView(withText(autocomp.getAdapter().getItem(0).toString())).check(matches(isDisplayed()));
-                onView(withText(autocomp.getAdapter().getItem(0).toString())).perform((click()));
-            }
-        });
+
+
+        onView(withText("Rue de Bourg, Lausanne, Switzerland")).inRoot(withDecorView(not(is(getActivity().getWindow().getDecorView())))).check(matches(isDisplayed()));
+        onView(withText("Rue de Bourg, Lausanne, Switzerland")).inRoot(withDecorView(not(is(getActivity().getWindow().getDecorView())))).perform(click());
+
         try {
             testOpenNextActivity(myActivity, true);
         } catch (Exception e_1) {
             fail("Should start Menu Activity");
         }
+
+
     }
 
     public void testOpenNextActivity(final MapActivity myActivity, boolean shouldBeTrue) {

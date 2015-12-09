@@ -17,7 +17,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="PAYMENT OF THE ORDER"
+        android:text="@string/payment_activity_title"
         android:id="@+id/textView"
         android:textSize="30dp"
         android:textColor="#070707"
@@ -26,7 +26,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Recap of the orderElement :"
+        android:text="@string/recap_of_your_order"
         android:id="@+id/textView2"
         android:singleLine="false"
         android:textSize="25dp"
@@ -40,6 +40,7 @@
         android:layout_marginTop="20dp"/>
 
     <LinearLayout
+        android:layout_marginTop="10dp"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -129,7 +130,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Pay"
-        android:id="@+id/button"
+        android:id="@+id/button_payment_confirm"
         android:layout_gravity="center_horizontal"
         android:onClick="payment_button_click" />
 
