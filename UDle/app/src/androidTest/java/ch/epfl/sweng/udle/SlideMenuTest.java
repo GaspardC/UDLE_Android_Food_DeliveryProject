@@ -19,7 +19,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.*;
  */
 public class SlideMenuTest {
 
-    public ActivityTestRule<LightActivity> mActivityRule = new ActivityTestRule<>(LightActivity.class, false);
+    /*public ActivityTestRule<LightActivity> mActivityRule = new ActivityTestRule<>(LightActivity.class, false);
     private LightActivity activity;
 
     @Before
@@ -43,11 +43,12 @@ public class SlideMenuTest {
     }
 }
 
+
 class LightActivity extends SlideMenuActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.help_page);
-    }
+    }*/
 }

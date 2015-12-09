@@ -35,6 +35,9 @@ public class LightPagerAdapter extends PagerAdapter {
             R.drawable.flou2
     };
 
+    /**
+     * @param context context on which the adapter will be "drawing"
+     */
     public LightPagerAdapter(Context context) {
         this.context = context;
         contextResources = this.context.getResources();
@@ -42,16 +45,44 @@ public class LightPagerAdapter extends PagerAdapter {
         inflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
+    /**
+     * Get the rank of last help page, starting from 1.
+     * Equivalent as Array.length
+     * Remember to increase this number when implementing a new help page
+     *
+     * @return # of help pages
+     */
     @Override
     public int getCount() {
-        return imgResources.length;
+        return 2;
     }
 
+    /**
+     * Determines whether a page View is associated with a specific key object
+     * as returned by {@link #instantiateItem(ViewGroup, int)}. This method is
+     * required for a PagerAdapter to function properly.
+     *
+     * @param view Page View to check for association with <code>object</code>
+     * @param object Object to check for association with <code>view</code>
+     * @return true if <code>view</code> is associated with the key object <code>object</code>
+     */
     @Override
     public boolean isViewFromObject(View view, Object object) {
         return view == object;
     }
 
+    /**
+     * Create the help page for the given position.
+     * Each help page is hardcoded here, if the position
+     * is valid but does not correspond to a hardcoded page,
+     * the adapter will inflate an empty page with the
+     * corresponding help image in {@link #imgResources}.
+     *
+     *
+     * @param container The ViewPager in which the page will be shown.
+     * @param position The page position to be instantiated.
+     * @return Returns a View representing the new page with the correct help image.
+     */
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
         View itemView;
@@ -118,6 +149,14 @@ public class LightPagerAdapter extends PagerAdapter {
         return itemView;
     }
 
+    /**
+     * Remove a help page for the given position.
+     *
+     * @param container The ViewPager from which the page will be removed.
+     * @param position The page position to be removed.
+     * @param object The same object that was returned by
+     * {@link #instantiateItem(View, int)}.
+     */
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
         container.removeView((LinearLayout) object);
