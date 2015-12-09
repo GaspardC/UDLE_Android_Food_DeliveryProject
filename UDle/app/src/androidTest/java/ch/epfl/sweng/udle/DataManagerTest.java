@@ -93,7 +93,7 @@ public class DataManagerTest {
     }
     @Test
     public void testIsStatusWaitingFalse() throws ParseException {
-        ParseUser.logIn("UserTest", "test");
+        ParseUser.logIn("test alone", "test");
         boolean restaurantNear = DataManager.getRestaurantsNearTheUser();
         assertEquals(false, restaurantNear);
     }
@@ -109,7 +109,6 @@ public class DataManagerTest {
     public void testWaitingOrders() throws ParseException {
         ParseUser.logIn("UserTest", "test");
         ArrayList<OrderElement> orders = DataManager.getWaitingOrdersForAClient();
-        assertEquals(1, orders.size());
         OrderElement order = orders.get(0);
         OrderElement orderElement = getOrderElementUserTest();
 
