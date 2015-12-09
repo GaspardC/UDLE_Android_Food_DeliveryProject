@@ -8,6 +8,7 @@ import android.test.ActivityInstrumentationTestCase2;
 import android.widget.Button;
 
 import com.parse.ParseObject;
+import com.parse.ParseUser;
 
 import org.junit.Test;
 
@@ -38,6 +39,7 @@ public class PaymentTest extends ActivityInstrumentationTestCase2<PaymentActivit
         ParseObject parseOrderElement = ParseOrderElement.create(getOrderElement());
         OrderElement orderElement = ParseOrderElement.retrieveOrderElementFromParse(parseOrderElement);
         Orders.setActiveOrder(orderElement);
+        ParseUser.logIn("restaurant3", "test");
         super.setUp();
         ViewActions.closeSoftKeyboard();
         injectInstrumentation(InstrumentationRegistry.getInstrumentation());
