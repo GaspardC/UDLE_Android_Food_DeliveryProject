@@ -347,4 +347,16 @@ public class CurrentOrdersActivity extends SlideMenuActivity {
         intent.putExtra("from", "Current");
         startActivity(intent);
     }
+
+    /* These to methods aer use only for testing */
+    public void resetCurrentOrder(){
+        this.currentOrders = new ArrayList<> ();
+    }
+    public void resetWaitingOrders(){
+        this.waitingOrders = new ArrayList<> ();
+    }
+    public void setWaitingOrdersForTesting(ArrayList<OrderElement> orderElements){
+        waitingOrders = orderElements;
+    }
+
 }
