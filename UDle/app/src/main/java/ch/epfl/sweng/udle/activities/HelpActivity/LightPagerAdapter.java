@@ -31,7 +31,7 @@ public class LightPagerAdapter extends PagerAdapter {
     LayoutInflater inflater;
 
     int[] imgResources = {
-            R.drawable.background_city_night,
+            R.drawable.background_cityy_night,
             R.drawable.flou2
     };
 
