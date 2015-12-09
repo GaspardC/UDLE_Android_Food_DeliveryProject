@@ -73,9 +73,9 @@ public class WaitingActivity extends SlideMenuActivity {
         image.setAnimation(null);
         image.setImageResource(R.drawable.rainbowburger);
 
-        //go to next activity : current Orders
+/*        //go to next activity : current Orders
         Intent intent =  new Intent(this, CurrentOrdersActivity.class);
-        startActivity(intent);
+        startActivity(intent);*/
     }
 
     /**
@@ -112,5 +112,13 @@ public class WaitingActivity extends SlideMenuActivity {
     @Override
     public void onBackPressed() {
 
+    }
+
+
+
+    public void orderAccepted_button_click(View view) {
+        //go to next activity : current Orders
+        Intent intent =  new Intent(this, CurrentOrdersActivity.class);
+        startActivity(intent);
     }
 }
