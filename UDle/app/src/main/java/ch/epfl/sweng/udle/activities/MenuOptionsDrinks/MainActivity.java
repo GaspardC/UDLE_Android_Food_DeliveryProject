@@ -1,18 +1,13 @@
 package ch.epfl.sweng.udle.activities.MenuOptionsDrinks;
 
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 
 import ch.epfl.sweng.udle.Food.Orders;
 import ch.epfl.sweng.udle.HorizontalSlideLibrary.SlidingTabLayout;
 import ch.epfl.sweng.udle.R;
-import ch.epfl.sweng.udle.activities.SlideMenuActivity;
+import ch.epfl.sweng.udle.activities.SlideMenu.SlideMenuActivity;
 
 
 public class MainActivity extends SlideMenuActivity {
