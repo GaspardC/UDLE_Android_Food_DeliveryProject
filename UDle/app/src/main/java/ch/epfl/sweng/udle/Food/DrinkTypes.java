@@ -53,7 +53,7 @@ public enum DrinkTypes {
                 String drink = String.valueOf(nbaOccurrences) +" " + drinkType.toString();
                 String price = String.format("%.2f", drinkType.getPrice()*nbaOccurrences);
                 price = price + Orders.getMoneyDevise();
-
+                price = price.replace(",",".");
                 HashMap<String, String> element = new HashMap<>();
                 element.put("elem", drink);
                 element.put("price", price);

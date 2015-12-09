@@ -11,6 +11,7 @@ import ch.epfl.sweng.udle.Food.Menu;
 import ch.epfl.sweng.udle.Food.OptionsTypes;
 import ch.epfl.sweng.udle.Food.OrderElement;
 import ch.epfl.sweng.udle.Food.Orders;
+import ch.epfl.sweng.udle.network.OrderStatus;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.fail;
@@ -153,5 +154,12 @@ public class OrdersTest {
         } catch (IllegalArgumentException e){
             //good
         }
+    }
+
+    @Test
+    public void testStrings(){
+        assertEquals(OrderStatus.WAITING.toString(), OrderStatus.valueOf("WAITING").toString());
+        assertEquals(OrderStatus.ENROUTE.toString(), OrderStatus.valueOf("ENROUTE").toString());
+        assertEquals(OrderStatus.DELIVERED.toString(), OrderStatus.valueOf("DELIVERED").toString());
     }
 }
