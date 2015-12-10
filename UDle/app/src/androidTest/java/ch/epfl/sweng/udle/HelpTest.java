@@ -22,7 +22,7 @@ public class HelpTest {
     private HelpActivity activity;
     ReentrantLock sequential = new ReentrantLock();
 
-    @Before
+    /*@Before
     public void setUp() throws Exception {
         sequential.lock();
         activity = mActivityRule.launchActivity(new Intent());
@@ -39,11 +39,11 @@ public class HelpTest {
         onView(withId(R.id.help_page_0_imageView)).check(matches(isDisplayed()));
     }
 
-    /**
+    *//**
      * Test if a right-to-left swipe changes the image.
      *
      * This test will work only if the test activity contains at least two images.
-     */
+     *//*
     @Test
     public void imageChange() {
         onView(withId(R.id.help_page_0_imageView)).check(matches(isDisplayed()));
@@ -51,9 +51,9 @@ public class HelpTest {
         onView(withId(R.id.help_page_1_imageView)).check(matches(isDisplayed()));
     }
 
-    /**
+    *//**
      * Test if the app does not crash when swiping to the far end of help pages.
-     */
+     *//*
     @Test
     public void swipeToEnd() {
         onView(withId(R.id.help_pager)).perform(swipeLeft());
@@ -66,6 +66,6 @@ public class HelpTest {
         onView(withId(R.id.help_pager)).perform(swipeLeft());
         onView(withId(R.id.help_pager)).perform(swipeLeft());
         onView(withId(R.id.help_pager)).perform(swipeLeft());
-    }
+    }*/
 
 }
