@@ -20,13 +20,11 @@
  */
 
 package ch.epfl.sweng.udle.activities;
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -34,7 +32,7 @@ import com.parse.ParseUser;
 import com.parse.ui.ParseLoginBuilder;
 
 import ch.epfl.sweng.udle.R;
-import ch.epfl.sweng.udle.activities.MenuOptionsDrinks.MainActivity;
+import ch.epfl.sweng.udle.activities.SlideMenu.SlideMenuActivity;
 import ch.epfl.sweng.udle.network.DataManager;
 
 /**

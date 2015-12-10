@@ -33,6 +33,7 @@ import ch.epfl.sweng.udle.Food.OptionsTypes;
 import ch.epfl.sweng.udle.Food.OrderElement;
 import ch.epfl.sweng.udle.Food.Orders;
 import ch.epfl.sweng.udle.R;
+import ch.epfl.sweng.udle.activities.SlideMenu.SlideMenuActivity;
 import ch.epfl.sweng.udle.network.DataManager;
 
 /**
@@ -401,4 +402,16 @@ public class CurrentOrdersActivity extends SlideMenuActivity {
         }
         startActivity(intent);
     }
+
+    /* These to methods aer use only for testing */
+    public void resetCurrentOrder(){
+        this.currentOrders = new ArrayList<> ();
+    }
+    public void resetWaitingOrders(){
+        this.waitingOrders = new ArrayList<> ();
+    }
+    public void setWaitingOrdersForTesting(ArrayList<OrderElement> orderElements){
+        waitingOrders = orderElements;
+    }
+
 }

@@ -32,6 +32,7 @@ import static junit.framework.Assert.assertEquals;
 public class DataManagerTest {
 
 
+
     @Test
     public void testGetUsername() throws ParseException {
         ParseUser.logIn("UserTest", "test");
