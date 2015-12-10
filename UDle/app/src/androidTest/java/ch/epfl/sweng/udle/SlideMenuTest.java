@@ -19,7 +19,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.*;
  */
 public class SlideMenuTest {
 
-    /*public ActivityTestRule<LightActivity> mActivityRule = new ActivityTestRule<>(LightActivity.class, false);
+    public ActivityTestRule<LightActivity> mActivityRule = new ActivityTestRule<>(LightActivity.class, false);
     private LightActivity activity;
 
     @Before
@@ -27,18 +27,28 @@ public class SlideMenuTest {
         activity = mActivityRule.launchActivity(new Intent());
     }
 
+    @After
+    public void tearDown() throws Exception {
+        activity.finish();
+    }
+
     @Test
     public void visibility(){
-        onView(withId(R.id.help_page_imageView)).check(matches(isCompletelyDisplayed()));
+        onView(withId(R.id.help_page_imageView)).check(matches(isDisplayed()));
         onView(withId(R.id.slideMenu_frame)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.INVISIBLE)));
     }
 
     @Test
-    public void swipeOpeningClosing(){
+    public void swipeOpening(){
         onView(withId(R.id.help_page_imageView)).perform(swipeRight());
         onView(withId(R.id.slideMenu_frame)).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void swipeClosing(){
+        onView(withId(R.id.help_page_imageView)).perform(swipeRight());
         onView(withId(R.id.help_page_imageView)).perform(swipeLeft());
-        onView(withId(R.id.help_page_imageView)).check(matches(isCompletelyDisplayed()));
+        onView(withId(R.id.help_page_imageView)).check(matches(isDisplayed()));
         onView(withId(R.id.slideMenu_frame)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.INVISIBLE)));
     }
 }
@@ -50,5 +60,5 @@ class LightActivity extends SlideMenuActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.help_page);
-    }*/
+    }
 }
