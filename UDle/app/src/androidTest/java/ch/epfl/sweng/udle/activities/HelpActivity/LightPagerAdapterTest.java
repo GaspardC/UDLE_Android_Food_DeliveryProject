@@ -41,7 +41,6 @@ public class LightPagerAdapterTest {
 
     @After
     public void tearDown() throws Exception {
-        pager.removeAllViews();
         sequential.unlock();
     }
 

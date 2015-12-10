@@ -22,7 +22,7 @@ public class SlideMenuTest {
     public ActivityTestRule<LightActivity> mActivityRule = new ActivityTestRule<>(LightActivity.class, false);
     private LightActivity activity;
 
-    @Before
+    /*@Before
     public void setUp() throws Exception {
         activity = mActivityRule.launchActivity(new Intent());
     }
@@ -49,7 +49,7 @@ public class SlideMenuTest {
         onView(withId(R.id.help_page_imageView)).perform(swipeLeft());
         onView(withId(R.id.help_page_imageView)).check(matches(isDisplayed()));
         onView(withId(R.id.slideMenu_frame)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.INVISIBLE)));
-    }
+    }*/
 }
 
 
