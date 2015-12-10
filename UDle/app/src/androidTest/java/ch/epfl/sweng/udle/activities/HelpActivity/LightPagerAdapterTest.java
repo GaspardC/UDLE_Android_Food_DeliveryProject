@@ -29,7 +29,7 @@ public class LightPagerAdapterTest {
     Object newView;
     ReentrantLock sequential = new ReentrantLock();
 
-    @Before
+    /*@Before
     public void setUp() throws Exception {
         sequential.lock();
         activity = mActivityRule.launchActivity(new Intent());
@@ -59,7 +59,7 @@ public class LightPagerAdapterTest {
     public void testDestroyItem() throws Exception {
         adapter.destroyItem(pager, 0, newView);
         assertEquals(pager.getChildCount(), before);
-    }
+    }*/
 }
 
 class LightActivity extends Activity {
