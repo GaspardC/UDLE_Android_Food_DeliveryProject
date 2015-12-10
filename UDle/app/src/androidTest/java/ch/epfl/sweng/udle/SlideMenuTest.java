@@ -29,7 +29,6 @@ public class SlideMenuTest {
 
     @After
     public void tearDown() throws Exception {
-        activity.finish();
     }
 
     @Test
