@@ -48,7 +48,7 @@ public class ParseApplication extends Application {
 
       //Initialize the parse Order server object
       ParseObject.registerSubclass(ParseUserOrderInformations.class);
-      Parse.initialize(this, "9owjl8GmUsbfyoKtXhd5hK7QX8CUJVfuAvSLNoaY", "xd6XKHd9NxLfzFPbHQ5xaMHVzU1gfeLen0qCyI4F");
+      Parse.initialize(this, "v22C8nu3xMqTVZUq9yeuOLD6xbTXqWpCM1XuyQ7U", "9SgG0yX869nVvDExV3PdTy9HVEwQzdLwjtVloHTp");
 
 
       ParseFacebookUtils.initialize(getApplicationContext());

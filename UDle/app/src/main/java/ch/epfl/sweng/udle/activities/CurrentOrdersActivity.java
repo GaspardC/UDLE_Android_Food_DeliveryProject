@@ -84,6 +84,7 @@ public class CurrentOrdersActivity extends SlideMenuActivity {
     @Override
     protected void onPause() {
         super.onPause();
+        handler.removeCallbacksAndMessages(null);
         activityNotOnScreen = true;
     }
 
