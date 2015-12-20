@@ -1,23 +1,22 @@
 package ch.epfl.sweng.udle.activities.MenuOptionsDrinks;
 
 import android.content.Intent;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import ch.epfl.sweng.udle.Food.DrinkTypes;
 import ch.epfl.sweng.udle.Food.OrderElement;
 import ch.epfl.sweng.udle.Food.Orders;
 import ch.epfl.sweng.udle.R;
 import ch.epfl.sweng.udle.activities.RecapActivity;
-import android.support.v4.app.Fragment;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 
 public class DrinkFragment extends Fragment {
@@ -36,6 +35,7 @@ public class DrinkFragment extends Fragment {
         orangInit();
         waterInit();
         beerInit();
+
         Button buttonNext = (Button) rlLayout.findViewById(R.id.drinkNext);
         buttonNext.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -43,6 +43,7 @@ public class DrinkFragment extends Fragment {
                 goToRecapActivity();
             }
         });
+
 
         return rlLayout;
 

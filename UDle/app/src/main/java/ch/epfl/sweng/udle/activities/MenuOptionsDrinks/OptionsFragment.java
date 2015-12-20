@@ -21,6 +21,7 @@ public class OptionsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
+
         layout = (LinearLayout)    inflater.inflate(R.layout.activity_options, container, false);
         Button buttonNext = (Button) layout.findViewById(R.id.optionNext);
         buttonNext.setOnClickListener(new View.OnClickListener(){
