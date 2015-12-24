@@ -54,7 +54,7 @@ public class LightPagerAdapter extends PagerAdapter {
      */
     @Override
     public int getCount() {
-        return 2;
+        return imgResources.length  ;
     }
 
     /**
