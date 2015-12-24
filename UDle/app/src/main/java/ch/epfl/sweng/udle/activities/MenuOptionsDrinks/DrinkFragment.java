@@ -4,13 +4,19 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import ch.epfl.sweng.udle.Food.DrinkTypes;
 import ch.epfl.sweng.udle.Food.OrderElement;
@@ -21,35 +27,52 @@ import ch.epfl.sweng.udle.activities.RecapActivity;
 
 public class DrinkFragment extends Fragment {
 
-    private RelativeLayout rlLayout;
+    private LinearLayout lLayout;
 
     private int nbrCoca = 0;
     private int nbrOrang = 0;
     private int nbrWater = 0;
     private int nbrBeer = 0;
 
+    private RecyclerView rv;
+    private List<Person> persons;
+
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        rlLayout =  (RelativeLayout) inflater.inflate(R.layout.activity_drink, container, false);
-        cocaInit();
+        lLayout =   (LinearLayout) inflater.inflate(R.layout.recyclerview_activity, container, false);
+/*        cocaInit();
         orangInit();
         waterInit();
-        beerInit();
+        beerInit();*/
+        getActivity().setContentView(R.layout.recyclerview_activity);
 
-        Button buttonNext = (Button) rlLayout.findViewById(R.id.drinkNext);
-        buttonNext.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                goToRecapActivity();
-            }
-        });
+        rv=(RecyclerView) getActivity().findViewById(R.id.rv);
 
+        LinearLayoutManager llm = new LinearLayoutManager(getActivity());
+        rv.setLayoutManager(llm);
+        rv.setHasFixedSize(true);
 
-        return rlLayout;
-
+        initializeData();
+        initializeAdapter();
+        return lLayout;
     }
 
-    private void cocaInit() {
+    private void initializeData(){
+        persons = new ArrayList<>();
+        persons.add(new Person("Emma Wilson", "23 years old", R.drawable.emma));
+        persons.add(new Person("Lavery Maiss", "25 years old", R.drawable.lavery));
+        persons.add(new Person("Lillie Watts", "35 years old", R.drawable.lillie));
+    }
+
+    private void initializeAdapter(){
+        RVAdapter adapter = new RVAdapter(persons);
+        rv.setAdapter(adapter);
+    }
+
+
+    /*private void cocaInit() {
         Button cocaPlus = (Button) rlLayout.findViewById(R.id.cocaPlus);
         Button cocaMinus = (Button) rlLayout.findViewById(R.id.cocaMinus);
 
@@ -218,7 +241,7 @@ public class DrinkFragment extends Fragment {
         waterPriceText.setText(Double.toString(price) + Orders.getMoneyDevise());
         TextView waterNbr = (TextView) rlLayout.findViewById(R.id.waterNbr);
         waterNbr.setText(Integer.toString(nbrWater));
-    }
+    }*/
 
     public void goToRecapActivity(){
         Intent intent = new Intent(getActivity().getBaseContext(),

@@ -53,10 +53,13 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
             options.setPager(pager);
             return options;
         }
-        else             // As we are having 2 tabs if the position is now 0 it must be 1 so we are returning second tab
+        else if(position == 2)          // As we are having 2 tabs if the position is now 0 it must be 1 so we are returning second tab
         {
             DrinkFragment drinks = new DrinkFragment();
             return drinks;
+        }
+        else {
+            return  null;
         }
 
 
