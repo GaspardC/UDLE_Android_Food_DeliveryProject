@@ -8,11 +8,12 @@ import android.support.v7.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
+import ch.epfl.sweng.udle.Food.Orders;
 import ch.epfl.sweng.udle.R;
 
 public class RecyclerViewActivity extends Activity {
 
-    private List<Person> persons;
+    private List<Item> items;
     private RecyclerView rv;
 
     @Override
@@ -32,14 +33,15 @@ public class RecyclerViewActivity extends Activity {
     }
 
     private void initializeData(){
-        persons = new ArrayList<>();
-        persons.add(new Person("Emma Wilson", "23 years old", R.drawable.emma));
-        persons.add(new Person("Lavery Maiss", "25 years old", R.drawable.lavery));
-        persons.add(new Person("Lillie Watts", "35 years old", R.drawable.lillie));
+        String devise = Orders.getMoneyDevise();
+        items = new ArrayList<>();
+        items.add(new Item("Coca", "2"+ devise, R.drawable.coca_cola));
+        items.add(new Item("Orangina","2"+ devise, R.drawable.orangina));
+        items.add(new Item("Water", "2"+ devise, R.drawable.evian));
     }
 
     private void initializeAdapter(){
-        RVAdapter adapter = new RVAdapter(persons);
+        RVAdapter adapter = new RVAdapter(items);
         rv.setAdapter(adapter);
     }
 }

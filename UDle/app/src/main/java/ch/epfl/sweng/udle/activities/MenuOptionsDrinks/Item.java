@@ -1,13 +1,13 @@
 package ch.epfl.sweng.udle.activities.MenuOptionsDrinks;
 
-class Person {
+class Item {
     String name;
-    String age;
+    String price;
     int photoId;
 
-    Person(String name, String age, int photoId) {
+    Item(String name, String price, int photoId) {
         this.name = name;
-        this.age = age;
+        this.price = price;
         this.photoId = photoId;
     }
 }

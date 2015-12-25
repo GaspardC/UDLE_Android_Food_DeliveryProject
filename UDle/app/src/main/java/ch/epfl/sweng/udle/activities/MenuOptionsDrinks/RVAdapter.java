@@ -17,23 +17,23 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.PersonViewHolder> 
     public static class PersonViewHolder extends RecyclerView.ViewHolder {
 
         CardView cv;
-        TextView personName;
-        TextView personAge;
-        ImageView personPhoto;
+        TextView name;
+        TextView price;
+        ImageView itemPhoto;
 
         PersonViewHolder(View itemView) {
             super(itemView);
             cv = (CardView)itemView.findViewById(R.id.cv);
-            personName = (TextView)itemView.findViewById(R.id.person_name);
-            personAge = (TextView)itemView.findViewById(R.id.person_age);
-            personPhoto = (ImageView)itemView.findViewById(R.id.person_photo);
+            name = (TextView)itemView.findViewById(R.id.name_item);
+            price = (TextView)itemView.findViewById(R.id.price_item);
+            itemPhoto = (ImageView)itemView.findViewById(R.id.item_photo);
         }
     }
 
-    List<Person> persons;
+    List<Item> items;
 
-    RVAdapter(List<Person> persons){
-        this.persons = persons;
+    RVAdapter(List<Item> items){
+        this.items = items;
     }
 
     @Override
@@ -50,13 +50,13 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.PersonViewHolder> 
 
     @Override
     public void onBindViewHolder(PersonViewHolder personViewHolder, int i) {
-        personViewHolder.personName.setText(persons.get(i).name);
-        personViewHolder.personAge.setText(persons.get(i).age);
-        personViewHolder.personPhoto.setImageResource(persons.get(i).photoId);
+        personViewHolder.name.setText(items.get(i).name);
+        personViewHolder.price.setText(items.get(i).price);
+        personViewHolder.itemPhoto.setImageResource(items.get(i).photoId);
     }
 
     @Override
     public int getItemCount() {
-        return persons.size();
+        return items.size();
     }
 }
