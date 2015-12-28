@@ -44,13 +44,13 @@ public class DrinkFragment extends Fragment {
         rv.setLayoutManager(llm);
         rv.setHasFixedSize(true);
 
-        if(lLayout.getVisibility() == View.VISIBLE){
+       /* if(lLayout.getVisibility() == View.VISIBLE){
             initializeData();
             initializeAdapter();
 
-        }else{
+        }else{*/
             rv.setVisibility(View.INVISIBLE);
-        }
+
 
 
 
@@ -63,18 +63,6 @@ public class DrinkFragment extends Fragment {
         return lLayout;
     }
 
-    public void initView(){
-
-        rv = (RecyclerView) getActivity().findViewById(R.id.rv);
-
-        LinearLayoutManager llm = new LinearLayoutManager(getActivity());
-        rv.setLayoutManager(llm);
-        rv.setHasFixedSize(true);
-
-        initializeData();
-        initializeAdapter();
-
-    }
 
     private void initializeData(){
         String devise = Orders.getMoneyDevise();

@@ -2,6 +2,7 @@ package ch.epfl.sweng.udle.activities.MenuOptionsDrinks;
 
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,10 +50,17 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.PersonViewHolder> 
     }
 
     @Override
-    public void onBindViewHolder(PersonViewHolder personViewHolder, int i) {
+    public void onBindViewHolder(PersonViewHolder personViewHolder, final int i) {
         personViewHolder.name.setText(items.get(i).name);
         personViewHolder.price.setText(items.get(i).price);
         personViewHolder.itemPhoto.setImageResource(items.get(i).photoId);
+        personViewHolder.itemPhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("button", "click" + i);
+            }
+        });
+
     }
 
     @Override
