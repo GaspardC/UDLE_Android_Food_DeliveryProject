@@ -13,6 +13,9 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import ch.epfl.sweng.udle.Food.DrinkTypes;
+import ch.epfl.sweng.udle.Food.OrderElement;
+import ch.epfl.sweng.udle.Food.Orders;
 import ch.epfl.sweng.udle.R;
 
 public class RVAdapter extends RecyclerView.Adapter<RVAdapter.PersonViewHolder> {
@@ -57,10 +60,25 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.PersonViewHolder> 
 
     @Override
     public void onBindViewHolder(final PersonViewHolder personViewHolder, final int i) {
+        int nbr = 0;
+        for (DrinkTypes drink :Orders.getActiveOrder().getDrinks()){
+            if (drink.toString().toUpperCase().equals(items.get(i).name.toUpperCase())){
+                nbr ++;
+            }
+        }
+
+
         personViewHolder.name.setText(items.get(i).name);
         items.get(i).setTotalTextView(personViewHolder.totalPrice);
         items.get(i).setNameTextView(personViewHolder.name);
         personViewHolder.itemPhoto.setImageResource(items.get(i).photoId);
+
+        if(nbr != 0) {
+            items.get(i).setTotal(nbr);
+            items.get(i).setText(nbr);
+            items.get(i).setTotalName(nbr);
+        }
+
         personViewHolder.itemPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -70,6 +88,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.PersonViewHolder> 
                 items.get(i).setTotal(number);
                 items.get(i).setText(number);
                 items.get(i).setTotalName(number);
+                addOrder(number,i);
             }
         });
       personViewHolder.minusButton.setOnClickListener(new View.OnClickListener() {
@@ -79,10 +98,27 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.PersonViewHolder> 
               if(number > 0) {
                   number--;
                   items.get(i).setTotal(number);
+                  items.get(i).setTotalName(number);
                   items.get(i).setText(number);
               }
           }
       });
+
+    }
+
+    private void addOrder(int number, int i) {
+        String name  = items.get(i).name;
+        OrderElement orderElement = Orders.getActiveOrder();
+
+        if (name.equals("Coca")){
+            orderElement.addToDrinks(DrinkTypes.COCA);
+        }
+        if (name.equals("Orangina")){
+            orderElement.addToDrinks(DrinkTypes.ORANGINA);
+        }
+        if (name.equals("Water")){
+            orderElement.addToDrinks(DrinkTypes.WATER);
+        }
 
     }
 

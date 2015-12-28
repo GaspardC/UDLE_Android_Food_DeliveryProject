@@ -44,12 +44,9 @@ public class DrinkFragment extends Fragment {
         rv.setLayoutManager(llm);
         rv.setHasFixedSize(true);
 
-       /* if(lLayout.getVisibility() == View.VISIBLE){
-            initializeData();
-            initializeAdapter();
-
-        }else{*/
-            rv.setVisibility(View.INVISIBLE);
+        if(lLayout.getVisibility() == View.INVISIBLE){
+            rv.setVisibility(View.GONE);
+        }
 
 
 
@@ -275,7 +272,7 @@ public class DrinkFragment extends Fragment {
 
             } else {
                 if(rv!= null){
-                    rv.setVisibility(View.INVISIBLE);
+                    rv.setVisibility(View.GONE);
                 }
             }
     }
