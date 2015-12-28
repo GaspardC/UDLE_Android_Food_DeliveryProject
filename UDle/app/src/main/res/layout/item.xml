@@ -1,43 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:id="@+id/cv"
-    >
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_marginTop="2dip"
+    android:layout_marginBottom="2dip"
+    card_view:cardUseCompatPadding="true"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
+
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="16dp"
+        android:orientation="horizontal"
         >
-
-        <ImageView
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/item_photo"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginRight="16dp"
-            />
+            android:padding="16dp"
+            android:orientation="vertical"
+            >
 
-        <TextView
+            <ImageView
+                android:layout_width="@dimen/_50sdp"
+                android:layout_height="@dimen/_50sdp"
+                android:id="@+id/item_photo"
+                android:src="@drawable/coca_cola"
+                android:layout_gravity="center"
+                android:layout_marginRight="16dp"
+                />
+            <TextView
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="16dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/price_item"
+                android:layout_gravity="center"
+                android:text="2 CHF"
+
+                />
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/name_item"
-            android:layout_toRightOf="@+id/item_photo"
-            android:layout_alignParentTop="true"
-            android:textSize="30sp"
-            />
+            android:padding="16dp"
+            android:orientation="vertical"
+            >
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:orientation="horizontal"
+                >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/total_item"
+                    android:textSize="20sp"
+                    android:text="0 CHF"
+                    android:layout_marginRight="5dp"
+                    />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/price_item"
-            android:layout_toRightOf="@+id/item_photo"
-            android:layout_below="@+id/name_item"
-            />
+                <Button
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginBottom="@dimen/_3sdp"
+                    android:textSize="10sp"
+                    android:text="-"
+                    android:layout_gravity="center"
+                    android:id="@+id/minusButton"
+                    />
 
-    </RelativeLayout>
+            </LinearLayout>
+
+
+            <TextView
+                android:padding="16dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/name_item"
+                android:textSize="20sp"
+                android:text="Coca-Cola"
+                />
+
+
+
+        </LinearLayout>
+
+
+    </LinearLayout>
 
 </android.support.v7.widget.CardView>

@@ -67,9 +67,11 @@ public class DrinkFragment extends Fragment {
     private void initializeData(){
         String devise = Orders.getMoneyDevise();
         items = new ArrayList<>();
-        items.add(new Item("Coca", "2"+ devise, R.drawable.coca_cola));
-        items.add(new Item("Orangina","2"+ devise, R.drawable.orangina));
-        items.add(new Item("Water", "2"+ devise, R.drawable.evian));
+        int number = 0;
+        String total = "0" + devise;
+        items.add(new Item("Coca", 2, R.drawable.coca_cola,number));
+        items.add(new Item("Orangina",2, R.drawable.orangina,number));
+        items.add(new Item("Water", 2, R.drawable.evian,number));
     }
 
     private void initializeAdapter(){
