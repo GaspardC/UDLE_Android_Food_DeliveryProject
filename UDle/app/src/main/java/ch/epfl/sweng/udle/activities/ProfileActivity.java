@@ -28,6 +28,8 @@ import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.facebook.AccessToken;
+import com.facebook.login.widget.ProfilePictureView;
 import com.parse.ParseUser;
 import com.parse.ui.ParseLoginBuilder;
 
@@ -50,6 +52,8 @@ public class ProfileActivity extends SlideMenuActivity {
   private SeekBar seekBarRestaurantDistance;
   private ParseUser currentUser;
   private  TextView seekBarValue;
+  private static ProfilePictureView avatar;
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -63,6 +67,12 @@ public class ProfileActivity extends SlideMenuActivity {
     seekBarRestaurantDistance = (SeekBar) findViewById(R.id.seekBarRestaurantDistance);
     seekBarValue = (TextView)findViewById(R.id.value_distance_restaurant);
     titleTextView.setText(R.string.profile_title_logged_in);
+
+    avatar = (ProfilePictureView) findViewById(R.id.avatar);
+    AccessToken accessToken = AccessToken.getCurrentAccessToken();
+    if (accessToken != null) {
+      avatar.setProfileId(accessToken.getUserId());
+    }
 
     loginOrLogoutButton.setOnClickListener(new OnClickListener() {
       @Override
