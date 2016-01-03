@@ -4,16 +4,18 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import ch.epfl.sweng.udle.Food.DrinkTypes;
-import ch.epfl.sweng.udle.Food.OrderElement;
 import ch.epfl.sweng.udle.Food.Orders;
 import ch.epfl.sweng.udle.R;
 import ch.epfl.sweng.udle.activities.RecapActivity;
@@ -21,35 +23,77 @@ import ch.epfl.sweng.udle.activities.RecapActivity;
 
 public class DrinkFragment extends Fragment {
 
-    private RelativeLayout rlLayout;
+    private LinearLayout lLayout;
 
     private int nbrCoca = 0;
     private int nbrOrang = 0;
     private int nbrWater = 0;
     private int nbrBeer = 0;
 
+    private RecyclerView rv;
+    private List<Item> items;
+    private Button goToRecapButton;
+    private LinearLayout linearLayout;
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        rlLayout =  (RelativeLayout) inflater.inflate(R.layout.activity_drink, container, false);
-        cocaInit();
-        orangInit();
-        waterInit();
-        beerInit();
+        lLayout =   (LinearLayout) inflater.inflate(R.layout.recyclerview_activity, container, false);
+        getActivity().setContentView(R.layout.recyclerview_activity);
+        rv = (RecyclerView) getActivity().findViewById(R.id.rv);
+        if(linearLayout == null){
+            linearLayout =  (LinearLayout) getActivity().findViewById(R.id.llRv);
+        }
 
-        Button buttonNext = (Button) rlLayout.findViewById(R.id.drinkNext);
-        buttonNext.setOnClickListener(new View.OnClickListener() {
+        LinearLayoutManager llm = new LinearLayoutManager(getActivity());
+        rv.setLayoutManager(llm);
+        rv.setHasFixedSize(true);
+
+
+
+
+        goToRecapButton = (Button) getActivity().findViewById(R.id.DrinkActivity_NextButton);
+        goToRecapButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View v) {
                 goToRecapActivity();
             }
         });
 
+        if(!this.isVisible()) {
+            linearLayout.setVisibility(View.GONE);
+        }
 
-        return rlLayout;
 
+
+
+/*        cocaInit();
+        orangInit();
+        waterInit();
+        beerInit();*/
+
+
+        return lLayout;
     }
 
-    private void cocaInit() {
+
+    private void initializeData(){
+        String devise = Orders.getMoneyDevise();
+        items = new ArrayList<>();
+        int number = 0;
+        String total = "0" + devise;
+        items.add(new Item("Coca", 2, R.drawable.coca_cola,number));
+        items.add(new Item("Orangina",2, R.drawable.orangina,number));
+        items.add(new Item("Water", 2, R.drawable.evian,number));
+    }
+
+    private void initializeAdapter(){
+        RVAdapter adapter = new RVAdapter(items);
+        rv.setAdapter(adapter);
+    }
+
+
+    /*private void cocaInit() {
         Button cocaPlus = (Button) rlLayout.findViewById(R.id.cocaPlus);
         Button cocaMinus = (Button) rlLayout.findViewById(R.id.cocaMinus);
 
@@ -218,11 +262,41 @@ public class DrinkFragment extends Fragment {
         waterPriceText.setText(Double.toString(price) + Orders.getMoneyDevise());
         TextView waterNbr = (TextView) rlLayout.findViewById(R.id.waterNbr);
         waterNbr.setText(Integer.toString(nbrWater));
-    }
+    }*/
 
     public void goToRecapActivity(){
         Intent intent = new Intent(getActivity().getBaseContext(),
                 RecapActivity.class);
         getActivity().startActivity(intent);
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+            if (isVisibleToUser) {
+                if (linearLayout == null) {
+                    getActivity().setContentView(R.layout.recyclerview_activity);
+                    linearLayout =   (LinearLayout) (getActivity().findViewById(R.id.llRv));
+                    rv = (RecyclerView) getActivity().findViewById(R.id.rv);
+                    LinearLayoutManager llm = new LinearLayoutManager(getActivity());
+                    rv.setLayoutManager(llm);
+                    rv.setHasFixedSize(true);
+                    goToRecapButton = (Button) getActivity().findViewById(R.id.DrinkActivity_NextButton);
+                    goToRecapButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            goToRecapActivity();
+                        }
+                    });
+                }
+                initializeData();
+                initializeAdapter();
+                linearLayout.setVisibility(View.VISIBLE);
+
+            } else {
+                if(rv!= null){
+                    linearLayout.setVisibility(View.GONE);
+                }
+            }
     }
 }

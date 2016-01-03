@@ -50,6 +50,7 @@ public class ParseSignupFragment extends ParseLoginFragmentBase implements OnCli
   private EditText passwordField;
   private EditText confirmPasswordField;
   private EditText emailField;
+  private EditText telephoneField;
   private EditText nameField;
   private Button createAccountButton;
   private ParseOnLoginSuccessListener onLoginSuccessListener;
@@ -93,6 +94,7 @@ public class ParseSignupFragment extends ParseLoginFragmentBase implements OnCli
     confirmPasswordField = (EditText) v
         .findViewById(R.id.signup_confirm_password_input);
     emailField = (EditText) v.findViewById(R.id.signup_email_input);
+    telephoneField = (EditText) v.findViewById(R.id.signup_phone_input);
     nameField = (EditText) v.findViewById(R.id.signup_name_input);
     createAccountButton = (Button) v.findViewById(R.id.create_account);
 
@@ -154,6 +156,12 @@ public class ParseSignupFragment extends ParseLoginFragmentBase implements OnCli
     if (nameField != null) {
       name = nameField.getText().toString();
     }
+    String phone = null;
+    if (telephoneField != null){
+      phone = telephoneField.getText().toString();
+    }
+
+
 
     if (username.length() == 0) {
       if (config.isParseLoginEmailAsUsername()) {
@@ -175,7 +183,9 @@ public class ParseSignupFragment extends ParseLoginFragmentBase implements OnCli
       confirmPasswordField.requestFocus();
     } else if (email != null && email.length() == 0) {
       showToast(R.string.com_parse_ui_no_email_toast);
-    } else if (name != null && name.length() == 0) {
+    } else if (phone != null && phone.length() == 0) {
+      showToast(R.string.com_parse_ui_no_phone_toast);
+    }else if (name != null && name.length() == 0) {
       showToast(R.string.com_parse_ui_no_name_toast);
     } else {
       ParseUser user = new ParseUser();
@@ -184,6 +194,7 @@ public class ParseSignupFragment extends ParseLoginFragmentBase implements OnCli
       user.setUsername(username);
       user.setPassword(password);
       user.setEmail(email);
+      user.put("phone",phone);
 
       // Set additional custom fields only if the user filled it out
       if (name.length() != 0) {
@@ -191,7 +202,7 @@ public class ParseSignupFragment extends ParseLoginFragmentBase implements OnCli
 
         //fix  init value just to prevent datamanager to access null field
         user.put(MAX_DELIVERY_DISTANCE_FIELD,MAX_DELIEVRY_DISTANCE_INIT);
-        user.put("Location",new ParseGeoPoint(40.0,50.0));
+        user.put("Location",new ParseGeoPoint(45.764043,4.835659)); //add Lyon city if location not enable yet
         user.put("RestaurantOwner",false); //always false restaurant owner are added by hand on the server
       }
 

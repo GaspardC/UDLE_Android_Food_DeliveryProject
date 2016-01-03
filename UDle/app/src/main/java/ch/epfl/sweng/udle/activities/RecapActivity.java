@@ -1,8 +1,10 @@
 package ch.epfl.sweng.udle.activities;
 
 import android.app.AlertDialog;
+import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -104,13 +106,14 @@ public class RecapActivity extends SlideMenuActivity {
             confirmButton.setVisibility(View.GONE);
             if(from.equals("Map") || from.equals("Current")){
                 String expectedTime = DataManager.getExpectedTime(order.getUserOrderInformationsID());
-                if(!expectedTime.equals("-1")){
+                if(!expectedTime.equals("-1")){ // Mode EN ROUTE
                     expected_time_layout.setVisibility(View.VISIBLE);
                     status_layout.setVisibility(View.VISIBLE);
                     TextView text = (TextView) findViewById(R.id.RecapActivity_expected_time);
                     text.setText(expectedTime);
                     TextView textStatus = (TextView) findViewById(R.id.RecapActivity_status);
                     textStatus.setText(R.string.enRoute);
+
                 }
                 else{
                     status_layout.setVisibility(View.VISIBLE);
@@ -268,6 +271,23 @@ public class RecapActivity extends SlideMenuActivity {
     public void gotToPaymentActivity(View view) {
         Intent intent = new Intent(this, PaymentActivity.class);
         startActivity(intent);
+    }
+
+
+    public void callDeliveryGuy(View view){
+        try {
+            Intent my_callIntent = new Intent(Intent.ACTION_CALL);
+            ParseUserOrderInformations parseUserOrderInformations = DataManager.getParseUserObjectWithId(order.getUserOrderInformationsID());
+            String numDeliveryGuy = parseUserOrderInformations.getDeliveryGuyNumber();
+            startActivity(my_callIntent);
+            my_callIntent.setData(Uri.parse("tel:" + numDeliveryGuy));
+
+
+        } catch (ActivityNotFoundException e) {
+            Toast.makeText(getApplicationContext(), "Error in your phone call" + e.getMessage(), Toast.LENGTH_LONG).show();
+        } catch (SecurityException e){
+            Toast.makeText(getApplicationContext(), "UDle doesn't have the right to pass phone call" + e.getMessage(), Toast.LENGTH_LONG).show();
+        }
     }
 
 
