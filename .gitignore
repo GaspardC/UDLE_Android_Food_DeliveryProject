@@ -1,6 +1,12 @@
 # Built application files
 /*/build/
 /*/ParseUI-Login/build/
+.gradle
+/local.properties
+/.idea/workspace.xml
+/.idea/libraries
+.DS_Store
+/build
 
 
 # Crashlytics configuations
