@@ -114,6 +114,10 @@ public class ProfileActivity extends SlideMenuActivity {
     titleTextView.setText(R.string.profile_title_logged_in);
     emailTextView.setText(currentUser.getEmail());
     String fullName = currentUser.getString("username");
+    AccessToken accessToken = AccessToken.getCurrentAccessToken();
+    if (accessToken != null) {
+      avatar.setProfileId(accessToken.getUserId());
+    }
     if (fullName != null) {
       nameTextView.setText(fullName);
     }
@@ -196,5 +200,7 @@ public class ProfileActivity extends SlideMenuActivity {
     seekBarValue.setVisibility(View.GONE);
     orderNowButton.setVisibility(View.GONE);
     loginOrLogoutButton.setText(R.string.profile_login_button_label);
+    avatar.setProfileId(null);
+
   }
 }
