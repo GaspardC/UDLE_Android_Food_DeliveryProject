@@ -183,25 +183,37 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
             android:id="@+id/RecapActivity_expected_time_layout"
-            android:visibility="gone">
+            android:visibility="gone"
+            android:orientation="horizontal">
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/expectedTime"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:gravity="start"
-                android:layout_weight="1"/>
+                android:layout_weight="8"/>
 
             <TextView
                 android:id="@+id/RecapActivity_expected_time"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:gravity="end"
+                android:layout_marginLeft="@dimen/_2sdp"
                 android:layout_marginBottom="@dimen/_4sdp"
-                android:layout_weight="1"/>
+                android:layout_weight="8"/>
+            <Button
+                android:id="@+id/RecapActivity_callThedeliveryGuy"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/_2sdp"
+                android:text="Call"
+                android:onClick="callDeliveryGuy"
+                android:layout_weight="3"/>
+
+
         </LinearLayout>
 </LinearLayout>
 
