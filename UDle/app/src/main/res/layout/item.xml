@@ -73,6 +73,8 @@
                     android:textSize="20sp"
                     android:text="0 CHF"
                     android:layout_marginRight="5dp"
+                    android:layout_marginLeft="5dp"
+
                     />
                 <Button
                     android:layout_width="30dp"
