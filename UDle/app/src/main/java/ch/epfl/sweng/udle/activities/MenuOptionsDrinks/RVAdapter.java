@@ -27,6 +27,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.PersonViewHolder> 
         TextView price;
         ImageView itemPhoto;
         Button minusButton;
+        Button plusButton;
         TextView totalPrice;
 
         PersonViewHolder(View itemView) {
@@ -36,6 +37,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.PersonViewHolder> 
             price = (TextView) itemView.findViewById(R.id.price_item);
             itemPhoto = (ImageView)itemView.findViewById(R.id.item_photo);
             minusButton= (Button) itemView.findViewById(R.id.minusButton);
+            plusButton= (Button) itemView.findViewById(R.id.plusButton);
             totalPrice = (TextView) itemView.findViewById(R.id.total_item);
         }
     }
@@ -103,6 +105,19 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.PersonViewHolder> 
               }
           }
       });
+
+        personViewHolder.plusButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("button", "click" + i);
+                int number = items.get(i).number;
+                number++;
+                items.get(i).setTotal(number);
+                items.get(i).setText(number);
+                items.get(i).setTotalName(number);
+                addOrder(number,i);
+            }
+        });
 
     }
 

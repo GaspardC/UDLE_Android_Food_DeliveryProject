@@ -57,15 +57,6 @@
                 android:padding="16dp"
                 android:orientation="horizontal"
                 >
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/total_item"
-                    android:textSize="20sp"
-                    android:text="0 CHF"
-                    android:layout_marginRight="5dp"
-                    />
-
                 <Button
                     android:layout_width="30dp"
                     android:layout_height="30dp"
@@ -75,6 +66,24 @@
                     android:layout_gravity="center"
                     android:id="@+id/minusButton"
                     />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/total_item"
+                    android:textSize="20sp"
+                    android:text="0 CHF"
+                    android:layout_marginRight="5dp"
+                    />
+                <Button
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginBottom="@dimen/_3sdp"
+                    android:textSize="10sp"
+                    android:text="+"
+                    android:layout_gravity="center"
+                    android:id="@+id/plusButton"
+                    />
+
 
             </LinearLayout>
 

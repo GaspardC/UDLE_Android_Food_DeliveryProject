@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 
 import java.util.ArrayList;
@@ -31,7 +32,8 @@ public class DrinkFragment extends Fragment {
 
     private RecyclerView rv;
     private List<Item> items;
-
+    private Button goToRecapButton;
+    private LinearLayout linearLayout;
 
 
     @Override
@@ -39,13 +41,27 @@ public class DrinkFragment extends Fragment {
         lLayout =   (LinearLayout) inflater.inflate(R.layout.recyclerview_activity, container, false);
         getActivity().setContentView(R.layout.recyclerview_activity);
         rv = (RecyclerView) getActivity().findViewById(R.id.rv);
+        if(linearLayout == null){
+            linearLayout =  (LinearLayout) getActivity().findViewById(R.id.llRv);
+        }
 
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         rv.setLayoutManager(llm);
         rv.setHasFixedSize(true);
 
-        if(lLayout.getVisibility() == View.INVISIBLE){
-            rv.setVisibility(View.GONE);
+
+
+
+        goToRecapButton = (Button) getActivity().findViewById(R.id.DrinkActivity_NextButton);
+        goToRecapButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToRecapActivity();
+            }
+        });
+
+        if(!this.isVisible()) {
+            linearLayout.setVisibility(View.GONE);
         }
 
 
@@ -258,21 +274,28 @@ public class DrinkFragment extends Fragment {
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
             if (isVisibleToUser) {
-                if (rv == null) {
-                    lLayout =   (LinearLayout) (getActivity().findViewById(R.id.llRv));
+                if (linearLayout == null) {
                     getActivity().setContentView(R.layout.recyclerview_activity);
+                    linearLayout =   (LinearLayout) (getActivity().findViewById(R.id.llRv));
                     rv = (RecyclerView) getActivity().findViewById(R.id.rv);
                     LinearLayoutManager llm = new LinearLayoutManager(getActivity());
                     rv.setLayoutManager(llm);
                     rv.setHasFixedSize(true);
+                    goToRecapButton = (Button) getActivity().findViewById(R.id.DrinkActivity_NextButton);
+                    goToRecapButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            goToRecapActivity();
+                        }
+                    });
                 }
                 initializeData();
                 initializeAdapter();
-                rv.setVisibility(View.VISIBLE);
+                linearLayout.setVisibility(View.VISIBLE);
 
             } else {
                 if(rv!= null){
-                    rv.setVisibility(View.GONE);
+                    linearLayout.setVisibility(View.GONE);
                 }
             }
     }
