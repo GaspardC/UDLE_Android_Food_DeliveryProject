@@ -66,6 +66,7 @@ public class DataManager {
         ParseGeoPoint currentLocation = new ParseGeoPoint(location.getLatitude(), location.getLongitude());
         ParseUser currentUser = getUser();
         currentUser.put("Location", currentLocation);
+        currentUser.saveInBackground();
     }
 
     /**

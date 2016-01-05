@@ -5,17 +5,22 @@ took most of the code from there
 http://codetheory.in/android-navigation-drawer/
 */
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.annotation.LayoutRes;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -65,6 +70,7 @@ public abstract class SlideMenuActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setTheme(R.style.SlideMenuTheme);
         super.setContentView(R.layout.activity_slidemenu);
+
 
         //set menu items
 
@@ -186,6 +192,14 @@ public abstract class SlideMenuActivity extends AppCompatActivity {
      * @param position
      */
     private void selectItemFromList(int position) {
+
+        if(DataManager.getUser().getString("phone").equals("")){
+            Intent intent = new Intent(this,ProfileActivity.class);
+            startActivity(intent);
+            showAlertDialogForPhoneNumber();
+            return;
+        }
+
         Log.d(TAG, "SlideMenu item selected. N° " + position + " : " + slideMenuItems.get(position).name);
         //close Menu
         mDrawerLayout.closeDrawer(slideMenu_frame);
@@ -199,6 +213,36 @@ public abstract class SlideMenuActivity extends AppCompatActivity {
                     startActivity(newActivity);
                 }
         }
+    }
+
+    private void showAlertDialogForPhoneNumber() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(SlideMenuActivity.this);
+        builder.setTitle("Enter your number phone before using the app");
+
+// Set up the input
+        final EditText input = new EditText(SlideMenuActivity.this);
+// Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+        input.setInputType(InputType.TYPE_CLASS_PHONE);
+        builder.setView(input);
+
+// Set up the buttons
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                ParseUser currentUser = DataManager.getUser();
+                String textInput = input.getText().toString();
+                currentUser.put("phone",textInput);
+                currentUser.saveInBackground();
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        builder.show();
     }
 
 

@@ -20,11 +20,16 @@
  */
 
 package ch.epfl.sweng.udle.activities;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -53,6 +58,7 @@ public class ProfileActivity extends SlideMenuActivity {
   private ParseUser currentUser;
   private  TextView seekBarValue;
   private static ProfilePictureView avatar;
+  private TextView phoneTextView;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +67,7 @@ public class ProfileActivity extends SlideMenuActivity {
     setContentView(R.layout.activity_profile);
     titleTextView = (TextView) findViewById(R.id.profile_title);
     emailTextView = (TextView) findViewById(R.id.profile_email);
+    phoneTextView = (TextView) findViewById(R.id.profile_phone);
     nameTextView = (TextView) findViewById(R.id.profile_name);
     loginOrLogoutButton = (Button) findViewById(R.id.login_or_logout_button);
     orderNowButton = (Button) findViewById(R.id.goToHome_Button);
@@ -90,6 +97,51 @@ public class ProfileActivity extends SlideMenuActivity {
         }
       }
     });
+
+    phoneTextView.setOnClickListener(new OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        String title = "Enter your number phone";
+        final String fieldServer = "phone";
+        final TextView textview = phoneTextView;
+        showAlertBox(title, textview, fieldServer);
+
+      }
+    });
+  }
+
+  private void showAlertBox(String title, final TextView textview, final String fieldServer) {
+    AlertDialog.Builder builder = new AlertDialog.Builder(ProfileActivity.this);
+    builder.setTitle(title);
+
+// Set up the input
+    final EditText input = new EditText(ProfileActivity.this);
+// Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+    input.setInputType(InputType.TYPE_CLASS_PHONE);
+    builder.setView(input);
+
+// Set up the buttons
+    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+      @Override
+      public void onClick(DialogInterface dialog, int which) {
+        String textInput = input.getText().toString();
+        textview.setText(textInput);
+        currentUser.put(fieldServer,textInput);
+        currentUser.saveInBackground();
+        if (textInput.equals("")){
+          textview.setHint("Enter your number :)");
+          textview.setHintTextColor(Color.WHITE);
+        }
+      }
+    });
+    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+      @Override
+      public void onClick(DialogInterface dialog, int which) {
+        dialog.cancel();
+      }
+    });
+
+    builder.show();
   }
 
   /**
@@ -113,6 +165,7 @@ public class ProfileActivity extends SlideMenuActivity {
   private void showProfileLoggedIn() {
     titleTextView.setText(R.string.profile_title_logged_in);
     emailTextView.setText(currentUser.getEmail());
+    phoneTextView.setText(currentUser.getString("phone"));
     String fullName = currentUser.getString("username");
     AccessToken accessToken = AccessToken.getCurrentAccessToken();
     if (accessToken != null) {
@@ -159,12 +212,12 @@ public class ProfileActivity extends SlideMenuActivity {
 
     final int[] seekvalue = {0};
 
-    seekBarRestaurantDistance.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener(){
+    seekBarRestaurantDistance.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
       @Override
       public void onProgressChanged(SeekBar seekBar, int progress,
                                     boolean fromUser) {
-        seekBarValue.setText("Radius of delivery : "+String.valueOf(progress) + " km");
+        seekBarValue.setText("Radius of delivery : " + String.valueOf(progress) + " km");
         seekvalue[0] = progress;
       }
 
@@ -185,6 +238,13 @@ public class ProfileActivity extends SlideMenuActivity {
    *             Use to begin when the user has logged in successfully
    */
   public void goToMapActivity(View view){
+    if(phoneTextView.getText().length() == 0){
+      String title = "Enter your number phone";
+      final String fieldServer = "phone";
+      final TextView textview = phoneTextView;
+      showAlertBox(title,textview,fieldServer);
+      return;
+    }
     Intent intent = new Intent(this, MapActivity.class);
     startActivity(intent);
   }
@@ -195,6 +255,7 @@ public class ProfileActivity extends SlideMenuActivity {
   private void showProfileLoggedOut() {
     titleTextView.setText(R.string.profile_title_logged_out);
     emailTextView.setText("");
+    phoneTextView.setText("");
     nameTextView.setText("");
     seekBarRestaurantDistance.setVisibility(View.GONE);
     seekBarValue.setVisibility(View.GONE);

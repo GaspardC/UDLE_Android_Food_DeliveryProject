@@ -77,6 +77,9 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
             if (isLocationInitialised() || !displayGpsMessage) {
                 googleAdapter.setEnableAutocomplete(false);
                 LatLng LatLng = mMap.getCameraPosition().target;
+                mMap.setMyLocationEnabled(true);
+                mMap.getUiSettings().setCompassEnabled(true);
+                mMap.getUiSettings().setMyLocationButtonEnabled(true);
                 setDeliveryAddressLocation(LatLng, getCompleteAddressString(LatLng.latitude, LatLng.longitude), true);
             }
             if (markerHidden && afterFirstChange){
@@ -536,6 +539,7 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
             if (!isLocationInitialised()){
                 LatLng LatLng = new LatLng(location.getLatitude(), location.getLongitude());
                 setDeliveryAddressLocation(LatLng, getCompleteAddressString(location.getLatitude(), location.getLongitude()), true);
+                DataManager.setUserLocation(location);
                 setCamera(LatLng);
             }
         }

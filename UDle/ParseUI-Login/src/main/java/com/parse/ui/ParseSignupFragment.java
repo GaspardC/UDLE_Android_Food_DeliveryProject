@@ -202,7 +202,7 @@ public class ParseSignupFragment extends ParseLoginFragmentBase implements OnCli
 
         //fix  init value just to prevent datamanager to access null field
         user.put(MAX_DELIVERY_DISTANCE_FIELD,MAX_DELIEVRY_DISTANCE_INIT);
-        user.put("Location",new ParseGeoPoint(40.0,50.0));
+        user.put("Location",new ParseGeoPoint(45.764043,4.835659)); //add Lyon city if location not enable yet
         user.put("RestaurantOwner",false); //always false restaurant owner are added by hand on the server
       }
 
