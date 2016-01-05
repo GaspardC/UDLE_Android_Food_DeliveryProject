@@ -149,6 +149,7 @@
         android:id="@+id/RecapActivity_recapConfirm"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginBottom="@dimen/_2sdp"
         android:text="@string/confirm"
         android:onClick="gotToPaymentActivity"
         android:layout_weight="10"/>
@@ -199,6 +200,7 @@
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:gravity="end"
+                android:layout_marginBottom="@dimen/_4sdp"
                 android:layout_weight="1"/>
         </LinearLayout>
 </LinearLayout>
