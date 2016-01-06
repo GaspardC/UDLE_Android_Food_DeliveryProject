@@ -84,7 +84,7 @@ public abstract class SlideMenuActivity extends AppCompatActivity {
             slideMenuItems.add(new NavItem(getString(R.string.restaurantMode), getString(R.string.restaurantModeDesc), R.drawable.logogreen, DeliveryRestaurantMapActivity.class));
         }
 
-        slideMenuItems.add(new NavItem(getString(R.string.about), getString(R.string.notImplemented), R.mipmap.ic_launcher, AboutActivity.class));
+        slideMenuItems.add(new NavItem(getString(R.string.about), getString(R.string.aboutus), R.mipmap.ic_launcher, AboutActivity.class));
         slideMenuItems.add(new NavItem(getString(R.string.help), getString(R.string.helpDesc), R.drawable.ic_help, new Runnable() {
             @Override
             public void run() {

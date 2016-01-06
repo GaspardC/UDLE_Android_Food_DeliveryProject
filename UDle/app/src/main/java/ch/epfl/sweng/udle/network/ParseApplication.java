@@ -22,6 +22,8 @@
 package ch.epfl.sweng.udle.network;
 
 import android.app.Application;
+import android.content.Context;
+import android.support.multidex.MultiDex;
 
 import com.parse.Parse;
 import com.parse.ParseFacebookUtils;
@@ -54,4 +56,9 @@ public class ParseApplication extends Application {
       ParseFacebookUtils.initialize(getApplicationContext());
 
   }
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this);
+    }
 }
