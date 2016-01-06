@@ -141,7 +141,6 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
 
                 if (waitingOrdersChange || currentOrdersChange) {
                     showOrdersOnMap();
-//                    setUpListView();
                 }
                 handler.postDelayed(this, delay);
             }

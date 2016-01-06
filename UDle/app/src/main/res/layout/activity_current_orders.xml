@@ -12,9 +12,17 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/Refresh"
+            android:id="@+id/CurrentOrders_button_refresh"
+            android:onClick="refreshAll"
+            android:layout_gravity="right"
+            />
         <ListView
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:id="@+id/listCurrentOrders"
             android:layout_marginTop="30dp"
             android:layout_weight="0.9"

@@ -17,6 +17,7 @@ import android.service.chooser.ChooserTargetService;
 import android.support.v4.app.NotificationCompat;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
@@ -53,17 +54,24 @@ public class CurrentOrdersActivity extends SlideMenuActivity {
     private boolean currentOrdersChange;
     private boolean deliveredOrdersChange;
     private boolean activityNotOnScreen;
+    private int timeLeftForRefresh;
+    private Handler handlerRefresh = new Handler();
+    private Button refreshButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_current_orders);
+        refreshButton = (Button) findViewById(R.id.CurrentOrders_button_refresh);
+
 
         handler =  new Handler(){
             public void handleMessage(Message msg)
             {
                 // To dismiss the dialog
                 progress.dismiss();
+                refreshButton.setEnabled(true);
+                handlerRefresh.removeCallbacksAndMessages(null);
                 if (waitingOrdersChange || currentOrdersChange) {
                     setUpListView();
                     if (currentOrdersChange){
@@ -72,6 +80,8 @@ public class CurrentOrdersActivity extends SlideMenuActivity {
                         }
                     }
                 }
+                timeLeftForRefresh = delay/1000;
+                handlerRefresh.postDelayed(getRefreshRunnable(), 0);
             }
         };
         handler.postDelayed(getMapRunnable(), 0);
@@ -79,6 +89,22 @@ public class CurrentOrdersActivity extends SlideMenuActivity {
 
         setUpListView();
 
+    }
+    /**
+     * @return Runnable who takes care of changing the text on the 'Refresh' button
+     */
+    private Runnable getRefreshRunnable(){
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                String timeLeft = String.valueOf(timeLeftForRefresh);
+                String textRefresh = getResources().getString(R.string.Refresh) + " (00:" + timeLeft + ")";
+                refreshButton.setText(textRefresh);
+                timeLeftForRefresh -= 1;
+                handlerRefresh.postDelayed(this, 1000);
+            }
+        };
+        return runnable;
     }
 
     @Override
@@ -414,5 +440,22 @@ public class CurrentOrdersActivity extends SlideMenuActivity {
     public void setWaitingOrdersForTesting(ArrayList<OrderElement> orderElements){
         waitingOrders = orderElements;
     }
+
+    /**
+     * Called when user click on the 'Refresh' button
+     */
+    public void refreshAll(View view){
+        restartHandlerTimerForRefresh();
+        refreshButton.setEnabled(false);
+    }
+
+    /**
+     * Restart the timer how deals with the refresh of the page.
+     */
+    public void restartHandlerTimerForRefresh(){
+        handler.removeCallbacksAndMessages(null);
+        handler.postDelayed(getMapRunnable(), 0);
+    }
+
 
 }
