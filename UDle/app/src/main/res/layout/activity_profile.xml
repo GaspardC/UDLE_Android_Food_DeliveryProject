@@ -6,6 +6,7 @@
     android:paddingRight="@dimen/com_parse_ui_horizontal_margin"
     android:paddingBottom="@dimen/com_parse_ui_vertical_margin"
     android:gravity="center"
+    xmlns:facebook="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:background="@drawable/background_cityy_night"
     >
@@ -14,7 +15,7 @@
         layout="@layout/com_parse_ui_parse_login_app_logo"
         android:layout_width="250dp"
         android:layout_height="250dp"
-        android:layout_weight="0.5"/>
+        android:layout_weight="0.1"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -22,7 +23,15 @@
         android:layout_weight="0.5"
         android:gravity="center"
         android:orientation="vertical">
+        <com.facebook.login.widget.ProfilePictureView
+            android:id="@+id/avatar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            facebook:com_facebook_preset_size="large"
+            android:layout_marginTop="5dp"
+            />
         <LinearLayout
+
             android:layout_width="match_parent"
             android:id="@+id/LoginLinearLayoutForRestaurants"
             android:layout_height="wrap_content"
@@ -66,27 +75,33 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/ParseLoginUI.TextView" />
+        <TextView
+            android:id="@+id/profile_phone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/ParseLoginUI.TextView" />
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
+
             android:orientation="horizontal">
         <Button
             android:id="@+id/login_or_logout_button"
             style="@style/ParseLoginUI.Button"
             android:layout_marginTop="@dimen/com_parse_ui_large_vertical_spacing"
             android:text="@string/profile_logout_button_label"
-            android:layout_weight="2"
-            />
-        <Button
-            android:layout_marginLeft="5dp"
+            android:layout_weight="2" />
+
+            <Button
                 android:id="@+id/goToHome_Button"
                 style="@style/ParseLoginUI.Button.OrderNow"
+                android:layout_marginLeft="5dp"
                 android:layout_marginTop="@dimen/com_parse_ui_large_vertical_spacing"
-                android:text="Order Now!"
                 android:layout_weight="2"
-            android:onClick="goToMapActivity"
-            android:nestedScrollingEnabled="true" />
+                android:nestedScrollingEnabled="true"
+                android:onClick="goToMapActivity"
+                android:text="Order Now!" />
         </LinearLayout>
 
     </LinearLayout>
