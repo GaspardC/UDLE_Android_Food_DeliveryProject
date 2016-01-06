@@ -34,6 +34,7 @@ import com.parse.ParseUser;
 import java.util.ArrayList;
 
 import ch.epfl.sweng.udle.R;
+import ch.epfl.sweng.udle.activities.AboutActivity;
 import ch.epfl.sweng.udle.activities.CurrentOrdersActivity;
 import ch.epfl.sweng.udle.activities.DeliveryRestaurantMapActivity;
 import ch.epfl.sweng.udle.activities.HelpActivity.HelpActivity;
@@ -76,18 +77,14 @@ public abstract class SlideMenuActivity extends AppCompatActivity {
 
         //home
         slideMenuItems.add(new NavItem(getString(R.string.home), getString(R.string.orderNow), R.mipmap.ic_launcher, MapActivity.class));
+        slideMenuItems.add(new NavItem(getString(R.string.currentOrders), getString(R.string.currentOrdersDetail), R.mipmap.ic_launcher, CurrentOrdersActivity.class));
+
 
         if(DataManager.isARestaurant()){
             slideMenuItems.add(new NavItem(getString(R.string.restaurantMode), getString(R.string.restaurantModeDesc), R.drawable.logogreen, DeliveryRestaurantMapActivity.class));
         }
 
-        slideMenuItems.add(new NavItem(getString(R.string.about), getString(R.string.notImplemented), R.mipmap.ic_launcher, new Runnable() {
-            @Override
-            public void run() {
-                Toast.makeText(getApplicationContext(), R.string.notImplemented, Toast.LENGTH_LONG).show();
-                Log.d(TAG, "Toast created inside (new Runnable()).run()");
-            }
-        }));
+        slideMenuItems.add(new NavItem(getString(R.string.about), getString(R.string.notImplemented), R.mipmap.ic_launcher, AboutActivity.class));
         slideMenuItems.add(new NavItem(getString(R.string.help), getString(R.string.helpDesc), R.drawable.ic_help, new Runnable() {
             @Override
             public void run() {
@@ -97,7 +94,6 @@ public abstract class SlideMenuActivity extends AppCompatActivity {
             }
         }));
 
-        slideMenuItems.add(new NavItem(getString(R.string.currentOrders), getString(R.string.currentOrdersDetail), R.mipmap.ic_launcher, CurrentOrdersActivity.class));
 
 
         mTitle = mDrawerTitle = getTitle();//
