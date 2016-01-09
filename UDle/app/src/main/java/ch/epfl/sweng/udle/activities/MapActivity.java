@@ -31,6 +31,9 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.parse.FunctionCallback;
+import com.parse.ParseCloud;
+import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
@@ -100,6 +103,15 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
 
+
+/*        HashMap<String, Object> params = new HashMap<String, Object>();
+        params.put("movie", "The Matrix");
+        ParseCloud.callFunctionInBackground("hello", params, new FunctionCallback<Object>() {
+            @Override
+            public void done(Object object, ParseException e) {
+                Log.d("cloudCode",object.toString());
+            }
+        });*/
         listeMarkers = new ArrayList<>();
         markerLayout = (LinearLayout) findViewById(R.id.locationMarker);
         markerHidden = false;

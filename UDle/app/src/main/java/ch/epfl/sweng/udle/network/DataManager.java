@@ -28,6 +28,9 @@ import ch.epfl.sweng.udle.Food.Orders;
 
 public class DataManager {
 
+
+    private static String customerID;
+
     /**
      *  Return current parse user
      */
@@ -439,4 +442,12 @@ public class DataManager {
         return user.getBoolean("RestaurantOwner");
     }
 
+    public static String getConsumerID() {
+        return getUser().getString("consumerID");
+    }
+
+    public static void setCustomerID(String customerID) {
+        getUser().put("consumerID",customerID);
+        getUser().saveInBackground();
+    }
 }

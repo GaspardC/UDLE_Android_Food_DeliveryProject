@@ -28,8 +28,8 @@ public class AboutActivity extends SlideMenuActivity {
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
-        /*String version = pInfo.versionName;
-        versionTextView.setText("v: " + version);*/
+        String version = pInfo.versionName;
+        versionTextView.setText("v: " + version);
 
 
         LinearLayout llContactUs = (LinearLayout) findViewById(R.id.llContactUs);
