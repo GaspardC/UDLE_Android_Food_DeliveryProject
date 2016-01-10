@@ -144,7 +144,9 @@
             android:value="@string/facebook_app_id" />
 
         <activity android:name=".activities.AboutActivity" />
-        <activity android:name=".activities.WebViewActivity"></activity>
+        <activity android:name=".activities.WebViewActivity" />
+        <activity android:name=".activities.CreditCardActivity" />
+        <activity android:name=".activities.EnterNumbersCreditCard"/>
     </application>
 
 </manifest>

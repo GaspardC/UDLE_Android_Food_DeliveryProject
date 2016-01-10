@@ -102,5 +102,10 @@
     <string name="VisitOurBlog">Visit our blog</string>
     <string name="CVG">CVG</string>
     <string name="aboutus">about udle</string>
+    <string name="title_activity_credit_card">CreditCardActivity</string>
+    <string name="addACreditCard">Add a credit card</string>
+    <string name="noCreditCardYet">You don\'t have any credit card yet</string>
+    <string name="Validate">Validate</string>
+    <string name="creditCard">Credit Card</string>
 
 </resources>

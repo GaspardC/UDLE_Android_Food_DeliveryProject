@@ -25,6 +25,7 @@ import android.widget.Toast;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
@@ -124,10 +125,20 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
         CheckEnableGPS();
         setUpMapIfNeeded();
 
-        mMap.setOnMarkerClickListener(this);
-        placeMarkers();
-        hideKeyborad();
-        handler.postDelayed(getMapRunnable(), 0);
+/*        myMapFragment.getMapAsync(new OnMapReadyCallback() {
+
+            @Override
+            public void onMapReady(GoogleMap googlemap) {
+                // TODO Auto-generated method stub
+                mMap = googlemap;
+
+                mMap.setOnMarkerClickListener(this);
+                placeMarkers();
+                hideKeyborad();
+                handler.postDelayed(getMapRunnable(), 0);
+            }
+        });*/
+
 
     }
 

@@ -35,6 +35,7 @@ import java.util.ArrayList;
 
 import ch.epfl.sweng.udle.R;
 import ch.epfl.sweng.udle.activities.AboutActivity;
+import ch.epfl.sweng.udle.activities.CreditCardActivity;
 import ch.epfl.sweng.udle.activities.CurrentOrdersActivity;
 import ch.epfl.sweng.udle.activities.DeliveryRestaurantMapActivity;
 import ch.epfl.sweng.udle.activities.HelpActivity.HelpActivity;
@@ -84,6 +85,7 @@ public abstract class SlideMenuActivity extends AppCompatActivity {
             slideMenuItems.add(new NavItem(getString(R.string.restaurantMode), getString(R.string.restaurantModeDesc), R.drawable.logogreen, DeliveryRestaurantMapActivity.class));
         }
 
+        slideMenuItems.add(new NavItem(getString(R.string.creditCard), getString(R.string.addACreditCard),R.mipmap.ic_launcher, CreditCardActivity.class));
         slideMenuItems.add(new NavItem(getString(R.string.about), getString(R.string.aboutus), R.mipmap.ic_launcher, AboutActivity.class));
         slideMenuItems.add(new NavItem(getString(R.string.help), getString(R.string.helpDesc), R.drawable.ic_help, new Runnable() {
             @Override
@@ -189,7 +191,7 @@ public abstract class SlideMenuActivity extends AppCompatActivity {
      */
     private void selectItemFromList(int position) {
 
-        if(DataManager.getUser().getString("phone").equals("")){
+        if(DataManager.getUser().getString("phone") == null || DataManager.getUser().getString("phone").equals("")){
             Intent intent = new Intent(this,ProfileActivity.class);
             startActivity(intent);
             showAlertDialogForPhoneNumber();

@@ -24,34 +24,16 @@ import ch.epfl.sweng.udle.Food.OrderElement;
 import ch.epfl.sweng.udle.Food.Orders;
 import ch.epfl.sweng.udle.R;
 import ch.epfl.sweng.udle.activities.SlideMenu.SlideMenuActivity;
-import ch.epfl.sweng.udle.network.DataManager;
 
-import com.parse.FunctionCallback;
-import com.parse.ParseCloud;
-import com.parse.ParseException;
-import com.stripe.android.*;
-import com.stripe.android.model.Card;
-import com.stripe.android.model.Token;
-import com.stripe.exception.APIConnectionException;
-import com.stripe.exception.APIException;
-import com.stripe.exception.AuthenticationException;
-import com.stripe.exception.CardException;
-import com.stripe.exception.InvalidRequestException;
-import com.stripe.model.Charge;
-import com.stripe.model.Customer;
 
 
 public class PaymentActivity extends SlideMenuActivity {
 
-    private EditText cardNumber;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payment);
-        cardNumber = (EditText) findViewById(R.id.payment_cardNumber);
-        //only for tests
-        cardNumber.setText("4000000000000077");
 
         OrderElement order = Orders.getActiveOrder();
         String moneyDevise = Orders.getMoneyDevise();
@@ -72,71 +54,8 @@ public class PaymentActivity extends SlideMenuActivity {
 
     }
 
-    private void setUpStripe(EditText number, EditText expDate, EditText cardSecurityNumber) {
-        String cardNumber = number.getText().toString();
-        String expD = expDate.getText().toString();
-
-        Integer cardExpMonth = Integer.valueOf(expD.substring(0, 2));
-        Integer cardExpYear = Integer.valueOf(expD.substring(2, 4));
-        String cardCVC =cardSecurityNumber.getText().toString();
-
-        Card card = new Card(
-                cardNumber,
-                cardExpMonth,
-                cardExpYear,
-                cardCVC
-        );
-
-        card.validateNumber();
-        card.validateCVC();
-
-        if ( !card.validateCard() ) {
-            // Show errors
-            Toast.makeText(this,"Number Invalid",Toast.LENGTH_SHORT).show();
-        }
-
-        Stripe stripe = null;
-        try {
-            stripe = new Stripe("pk_test_If3q98H3IFSDM2FfjyfWMBAS");
-
-
-            stripe.createToken(
-                    card,
-                    new TokenCallback() {
-                        public void onSuccess(Token token) {
-                            // Send token to your server
-                            Log.d("token", token.toString());
-
-                            HashMap<String, Object> params = new HashMap<String, Object>();
-                            params.put("cardToken", token.getId());
-                            params.put("userId", DataManager.getUser().getObjectId());
-
-                            ParseCloud.callFunctionInBackground("test", params, new FunctionCallback<Object>() {
-                                @Override
-                                public void done(Object o, ParseException e) {
-                                    if(e == null){
-                                        Log.d("Main Activity","Cloud Response: " + o.toString());
-                                    }
-                                }
-                            });
-
-                    }
-                    public void onError(Exception error) {
-                        // Show localized error message
-                        Toast.makeText(PaymentActivity.this, error.getLocalizedMessage(),Toast.LENGTH_LONG).show();
-                    }
-                }
-        );
-        } catch (AuthenticationException e) {
-            Toast.makeText(PaymentActivity.this, e.getLocalizedMessage(),Toast.LENGTH_LONG).show();
-            e.printStackTrace();
-        }
-    }
 
     public void payment_button_click(View view) {
-        EditText cardExpDate = (EditText) findViewById(R.id.payment_expDate);
-        EditText cardSecurityNumber = (EditText) findViewById(R.id.payment_securityNumber);
-        setUpStripe(cardNumber,cardExpDate,cardSecurityNumber);
 
         /*if(cardNumber.getText().toString().length() < 4 || cardExpDate.getText().toString().length() < 4 || cardSecurityNumber.getText().toString().length() < 4){
             Toast.makeText(getApplicationContext(), getString(R.string.NoCardInformation),

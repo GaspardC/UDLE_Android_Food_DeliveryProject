@@ -29,7 +29,7 @@ import ch.epfl.sweng.udle.Food.Orders;
 public class DataManager {
 
 
-    private static String customerID;
+    private static String customerID = null;
 
     /**
      *  Return current parse user
@@ -442,12 +442,25 @@ public class DataManager {
         return user.getBoolean("RestaurantOwner");
     }
 
-    public static String getConsumerID() {
-        return getUser().getString("consumerID");
-    }
 
-    public static void setCustomerID(String customerID) {
-        getUser().put("consumerID",customerID);
-        getUser().saveInBackground();
+
+    public static String getCustomerId() {
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("customer");
+        query.whereEqualTo("parent", getUser());
+        query.orderByAscending("updatedAt");
+
+
+        try {
+            List<ParseObject> customers = query.find();
+
+            if(customers != null && !customers.isEmpty()){
+                ParseObject customer = customers.get(0);
+                customerID = customer.getString("sCID");
+            }
+        }
+        catch (Exception e) {
+            throw new IllegalStateException(e);
+        }
+        return customerID;
     }
 }
