@@ -1,8 +1,10 @@
 package ch.epfl.sweng.udle.activities.MenuOptionsDrinks;
 
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.widget.Toast;
 
 import ch.epfl.sweng.udle.Food.Orders;
 import ch.epfl.sweng.udle.HorizontalSlideLibrary.SlidingTabLayout;
@@ -60,7 +62,51 @@ public class MainActivity extends SlideMenuActivity {
         tabs.setViewPager(pager);
         getActionBar();
 
+        /*// Attach the page change listener inside the activity
+        pager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 
+            // This method will be invoked when a new page becomes selected.
+            @Override
+            public void onPageSelected(int position) {
+                Toast.makeText(MainActivity.this,
+                        "Selected page position: " + position, Toast.LENGTH_SHORT).show();
+                fragmentSelected(position);
+            }
+
+            // This method will be invoked when the current page is scrolled
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                // Code goes here
+            }
+
+            // Called when the scroll state changes:
+            // SCROLL_STATE_IDLE, SCROLL_STATE_DRAGGING, SCROLL_STATE_SETTLING
+            @Override
+            public void onPageScrollStateChanged(int state) {
+                // Code goes here
+            }
+        });
+*/
+
+
+    }
+
+    private void fragmentSelected(int position) {
+/*
+        Fragment page = getSupportFragmentManager().findFragmentByTag(""+ pager.getCurrentItem());
+*/
+
+/*        if(position == 2 && page != null){
+            ((DrinkFragment)page).initializeData();
+
+        }*/
+/*        if(position == 2){
+            DrinkFragment drinks = new DrinkFragment();
+            DrinkFragment drikfrag = (DrinkFragment) adapter.getItem(pager.getCurrentItem());
+            drikfrag.initializeData();
+            pager.setCurrentItem(pager.getCurrentItem());
+
+        }*/
     }
 
     /**
@@ -71,4 +117,6 @@ public class MainActivity extends SlideMenuActivity {
         super.onBackPressed();
         Orders.setActiveOrder(null);
     }
+
+
 }

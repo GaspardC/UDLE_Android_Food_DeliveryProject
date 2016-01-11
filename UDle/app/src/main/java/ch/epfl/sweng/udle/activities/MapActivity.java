@@ -1,9 +1,11 @@
 package ch.epfl.sweng.udle.activities;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Criteria;
 import android.location.Geocoder;
@@ -11,6 +13,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -71,19 +74,22 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
     private int timeBetweenAddrRequest = 333;
     private boolean firstTimeCalled = true;
     final Handler handler2 = new Handler();
-    private final Runnable  r = new Runnable () {
+    private final Runnable r = new Runnable() {
         @Override
         public void run() {
             if (isLocationInitialised() || !displayGpsMessage) {
                 googleAdapter.setEnableAutocomplete(false);
                 LatLng LatLng = mMap.getCameraPosition().target;
+                mMap.setMyLocationEnabled(true);
+                mMap.getUiSettings().setCompassEnabled(true);
+                mMap.getUiSettings().setMyLocationButtonEnabled(true);
                 setDeliveryAddressLocation(LatLng, getCompleteAddressString(LatLng.latitude, LatLng.longitude), true);
             }
-            if (markerHidden && afterFirstChange){
+            if (markerHidden && afterFirstChange) {
                 markerLayout.setVisibility(LinearLayout.VISIBLE);
                 markerHidden = false;
                 afterFirstChange = false;
-            }else{
+            } else {
                 afterFirstChange = true;
             }
         }
@@ -116,17 +122,17 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
 
     /** Called when the user clicks the MenuMap_ValidatePosition button */
     public void goToDeliveryCommandDetail(OrderElement order, boolean isCurrent) {
-            Orders.setActiveOrder(order);
+        Orders.setActiveOrder(order);
 
         Intent intent = new Intent(this, RecapActivity.class);
-        intent.putExtra("from","Map");
+        intent.putExtra("from", "Map");
         startActivity(intent);
     }
 
     /**
      * @return Runnable: Each 'delay' milliseconds, call the function run function. This run function check if orders need to be refresh and do it if needed.
      */
-    private Runnable getMapRunnable(){
+    private Runnable getMapRunnable() {
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
@@ -135,7 +141,6 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
 
                 if (waitingOrdersChange || currentOrdersChange) {
                     showOrdersOnMap();
-//                    setUpListView();
                 }
                 handler.postDelayed(this, delay);
             }
@@ -148,7 +153,7 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
      * Display the waiting and the current orders on the Google Map.
      * Display each order via a marker. Red color for waiting orders, Green for current ones.
      */
-    private void showOrdersOnMap(){
+    private void showOrdersOnMap() {
         mMap.clear();
         objectIdHashMapForMap = new HashMap<>();
         int objectIdHashMapIndex = 1;
@@ -158,12 +163,12 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
         setCamera(rLatLng);
 
 
-        for(OrderElement order : waitingOrders) {
+        for (OrderElement order : waitingOrders) {
             Location location = order.getDeliveryLocation();
             LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
             String deliveryAddress = order.getDeliveryAddress();
 
-            String markerTitle = getResources().getString(R.string.WaitingOrders) +" #"+ objectIdHashMapIndex;
+            String markerTitle = getResources().getString(R.string.WaitingOrders) + " #" + objectIdHashMapIndex;
             objectIdHashMapForMap.put(markerTitle, order);
             objectIdHashMapIndex++;
 
@@ -173,12 +178,12 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
                     .snippet(deliveryAddress)
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
         }
-        for(OrderElement order : currentOrders) {
+        for (OrderElement order : currentOrders) {
             Location location = order.getDeliveryLocation();
             LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
             String deliveryAddress = order.getDeliveryAddress();
 
-            String markerTitle = getResources().getString(R.string.ConfirmOrders) +" #"+ objectIdHashMapIndex;
+            String markerTitle = getResources().getString(R.string.ConfirmOrders) + " #" + objectIdHashMapIndex;
             objectIdHashMapForMap.put(markerTitle, order);
             objectIdHashMapIndex++;
 
@@ -213,16 +218,15 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
      * If no change => Do nothing
      *
      */
-    private boolean changeInWaitingOrders(){
+    private boolean changeInWaitingOrders() {
         //Retrieve list from server
         ArrayList<OrderElement> waitingOrdersFromServe = DataManager.getWaitingOrdersForAClient();
 
-        if (waitingOrdersFromServe.size() == 0){
-            if (waitingOrders.size() != 0){
+        if (waitingOrdersFromServe.size() == 0) {
+            if (waitingOrders.size() != 0) {
                 waitingOrders = waitingOrdersFromServe;
                 return true;
-            }
-            else{
+            } else {
                 return false;
             }
         }
@@ -233,28 +237,26 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
 
         //Putting all objectIds of local waitingOrders list into a new list
         ArrayList<String> currentWaitingOrdersObjectID = new ArrayList<>();
-        for (OrderElement orderElement: waitingOrders){
+        for (OrderElement orderElement : waitingOrders) {
             currentWaitingOrdersObjectID.add(orderElement.getUserOrderInformationsID());
         }
 
         //Check for all orderElements in the server list if it already present locally. If yes, add 1 to 'checkSameList'
-        for (OrderElement orderElement : waitingOrdersFromServe){
-            if (currentWaitingOrdersObjectID.contains(orderElement.getUserOrderInformationsID())){
-                checkSameList ++;
+        for (OrderElement orderElement : waitingOrdersFromServe) {
+            if (currentWaitingOrdersObjectID.contains(orderElement.getUserOrderInformationsID())) {
+                checkSameList++;
             }
         }
 
-        if (waitingOrdersFromServe.size() != checkSameList){
+        if (waitingOrdersFromServe.size() != checkSameList) {
             //Lists are not the same. Need to refresh
             waitingOrders = waitingOrdersFromServe;
             return true;
-        }
-        else {
+        } else {
             //Server list is the same as the displayed one. Do nothing.
             return false;
         }
     }
-
 
 
     /**
@@ -264,11 +266,11 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
      * If no change => Do nothing
      *
      */
-    private boolean changeInCurrentOrders(){
+    private boolean changeInCurrentOrders() {
         //Retrieve list from server
         ArrayList<OrderElement> currentOrdersFromServe = DataManager.getEnRouteOrdersForAClient();
 
-        if (currentOrdersFromServe.size() == 0){
+        if (currentOrdersFromServe.size() == 0) {
             currentOrders = currentOrdersFromServe;
             return true;
         }
@@ -279,34 +281,33 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
 
         //Putting all objectIds of local waitingOrders list into a new list
         ArrayList<String> currentCurrentOrdersObjectID = new ArrayList<>();
-        for (OrderElement orderElement: currentOrders){
+        for (OrderElement orderElement : currentOrders) {
             currentCurrentOrdersObjectID.add(orderElement.getUserOrderInformationsID());
         }
 
         //Check for all orderElements in the server list if it already present locally. If yes, add 1 to 'checkSameList'
-        for (OrderElement orderElement : currentOrdersFromServe){
-            if (currentCurrentOrdersObjectID.contains(orderElement.getUserOrderInformationsID())){
-                checkSameList ++;
+        for (OrderElement orderElement : currentOrdersFromServe) {
+            if (currentCurrentOrdersObjectID.contains(orderElement.getUserOrderInformationsID())) {
+                checkSameList++;
             }
         }
 
-        if (currentOrdersFromServe.size() != checkSameList){
+        if (currentOrdersFromServe.size() != checkSameList) {
             //Lists are not the same. Need to refresh
             currentOrders = currentOrdersFromServe;
             return true;
-        }
-        else {
+        } else {
             //Server list is the same as the displayed one. Do nothing.
             return false;
         }
     }
 
 
-
-    public void setDeliveryAdress(String addr){
+    public void setDeliveryAdress(String addr) {
         deliveryAddress = addr;
     }
-    public String getDeliveryAdress(){
+
+    public String getDeliveryAdress() {
         return deliveryAddress;
     }
 
@@ -315,16 +316,18 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN
         );
     }
+
     @Override
-    protected void onResume(){
+    protected void onResume() {
         super.onResume();
-        if(DataManager.getUser() == null){
-            Intent login = new Intent(this,ProfileActivity.class);
+        if (DataManager.getUser() == null) {
+            Intent login = new Intent(this, ProfileActivity.class);
             startActivity(login);
         }
         CheckEnableGPS();
         placeMarkers();
     }
+
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
         String str = (String) adapterView.getItemAtPosition(position);
         LatLng latLng = GooglePlacesAutocompleteAdapter.getLatLngFromId(((GooglePlacesAutocompleteAdapter) adapterView.getAdapter()).getItem_Id(position));
@@ -334,8 +337,8 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
 
     /** Called when the user clicks the MenuMap_ValidatePosition button */
     public void goToMenuActivity(View view) {
-        if (storeNearbyRestaurants()){
-            if(isLocationInitialised() && !getDeliveryAdress().equals("")) {
+        if (storeNearbyRestaurants()) {
+            if (isLocationInitialised() && !getDeliveryAdress().equals("")) {
                 orderElement = new OrderElement();
                 orderElement.setDeliveryLocation(getLocation());
                 orderElement.setDeliveryAddress(getDeliveryAdress());
@@ -343,12 +346,10 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
                 Orders.setActiveOrder(orderElement);
                 Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
-            }
-            else {
+            } else {
                 Toast.makeText(this, R.string.incorrectLocation, Toast.LENGTH_SHORT).show();
             }
-        }
-        else{
+        } else {
             Toast.makeText(this, R.string.noRestaurantAvailable, Toast.LENGTH_SHORT).show();
         }
     }
@@ -401,6 +402,7 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
             }
         });
     }
+
     private void setCamera(LatLng latLng) {
         // Show the argument location in Google Map
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
@@ -408,8 +410,8 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
     }
 
-    private void placeMarkers(){
-        for (Marker marker: listeMarkers) {
+    private void placeMarkers() {
+        for (Marker marker : listeMarkers) {
             marker.remove();
         }
         listeMarkers.clear();
@@ -417,7 +419,7 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
         Location deliveryLocation;
         String deliveryAddress;
 
-        if (Orders.getActiveOrder() != null){
+        if (Orders.getActiveOrder() != null) {
             deliveryLocation = Orders.getActiveOrder().getDeliveryLocation();
             deliveryAddress = Orders.getActiveOrder().getDeliveryAddress();
             LatLng latLng = new LatLng(deliveryLocation.getLatitude(), deliveryLocation.getLongitude());
@@ -430,13 +432,13 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
             listeMarkers.add(marker);
         }
         ArrayList<OrderElement> currentOrd = Orders.getCurrentOrders();
-        if (currentOrd == null){
+        if (currentOrd == null) {
             return;
         }
         if (currentOrd.size() == 0)
             return;
-        for(OrderElement orderElem : currentOrd) {
-            if (orderElem!=null) {
+        for (OrderElement orderElem : currentOrd) {
+            if (orderElem != null) {
                 deliveryLocation = orderElem.getDeliveryLocation();
                 deliveryAddress = orderElem.getDeliveryAddress();
                 LatLng latLng = new LatLng(deliveryLocation.getLatitude(), deliveryLocation.getLongitude());
@@ -477,20 +479,20 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
     }
 
 
-    private void CheckEnableGPS(){
-        if (displayGpsMessage){
+    private void CheckEnableGPS() {
+        if (displayGpsMessage) {
             LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-            if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
-                if(dlgAlertcountCreated) {
+            if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                if (dlgAlertcountCreated) {
                     dlgAlert.create().cancel();
                     dlgAlertcountCreated = false;
                 }
                 Toast.makeText(this, R.string.locationEnable, Toast.LENGTH_SHORT).show();
-            }else{
+            } else {
                 if (!dlgAlertcountCreated) {
                     dlgAlertcountCreated = true;
                     dlgAlert.setMessage(R.string.mapActivityNoGps);
-                            dlgAlert.setTitle(R.string.app_name);
+                    dlgAlert.setTitle(R.string.app_name);
                     dlgAlert.setPositiveButton("Ok",
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
@@ -515,16 +517,21 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
         }
     }
 
-    private void setLocation(Location loc){
+    private void setLocation(Location loc) {
         if (loc != null) {
             this.location = loc;
             this.location.setProvider(nonNullLocationProvider);
+            DataManager.setUserLocation(loc);
+            LatLng LatLng = new LatLng(loc.getLatitude(), loc.getLongitude());
+            setCamera(LatLng);
         }
     }
-    private Location getLocation(){
+
+    private Location getLocation() {
         return location;
     }
-    private boolean isLocationInitialised(){
+
+    private boolean isLocationInitialised() {
         if (getLocation().getProvider().equals(nonNullLocationProvider))
             return true;
         return false;
@@ -533,9 +540,10 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
     private GoogleMap.OnMyLocationChangeListener myLocationChangeListener = new GoogleMap.OnMyLocationChangeListener() {
         @Override
         public void onMyLocationChange(Location location) {
-            if (!isLocationInitialised()){
+            if (!isLocationInitialised()) {
                 LatLng LatLng = new LatLng(location.getLatitude(), location.getLongitude());
                 setDeliveryAddressLocation(LatLng, getCompleteAddressString(location.getLatitude(), location.getLongitude()), true);
+                DataManager.setUserLocation(location);
                 setCamera(LatLng);
             }
         }
@@ -557,9 +565,20 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
         // Get the name of the best provider
         String provider = locationManager.getBestProvider(criteria, true);
         Location loc;
-        try{
+        try {
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                // TODO: Consider calling
+                //    ActivityCompat#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for ActivityCompat#requestPermissions for more details.
+                return;
+            }
             loc = locationManager.getLastKnownLocation(provider);
         } catch (Exception e){
+            Toast.makeText(this,e.toString(),Toast.LENGTH_SHORT).show();
             loc = new Location("");
         }
 
@@ -581,7 +600,8 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
                 if (firstTimeCalled) {
                     handler2.postDelayed(r, timeBetweenAddrRequest);
                     firstTimeCalled = false;
-                }else {
+                }
+                else {
                     handler2.removeCallbacks(r);
                     handler2.postDelayed(r, timeBetweenAddrRequest);
                 }

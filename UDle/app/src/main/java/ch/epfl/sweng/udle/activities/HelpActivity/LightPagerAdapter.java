@@ -103,41 +103,7 @@ public class LightPagerAdapter extends PagerAdapter {
                 imageView = (ImageView) itemView.findViewById(R.id.help_page_2_imageView);
                 imageView.setContentDescription(context.getString(R.string.help_page) + position);
                 break;
-            case 3:
-                itemView = inflater.inflate(R.layout.help_page_3, container, false);
-                imageView = (ImageView) itemView.findViewById(R.id.help_page_3_imageView);
-                imageView.setContentDescription(context.getString(R.string.help_page) + position);
-                break;
-            case 4:
-                itemView = inflater.inflate(R.layout.help_page_4, container, false);
-                imageView = (ImageView) itemView.findViewById(R.id.help_page_4_imageView);
-                imageView.setContentDescription(context.getString(R.string.help_page) + position);
-                break;
-            case 5:
-                itemView = inflater.inflate(R.layout.help_page_5, container, false);
-                imageView = (ImageView) itemView.findViewById(R.id.help_page_5_imageView);
-                imageView.setContentDescription(context.getString(R.string.help_page) + position);
-                break;
-            case 6:
-                itemView = inflater.inflate(R.layout.help_page_6, container, false);
-                imageView = (ImageView) itemView.findViewById(R.id.help_page_6_imageView);
-                imageView.setContentDescription(context.getString(R.string.help_page) + position);
-                break;
-            case 7:
-                itemView = inflater.inflate(R.layout.help_page_7, container, false);
-                imageView = (ImageView) itemView.findViewById(R.id.help_page_7_imageView);
-                imageView.setContentDescription(context.getString(R.string.help_page) + position);
-                break;
-            case 8:
-                itemView = inflater.inflate(R.layout.help_page_8, container, false);
-                imageView = (ImageView) itemView.findViewById(R.id.help_page_8_imageView);
-                imageView.setContentDescription(context.getString(R.string.help_page) + position);
-                break;
-            case 9:
-                itemView = inflater.inflate(R.layout.help_page_9, container, false);
-                imageView = (ImageView) itemView.findViewById(R.id.help_page_9_imageView);
-                imageView.setContentDescription(context.getString(R.string.help_page) + position);
-                break;
+
             default:
                 itemView = inflater.inflate(R.layout.help_page, container, false);
                 imageView = (ImageView) itemView.findViewById(R.id.help_page_imageView);

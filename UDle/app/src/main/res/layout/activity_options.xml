@@ -13,7 +13,7 @@
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="0dp"
         android:layout_weight="90"
         android:id="@+id/Options_noMenuSelected"
         android:text="@string/noMenuNoOptions"
@@ -22,7 +22,7 @@
     <ExpandableListView
         android:id="@+id/MenuElement_list"
         android:layout_width="match_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="0dp"
         android:layout_weight="90"
         android:childDivider="#00000000">
     </ExpandableListView>
@@ -31,7 +31,7 @@
 
     <Button
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:text="Next"
         android:id="@+id/optionNext"
         android:layout_weight="10"/>

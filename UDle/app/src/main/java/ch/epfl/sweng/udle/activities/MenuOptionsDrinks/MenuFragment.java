@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,7 +26,10 @@ public class MenuFragment extends Fragment{
 
     private LinearLayout llLayout;
     private ViewPager pager;
-
+    private TextView kebabNbr;
+    private ImageView imageKebab;
+    private  ImageView imageBurger ;
+    private TextView burgerNbr;
 
 
     @Override
@@ -61,7 +65,7 @@ public class MenuFragment extends Fragment{
                 }
             }
         }
-        final TextView kebabNbr = (TextView) llLayout.findViewById(R.id.MenuActivity_KebabNbr);
+       kebabNbr = (TextView) llLayout.findViewById(R.id.MenuActivity_KebabNbr);
         kebabNbr.setText("" + nbrKebab);
         computeKebabPrice(nbrKebab);
 
@@ -70,17 +74,14 @@ public class MenuFragment extends Fragment{
         TextView kebabPlus = (TextView) llLayout.findViewById(R.id.MenuActivity_KebabPlus);
         kebabPlus.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
-                int maxNbr = FoodTypes.KEBAB.getMaxNbr();
-
-                String value = kebabNbr.getText().toString();
-                int actualValue = Integer.parseInt(value);
-
-                int newNbrValue = actualValue + 1;
-                if (newNbrValue <= maxNbr) {
-                    kebabNbr.setText(Integer.toString(newNbrValue));
-                    computeKebabPrice(newNbrValue);
-                    addOneMenu(FoodTypes.KEBAB);
-                }
+                addKebab();
+            }
+        });
+        imageKebab = (ImageView) llLayout.findViewById(R.id.MenuActivity_KebabImage);
+        imageKebab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addKebab();
             }
         });
 
@@ -98,6 +99,21 @@ public class MenuFragment extends Fragment{
                 }
             }
         });
+    }
+
+    private void addKebab() {
+        int maxNbr = FoodTypes.KEBAB.getMaxNbr();
+
+        String value = kebabNbr.getText().toString();
+        int actualValue = Integer.parseInt(value);
+
+        int newNbrValue = actualValue + 1;
+        if (newNbrValue <= maxNbr) {
+            kebabNbr.setText(Integer.toString(newNbrValue));
+            computeKebabPrice(newNbrValue);
+            addOneMenu(FoodTypes.KEBAB);
+        }
+
     }
 
     /**
@@ -129,7 +145,7 @@ public class MenuFragment extends Fragment{
             }
         }
 
-        final TextView burgerNbr = (TextView) llLayout.findViewById(R.id.MenuActivity_BurgerNbr);
+        burgerNbr = (TextView) llLayout.findViewById(R.id.MenuActivity_BurgerNbr);
         burgerNbr.setText("" + nbrBurger);
         computeBurgerPrice(nbrBurger);
 
@@ -137,16 +153,7 @@ public class MenuFragment extends Fragment{
         TextView burgerPlus = (TextView) llLayout.findViewById(R.id.MenuActivity_BurgerPlus);
         burgerPlus.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
-                int maxNbr = FoodTypes.BURGER.getMaxNbr();
-                String value = burgerNbr.getText().toString();
-                int actualValue = Integer.parseInt(value);
-                int newNbrValue = actualValue + 1;
-                if (newNbrValue <= maxNbr) {
-                    burgerNbr.setText(Integer.toString(newNbrValue));
-
-                    computeBurgerPrice(newNbrValue);
-                    addOneMenu(FoodTypes.BURGER);
-                }
+                addBurger();
 
             }
         });
@@ -165,6 +172,26 @@ public class MenuFragment extends Fragment{
                 }
             }
         });
+        imageBurger = (ImageView) llLayout.findViewById(R.id.MenuActivity_BurgerImage);
+        imageBurger.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addBurger();
+            }
+        });
+    }
+
+    private void addBurger() {
+        int maxNbr = FoodTypes.BURGER.getMaxNbr();
+        String value = burgerNbr.getText().toString();
+        int actualValue = Integer.parseInt(value);
+        int newNbrValue = actualValue + 1;
+        if (newNbrValue <= maxNbr) {
+            burgerNbr.setText(Integer.toString(newNbrValue));
+
+            computeBurgerPrice(newNbrValue);
+            addOneMenu(FoodTypes.BURGER);
+        }
     }
 
     /**
