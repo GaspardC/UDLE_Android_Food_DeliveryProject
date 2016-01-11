@@ -73,6 +73,7 @@ public class PaymentActivity extends SlideMenuActivity {
             int totalInCents = (int) totalCost * 100;
             HashMap<String, Object> params = new HashMap<String, Object>();
             params.put("customerId", customerId);
+            params.put("price",totalInCents);
 
 
             ParseCloud.callFunctionInBackground("payment", params, new FunctionCallback<Object>() {
@@ -82,7 +83,8 @@ public class PaymentActivity extends SlideMenuActivity {
                         Log.d("Main Activity", "Cloud Response: " + o.toString());
                     }
                     if (o != null) {
-                        onBackPressed();
+                        Intent intent =  new Intent(PaymentActivity.this, WaitingActivity.class);
+                        startActivity(intent);
                     }
                 }
             });
