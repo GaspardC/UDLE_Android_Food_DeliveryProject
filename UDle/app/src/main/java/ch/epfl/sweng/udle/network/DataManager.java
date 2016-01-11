@@ -29,7 +29,6 @@ import ch.epfl.sweng.udle.Food.Orders;
 public class DataManager {
 
 
-    private static String customerID = null;
 
     /**
      *  Return current parse user
@@ -105,7 +104,7 @@ public class DataManager {
         OrderElement orderElement = Orders.getActiveOrder();
 
         userOrderInformations.setUser(getUser());
-        userOrderInformations.setParseDeliveringRestaurant("No restaurant assigned");
+        userOrderInformations.setParseDeliveringRestaurantName("No restaurant assigned");
         userOrderInformations.setExpectedTime(-1);
         userOrderInformations.setOrderStatus(OrderStatus.WAITING.toString());
         userOrderInformations.setDeliveryGuyNumber("No number assigned");
@@ -134,7 +133,7 @@ public class DataManager {
 
         ParseUserOrderInformations userOrderInformations = getParseUserObjectWithId(objectId);
         userOrderInformations.setDeliveryGuyNumber(deliveryGuyNumber);
-        userOrderInformations.setParseDeliveringRestaurant(deliveringRestaurant);
+        userOrderInformations.setParseDeliveringRestaurantName(deliveringRestaurant);
         userOrderInformations.setExpectedTime(eta);
         userOrderInformations.setOrderStatus(OrderStatus.ENROUTE.toString());
     }
@@ -449,13 +448,15 @@ public class DataManager {
         query.whereEqualTo("parent", getUser());
         query.orderByAscending("updatedAt");
 
+        String customerID = null;
 
         try {
             List<ParseObject> customers = query.find();
+//            ParseObject customer = query.getFirst();
 
             if(customers != null && !customers.isEmpty()){
                 ParseObject customer = customers.get(0);
-                customerID = customer.getString("sCID");
+                 customerID = customer.getString("sCID");
             }
         }
         catch (Exception e) {
@@ -463,4 +464,52 @@ public class DataManager {
         }
         return customerID;
     }
+
+    public static void saveLast4(String last4) {
+        getUser().put("last4", last4);
+        getUser().saveInBackground();
+    }
+
+    public static String getLast4() {
+        return getUser().getString("last4");
+    }
+
+    public static ParseUserOrderInformations getParseUserObjectWithActiveOrder(OrderElement activeOrder) {
+        return getParseUserObjectWithId(activeOrder.getUserOrderInformationsID());
+    }
+
+    public static String getRestaurantNameWithActiveOrder() {
+        OrderElement activeOrder = Orders.getActiveOrder();
+        ParseUserOrderInformations orderInformations = getParseUserObjectWithActiveOrder(activeOrder);
+        return orderInformations.getParseDeliveringRestaurant();
+    }
+
+    public static ParseUser getRestaurantUserWithActiveOrder() {
+        OrderElement activeOrder = Orders.getActiveOrder();
+        ParseUserOrderInformations orderInformations = getParseUserObjectWithActiveOrder(activeOrder);
+        String restaurantId = orderInformations.getString("restaurantId");
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("User");
+        query.whereEqualTo("objectId",restaurantId);
+        ParseUser restaurantUser = null;
+
+        try {
+         restaurantUser = (ParseUser) query.getFirst();
+                }
+
+        catch (Exception e) {
+            throw new IllegalStateException(e);
+        }
+
+        return restaurantUser;
+    }
+
+    public static void setRestaurantMarkWithActiveOrder(int mark){
+        ParseUser restaurantUser = getRestaurantUserWithActiveOrder();
+        restaurantUser.put("mark",mark);
+        restaurantUser.saveInBackground();
+    }
+
+
+
+
 }

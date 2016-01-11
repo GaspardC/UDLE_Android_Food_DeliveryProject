@@ -1,5 +1,6 @@
 package ch.epfl.sweng.udle.activities;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -29,6 +30,7 @@ public class EnterNumbersCreditCard extends SlideMenuActivity {
     private EditText cardExpDate;
     private EditText cardSecurityNumber;
     private EditText cardNumber;
+    private boolean directPayment = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +40,13 @@ public class EnterNumbersCreditCard extends SlideMenuActivity {
         cardSecurityNumber = (EditText) findViewById(R.id.payment_securityNumber);
         cardNumber = (EditText) findViewById(R.id.payment_cardNumber);
         validateButton = (Button) findViewById(R.id.validateNewCreditCard);
+
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null){
+            if(bundle.getString("from").equals("payment")){
+                directPayment = true;
+            }
+        }
         setButtonBehavor();
     }
 
@@ -45,7 +54,6 @@ public class EnterNumbersCreditCard extends SlideMenuActivity {
         validateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
 
 
                 setUpStripe(cardNumber, cardExpDate, cardSecurityNumber);
@@ -93,12 +101,13 @@ public class EnterNumbersCreditCard extends SlideMenuActivity {
                         public void onSuccess(Token token) {
                             // Send token to your server
                             Log.d("token", token.toString());
+                            DataManager.saveLast4(token.getCard().getLast4());
 
                             HashMap<String, Object> params = new HashMap<String, Object>();
                             params.put("cardToken", token.getId());
                             params.put("userId", DataManager.getUser().getObjectId());
 
-                            ParseCloud.callFunctionInBackground("test", params, new FunctionCallback<Object>() {
+                            ParseCloud.callFunctionInBackground("registerCustomer", params, new FunctionCallback<Object>() {
                                 @Override
                                 public void done(Object o, ParseException e) {
                                     if (e == null) {
@@ -120,6 +129,17 @@ public class EnterNumbersCreditCard extends SlideMenuActivity {
         } catch (AuthenticationException e) {
             Toast.makeText(EnterNumbersCreditCard.this, e.getLocalizedMessage(),Toast.LENGTH_LONG).show();
             e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onBackPressed(){
+        if (directPayment){
+            Intent intent = new Intent(this,EnterNumbersCreditCard.class);
+            startActivity(intent);
+        }
+        else{
+            super.onBackPressed();
         }
     }
 }

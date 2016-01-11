@@ -13,6 +13,10 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.parse.FunctionCallback;
+import com.parse.ParseCloud;
+import com.parse.ParseException;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -24,7 +28,7 @@ import ch.epfl.sweng.udle.Food.OrderElement;
 import ch.epfl.sweng.udle.Food.Orders;
 import ch.epfl.sweng.udle.R;
 import ch.epfl.sweng.udle.activities.SlideMenu.SlideMenuActivity;
-
+import ch.epfl.sweng.udle.network.DataManager;
 
 
 public class PaymentActivity extends SlideMenuActivity {
@@ -57,6 +61,33 @@ public class PaymentActivity extends SlideMenuActivity {
 
     public void payment_button_click(View view) {
 
+        if(DataManager.getCustomerId() == null){
+            Intent intent = new Intent(this,CreditCardActivity.class);
+            intent.putExtra("from","payment");
+            startActivity(intent);
+            return;
+        }
+        else{
+            String customerId = DataManager.getCustomerId();
+            double totalCost = Orders.getActiveOrder().getTotalCost();
+            int totalInCents = (int) totalCost * 100;
+            HashMap<String, Object> params = new HashMap<String, Object>();
+            params.put("customerId", customerId);
+
+
+            ParseCloud.callFunctionInBackground("payment", params, new FunctionCallback<Object>() {
+                @Override
+                public void done(Object o, ParseException e) {
+                    if (e == null) {
+                        Log.d("Main Activity", "Cloud Response: " + o.toString());
+                    }
+                    if (o != null) {
+                        onBackPressed();
+                    }
+                }
+            });
+
+        }
         /*if(cardNumber.getText().toString().length() < 4 || cardExpDate.getText().toString().length() < 4 || cardSecurityNumber.getText().toString().length() < 4){
             Toast.makeText(getApplicationContext(), getString(R.string.NoCardInformation),
                     Toast.LENGTH_SHORT).show();

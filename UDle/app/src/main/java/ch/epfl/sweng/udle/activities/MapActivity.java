@@ -125,20 +125,6 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
         CheckEnableGPS();
         setUpMapIfNeeded();
 
-/*        myMapFragment.getMapAsync(new OnMapReadyCallback() {
-
-            @Override
-            public void onMapReady(GoogleMap googlemap) {
-                // TODO Auto-generated method stub
-                mMap = googlemap;
-
-                mMap.setOnMarkerClickListener(this);
-                placeMarkers();
-                hideKeyborad();
-                handler.postDelayed(getMapRunnable(), 0);
-            }
-        });*/
-
 
     }
 

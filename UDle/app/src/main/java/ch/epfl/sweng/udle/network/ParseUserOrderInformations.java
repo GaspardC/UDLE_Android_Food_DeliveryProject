@@ -88,11 +88,16 @@ public class ParseUserOrderInformations extends ParseObject {
     /**
      * @param restaurantName The name of the restaurant delivering for this order.
      */
-    public void setParseDeliveringRestaurant(String restaurantName) {
+    public void setParseDeliveringRestaurantName(String restaurantName) {
         if (restaurantName == null  || restaurantName.equals("")){
             throw new IllegalArgumentException("Try ti set a wrong value for restaurant delivering.");
         }
         this.put("deliveringRestaurant", restaurantName);
+        this.saveInBackground();
+    }
+
+    public void setDeliveringRestaurantId(){
+        this.put("restaurantId",getUser().getObjectId());
         this.saveInBackground();
     }
 

@@ -38,10 +38,15 @@ public class CreditCardActivity extends SlideMenuActivity {
     @Override
     public void onResume(){
         super.onResume();
-        String customerId = DataManager.getCustomerId();
-        if(customerId == null) return;
         infoCreditCard = (TextView) findViewById(R.id.CreditCardActivityTextViewNoCreditCard);
-        infoCreditCard.setText("card added");
+
+        String customerId = DataManager.getCustomerId();
+        if(customerId == null){
+            infoCreditCard.setText("No credit card added");
+            return;
+        }
+        String last4 = DataManager.getLast4();
+        infoCreditCard.setText("card added : **** **** **** " + last4);
 
     }
 }

@@ -30,7 +30,7 @@
 
         <EditText
             android:paddingLeft="@dimen/_5sdp"
-            android:inputType="number"
+            android:inputType="numberPassword"
             android:layout_width="wrap_content"
             android:hint="enter your credit card numbers here"
             android:textColorHint="@color/greyColor"

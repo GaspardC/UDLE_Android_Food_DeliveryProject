@@ -146,7 +146,8 @@
         <activity android:name=".activities.AboutActivity" />
         <activity android:name=".activities.WebViewActivity" />
         <activity android:name=".activities.CreditCardActivity" />
-        <activity android:name=".activities.EnterNumbersCreditCard"/>
+        <activity android:name=".activities.EnterNumbersCreditCard" />
+        <activity android:name=".activities.StarActivity"></activity>
     </application>
 
 </manifest>
