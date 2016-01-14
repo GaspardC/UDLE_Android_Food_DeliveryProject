@@ -75,7 +75,7 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
     private HashMap<Integer, OrderElement> objectIdHashMapForList; //HashMap between the index of order shown in the list view and the specific order.
     private HashMap<String, OrderElement> objectIdHashMapForMap; //HashMap between the index of order shown in the map and the specific order.
 
-    private int timeBetweenAddrRequest = 5000;
+    private int timeBetweenAddrRequest = 300;
     private boolean firstTimeCalled = true;
     final Handler handler2 = new Handler();
     private final Runnable r = new Runnable() {
@@ -124,9 +124,18 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
         autoCompView.setOnItemClickListener(this);
         CheckEnableGPS();
         setUpMapIfNeeded();
+        hideKeyborad();
+
+        /*mMap.setOnMarkerClickListener(this);
+        placeMarkers();
+        hideKeyborad();
+        handler.postDelayed(getMapRunnable(), 0);*/
+
 
 
     }
+
+
 
 
     /** Called when the user clicks the MenuMap_ValidatePosition button */
@@ -334,7 +343,9 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
             startActivity(login);
         }
         CheckEnableGPS();
+/*
         placeMarkers();
+*/
     }
 
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
@@ -532,7 +543,9 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
             this.location.setProvider(nonNullLocationProvider);
             DataManager.setUserLocation(loc);
             LatLng LatLng = new LatLng(loc.getLatitude(), loc.getLongitude());
-            setCamera(LatLng);
+            if (firstTimeCalled){
+                setCamera(LatLng);
+            }
         }
     }
 

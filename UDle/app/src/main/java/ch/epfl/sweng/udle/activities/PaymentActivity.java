@@ -61,6 +61,29 @@ public class PaymentActivity extends SlideMenuActivity {
 
     public void payment_button_click(View view) {
 
+        AlertDialog.Builder adb = new AlertDialog.Builder(this);
+
+        adb.setTitle("Confirm the payment");
+
+        adb.setIcon(android.R.drawable.ic_menu_send);
+
+        adb.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                processPayment();
+            }
+        });
+
+        adb.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+
+                finish();
+            }
+        });
+        adb.show();
+    }
+
+    private void processPayment() {
+
         if(DataManager.getCustomerId() == null){
             Intent intent = new Intent(this,CreditCardActivity.class);
             intent.putExtra("from","payment");
@@ -81,8 +104,10 @@ public class PaymentActivity extends SlideMenuActivity {
                 public void done(Object o, ParseException e) {
                     if (e == null) {
                         Log.d("Main Activity", "Cloud Response: " + o.toString());
+                        Toast.makeText(getApplicationContext(),"Payment cancelled",Toast.LENGTH_SHORT).show();
                     }
                     if (o != null) {
+                        DataManager.createNewParseUserOrderInformations();
                         Intent intent =  new Intent(PaymentActivity.this, WaitingActivity.class);
                         startActivity(intent);
                     }

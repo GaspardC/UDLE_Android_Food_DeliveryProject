@@ -30,10 +30,6 @@
         android:theme="@style/MyMaterialTheme">
 
 
-        <service
-            android:name=".network.FetchAddressIntentService"
-            android:exported="false"/>
-
         <activity android:name=".activities.DispatchActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
