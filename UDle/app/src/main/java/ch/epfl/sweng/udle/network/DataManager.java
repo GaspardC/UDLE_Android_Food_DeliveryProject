@@ -105,6 +105,7 @@ public class DataManager {
 
         userOrderInformations.setUser(getUser());
         userOrderInformations.setParseDeliveringRestaurantName("No restaurant assigned");
+//        userOrderInformations.setDeliveringRestaurantId();
         userOrderInformations.setExpectedTime(-1);
         userOrderInformations.setOrderStatus(OrderStatus.WAITING.toString());
         userOrderInformations.setDeliveryGuyNumber("No number assigned");
@@ -117,6 +118,7 @@ public class DataManager {
         parseOrderElement.saveInBackground();
         userOrderInformations.setOrder(parseOrderElement);
         Orders.setActiveOrder(orderElement);
+
     }
 
 
@@ -133,6 +135,7 @@ public class DataManager {
 
         ParseUserOrderInformations userOrderInformations = getParseUserObjectWithId(objectId);
         userOrderInformations.setDeliveryGuyNumber(deliveryGuyNumber);
+        userOrderInformations.setDeliveringRestaurantId(user.getObjectId());
         userOrderInformations.setParseDeliveringRestaurantName(deliveringRestaurant);
         userOrderInformations.setExpectedTime(eta);
         userOrderInformations.setOrderStatus(OrderStatus.ENROUTE.toString());
@@ -474,26 +477,25 @@ public class DataManager {
         return getUser().getString("last4");
     }
 
-    public static ParseUserOrderInformations getParseUserObjectWithActiveOrder(OrderElement activeOrder) {
+    public static ParseUserOrderInformations getParseUserObjectWithActiveOrder() {
+        OrderElement activeOrder = Orders.getActiveOrder();
         return getParseUserObjectWithId(activeOrder.getUserOrderInformationsID());
     }
 
     public static String getRestaurantNameWithActiveOrder() {
-        OrderElement activeOrder = Orders.getActiveOrder();
-        ParseUserOrderInformations orderInformations = getParseUserObjectWithActiveOrder(activeOrder);
+        ParseUserOrderInformations orderInformations = getParseUserObjectWithActiveOrder();
         return orderInformations.getParseDeliveringRestaurant();
     }
 
     public static ParseUser getRestaurantUserWithActiveOrder() {
-        OrderElement activeOrder = Orders.getActiveOrder();
-        ParseUserOrderInformations orderInformations = getParseUserObjectWithActiveOrder(activeOrder);
+        ParseUserOrderInformations orderInformations = getParseUserObjectWithActiveOrder();
         String restaurantId = orderInformations.getString("restaurantId");
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("User");
+        ParseQuery<ParseUser> query = ParseUser.getQuery();
         query.whereEqualTo("objectId",restaurantId);
         ParseUser restaurantUser = null;
 
         try {
-         restaurantUser = (ParseUser) query.getFirst();
+         restaurantUser =  query.getFirst();
                 }
 
         catch (Exception e) {
@@ -505,11 +507,38 @@ public class DataManager {
 
     public static void setRestaurantMarkWithActiveOrder(int mark){
         ParseUser restaurantUser = getRestaurantUserWithActiveOrder();
-        restaurantUser.put("mark",mark);
-        restaurantUser.saveInBackground();
+
+        ParseRestaurantMark parseRestaurantMark = getParseRestaurantMark(restaurantUser);
+        int averageMark = parseRestaurantMark.getAverage();
+        int numberMark = parseRestaurantMark.getNumberMarks();
+        parseRestaurantMark.incrementMark();
+
+        int newNb = numberMark + 1;
+        int newMark = (averageMark/newNb) + (mark/newNb);
+
+        parseRestaurantMark.setAverage(newMark);
+        parseRestaurantMark.saveInBackground();
+
+
+        getParseUserObjectWithActiveOrder().setRated(true);
     }
 
+    private static ParseRestaurantMark getParseRestaurantMark(ParseUser restaurantUser) {
+        ParseRestaurantMark parseRestaurantMark;
 
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("ParseRestaurantMark");
+        query.whereEqualTo("RestaurantUser",restaurantUser.getObjectId());
+
+        try {
+            parseRestaurantMark = (ParseRestaurantMark) query.getFirst();
+        }
+
+        catch (Exception e) {
+            throw new IllegalStateException(e);
+        }
+
+        return parseRestaurantMark;
+    }
 
 
 }

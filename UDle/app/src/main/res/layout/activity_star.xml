@@ -37,7 +37,16 @@
         android:layout_width="@dimen/_100sdp"
         android:layout_height="@dimen/_100sdp"
         android:layout_below="@+id/ratingBar"
+        android:id="@+id/StarActivityimageBelow"
         android:layout_centerHorizontal="true"
         android:src="@drawable/logoburger"/>
+    <Button
+        android:layout_marginTop="@dimen/_30sdp"
+        android:layout_width="@dimen/_100sdp"
+        android:layout_height="wrap_content"
+        android:text="@string/Validate"
+        android:layout_below="@id/StarActivityimageBelow"
+        android:layout_centerHorizontal="true"
+        android:onClick="validateStar"/>
 
 </RelativeLayout>

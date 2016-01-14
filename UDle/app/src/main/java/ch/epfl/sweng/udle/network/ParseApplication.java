@@ -50,6 +50,7 @@ public class ParseApplication extends Application {
 
       //Initialize the parse Order server object
       ParseObject.registerSubclass(ParseUserOrderInformations.class);
+      ParseObject.registerSubclass(ParseRestaurantMark.class);
       Parse.initialize(this, "v22C8nu3xMqTVZUq9yeuOLD6xbTXqWpCM1XuyQ7U", "9SgG0yX869nVvDExV3PdTy9HVEwQzdLwjtVloHTp");
 
 

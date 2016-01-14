@@ -2,6 +2,7 @@ package ch.epfl.sweng.udle.activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.RatingBar;
 import android.widget.SeekBar;
 
@@ -26,9 +27,9 @@ public class StarActivity extends AppCompatActivity {
         });
     }
 
-    @Override
-    public  void onBackPressed(){
-        DataManager.setRestaurantMarkWithActiveOrder(mark);
-    }
 
+    public void validateStar(View view) {
+        DataManager.setRestaurantMarkWithActiveOrder(mark);
+
+    }
 }

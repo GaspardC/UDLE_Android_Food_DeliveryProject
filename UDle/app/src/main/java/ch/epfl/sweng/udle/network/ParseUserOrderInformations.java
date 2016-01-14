@@ -96,8 +96,8 @@ public class ParseUserOrderInformations extends ParseObject {
         this.saveInBackground();
     }
 
-    public void setDeliveringRestaurantId(){
-        this.put("restaurantId",getUser().getObjectId());
+    public void setDeliveringRestaurantId(String objectId){
+        this.put("restaurantId",objectId);
         this.saveInBackground();
     }
 
@@ -191,5 +191,14 @@ public class ParseUserOrderInformations extends ParseObject {
         }
         this.put("orderElementPointer", orderElement);
         this.saveInBackground();
+    }
+
+
+    public void setRated(boolean b) {
+        put("rated", b);
+        saveInBackground();
+    }
+    public boolean hasBeenRated(){
+        return getBoolean("rated");
     }
 }
