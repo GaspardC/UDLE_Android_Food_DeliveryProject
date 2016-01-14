@@ -29,6 +29,7 @@ import ch.epfl.sweng.udle.Food.Orders;
 public class DataManager {
 
 
+    public static ArrayList<ParseUser> nearbyRestaurants;
 
     /**
      *  Return current parse user
@@ -185,7 +186,9 @@ public class DataManager {
         ParseUser user = DataManager.getUser();
         ParseGeoPoint userLocation = user.getParseGeoPoint("Location");
         Boolean restaurantAvailable = false;
-        ArrayList<String> nearbyRestaurants = new ArrayList<>();
+        ArrayList<String> nearbyRestaurantsId = new ArrayList<>();
+        nearbyRestaurants = new ArrayList<>();
+
 
         //Start Query
         ParseQuery<ParseUser> query = ParseUser.getQuery();
@@ -201,12 +204,13 @@ public class DataManager {
                 double restaurantMaxDeliveryDistance = (double) ((Integer) restaurantUser.get("maxDeliveryDistanceKm"));
                 //Add to nearby restaurants list if they are within limits
                 if (distance <= restaurantMaxDeliveryDistance) {
-                    nearbyRestaurants.add(restaurantUser.getObjectId());
+                    nearbyRestaurantsId.add(restaurantUser.getObjectId());
+                    nearbyRestaurants.add(restaurantUser);
                     restaurantAvailable = true;
                 }
 
             }
-            user.put("ArrayOfNearRestaurant", nearbyRestaurants);
+            user.put("ArrayOfNearRestaurant", nearbyRestaurantsId);
             user.saveInBackground();
 
         } catch (ParseException e) {
@@ -487,6 +491,7 @@ public class DataManager {
         return orderInformations.getParseDeliveringRestaurant();
     }
 
+
     public static ParseUser getRestaurantUserWithActiveOrder() {
         ParseUserOrderInformations orderInformations = getParseUserObjectWithActiveOrder();
         String restaurantId = orderInformations.getString("restaurantId");
@@ -527,7 +532,7 @@ public class DataManager {
         ParseRestaurantMark parseRestaurantMark;
 
         ParseQuery<ParseObject> query = ParseQuery.getQuery("ParseRestaurantMark");
-        query.whereEqualTo("RestaurantUser",restaurantUser.getObjectId());
+        query.whereEqualTo("RestaurantUser", restaurantUser.getObjectId());
 
         try {
             parseRestaurantMark = (ParseRestaurantMark) query.getFirst();

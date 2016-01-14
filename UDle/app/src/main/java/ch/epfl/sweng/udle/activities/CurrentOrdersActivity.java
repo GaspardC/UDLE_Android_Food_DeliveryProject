@@ -45,7 +45,7 @@ public class CurrentOrdersActivity extends SlideMenuActivity {
     private ListView listView;
     private HashMap<Integer, OrderElement> objectIdHashMapForList; //HashMap between the index of order shown in the list view and the specific order.
     Handler handler; //The list of waiting and current Orders is refresh each 'delay' milliseconds.
-    final int delay = 30000; //30 seconds in milliseconds
+    final int delay = 60000; //60 seconds in milliseconds
     private ArrayList<OrderElement> waitingOrders = new ArrayList<>(); //Orders in the restaurant range that have no restaurant assigned to. Status of order: Waiting
     private ArrayList<OrderElement> currentOrders = new ArrayList<>(); //Orders that the restaurant already accept to deliverd. Status of order: EnRoute
     private ArrayList<OrderElement> deliveredOrders = new ArrayList<>();
@@ -57,6 +57,7 @@ public class CurrentOrdersActivity extends SlideMenuActivity {
     private int timeLeftForRefresh;
     private Handler handlerRefresh = new Handler();
     private Button refreshButton;
+    private boolean firstCreation = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +86,7 @@ public class CurrentOrdersActivity extends SlideMenuActivity {
             }
         };
         handler.postDelayed(getMapRunnable(), 0);
+
 
 
         setUpListView();
@@ -181,7 +183,11 @@ public class CurrentOrdersActivity extends SlideMenuActivity {
                     progress = new ProgressDialog(CurrentOrdersActivity.this);
                     progress.setTitle(getResources().getString(R.string.Loading));
                     progress.setMessage(getString(R.string.waitWhileLoading));
-                    progress.show();
+
+                    if(!firstCreation){
+                        progress.show();
+                    }
+                    firstCreation = false;
                 }
 
             }

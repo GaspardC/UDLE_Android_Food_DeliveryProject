@@ -2,6 +2,7 @@ package ch.epfl.sweng.udle.activities;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -11,17 +12,23 @@ import android.location.Criteria;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -33,8 +40,10 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.parse.FunctionCallback;
+import com.parse.Parse;
 import com.parse.ParseCloud;
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
@@ -98,6 +107,7 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
             }
         }
     };
+    private Dialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -142,9 +152,34 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
     public void goToDeliveryCommandDetail(OrderElement order, boolean isCurrent) {
         Orders.setActiveOrder(order);
 
+
         Intent intent = new Intent(this, RecapActivity.class);
         intent.putExtra("from", "Map");
         startActivity(intent);
+
+
+    }
+
+
+
+
+    protected void showCustomDialog() {
+
+        dialog = new Dialog(MapActivity.this,
+                android.R.style.Theme_Translucent);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+        dialog.setCancelable(true);
+        dialog.setContentView(R.layout.dialog);
+
+        /*etSearch = (EditText) dialog.findViewById(R.id.etsearch);
+        btnSearch = (Button) dialog.findViewById(R.id.btnsearch);
+        btnCancel = (Button) dialog.findViewById(R.id.btncancel);
+
+        btnSearch.setOnClickListener(this);
+        btnCancel.setOnClickListener(this);*/
+
+        dialog.show();
     }
 
     /**
@@ -357,6 +392,7 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
 
     /** Called when the user clicks the MenuMap_ValidatePosition button */
     public void goToMenuActivity(View view) {
+
         if (storeNearbyRestaurants()) {
             if (isLocationInitialised() && !getDeliveryAdress().equals("")) {
                 orderElement = new OrderElement();
@@ -364,8 +400,37 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
                 orderElement.setDeliveryAddress(getDeliveryAdress());
                 orderElement.setOrderedUserName(DataManager.getUserName());
                 Orders.setActiveOrder(orderElement);
-                Intent intent = new Intent(this, MainActivity.class);
-                startActivity(intent);
+                showCustomDialog();
+
+                String name;
+                ArrayList<ParseUser> nearbyRestaurants = DataManager.nearbyRestaurants;
+                int i = 0;
+                for (final ParseUser resto :nearbyRestaurants){
+
+                    /*new AsyncTask<Void, Void, Void>() {
+                        @Override
+                        protected Void doInBackground(Void... params) {
+//                                Looper.prepare();
+                            ParseFile image = resto.getImage();*/
+
+                    ParseFile pLogo = resto.getParseFile("RestaurantLogo");
+                    String urlLogo = pLogo.getUrl();
+                    ImageView logo = null;
+                    if(i == 0){
+                         logo = (ImageView) dialog.findViewById(R.id.imageLogo1);
+                    }
+                    if(i == 1){
+                        logo = (ImageView) dialog.findViewById(R.id.imageLogo2);
+                    }
+                    Glide.with(this).load(urlLogo)
+                            .centerCrop()
+                            .crossFade()
+                            .thumbnail(0.1f)
+                            .into(logo);
+                    i++;
+                }
+                /*Intent intent = new Intent(this, MainActivity.class);
+                startActivity(intent);*/
             } else {
                 Toast.makeText(this, R.string.incorrectLocation, Toast.LENGTH_SHORT).show();
             }
