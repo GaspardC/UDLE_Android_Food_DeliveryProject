@@ -75,7 +75,7 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
     private HashMap<Integer, OrderElement> objectIdHashMapForList; //HashMap between the index of order shown in the list view and the specific order.
     private HashMap<String, OrderElement> objectIdHashMapForMap; //HashMap between the index of order shown in the map and the specific order.
 
-    private int timeBetweenAddrRequest = 333;
+    private int timeBetweenAddrRequest = 5000;
     private boolean firstTimeCalled = true;
     final Handler handler2 = new Handler();
     private final Runnable r = new Runnable() {

@@ -107,5 +107,9 @@
     <string name="noCreditCardYet">You don\'t have any credit card yet</string>
     <string name="Validate">Validate</string>
     <string name="creditCard">Credit Card</string>
+    <string name="service_not_available">service not available</string>
+    <string name="invalid_lat_long_used">invalide lat long</string>
+    <string name="no_address_found">no address found</string>
+    <string name="address_found">adress found</string>
 
 </resources>
