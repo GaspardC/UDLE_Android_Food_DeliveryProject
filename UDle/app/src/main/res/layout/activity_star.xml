@@ -10,8 +10,8 @@
     tools:context="ch.epfl.sweng.udle.activities.StarActivity">
 
     <ImageView
-        android:layout_width="@dimen/_100sdp"
-        android:layout_height="@dimen/_100sdp"
+        android:layout_width="@dimen/_80sdp"
+        android:layout_height="@dimen/_80sdp"
         android:src="@drawable/logoburger"
         android:layout_marginBottom="@dimen/_30sdp"
         android:layout_centerHorizontal="true"
@@ -34,8 +34,8 @@
         />
     <ImageView
         android:layout_marginTop="@dimen/_30sdp"
-        android:layout_width="@dimen/_100sdp"
-        android:layout_height="@dimen/_100sdp"
+        android:layout_width="@dimen/_80sdp"
+        android:layout_height="@dimen/_80sdp"
         android:layout_below="@+id/ratingBar"
         android:id="@+id/StarActivityimageBelow"
         android:layout_centerHorizontal="true"

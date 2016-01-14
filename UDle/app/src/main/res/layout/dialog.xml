@@ -5,6 +5,7 @@
     android:background="@drawable/bgdialog"
     android:orientation="vertical" >
 
+
     <TextView
         android:id="@+id/tv"
         android:layout_width="wrap_content"
@@ -15,7 +16,15 @@
         android:layout_marginBottom="@dimen/_10sdp"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
-    <ImageView
+    <ListView
+        android:id="@+id/listLogo"
+        android:layout_width="@dimen/_100sdp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:scrollIndicators="none">
+
+    </ListView>
+    <!--<ImageView
         android:id="@+id/imageLogo1"
         android:layout_width="@dimen/_50sdp"
         android:layout_height="@dimen/_50sdp"
@@ -31,8 +40,7 @@
         android:layout_height="@dimen/_50sdp"
         android:layout_gravity="center"
         android:src="@drawable/logoburger"
-        android:text=" Search " />
-
+        android:text=" Search " />-->
     <ProgressBar
         android:id="@+id/progressBar1"
         style="@android:style/Widget.ProgressBar.Small"

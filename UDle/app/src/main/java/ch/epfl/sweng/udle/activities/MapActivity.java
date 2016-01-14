@@ -26,6 +26,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -404,31 +405,15 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
 
                 String name;
                 ArrayList<ParseUser> nearbyRestaurants = DataManager.nearbyRestaurants;
-                int i = 0;
+                ArrayList<String> urlLogos = new ArrayList<>();
                 for (final ParseUser resto :nearbyRestaurants){
-
-                    /*new AsyncTask<Void, Void, Void>() {
-                        @Override
-                        protected Void doInBackground(Void... params) {
-//                                Looper.prepare();
-                            ParseFile image = resto.getImage();*/
 
                     ParseFile pLogo = resto.getParseFile("RestaurantLogo");
                     String urlLogo = pLogo.getUrl();
-                    ImageView logo = null;
-                    if(i == 0){
-                         logo = (ImageView) dialog.findViewById(R.id.imageLogo1);
-                    }
-                    if(i == 1){
-                        logo = (ImageView) dialog.findViewById(R.id.imageLogo2);
-                    }
-                    Glide.with(this).load(urlLogo)
-                            .centerCrop()
-                            .crossFade()
-                            .thumbnail(0.1f)
-                            .into(logo);
-                    i++;
+                    urlLogos.add(urlLogo);
                 }
+                ListView listView = (ListView) dialog.findViewById(R.id.listLogo);
+                listView.setAdapter(new ImageListAdapter(MapActivity.this, urlLogos));
                 /*Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);*/
             } else {
