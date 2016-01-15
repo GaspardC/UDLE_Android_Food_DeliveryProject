@@ -424,6 +424,11 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
         }
     }
 
+    public void fasterButtonClick(View view) {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+    }
+
     /**
      * Sets up the map if it is possible to do so (i.e., the Google Play services APK is correctly
      * installed) and the map has not already been instantiated.. This will ensure that we only ever
@@ -709,4 +714,6 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
         handler.removeCallbacksAndMessages(null);
         super.onPause();
     }
+
+
 }
