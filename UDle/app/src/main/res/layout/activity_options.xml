@@ -36,7 +36,7 @@
         android:layout_height="0dp"
         android:text="Next"
         android:id="@+id/optionNext"
-        android:layout_weight="20"
+        android:layout_weight="10"
         android:textAllCaps="false"
         android:textColor="#FFFFFF"
         android:textSize="25sp"

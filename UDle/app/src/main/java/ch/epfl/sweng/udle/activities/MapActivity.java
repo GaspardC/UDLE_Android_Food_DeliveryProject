@@ -565,7 +565,7 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
                     dlgAlert.create().cancel();
                     dlgAlertcountCreated = false;
                 }
-                Toast.makeText(this, R.string.locationEnable, Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, R.string.locationEnable, Toast.LENGTH_SHORT).show();
             } else {
                 if (!dlgAlertcountCreated) {
                     dlgAlertcountCreated = true;

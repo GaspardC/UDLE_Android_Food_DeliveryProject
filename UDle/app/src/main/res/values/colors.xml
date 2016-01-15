@@ -2,8 +2,10 @@
 <resources>
     <!--<color name="ColorPrimary">#e62117</color>-->
     <color name="ColorPrimary">#Fc363b</color>
-
+    <color name="ColorPrimaryDark">#Fc363b</color>
+<!--
     <color name="ColorPrimaryDark">#c31c13</color>
+-->
     <color name="tabsScrollColor">#f7c460</color>
     <color name="validateColor">#81F781</color>
     <color name="colorHorizontalTab">#fd5244</color>

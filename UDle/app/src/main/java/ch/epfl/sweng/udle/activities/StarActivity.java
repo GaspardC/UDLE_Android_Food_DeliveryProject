@@ -45,6 +45,7 @@ public class StarActivity extends AppCompatActivity {
 
     public void validateStar(View view) {
         DataManager.setRestaurantMarkWithActiveOrder(mark);
+        finish();
 
     }
 }
