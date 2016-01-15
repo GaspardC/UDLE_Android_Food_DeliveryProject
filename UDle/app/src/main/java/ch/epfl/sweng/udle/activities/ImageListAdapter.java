@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 
 import com.bumptech.glide.Glide;
 
@@ -22,26 +23,38 @@ public class ImageListAdapter extends ArrayAdapter {
     private LayoutInflater inflater;
 
     private ArrayList<String> imageUrls = new ArrayList<>();
+    private ArrayList<Number> marksRestos = new ArrayList<>();
 
-    public ImageListAdapter(Context context, ArrayList<String> imageUrls) {
-        super(context, R.layout.listview_item_image, imageUrls);
+
+    public ImageListAdapter(Context context, ArrayList<String> imageUrls, ArrayList<Number> marksRestos) {
+        super(context, R.layout.listview_item_image_logo_restaurant, imageUrls);
 
         this.context = context;
         this.imageUrls = imageUrls;
+        this.marksRestos = marksRestos;
 
         inflater = LayoutInflater.from(context);
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+        ImageView imageView = null;
+        RatingBar ratingBar = null;
+
         if (null == convertView) {
-            convertView = inflater.inflate(R.layout.listview_item_image, parent, false);
+            convertView = inflater.inflate(R.layout.listview_item_image_logo_restaurant, parent, false);
+
         }
+        imageView = (ImageView) convertView.findViewById(R.id.logoImageListDialog);
+        ratingBar = (RatingBar) convertView.findViewById(R.id.ratingBarDialog);
+
+        ratingBar.setRating( marksRestos.get(position).floatValue());
+
 
         Glide
                 .with(context)
                 .load(imageUrls.get(position))
-                .into((ImageView) convertView);
+                .into(imageView);
 
         return convertView;
     }

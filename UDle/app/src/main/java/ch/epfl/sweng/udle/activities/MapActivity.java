@@ -406,14 +406,17 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
                 String name;
                 ArrayList<ParseUser> nearbyRestaurants = DataManager.nearbyRestaurants;
                 ArrayList<String> urlLogos = new ArrayList<>();
+                ArrayList<Number> marksRestos = new ArrayList<>();
+
                 for (final ParseUser resto :nearbyRestaurants){
 
                     ParseFile pLogo = resto.getParseFile("RestaurantLogo");
                     String urlLogo = pLogo.getUrl();
                     urlLogos.add(urlLogo);
+                    marksRestos.add(DataManager.getAverageMarkRestaurant(resto));
                 }
                 ListView listView = (ListView) dialog.findViewById(R.id.listLogo);
-                listView.setAdapter(new ImageListAdapter(MapActivity.this, urlLogos));
+                listView.setAdapter(new ImageListAdapter(MapActivity.this, urlLogos,marksRestos));
                 /*Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);*/
             } else {

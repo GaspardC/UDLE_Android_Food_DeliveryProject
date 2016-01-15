@@ -528,7 +528,7 @@ public class DataManager {
         getParseUserObjectWithActiveOrder().setRated(true);
     }
 
-    private static ParseRestaurantMark getParseRestaurantMark(ParseUser restaurantUser) {
+    public static ParseRestaurantMark getParseRestaurantMark(ParseUser restaurantUser) {
         ParseRestaurantMark parseRestaurantMark;
 
         ParseQuery<ParseObject> query = ParseQuery.getQuery("ParseRestaurantMark");
@@ -544,6 +544,12 @@ public class DataManager {
 
         return parseRestaurantMark;
     }
+
+    public static int getAverageMarkRestaurant(ParseUser restaurantUser){
+        return getParseRestaurantMark(restaurantUser).getInt("mark");
+    }
+
+
 
 
 }
