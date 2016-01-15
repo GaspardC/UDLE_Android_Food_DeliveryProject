@@ -104,6 +104,8 @@ public class PaymentActivity extends SlideMenuActivity {
                 public void done(Object o, ParseException e) {
                     if (e == null) {
                         Log.d("Main Activity", "Cloud Response: " + o.toString());
+                    }
+                    else{
                         Toast.makeText(getApplicationContext(),"Payment cancelled",Toast.LENGTH_SHORT).show();
                     }
                     if (o != null) {
