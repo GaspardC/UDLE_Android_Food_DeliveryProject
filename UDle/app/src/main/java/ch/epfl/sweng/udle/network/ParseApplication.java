@@ -22,6 +22,8 @@
 package ch.epfl.sweng.udle.network;
 
 import android.app.Application;
+import android.content.Context;
+import android.support.multidex.MultiDex;
 
 import com.parse.Parse;
 import com.parse.ParseFacebookUtils;
@@ -48,10 +50,16 @@ public class ParseApplication extends Application {
 
       //Initialize the parse Order server object
       ParseObject.registerSubclass(ParseUserOrderInformations.class);
+      ParseObject.registerSubclass(ParseRestaurantMark.class);
       Parse.initialize(this, "v22C8nu3xMqTVZUq9yeuOLD6xbTXqWpCM1XuyQ7U", "9SgG0yX869nVvDExV3PdTy9HVEwQzdLwjtVloHTp");
 
 
       ParseFacebookUtils.initialize(getApplicationContext());
 
   }
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this);
+    }
 }

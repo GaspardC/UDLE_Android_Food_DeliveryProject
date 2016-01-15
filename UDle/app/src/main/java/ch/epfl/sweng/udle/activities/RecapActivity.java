@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -46,6 +47,7 @@ public class RecapActivity extends SlideMenuActivity {
     private String from = ""; //state if the activity has been launch directly by MapActivity default no (by MenuActivity)
     private LinearLayout expected_time_layout;
     private LinearLayout status_layout;
+    private Button confirmButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +59,7 @@ public class RecapActivity extends SlideMenuActivity {
         priceTextView = (TextView) findViewById(R.id.RecapActivity_totalCost);
         expected_time_layout = (LinearLayout) findViewById(R.id.RecapActivity_expected_time_layout);
         status_layout = (LinearLayout) findViewById(R.id.RecapActivity_status_layout);
-        Button confirmButton = (Button) findViewById(R.id.RecapActivity_recapConfirm);
+        confirmButton = (Button) findViewById(R.id.RecapActivity_recapConfirm);
 
         list = new ArrayList<>();
 
@@ -68,36 +70,38 @@ public class RecapActivity extends SlideMenuActivity {
         listView = (ListView) findViewById(R.id.RecapActivity_recapListView);
         listView.setAdapter(adapter);
         update();
-        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> arg0, View arg1, final int pos, long id) {
-                dlgAlert.setMessage(getResources().getString(R.string.removeMessage_2) + ((HashMap<String, String>) listView.getAdapter().getItem(pos)).get("elem") + "\t?");
-                dlgAlert.setTitle(R.string.removeMessage_1);
-                dlgAlert.setPositiveButton("Ok",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                deleteElement(pos, false);
-                                dlgAlert.create().dismiss();
-                            }
-                        });
-                dlgAlert.setNeutralButton("Delete All",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                deleteElement(pos, true);
-                                dlgAlert.create().dismiss();
-                            }
-                        });
-                dlgAlert.setNegativeButton("No",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                dlgAlert.create().dismiss();
-                            }
-                        });
-                dlgAlert.setCancelable(true);
-                dlgAlert.create().show();
-                return true;
-            }
-        });
+        if(isFromCurrent()) {
+            listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                @Override
+                public boolean onItemLongClick(AdapterView<?> arg0, View arg1, final int pos, long id) {
+                    dlgAlert.setMessage(getResources().getString(R.string.removeMessage_2) + ((HashMap<String, String>) listView.getAdapter().getItem(pos)).get("elem") + "\t?");
+                    dlgAlert.setTitle(R.string.removeMessage_1);
+                    dlgAlert.setPositiveButton("Ok",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    deleteElement(pos, false);
+                                    dlgAlert.create().dismiss();
+                                }
+                            });
+                    dlgAlert.setNeutralButton("Delete All",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    deleteElement(pos, true);
+                                    dlgAlert.create().dismiss();
+                                }
+                            });
+                    dlgAlert.setNegativeButton("No",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dlgAlert.create().dismiss();
+                                }
+                            });
+                    dlgAlert.setCancelable(true);
+                    dlgAlert.create().show();
+                    return true;
+                }
+            });
+        }
 
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
@@ -126,6 +130,7 @@ public class RecapActivity extends SlideMenuActivity {
                     status_layout.setVisibility(View.VISIBLE);
                     TextView textStatus = (TextView) findViewById(R.id.RecapActivity_status);
                     textStatus.setText(R.string.Delievered);
+                    checkRating();
                 }
             }
         }
@@ -136,6 +141,33 @@ public class RecapActivity extends SlideMenuActivity {
         }
     }
 
+    private void checkRating() {
+
+        ParseUserOrderInformations orderInformations = DataManager.getParseUserObjectWithActiveOrder();
+        Date creationDate = orderInformations.getCreatedAt();
+        Date d = new Date();
+        Date currentDateMinus24h = new Date(d.getTime() - 24 * 3600 * 1000); // in milisec
+        int diffDate = currentDateMinus24h.compareTo(creationDate);
+        if(!orderInformations.hasBeenRated() && diffDate < 0 ){
+            Intent intent = new Intent(RecapActivity.this,StarActivity.class);
+            startActivity(intent);
+        }
+    }
+
+    private boolean isFromCurrent(){
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
+        if (bundle != null){
+            from = bundle.getString("from");
+            if (from != null) {
+                if(from.equals("Delivered") || from.equals("Current")){
+                    return true;
+                }
+            }
+        }
+        return false;
+
+    }
 
     @Override
     public void onBackPressed(){

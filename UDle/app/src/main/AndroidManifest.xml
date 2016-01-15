@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="ch.epfl.sweng.udle" >
+    package="ch.epfl.sweng.udle">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -27,47 +27,45 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/MyMaterialTheme" >
-        <activity android:name=".activities.DispatchActivity" >
+        android:theme="@style/MyMaterialTheme">
+
+
+        <activity android:name=".activities.DispatchActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".activities.MapActivity"
+            android:theme="@style/SlideMenuTheme" />
+        <activity
+            android:name=".activities.RecapActivity"
+            android:theme="@style/SlideMenuTheme" />
+        <activity
+            android:name=".activities.WaitingActivity"
+            android:theme="@style/SlideMenuTheme" />
+        <activity
+            android:name=".activities.PaymentActivity"
+            android:theme="@style/SlideMenuTheme" />
+        <activity
+            android:name=".activities.DeliveryActivity"
+            android:theme="@style/SlideMenuTheme" />
+        <activity
+            android:name=".activities.DeliveryRestaurantMapActivity"
+            android:theme="@style/SlideMenuTheme" />
+        <activity
+            android:name=".activities.CurrentOrdersActivity"
+            android:theme="@style/SlideMenuTheme" />
+        <activity android:name=".activities.DeliverCommandDetailActivity" />
+        <activity
+            android:name=".activities.HelpActivity.HelpActivity"
+            android:theme="@style/SlideMenuTheme" />
 
-        <activity android:name=".activities.MapActivity"
-            android:theme="@style/SlideMenuTheme">
-        </activity>
-        <activity android:name=".activities.RecapActivity"
-            android:theme="@style/SlideMenuTheme">
-
-        </activity>
-        <activity android:name=".activities.WaitingActivity"
-            android:theme="@style/SlideMenuTheme">
-        </activity>
-        <activity android:name=".activities.PaymentActivity"
-            android:theme="@style/SlideMenuTheme">
-
-        </activity>
-        <activity android:name=".activities.DeliveryActivity"
-            android:theme="@style/SlideMenuTheme">
-        </activity>
-        <activity android:name=".activities.DeliveryRestaurantMapActivity"
-            android:theme="@style/SlideMenuTheme">
-        </activity>
-        <activity android:name=".activities.CurrentOrdersActivity"
-            android:theme="@style/SlideMenuTheme">
-        </activity>
-        <activity android:name=".activities.DeliverCommandDetailActivity" >
-        </activity>
-        <activity android:name=".activities.HelpActivity.HelpActivity"
-            android:theme="@style/SlideMenuTheme">
-        </activity>
         <application
-            android:allowBackup="true"
-            android:name=".android.ParseApplication" >
-        </application>
+            android:name=".android.ParseApplication"
+            android:allowBackup="true" />
 
         <meta-data
             android:name="com.google.android.gms.version"
@@ -80,7 +78,7 @@
 
         <receiver
             android:name="com.parse.ParsePushBroadcastReceiver"
-            android:exported="false" >
+            android:exported="false">
             <intent-filter>
                 <action android:name="com.parse.push.intent.RECEIVE" />
                 <action android:name="com.parse.push.intent.DELETE" />
@@ -89,7 +87,7 @@
         </receiver>
         <receiver
             android:name="com.parse.GcmBroadcastReceiver"
-            android:permission="com.google.android.c2dm.permission.SEND" >
+            android:permission="com.google.android.c2dm.permission.SEND">
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
                 <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
@@ -97,21 +95,19 @@
                 <category android:name="ch.epfl.sweng.udle" />
             </intent-filter>
         </receiver>
+
         <activity
             android:name=".activities.ProfileActivity"
             android:label="@string/app_name"
             android:launchMode="singleTop"
-            android:theme="@style/SlideMenuTheme">
-
-        </activity>
-        <activity android:name=".activities.MenuOptionsDrinks.MainActivity"
-            android:theme="@style/SlideMenuTheme">
-        </activity>
-
+            android:theme="@style/SlideMenuTheme" />
+        <activity
+            android:name=".activities.MenuOptionsDrinks.MainActivity"
+            android:theme="@style/SlideMenuTheme" />
         <activity
             android:name="com.parse.ui.ParseLoginActivity"
             android:label="@string/app_name"
-            android:launchMode="singleTop" >
+            android:launchMode="singleTop">
             <meta-data
                 android:name="com.parse.ui.ParseLoginActivity.PARSE_LOGIN_ENABLED"
                 android:value="true" />
@@ -124,9 +120,11 @@
             <meta-data
                 android:name="com.parse.ui.ParseLoginActivity.FACEBOOK_LOGIN_PERMISSIONS"
                 android:value="@array/facebook_permissions" />
-<!--            <meta-data
+            <!--
+                <meta-data
                 android:name="com.parse.ui.ParseLoginActivity.TWITTER_LOGIN_ENABLED"
-                android:value="true" />-->
+                android:value="true" />
+            -->
         </activity>
         <activity
             android:name="com.facebook.FacebookActivity"
@@ -146,6 +144,12 @@
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
+
+        <activity android:name=".activities.AboutActivity" />
+        <activity android:name=".activities.WebViewActivity" />
+        <activity android:name=".activities.CreditCardActivity" />
+        <activity android:name=".activities.EnterNumbersCreditCard" />
+        <activity android:name=".activities.StarActivity"></activity>
     </application>
 
 </manifest>
