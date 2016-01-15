@@ -145,7 +145,16 @@
         android:layout_height="0dp"
         android:text="@string/acceptCommand"
         android:layout_weight="10"
-        android:onClick="acceptCommand" />
+        android:onClick="acceptCommand"
+        android:textAllCaps="false"
+        android:textColor="#FFFFFF"
+        android:textSize="25sp"
+
+        android:background="@drawable/button_shape2"
+        android:shadowColor="#A8A8A8"
+        android:shadowDx="0"
+        android:shadowDy="0"
+        android:shadowRadius="5"/>
     <Button
         android:id="@+id/DeliverCommandDetail_commandDelivered"
         android:layout_width="fill_parent"
@@ -153,6 +162,16 @@
         android:text="@string/commandDelivered"
         android:layout_weight="10"
         android:onClick="commandDelivered"
-        android:visibility="gone"/>
+        android:visibility="gone"
+
+        android:textAllCaps="false"
+        android:textColor="#FFFFFF"
+        android:textSize="25sp"
+
+        android:background="@drawable/button_shape2"
+        android:shadowColor="#A8A8A8"
+        android:shadowDx="0"
+        android:shadowDy="0"
+        android:shadowRadius="5"/>
 
 </LinearLayout>

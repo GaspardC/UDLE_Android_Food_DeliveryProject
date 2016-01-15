@@ -416,7 +416,7 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
                     marksRestos.add(DataManager.getAverageMarkRestaurant(resto));
                 }
                 ListView listView = (ListView) dialog.findViewById(R.id.listLogo);
-                listView.setAdapter(new ImageListAdapter(MapActivity.this, urlLogos,marksRestos));
+                listView.setAdapter(new ImageListAdapter(MapActivity.this, urlLogos,marksRestos,nearbyRestaurants));
                 /*Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);*/
             } else {

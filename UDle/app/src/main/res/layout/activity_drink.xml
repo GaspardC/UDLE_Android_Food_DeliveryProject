@@ -38,7 +38,9 @@
         android:id="@+id/coca"
         android:layout_below="@+id/drinkTitle"
         android:layout_alignParentLeft="true"
-        android:layout_marginTop="44dp" />
+        android:layout_marginTop="44dp"
+
+        />
     <Button
         android:layout_width="30dp"
         android:layout_height="30dp"
@@ -47,7 +49,15 @@
         android:id="@+id/cocaMinus"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/drinkTitle"
-        android:layout_marginTop="44dp"/>
+        android:layout_marginTop="44dp"
+        android:textAllCaps="false"
+        android:textColor="#FFFFFF"
+
+        android:background="@drawable/button_shape2"
+        android:shadowColor="#A8A8A8"
+        android:shadowDx="0"
+        android:shadowDy="0"
+        android:shadowRadius="5"/>
     <TextView
         android:id="@+id/cocaNbr"
         android:layout_width="30dp"
@@ -63,7 +73,15 @@
         android:text="+"
         android:id="@+id/cocaPlus"
         android:layout_alignBottom="@+id/cocaMinus"
-        android:layout_toRightOf="@id/cocaNbr" />
+        android:layout_toRightOf="@id/cocaNbr"
+        android:textAllCaps="false"
+        android:textColor="#FFFFFF"
+
+        android:background="@drawable/button_shape2"
+        android:shadowColor="#A8A8A8"
+        android:shadowDx="0"
+        android:shadowDy="0"
+        android:shadowRadius="5"/>
     <TextView
         android:id="@+id/cocaTotal"
         android:layout_width="wrap_content"

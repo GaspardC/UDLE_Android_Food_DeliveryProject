@@ -47,7 +47,15 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:text="-"
-                android:textSize="10dp" />
+                android:textSize="20sp"
+                android:textAllCaps="false"
+                android:textColor="#FFFFFF"
+
+                android:background="@drawable/button_shape2"
+                android:shadowColor="#A8A8A8"
+                android:shadowDx="0"
+                android:shadowDy="0"
+                android:shadowRadius="5"/>
 
             <TextView
                 android:id="@+id/MenuActivity_KebabNbr"
@@ -63,7 +71,15 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:text="+"
-                android:textSize="10dp" />
+                android:textSize="20sp"
+                android:textAllCaps="false"
+                android:textColor="#FFFFFF"
+
+                android:background="@drawable/button_shape2"
+                android:shadowColor="#A8A8A8"
+                android:shadowDx="0"
+                android:shadowDy="0"
+                android:shadowRadius="5"/>
 
         </LinearLayout>
 
@@ -108,7 +124,15 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:text="-"
-                android:textSize="10dp" />
+                android:textAllCaps="false"
+                android:textColor="#FFFFFF"
+                android:textSize="20sp"
+
+                android:background="@drawable/button_shape2"
+                android:shadowColor="#A8A8A8"
+                android:shadowDx="0"
+                android:shadowDy="0"
+                android:shadowRadius="5"/>
 
             <TextView
                 android:id="@+id/MenuActivity_BurgerNbr"
@@ -124,7 +148,15 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:text="+"
-                android:textSize="10dp" />
+                android:textAllCaps="false"
+                android:textColor="#FFFFFF"
+                android:textSize="20sp"
+
+                android:background="@drawable/button_shape2"
+                android:shadowColor="#A8A8A8"
+                android:shadowDx="0"
+                android:shadowDy="0"
+                android:shadowRadius="5"/>
 
         </LinearLayout>
 
@@ -138,6 +170,17 @@
         android:layout_height="0dp"
         android:text="@string/Next"
         android:layout_weight="10"
+        android:textAllCaps="false"
+        android:textColor="#FFFFFF"
+        android:textSize="25sp"
+
+        android:background="@drawable/button_shape2"
+        android:shadowColor="#A8A8A8"
+        android:shadowDx="0"
+        android:shadowDy="0"
+        android:shadowRadius="5"
+
+        android:layout_margin="@dimen/_3sdp"
         />
 
 
