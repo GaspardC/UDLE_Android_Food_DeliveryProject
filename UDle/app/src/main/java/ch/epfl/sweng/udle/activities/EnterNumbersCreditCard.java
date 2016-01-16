@@ -134,12 +134,13 @@ public class EnterNumbersCreditCard extends SlideMenuActivity {
 
     @Override
     public void onBackPressed(){
-        if (directPayment){
-            Intent intent = new Intent(this,EnterNumbersCreditCard.class);
-            startActivity(intent);
+        if (!directPayment){
+            super.onBackPressed();
+
         }
         else{
-            super.onBackPressed();
+            Intent intent = new Intent(this,PaymentActivity.class);
+            startActivity(intent);
         }
     }
 }

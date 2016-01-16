@@ -31,14 +31,21 @@ public class Options_ExpandableListAdapter extends BaseExpandableListAdapter {
     @Override
     public int getGroupCount() {
 
-        int nbrMenus = Orders.getActiveOrder().getOrder().size();
+        if (Orders.getActiveOrder() != null) {
 
-        if (nbrMenus != nbrMenusToDisplay){ //If a menu was added/removed, need to 'refresh' the options list
-            nbrMenusToDisplay = nbrMenus;
-            this.notifyDataSetChanged();
+            int nbrMenus = Orders.getActiveOrder().getOrder().size();
+
+            if (nbrMenus != nbrMenusToDisplay) { //If a menu was added/removed, need to 'refresh' the options list
+                nbrMenusToDisplay = nbrMenus;
+                this.notifyDataSetChanged();
+            }
+        }
+        else {
+            nbrMenusToDisplay = 0;
         }
 
-        return nbrMenusToDisplay;
+            return nbrMenusToDisplay;
+
     }
 
 

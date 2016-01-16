@@ -1,5 +1,6 @@
 package ch.epfl.sweng.udle.activities.MenuOptionsDrinks;
 
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.widget.Toast;
 import ch.epfl.sweng.udle.Food.Orders;
 import ch.epfl.sweng.udle.HorizontalSlideLibrary.SlidingTabLayout;
 import ch.epfl.sweng.udle.R;
+import ch.epfl.sweng.udle.activities.MapActivity;
 import ch.epfl.sweng.udle.activities.SlideMenu.SlideMenuActivity;
 
 
@@ -114,8 +116,10 @@ public class MainActivity extends SlideMenuActivity {
      */
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
         Orders.setActiveOrder(null);
+        super.onBackPressed();
+        /*Intent intent = new Intent(this, MapActivity.class);
+        startActivity(intent);*/
     }
 
 

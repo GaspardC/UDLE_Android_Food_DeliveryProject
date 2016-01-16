@@ -158,7 +158,7 @@ public class ParseLoginFragment extends ParseLoginFragmentBase {
     parseLogin.setVisibility(View.VISIBLE);
 
     if (config.isParseLoginEmailAsUsername()) {
-      usernameField.setHint(R.string.com_parse_ui_email_input_hint);
+      usernameField.setHint(R.string.com_parse_ui_username_input_hint);
       usernameField.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
     }
 

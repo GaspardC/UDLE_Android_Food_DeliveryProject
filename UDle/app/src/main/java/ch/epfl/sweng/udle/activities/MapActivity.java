@@ -715,8 +715,10 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
     @Override
     protected void onPause() {
         handler.removeCallbacksAndMessages(null);
+        if (dialog!= null){
+            dialog.dismiss();
+        }
         super.onPause();
     }
-
 
 }
