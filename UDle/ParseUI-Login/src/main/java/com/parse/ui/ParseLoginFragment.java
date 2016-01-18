@@ -285,9 +285,9 @@ public class ParseLoginFragment extends ParseLoginFragmentBase {
                     @Override
                     public void done(ParseException e) {
                       if (e != null) {
-                        debugLog(getString(
+                        /*debugLog(getString(
                                 R.string.com_parse_ui_login_warning_facebook_login_user_update_failed) +
-                                e.toString());
+                                e.toString());*/
                       }
                       loginSuccess();
                     }
