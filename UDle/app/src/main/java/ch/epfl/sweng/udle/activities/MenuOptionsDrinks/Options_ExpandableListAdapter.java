@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
@@ -19,11 +20,13 @@ import ch.epfl.sweng.udle.R;
  */
 public class Options_ExpandableListAdapter extends BaseExpandableListAdapter {
 
+    private final TextView infoTextView;
     LayoutInflater inflater;
     int nbrMenusToDisplay = 0;
 
-    public Options_ExpandableListAdapter(LayoutInflater context){
+    public Options_ExpandableListAdapter(LayoutInflater context, TextView infoTextView){
         this.inflater = context;
+        this.infoTextView = infoTextView;
     }
 
 
@@ -31,21 +34,14 @@ public class Options_ExpandableListAdapter extends BaseExpandableListAdapter {
     @Override
     public int getGroupCount() {
 
-        if (Orders.getActiveOrder() != null) {
+        int nbrMenus = Orders.getActiveOrder().getOrder().size();
 
-            int nbrMenus = Orders.getActiveOrder().getOrder().size();
-
-            if (nbrMenus != nbrMenusToDisplay) { //If a menu was added/removed, need to 'refresh' the options list
-                nbrMenusToDisplay = nbrMenus;
-                this.notifyDataSetChanged();
-            }
-        }
-        else {
-            nbrMenusToDisplay = 0;
+        if (nbrMenus != nbrMenusToDisplay){ //If a menu was added/removed, need to 'refresh' the options list
+            nbrMenusToDisplay = nbrMenus;
+            this.notifyDataSetChanged();
         }
 
-            return nbrMenusToDisplay;
-
+        return nbrMenusToDisplay;
     }
 
 
@@ -75,6 +71,8 @@ public class Options_ExpandableListAdapter extends BaseExpandableListAdapter {
         if (convertView == null){
             convertView = inflater.inflate(R.layout.activity_options_menu_title, parent, false);
         }
+        Button plusButton = (Button) convertView.findViewById(R.id.plusButtonOptionsList);
+        plusButton.setFocusable(false);
         TextView menuTitle = (TextView) convertView.findViewById(R.id.OptionsFragment_MenuTitle);
         menuTitle.setText(groupTitle);
         return convertView;
@@ -104,6 +102,7 @@ public class Options_ExpandableListAdapter extends BaseExpandableListAdapter {
         optionTitleTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                infoTextView.setVisibility(View.GONE);
                 ArrayList<Menu> menu = Orders.getActiveOrder().getOrder();
                 if (optionTitleTextView.isChecked()) {
                     menu.get(groupPosition).addToOptions(OptionsTypes.values()[childPosition]);

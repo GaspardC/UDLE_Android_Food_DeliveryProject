@@ -111,5 +111,6 @@
     <string name="invalid_lat_long_used">invalide lat long</string>
     <string name="no_address_found">no address found</string>
     <string name="address_found">adress found</string>
+    <string name="clickOnYourMeal">Click on your meal to agrement it!</string>
 
 </resources>
