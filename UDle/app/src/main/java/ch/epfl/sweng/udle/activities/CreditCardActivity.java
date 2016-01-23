@@ -42,7 +42,7 @@ public class CreditCardActivity extends SlideMenuActivity {
 
         String customerId = DataManager.getCustomerId();
         if(customerId == null){
-            infoCreditCard.setText("No credit card added");
+            infoCreditCard.setText(R.string.noCreditCardAdded);
             return;
         }
         String last4 = DataManager.getLast4();
