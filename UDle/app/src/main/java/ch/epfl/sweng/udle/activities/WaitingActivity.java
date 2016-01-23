@@ -65,7 +65,7 @@ public class WaitingActivity extends SlideMenuActivity {
     private void stopAnimation(ImageView image) {
 
         image.setAnimation(null);
-        image.setImageResource(R.drawable.rainbowburger);
+        image.setImageResource(R.drawable.fusee_burger);
 
 /*        //go to next activity : current Orders
         Intent intent =  new Intent(this, CurrentOrdersActivity.class);

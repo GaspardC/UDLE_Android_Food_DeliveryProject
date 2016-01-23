@@ -2,6 +2,7 @@ package ch.epfl.sweng.udle.activities;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -11,26 +12,39 @@ import android.location.Criteria;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.parse.FunctionCallback;
+import com.parse.Parse;
+import com.parse.ParseCloud;
+import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
@@ -71,7 +85,7 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
     private HashMap<Integer, OrderElement> objectIdHashMapForList; //HashMap between the index of order shown in the list view and the specific order.
     private HashMap<String, OrderElement> objectIdHashMapForMap; //HashMap between the index of order shown in the map and the specific order.
 
-    private int timeBetweenAddrRequest = 333;
+    private int timeBetweenAddrRequest = 300;
     private boolean firstTimeCalled = true;
     final Handler handler2 = new Handler();
     private final Runnable r = new Runnable() {
@@ -94,12 +108,22 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
             }
         }
     };
+    private Dialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
 
+
+/*        HashMap<String, Object> params = new HashMap<String, Object>();
+        params.put("movie", "The Matrix");
+        ParseCloud.callFunctionInBackground("hello", params, new FunctionCallback<Object>() {
+            @Override
+            public void done(Object object, ParseException e) {
+                Log.d("cloudCode",object.toString());
+            }
+        });*/
         listeMarkers = new ArrayList<>();
         markerLayout = (LinearLayout) findViewById(R.id.locationMarker);
         markerHidden = false;
@@ -111,22 +135,52 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
         autoCompView.setOnItemClickListener(this);
         CheckEnableGPS();
         setUpMapIfNeeded();
+        hideKeyborad();
 
-        mMap.setOnMarkerClickListener(this);
+        /*mMap.setOnMarkerClickListener(this);
         placeMarkers();
         hideKeyborad();
-        handler.postDelayed(getMapRunnable(), 0);
+        handler.postDelayed(getMapRunnable(), 0);*/
+
+
 
     }
+
+
 
 
     /** Called when the user clicks the MenuMap_ValidatePosition button */
     public void goToDeliveryCommandDetail(OrderElement order, boolean isCurrent) {
         Orders.setActiveOrder(order);
 
+
         Intent intent = new Intent(this, RecapActivity.class);
         intent.putExtra("from", "Map");
         startActivity(intent);
+
+
+    }
+
+
+
+
+    protected void showCustomDialog() {
+
+        dialog = new Dialog(MapActivity.this,
+                android.R.style.Theme_Translucent);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+        dialog.setCancelable(true);
+        dialog.setContentView(R.layout.dialog);
+
+        /*etSearch = (EditText) dialog.findViewById(R.id.etsearch);
+        btnSearch = (Button) dialog.findViewById(R.id.btnsearch);
+        btnCancel = (Button) dialog.findViewById(R.id.btncancel);
+
+        btnSearch.setOnClickListener(this);
+        btnCancel.setOnClickListener(this);*/
+
+        dialog.show();
     }
 
     /**
@@ -325,7 +379,9 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
             startActivity(login);
         }
         CheckEnableGPS();
+/*
         placeMarkers();
+*/
     }
 
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
@@ -337,6 +393,7 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
 
     /** Called when the user clicks the MenuMap_ValidatePosition button */
     public void goToMenuActivity(View view) {
+
         if (storeNearbyRestaurants()) {
             if (isLocationInitialised() && !getDeliveryAdress().equals("")) {
                 orderElement = new OrderElement();
@@ -344,14 +401,35 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
                 orderElement.setDeliveryAddress(getDeliveryAdress());
                 orderElement.setOrderedUserName(DataManager.getUserName());
                 Orders.setActiveOrder(orderElement);
-                Intent intent = new Intent(this, MainActivity.class);
-                startActivity(intent);
+                showCustomDialog();
+
+                String name;
+                ArrayList<ParseUser> nearbyRestaurants = DataManager.nearbyRestaurants;
+                ArrayList<String> urlLogos = new ArrayList<>();
+                ArrayList<Number> marksRestos = new ArrayList<>();
+
+                for (final ParseUser resto :nearbyRestaurants){
+
+                    ParseFile pLogo = resto.getParseFile("RestaurantLogo");
+                    String urlLogo = pLogo.getUrl();
+                    urlLogos.add(urlLogo);
+                    marksRestos.add(DataManager.getAverageMarkRestaurant(resto));
+                }
+                ListView listView = (ListView) dialog.findViewById(R.id.listLogo);
+                listView.setAdapter(new ImageListAdapter(MapActivity.this, urlLogos,marksRestos,nearbyRestaurants));
+                /*Intent intent = new Intent(this, MainActivity.class);
+                startActivity(intent);*/
             } else {
                 Toast.makeText(this, R.string.incorrectLocation, Toast.LENGTH_SHORT).show();
             }
         } else {
             Toast.makeText(this, R.string.noRestaurantAvailable, Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public void fasterButtonClick(View view) {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
     }
 
     /**
@@ -487,7 +565,7 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
                     dlgAlert.create().cancel();
                     dlgAlertcountCreated = false;
                 }
-                Toast.makeText(this, R.string.locationEnable, Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, R.string.locationEnable, Toast.LENGTH_SHORT).show();
             } else {
                 if (!dlgAlertcountCreated) {
                     dlgAlertcountCreated = true;
@@ -523,7 +601,9 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
             this.location.setProvider(nonNullLocationProvider);
             DataManager.setUserLocation(loc);
             LatLng LatLng = new LatLng(loc.getLatitude(), loc.getLongitude());
-            setCamera(LatLng);
+            if (firstTimeCalled){
+                setCamera(LatLng);
+            }
         }
     }
 
@@ -637,4 +717,6 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
         handler.removeCallbacksAndMessages(null);
         super.onPause();
     }
+
+
 }

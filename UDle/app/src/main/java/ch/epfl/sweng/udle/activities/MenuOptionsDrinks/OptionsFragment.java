@@ -17,6 +17,7 @@ public class OptionsFragment extends Fragment {
 
     private LinearLayout layout;
     private ViewPager pager;
+    private Options_ExpandableListAdapter adapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -34,16 +35,22 @@ public class OptionsFragment extends Fragment {
 
         ExpandableListView expandableListView = (ExpandableListView) layout.findViewById(R.id.MenuElement_list);
 
-        Options_ExpandableListAdapter adapter = new Options_ExpandableListAdapter(inflater);
+        adapter = new Options_ExpandableListAdapter(inflater);
         expandableListView.setAdapter(adapter);
-/*
-        expandableListView.expandGroup(0);
-*/
+
 
 
         return layout;
 
     }
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+            adapter.notifyDataSetChanged();
+        }
+    }
+
 
     /** Called when the user clicks the MapActivity button */
     public void goToDrinkActivity() {

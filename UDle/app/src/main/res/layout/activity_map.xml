@@ -57,11 +57,20 @@
     </FrameLayout>
 
     <Button
+        android:layout_marginTop="@dimen/_3sdp"
         android:id="@+id/MenuMap_ValidatePosition"
         android:layout_width="fill_parent"
         android:layout_height="0dp"
         android:text="@string/ValidatePosition"
         android:layout_weight="10"
         android:onClick="goToMenuActivity"
-        android:textAllCaps="false"/>
+        android:textAllCaps="false"
+        android:textColor="#FFFFFF"
+        android:textSize="25sp"
+
+        android:background="@drawable/button_shape2"
+        android:shadowColor="#A8A8A8"
+        android:shadowDx="0"
+        android:shadowDy="0"
+        android:shadowRadius="5"/>
 </LinearLayout>

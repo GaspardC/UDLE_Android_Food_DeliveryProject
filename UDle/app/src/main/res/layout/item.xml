@@ -56,15 +56,25 @@
                 android:layout_height="wrap_content"
                 android:padding="16dp"
                 android:orientation="horizontal"
+
                 >
                 <Button
+                    android:layout_marginRight="@dimen/_3sdp"
+                    android:layout_marginBottom="@dimen/_3sdp"
+                    android:text="-"
+                    android:id="@+id/minusButton"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:layout_marginBottom="@dimen/_3sdp"
-                    android:textSize="10sp"
-                    android:text="-"
-                    android:layout_gravity="center"
-                    android:id="@+id/minusButton"
+                    android:textSize="20sp"
+                    android:textAllCaps="false"
+                    android:textColor="#FFFFFF"
+
+                    android:background="@drawable/button_shape2"
+                    android:shadowColor="#A8A8A8"
+                    android:shadowDx="0"
+                    android:shadowDy="0"
+                    android:shadowRadius="5"
+
                     />
                 <TextView
                     android:layout_width="wrap_content"
@@ -77,13 +87,22 @@
 
                     />
                 <Button
+
+                    android:layout_marginLeft="@dimen/_3sdp"
+                    android:layout_marginBottom="@dimen/_3sdp"
+                    android:text="+"
+                    android:id="@+id/plusButton"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:layout_marginBottom="@dimen/_3sdp"
-                    android:textSize="10sp"
-                    android:text="+"
-                    android:layout_gravity="center"
-                    android:id="@+id/plusButton"
+                    android:textSize="20sp"
+                    android:textAllCaps="false"
+                    android:textColor="#FFFFFF"
+
+                    android:background="@drawable/button_shape2"
+                    android:shadowColor="#A8A8A8"
+                    android:shadowDx="0"
+                    android:shadowDy="0"
+                    android:shadowRadius="5"
                     />
 
 
