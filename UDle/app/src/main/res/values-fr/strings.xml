@@ -1,2 +1,101 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="app_name">UDLE</string>
+    <string name="signInButton">Connexion</string>
+    <string name="registerButton">Inscription</string>
+    <string name="enterYourNumberPhone">Entre ton numéro de téléphone</string>
+    <string name="Hello">Hello!</string>
+    <string name="Next">Suivant</string>
+
+
+    <string name="mapActivityNoGps"></string>
+    <string name="locationEnable">Géolocalisation activee</string>
+    <string name="invalidAddress">Adresse non valide</string>
+
+    <string name="incorrectLocation"></string>
+
+    <string name="MenuMap_SearchHint">Entrer une adresse de livraison</string>
+    <string name="NoCardInformation"></string>
+    <string name="ValidatePosition">Commander ici !</string>
+    <string name="NoMenuSelected">Tu dois choisir au moins un menu</string>
+    <string name="title_activity_maps">Carte</string>
+    <string name="buttonCallDeliveryGuy">Appeler le livreur</string>
+    <string name="markerTitle">Adresse de livraison</string>
+
+    <string name="recapOfCommand">Récapitulatif de la commande:</string>
+    <string name="deliveryAddress">Adresse de livraison:</string>
+    <string name="deliveryCost">Frais de livraison:</string>
+    <string name="deliveryCostPrice">2.00 CHF</string>
+    <string name="total">Total</string>
+    <string name="confirm">Confirmer</string>
+    <string name="descriptionBurgerRotating">image stop rotating when order accepted</string>
+    <string name="infotextwaiting">Merci de patienter quelques instants, un livreur va valider ta commande</string>
+    <string name="infotextwaitingConfirmed">Congrats, your order is being sent...</string>
+
+    <string name="WaitingOrders">Commandes en attente</string>
+    <string name="ConfirmOrders">Commandes confirmées</string>
+
+    <string name="sampleText">This is a sample text.</string>
+    <string name="openSlideMenu">Open slide menu</string>
+    <string name ="closeSlideMenu">Close slide menu</string>
+    <string name="username">Username</string>
+    <string name="restaurantMode">Mode restaurateur</string>
+    <string name="restaurantModeDesc">go to restaurant map activity</string>
+    <string name="about">About</string>
+    <string name="removeMessage_1">"Remove :"</string>
+    <string name="removeMessage_2">"One of the "</string>
+    <string name="removeMessage_3">"No options."</string>
+    <string name="removeMessage_5">"No options selected."</string>
+    <string name="notImplemented">Not implemented</string>
+    <string name="TitleAlertBack">Give up the order"</string>
+    <string name="MessageAlertBack">Are you sure you want to go back? This will delete your order</string>
+    <string name="expectedTime">Expected Time</string>
+    <string name="acceptCommand">Accept Command</string>
+    <string name="expectedTimeNotValid">Please enter an expected time</string>
+    <string name="commandDelivered">Command Delivered</string>
+    <string name="home">Home</string>
+    <string name="orderNow">Order now!</string>
+    <string name="profile">Your profile</string>
+    <string name="settings">settings</string>
+    <string name="profile_title_logged_in">Hello :</string>
+    <string name="profile_logout_button_label">Log out</string>
+    <string name="profile_title_logged_out">You must be logged in to view your profile</string>
+    <string name="profile_login_button_label">Log in</string>
+    <string name="parse_app_id">9owjl8GmUsbfyoKtXhd5hK7QX8CUJVfuAvSLNoaY</string>
+    <string name="parse_client_key">xd6XKHd9NxLfzFPbHQ5xaMHVzU1gfeLen0qCyI4F</string>
+    <string name="facebook_app_id">1483920968589089</string>
+    <string name="noMenuNoOptions">No menus selected. You need to select at least one menu in order to choose your options for it.</string>
+    <string name="noOptions">No options</string>
+    <string name="orderedBy">Ordered by: </string>
+    <string name="help1">first help page</string>
+    <string name="help">Help</string>
+    <string name="help_page">"Help page "</string>
+    <string name="helpDesc">How to use Udle</string>
+    <string name="back">back</string>
+    <string name="currentOrders">Current Orders</string>
+    <string name="currentOrdersDetail">see your current orders</string>
+
+    <string name="OrderNotAvailable">Sorry, the order is no more available.</string>
+    <string name="listOrderRestaurantMap">listOrderRestaurantMap</string>
+    <string name="switchToListMode">Switch to List mode</string>
+    <string name="No_orders_for_now">No orders for now </string>
+    <string name="Wait_a_moment">Wait a moment please</string>
+    <string name="options">"Options:  "</string>
+    <string name="status">Status</string>
+    <string name="enRoute">En Route</string>
+    <string name="expectedTime_min">Expected time (min)</string>
+    <string name="Loading">Loading</string>
+    <string name="checkingForNewOrders">Checking for new orders...</string>
+    <string name="waitWhileLoading">Wait while loading...</string>
+    <string name="Refresh">Refresh</string>
+    <string name="notificationTitle">Order accepted</string>
+    <string name="notificationText">Your order was accepted. Click to see details.</string>
+    <string name="noRestaurantAvailable">Sorry, no restaurants are available right now. Try later.</string>
+    <string name="payment_activity_title">Payment Info</string>
+    <string name="recap_of_your_order">Recap of your order :</string>
+    <string name="expectedTimeNegative">Please enter a positive number</string>
+    <string name="expectedTimeTooBig">Expected time must be smaller than 60 minutes</string>
+    <string name="adressTest">rue de bourg</string>
+
+    <string name="Delievered">Delievered</string>
+
+</resources>
