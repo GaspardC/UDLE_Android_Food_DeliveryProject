@@ -95,7 +95,8 @@
     <string name="expectedTimeNegative">Please enter a positive number</string>
     <string name="expectedTimeTooBig">Expected time must be smaller than 60 minutes</string>
     <string name="adressTest">rue de bourg</string>
-
     <string name="Delievered">Delievered</string>
+    <string name="noCreditCardAdded">No credit card added</string>
+    <string name="errorInYourPhoneCall">Error in your phone call</string>
 
 </resources>
