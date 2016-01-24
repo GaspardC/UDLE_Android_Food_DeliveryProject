@@ -1,44 +1,44 @@
 <resources>
     <string name="app_name">UDLE</string>
-    <string name="signInButton">Sign in</string>
-    <string name="registerButton">Register</string>
-    <string name="enterYourNumberPhone">Enter your number phone</string>
+    <string name="signInButton">Connexion</string>
+    <string name="registerButton">Inscription</string>
+    <string name="enterYourNumberPhone">Entre ton numéro de téléphone</string>
     <string name="Hello">Hello!</string>
-    <string name="Next">Next</string>
+    <string name="Next">Suivant</string>
 
 
-    <string name="mapActivityNoGps">Dear user, your gps is currently disabled. Would you like to enable it?</string>
-    <string name="locationEnable">Location is enabled</string>
-    <string name="invalidAddress">Invalid Address, move the map please</string>
+    <string name="mapActivityNoGps"></string>
+    <string name="locationEnable">Géolocalisation activee</string>
+    <string name="invalidAddress">Adresse non valide</string>
 
-    <string name="incorrectLocation">This location was not recognized, please chose a correct location</string>
+    <string name="incorrectLocation"></string>
 
-    <string name="MenuMap_SearchHint">Search the desired delivery address</string>
-    <string name="NoCardInformation">Please, fill in your card information</string>
-    <string name="ValidatePosition">Start an order</string>
-    <string name="NoMenuSelected">You need to select at least one menu</string>
-    <string name="title_activity_maps">Map</string>
-    <string name="buttonCallDeliveryGuy">Call Delivery Guy</string>
-    <string name="markerTitle">Delivery Address</string>
+    <string name="MenuMap_SearchHint">Entrer une adresse de livraison</string>
+    <string name="NoCardInformation"></string>
+    <string name="ValidatePosition">Commander ici !</string>
+    <string name="NoMenuSelected">Tu dois choisir au moins un menu</string>
+    <string name="title_activity_maps">Carte</string>
+    <string name="buttonCallDeliveryGuy">Appeler le livreur</string>
+    <string name="markerTitle">Adresse de livraison</string>
 
-    <string name="recapOfCommand">Recap of the command:</string>
-    <string name="deliveryAddress">Delivery Address:</string>
-    <string name="deliveryCost">Delivery Cost:</string>
+    <string name="recapOfCommand">Récapitulatif de la commande:</string>
+    <string name="deliveryAddress">Adresse de livraison:</string>
+    <string name="deliveryCost">Frais de livraison:</string>
     <string name="deliveryCostPrice">2.00 CHF</string>
     <string name="total">Total</string>
-    <string name="confirm">Confirm</string>
+    <string name="confirm">Confirmer</string>
     <string name="descriptionBurgerRotating">image stop rotating when order accepted</string>
-    <string name="infotextwaiting">Please wait for a shop to accept your command</string>
+    <string name="infotextwaiting">Merci de patienter quelques instants, un livreur va valider ta commande</string>
     <string name="infotextwaitingConfirmed">Congrats, your order is being sent...</string>
 
-    <string name="WaitingOrders">Waiting Order</string>
-    <string name="ConfirmOrders">Confirmed Order</string>
+    <string name="WaitingOrders">Commandes en attente</string>
+    <string name="ConfirmOrders">Commandes confirmées</string>
 
     <string name="sampleText">This is a sample text.</string>
     <string name="openSlideMenu">Open slide menu</string>
-    <string name="closeSlideMenu">Close slide menu</string>
+    <string name ="closeSlideMenu">Close slide menu</string>
     <string name="username">Username</string>
-    <string name="restaurantMode">Restaurant mode</string>
+    <string name="restaurantMode">Mode restaurateur</string>
     <string name="restaurantModeDesc">go to restaurant map activity</string>
     <string name="about">About</string>
     <string name="removeMessage_1">"Remove :"</string>
@@ -62,7 +62,7 @@
     <string name="profile_login_button_label">Log in</string>
     <string name="parse_app_id">9owjl8GmUsbfyoKtXhd5hK7QX8CUJVfuAvSLNoaY</string>
     <string name="parse_client_key">xd6XKHd9NxLfzFPbHQ5xaMHVzU1gfeLen0qCyI4F</string>
-    <string name="facebook_app_id">1531627347136434</string>
+    <string name="facebook_app_id">1483920968589089</string>
     <string name="noMenuNoOptions">No menus selected. You need to select at least one menu in order to choose your options for it.</string>
     <string name="noOptions">No options</string>
     <string name="orderedBy">Ordered by: </string>
@@ -97,25 +97,5 @@
     <string name="adressTest">rue de bourg</string>
 
     <string name="Delievered">Delievered</string>
-    <string name="ContactUs">Contact us</string>
-    <string name="VisitOurWebSite">Visit our website</string>
-    <string name="VisitOurBlog">Visit our blog</string>
-    <string name="CVG">CVG</string>
-    <string name="aboutus">about udle</string>
-    <string name="title_activity_credit_card">CreditCardActivity</string>
-    <string name="addACreditCard">Add a credit card</string>
-    <string name="noCreditCardYet">You don\'t have any credit card yet</string>
-    <string name="Validate">Validate</string>
-    <string name="creditCard">Credit Card</string>
-    <string name="service_not_available">service not available</string>
-    <string name="invalid_lat_long_used">invalide lat long</string>
-    <string name="no_address_found">no address found</string>
-    <string name="address_found">adress found</string>
-<<<<<<< HEAD
-    <string name="clickOnYourMeal">Click on your meal to agrement it!</string>
-=======
-    <string name="noCreditCardAdded">No credit card added</string>
-    <string name="errorInYourPhoneCall">Error in your phone call</string>
->>>>>>> b7af74c17470efa547fabfe32209511189f0a518
 
 </resources>
