@@ -39,7 +39,7 @@ public class DeliveryActivity extends SlideMenuActivity {
         } catch (ActivityNotFoundException e) {
             Toast.makeText(getApplicationContext(), getString(R.string.errorInYourPhoneCall) + e.getMessage(), Toast.LENGTH_LONG).show();
         } catch (SecurityException e){
-            Toast.makeText(getApplicationContext(), "UDle doesn't have the right to pass phone call" + e.getMessage(), Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), getString(R.string.rightToPassPhoneCall) + e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
 

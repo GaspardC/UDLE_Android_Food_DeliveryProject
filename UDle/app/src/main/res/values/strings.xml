@@ -113,5 +113,6 @@
     <string name="address_found">adress found</string>
     <string name="noCreditCardAdded">No credit card added</string>
     <string name="errorInYourPhoneCall">Error in your phone call</string>
+    <string name="rightToPassPhoneCall">UDle doesn\'t have the right to pass phone call</string>
 
 </resources>

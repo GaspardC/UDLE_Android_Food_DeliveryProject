@@ -46,13 +46,14 @@
             android:gravity="center"
             android:orientation="vertical" >
 
-            <ImageView
-                android:id="@+id/imageView1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/marker"/>
-
         </LinearLayout>
+
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/marker"
+            android:layout_gravity="center" />
 
     </FrameLayout>
 
