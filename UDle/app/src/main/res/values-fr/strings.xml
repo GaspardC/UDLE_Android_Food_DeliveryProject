@@ -31,7 +31,7 @@
     <string name="infotextwaiting">Merci de patienter quelques instants, un livreur va valider ta commande</string>
     <string name="infotextwaitingConfirmed">Congrats, your order is being sent...</string>
 
-    <string name="WaitingOrders">Commandes en attente</string>
+    <string name="WaitingOrders">En attente</string>
     <string name="ConfirmOrders">Commandes confirmées</string>
 
     <string name="sampleText">This is a sample text.</string>
