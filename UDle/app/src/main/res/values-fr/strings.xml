@@ -51,7 +51,7 @@
     <string name="expectedTime">Expected Time</string>
     <string name="acceptCommand">Accept Command</string>
     <string name="expectedTimeNotValid">Please enter an expected time</string>
-    <string name="commandDelivered">Command Delivered</string>
+    <string name="commandDelivered">Command Livrée</string>
     <string name="home">Home</string>
     <string name="orderNow">Order now!</string>
     <string name="profile">Your profile</string>
@@ -86,7 +86,7 @@
     <string name="Loading">Loading</string>
     <string name="checkingForNewOrders">Checking for new orders...</string>
     <string name="waitWhileLoading">Wait while loading...</string>
-    <string name="Refresh">Refresh</string>
+    <string name="Refresh">Rafraichir</string>
     <string name="notificationTitle">Order accepted</string>
     <string name="notificationText">Your order was accepted. Click to see details.</string>
     <string name="noRestaurantAvailable">Sorry, no restaurants are available right now. Try later.</string>
@@ -95,7 +95,7 @@
     <string name="expectedTimeNegative">Please enter a positive number</string>
     <string name="expectedTimeTooBig">Expected time must be smaller than 60 minutes</string>
     <string name="adressTest">rue de bourg</string>
-    <string name="Delievered">Delievered</string>
+    <string name="Delievered">Command Livrée</string>
     <string name="noCreditCardAdded">No credit card added</string>
     <string name="errorInYourPhoneCall">Error in your phone call</string>
 

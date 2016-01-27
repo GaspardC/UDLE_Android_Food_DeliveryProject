@@ -111,11 +111,8 @@
     <string name="invalid_lat_long_used">invalide lat long</string>
     <string name="no_address_found">no address found</string>
     <string name="address_found">adress found</string>
-<<<<<<< HEAD
     <string name="clickOnYourMeal">Click on your meal to agrement it!</string>
-=======
     <string name="noCreditCardAdded">No credit card added</string>
     <string name="errorInYourPhoneCall">Error in your phone call</string>
->>>>>>> b7af74c17470efa547fabfe32209511189f0a518
 
 </resources>
