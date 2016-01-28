@@ -27,6 +27,14 @@
         android:layout_weight="90"        >
 
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/clickOnYourMeal"
+            android:textStyle="bold"
+            android:text="@string/clickOnYourMeal"
+            android:layout_marginTop="@dimen/_3sdp"/>
 
     <ExpandableListView
         android:id="@+id/MenuElement_list"
@@ -42,12 +50,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="@dimen/_10sdp"
             >
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/clickOnYourMeal"
-                android:textStyle="bold"
-                android:text="@string/clickOnYourMeal"/>
+
         </LinearLayout>
 
 

@@ -25,14 +25,14 @@
         <item name="android:windowContentTransitions">true</item>
 
         <!--        &lt;!&ndash; specify enter and exit transitions &ndash;&gt;
-                <item name="android:windowEnterTransition">@transition/explode</item>
-                <item name="android:windowExitTransition">@transition/explode</item>
+                <item_drink name="android:windowEnterTransition">@transition/explode</item_drink>
+                <item_drink name="android:windowExitTransition">@transition/explode</item_drink>
 
                 &lt;!&ndash; specify shared element transitions &ndash;&gt;
-                <item name="android:windowSharedElementEnterTransition">
-                    @transition/change_image_transform</item>
-                <item name="android:windowSharedElementExitTransition">
-                    @transition/change_image_transform</item>-->
+                <item_drink name="android:windowSharedElementEnterTransition">
+                    @transition/change_image_transform</item_drink>
+                <item_drink name="android:windowSharedElementExitTransition">
+                    @transition/change_image_transform</item_drink>-->
     </style>
 
 

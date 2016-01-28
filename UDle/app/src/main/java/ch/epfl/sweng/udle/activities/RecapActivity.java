@@ -237,7 +237,7 @@ public class RecapActivity extends SlideMenuActivity {
             String optionOfElemToRemove = elementToRemove.get("options");
             if (optionOfElemToRemove.equals(getResources().getString(R.string.noOptions))){
                 ArrayList<Menu> toDelete = new ArrayList<>();
-                for(Menu menu : order.getOrder()) {
+                for(Menu menu : order.getMenus()) {
                     if (elem.equals(menu.getFood().toString())){
                         if(menu.getOptions().size()==0) {
                             if (deleteAll){
@@ -265,7 +265,7 @@ public class RecapActivity extends SlideMenuActivity {
                         }
                     }
                     ArrayList<Menu> toDelete = new ArrayList<>();
-                    for(Menu menu : order.getOrder()) {
+                    for(Menu menu : order.getMenus()) {
                         if (elem.equals(menu.getFood().toString())){
                             if(compareLists(menu.getOptions(),tempListOption)) {
                                 if (deleteAll){
