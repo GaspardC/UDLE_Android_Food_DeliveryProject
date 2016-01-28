@@ -77,17 +77,17 @@ public abstract class SlideMenuActivity extends AppCompatActivity {
         //set menu items
 
         //home
-        slideMenuItems.add(new NavItem(getString(R.string.home), getString(R.string.orderNow), R.mipmap.ic_launcher, MapActivity.class));
-        slideMenuItems.add(new NavItem(getString(R.string.currentOrders), getString(R.string.currentOrdersDetail), R.mipmap.ic_launcher, CurrentOrdersActivity.class));
+        slideMenuItems.add(new NavItem(getString(R.string.home), getString(R.string.orderNow),R.drawable.icon_home, MapActivity.class));
+        slideMenuItems.add(new NavItem(getString(R.string.currentOrders), getString(R.string.currentOrdersDetail),R.drawable.icon_current_order, CurrentOrdersActivity.class));
 
 
         if(DataManager.isARestaurant()){
             slideMenuItems.add(new NavItem(getString(R.string.restaurantMode), getString(R.string.restaurantModeDesc), R.drawable.logogreen, DeliveryRestaurantMapActivity.class));
         }
 
-        slideMenuItems.add(new NavItem(getString(R.string.creditCard), getString(R.string.addACreditCard),R.mipmap.ic_launcher, CreditCardActivity.class));
-        slideMenuItems.add(new NavItem(getString(R.string.about), getString(R.string.aboutus), R.mipmap.ic_launcher, AboutActivity.class));
-        slideMenuItems.add(new NavItem(getString(R.string.help), getString(R.string.helpDesc), R.drawable.ic_help, new Runnable() {
+        slideMenuItems.add(new NavItem(getString(R.string.creditCard), getString(R.string.addACreditCard),R.drawable.icon_credit_card, CreditCardActivity.class));
+        slideMenuItems.add(new NavItem(getString(R.string.about), getString(R.string.aboutus), R.drawable.icon_about, AboutActivity.class));
+        slideMenuItems.add(new NavItem(getString(R.string.help), getString(R.string.helpDesc), R.drawable.icon_howtouse, new Runnable() {
             @Override
             public void run() {
                 Intent newActivity = new Intent(getApplicationContext(), HelpActivity.class);

@@ -9,8 +9,8 @@ package ch.epfl.sweng.udle.Food;
 public enum FoodTypes {
 
     KEBAB("Kebab", 10.00, 10),
-    PIZZA("Pizza", 10.00, 10),
-    BURGER("Burger", 10.00, 10);
+    BURGER("Burger", 10.00, 10),
+    PIZZA("Pizza", 10.00, 10);
 
     private String name = "";
     private double price = -1;
