@@ -33,6 +33,7 @@ public class DrinkFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         lLayout =   (LinearLayout) inflater.inflate(R.layout.recyclerview_activity_drink, container, false);
         getActivity().setContentView(R.layout.recyclerview_activity_drink);
+/*
         rv = (RecyclerView) getActivity().findViewById(R.id.rv_drink);
         if(linearLayout == null){
             linearLayout =  (LinearLayout) getActivity().findViewById(R.id.llRv_drink);
@@ -57,6 +58,7 @@ public class DrinkFragment extends Fragment {
             linearLayout.setVisibility(View.GONE);
         }
 
+*/
 
 
 
