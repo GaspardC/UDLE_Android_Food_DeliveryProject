@@ -90,7 +90,7 @@ class GooglePlacesAutocompleteAdapter extends ArrayAdapter<String> implements Fi
         try {
             StringBuilder sb = new StringBuilder(PLACES_API_BASE + TYPE_AUTOCOMPLETE + OUT_JSON);
             sb.append("?key=" + SERVER_KEY);
-            sb.append("&components=country:ch");
+            sb.append("&components=country:fr");
             sb.append("&input=" + URLEncoder.encode(input, "utf8"));
 
             URL url = new URL(sb.toString());

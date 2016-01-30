@@ -111,10 +111,13 @@ public class MenuFragment extends Fragment {
             initializeData();
             initializeAdapter();
             linearLayout.setVisibility(View.VISIBLE);
+            goToOptionsButton.setVisibility(View.VISIBLE);
 
         } else {
             if(rv!= null){
                 linearLayout.setVisibility(View.GONE);
+                goToOptionsButton.setVisibility(View.GONE);
+
             }
         }
     }

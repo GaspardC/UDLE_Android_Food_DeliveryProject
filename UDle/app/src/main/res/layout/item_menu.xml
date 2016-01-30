@@ -58,7 +58,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/price_item_menu"
-                android:text="2 CHF"
+                android:text="5 €"
 
                 />
         </LinearLayout>

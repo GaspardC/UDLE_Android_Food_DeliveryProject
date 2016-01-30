@@ -48,7 +48,11 @@ public class Options_ExpandableListAdapter extends BaseExpandableListAdapter {
     //Children are the options present in the enum 'OptionsTypes'
     @Override
     public int getChildrenCount(int groupPosition) {
-        return OptionsTypes.values().length;
+
+        if(getGroup(groupPosition).toString().contains("Pizza")){
+            return 0;
+        }
+            return OptionsTypes.values().length;
     }
 
     //Return the title of the group (e.g: #2 Burger)
