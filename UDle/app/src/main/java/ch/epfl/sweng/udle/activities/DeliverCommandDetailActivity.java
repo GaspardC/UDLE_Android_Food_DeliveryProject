@@ -20,6 +20,7 @@ import ch.epfl.sweng.udle.Food.Menu;
 import ch.epfl.sweng.udle.Food.OrderElement;
 import ch.epfl.sweng.udle.Food.Orders;
 import ch.epfl.sweng.udle.R;
+import ch.epfl.sweng.udle.activities.SlideMenu.SlideMenuActivity;
 import ch.epfl.sweng.udle.network.DataManager;
 
 /**
@@ -31,7 +32,7 @@ import ch.epfl.sweng.udle.network.DataManager;
  *
  * When the delivery was made, the Restaurant confirm it.
  */
-public class DeliverCommandDetailActivity extends AppCompatActivity {
+public class DeliverCommandDetailActivity extends SlideMenuActivity {
 
     private OrderElement order;
 

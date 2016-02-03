@@ -146,7 +146,7 @@ public class RecapActivity extends SlideMenuActivity {
         ParseUserOrderInformations orderInformations = DataManager.getParseUserObjectWithActiveOrder();
         Date creationDate = orderInformations.getCreatedAt();
         Date d = new Date();
-        Date currentDateMinus24h = new Date(d.getTime() - 24 * 3600 * 1000); // in milisec
+        Date currentDateMinus24h = new Date(d.getTime() - 48 * 3600 * 1000); // in milisec
         int diffDate = currentDateMinus24h.compareTo(creationDate);
         if(!orderInformations.hasBeenRated() && diffDate < 0 ){
             Intent intent = new Intent(RecapActivity.this,StarActivity.class);

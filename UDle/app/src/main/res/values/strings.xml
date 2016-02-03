@@ -62,7 +62,7 @@
     <string name="profile_login_button_label">Log in</string>
     <string name="parse_app_id">9owjl8GmUsbfyoKtXhd5hK7QX8CUJVfuAvSLNoaY</string>
     <string name="parse_client_key">xd6XKHd9NxLfzFPbHQ5xaMHVzU1gfeLen0qCyI4F</string>
-    <string name="facebook_app_id">1483920968589089</string>
+    <string name="facebook_app_id">1531627347136434</string>
     <string name="noMenuNoOptions">No menus selected. You need to select at least one menu in order to choose your options for it.</string>
     <string name="noOptions">No options</string>
     <string name="orderedBy">Ordered by: </string>
@@ -111,6 +111,7 @@
     <string name="invalid_lat_long_used">invalide lat long</string>
     <string name="no_address_found">no address found</string>
     <string name="address_found">adress found</string>
+    <string name="clickOnYourMeal">Click on your meal to agrement it!</string>
     <string name="noCreditCardAdded">No credit card added</string>
     <string name="errorInYourPhoneCall">Error in your phone call</string>
     <string name="rightToPassPhoneCall">UDle doesn\'t have the right to pass phone call</string>

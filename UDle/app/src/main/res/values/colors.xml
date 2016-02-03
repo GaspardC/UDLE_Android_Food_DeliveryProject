@@ -12,10 +12,7 @@
     <color name="greyColor">#d3d3d3</color>
     <color name="lightYellow">#ffffe0</color>
     <color name="colorUdle">#Fc363b</color>
-
-
-
-
+    <color name="colorBackProfile">#FC363B</color>
 
 
 </resources>

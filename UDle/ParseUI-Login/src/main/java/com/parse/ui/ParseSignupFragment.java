@@ -22,8 +22,11 @@
 package com.parse.ui;
 
 import android.app.Activity;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.text.InputType;
+import android.text.TextPaint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -36,6 +39,8 @@ import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
+
+import java.lang.reflect.Field;
 
 /**
  * Fragment for the user signup screen.
@@ -100,6 +105,14 @@ public class ParseSignupFragment extends ParseLoginFragmentBase implements OnCli
 
     usernameField.setText(username);
     passwordField.setText(password);
+
+    usernameField.getBackground().setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_IN);
+    passwordField.getBackground().setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_IN);
+    confirmPasswordField.getBackground().setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_IN);
+    telephoneField.getBackground().setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_IN);
+    nameField.getBackground().setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_IN);
+
+
 
     if (appLogo != null && config.getAppLogo() != null) {
       appLogo.setImageResource(config.getAppLogo());

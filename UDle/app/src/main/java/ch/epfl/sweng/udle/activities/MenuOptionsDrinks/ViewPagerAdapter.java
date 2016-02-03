@@ -104,7 +104,7 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
     public void startUpdate(ViewGroup container) {
         View view = container.findViewById(R.id.Layout_Options);
         if (view != null){
-            if (Orders.getActiveOrder().getOrder().size() == 0){ //If no menus selected
+            if (Orders.getActiveOrder() != null && Orders.getActiveOrder().getOrder().size() == 0){ //If no menus selected
                 view.findViewById(R.id.Options_noMenuSelected).setVisibility(View.VISIBLE);
             }
             else{
