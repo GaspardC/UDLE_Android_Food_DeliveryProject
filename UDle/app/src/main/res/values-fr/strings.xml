@@ -64,11 +64,7 @@
     <string name="parse_app_id">9owjl8GmUsbfyoKtXhd5hK7QX8CUJVfuAvSLNoaY</string>
     <string name="parse_client_key">xd6XKHd9NxLfzFPbHQ5xaMHVzU1gfeLen0qCyI4F</string>
     <string name="facebook_app_id">1483920968589089</string>
-<<<<<<< HEAD
-    <string name="noMenuNoOptions">Oops \! tu as oubli\é de choisir ton menu... S\électionnne au moins un menu pour pouvoir continuer la commande</string>
-=======
     <string name="noMenuNoOptions">Oops \! tu as oublié de choisir ton menu… Sélectionnne au moins un menu pour pouvoir continuer la commande</string>
->>>>>>> dd8b20375c6eb4be037d7fe01166aff0216d4293
     <string name="noOptions">Pas d\'options</string>
     <string name="orderedBy">Commandé par: </string>
     <string name="help1">first help page</string>
@@ -78,12 +74,7 @@
     <string name="back">Retour</string>
     <string name="currentOrders">Commandes en cours</string>
     <string name="currentOrdersDetail">Voir mes commandes en cours</string>
-
-<<<<<<< HEAD
-    <string name="OrderNotAvailable">Oops ! D\ésol\é mais cette commande n'est plus disponible.</string>
-=======
     <string name="OrderNotAvailable">Oops \! Désolé mais cette commande n\'est plus disponible.</string>
->>>>>>> dd8b20375c6eb4be037d7fe01166aff0216d4293
     <string name="listOrderRestaurantMap">listOrderRestaurantMap</string>
     <string name="switchToListMode">Passer en mode "Liste"</string>
     <string name="No_orders_for_now">Pas de commandes pour le moment... </string>
@@ -98,11 +89,7 @@
     <string name="Refresh">Raffraichir</string>
     <string name="notificationTitle">Commande accept\ée \!</string>
     <string name="notificationText">Ta commande a été acceptée. Clique ici pour voir le détail.</string>
-<<<<<<< HEAD
-    <string name="noRestaurantAvailable">D\ésol\é, il n'y a pas de restaurants disponible pour le moment. R\éessaye plus tard \!.</string>
-=======
     <string name="noRestaurantAvailable">Désolé, il n\'y a pas de restaurants disponible pour le moment. Réessaye plus tard \!.</string>
->>>>>>> dd8b20375c6eb4be037d7fe01166aff0216d4293
     <string name="payment_activity_title">Informations de paiement</string>
     <string name="recap_of_your_order">Récapitulatif de ta commande :</string>
     <string name="expectedTimeNegative">Merci de saisir un nombre positif</string>
