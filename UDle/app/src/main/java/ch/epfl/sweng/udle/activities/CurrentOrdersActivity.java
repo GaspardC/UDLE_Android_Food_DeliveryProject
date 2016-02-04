@@ -36,6 +36,7 @@ import ch.epfl.sweng.udle.Food.Orders;
 import ch.epfl.sweng.udle.R;
 import ch.epfl.sweng.udle.activities.SlideMenu.SlideMenuActivity;
 import ch.epfl.sweng.udle.network.DataManager;
+import ch.epfl.sweng.udle.network.MyService;
 
 /**
  * Based on DeliveryRestaurantMapActivity's code.
@@ -45,7 +46,7 @@ public class CurrentOrdersActivity extends SlideMenuActivity {
     private ListView listView;
     private HashMap<Integer, OrderElement> objectIdHashMapForList; //HashMap between the index of order shown in the list view and the specific order.
     Handler handler; //The list of waiting and current Orders is refresh each 'delay' milliseconds.
-    final int delay = 60000; //60 seconds in milliseconds
+    final int delay = 20000; //60 seconds in milliseconds
     private ArrayList<OrderElement> waitingOrders = new ArrayList<>(); //Orders in the restaurant range that have no restaurant assigned to. Status of order: Waiting
     private ArrayList<OrderElement> currentOrders = new ArrayList<>(); //Orders that the restaurant already accept to deliverd. Status of order: EnRoute
     private ArrayList<OrderElement> deliveredOrders = new ArrayList<>();
@@ -64,6 +65,9 @@ public class CurrentOrdersActivity extends SlideMenuActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_current_orders);
         refreshButton = (Button) findViewById(R.id.CurrentOrders_button_refresh);
+        /*stopService();
+        startService();*/
+
 
 
         handler =  new Handler(){
@@ -75,11 +79,11 @@ public class CurrentOrdersActivity extends SlideMenuActivity {
                 handlerRefresh.removeCallbacksAndMessages(null);
                 if (waitingOrdersChange || currentOrdersChange) {
                     setUpListView();
-                    if (currentOrdersChange){
+/*                    if (changeInWaitingOrders()){
                         if (activityNotOnScreen){
                             displayNotification();
                         }
-                    }
+                    }*/
                 }
                 timeLeftForRefresh = delay/1000;
                 handlerRefresh.postDelayed(getRefreshRunnable(), 0);
@@ -91,6 +95,16 @@ public class CurrentOrdersActivity extends SlideMenuActivity {
 
         setUpListView();
 
+    }
+
+    // Method to start the service
+    public void startService() {
+        startService(new Intent(getBaseContext(), MyService.class));
+    }
+
+    // Method to stop the service
+    public void stopService() {
+        stopService(new Intent(getBaseContext(), MyService.class));
     }
     /**
      * @return Runnable who takes care of changing the text on the 'Refresh' button
@@ -112,7 +126,7 @@ public class CurrentOrdersActivity extends SlideMenuActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        handler.removeCallbacksAndMessages(null);
+//        handler.removeCallbacksAndMessages(null);
         activityNotOnScreen = true;
     }
 
@@ -125,7 +139,7 @@ public class CurrentOrdersActivity extends SlideMenuActivity {
     private void displayNotification() {
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)
-                        .setSmallIcon(R.drawable.logo2)
+                        .setSmallIcon(R.drawable.logoburger)
                         .setContentTitle(getString(R.string.notificationTitle))
                         .setContentText(getString(R.string.notificationText));
         // Creates an explicit intent for an Activity in your app
@@ -381,7 +395,7 @@ public class CurrentOrdersActivity extends SlideMenuActivity {
      * If no change => Do nothing
      *
      */
-    private boolean changeInWaitingOrders(){
+    public boolean changeInWaitingOrders(){
         //Retrieve list from server
         ArrayList<OrderElement> waitingOrdersFromServe = DataManager.getWaitingOrdersForAClient();
 

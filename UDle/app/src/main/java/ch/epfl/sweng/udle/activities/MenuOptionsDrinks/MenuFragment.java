@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 import java.util.ArrayList;
 import java.util.List;
 
+import ch.epfl.sweng.udle.Food.FoodTypes;
 import ch.epfl.sweng.udle.R;
 import ch.epfl.sweng.udle.activities.RecapActivity;
 
@@ -75,9 +76,9 @@ public class MenuFragment extends Fragment {
     private void initializeData(){
         items = new ArrayList<>();
         int number = 0;
-        items.add(new Item("Burger", 10, R.drawable.burger,number));
-        items.add(new Item("Kebab",10, R.drawable.kebab,number));
-        items.add(new Item("Pizza", 10, R.drawable.pizza,number));
+        items.add(new Item("Burger", (int) FoodTypes.BURGER.getPrice(), R.drawable.burger,number));
+        items.add(new Item("Kebab",(int) FoodTypes.KEBAB.getPrice(), R.drawable.kebab,number));
+        items.add(new Item("Pizza", (int) FoodTypes.PIZZA.getPrice(), R.drawable.pizza,number));
     }
 
     private void initializeAdapter(){

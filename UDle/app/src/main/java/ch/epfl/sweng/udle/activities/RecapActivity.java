@@ -70,7 +70,7 @@ public class RecapActivity extends SlideMenuActivity {
         listView = (ListView) findViewById(R.id.RecapActivity_recapListView);
         listView.setAdapter(adapter);
         update();
-        if(isFromCurrent()) {
+        if(!isFromCurrent()) {
             listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
                 @Override
                 public boolean onItemLongClick(AdapterView<?> arg0, View arg1, final int pos, long id) {
