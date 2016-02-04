@@ -13,7 +13,7 @@
 
     <string name="incorrectLocation"></string>
 
-    <string name="MenuMap_SearchHint">Entrer une adresse de livraison</string>
+    <string name="MenuMap_SearchHint">Entre une adresse de livraison</string>
     <string name="NoCardInformation"></string>
     <string name="ValidatePosition">Commander ici \!</string>
     <string name="NoMenuSelected">Tu dois choisir au moins un menu</string>
@@ -29,7 +29,7 @@
     <string name="confirm">Confirmer</string>
     <string name="descriptionBurgerRotating">image stop rotating when order accepted</string>
     <string name="infotextwaiting">Merci de patienter quelques instants, un livreur va valider ta commande</string>
-    <string name="infotextwaitingConfirmed">Congrats, your order is being sent...</string>
+    <string name="infotextwaitingConfirmed">Et hop, ta commande a été envoyée à nos partenaires</string>
 
     <string name="WaitingOrders">En attente</string>
     <string name="ConfirmOrders">Commandes confirmées</string>
@@ -40,19 +40,19 @@
     <string name="username">Pseudo</string>
     <string name="restaurantMode">Mode restaurateur</string>
     <string name="restaurantModeDesc">go to restaurant map activity</string>
-    <string name="about">About</string>
+    <string name="about">A propos</string>
     <string name="removeMessage_1">"Remove :"</string>
     <string name="removeMessage_2">"One of the "</string>
-    <string name="removeMessage_3">"No options."</string>
-    <string name="removeMessage_5">"No options selected."</string>
+    <string name="removeMessage_3">"Pas d'options."</string>
+    <string name="removeMessage_5">"Pas d'options choisies."</string>
     <string name="notImplemented">Not implemented</string>
-    <string name="TitleAlertBack">Give up the order"</string>
+    <string name="TitleAlertBack">Abandonner la commande"</string>
 
-    <string name="MessageAlertBack">Etes\-vous sûr(e) de vouloir revenir en arrière\? Votre commande ne sera pas prise en compte</string>
+    <string name="MessageAlertBack">Etes\-tu sûr(e) de vouloir revenir en arrière\? Ta commande ne sera pas prise en compte</string>
     <string name="expectedTime">Heure de livraison prévue</string>
     <string name="acceptCommand">Accepter la commande</string>
     <string name="expectedTimeNotValid">Veuillez entrer une heure de livraison prévue</string>
-    <string name="commandDelivered">Commande livrée</string>
+    <string name="commandDelivered">Commande livrée \!</string>
     <string name="home">Accueil</string>
     <string name="orderNow">Commande maintenant!</string>
     <string name="profile">Ton profil</string>
@@ -74,7 +74,7 @@
     <string name="help1">first help page</string>
     <string name="help">Aide</string>
     <string name="help_page">"Help page "</string>
-    <string name="helpDesc">Comment ça marche ?</string>
+    <string name="helpDesc">Comment ça marche \?</string>
     <string name="back">Retour</string>
     <string name="currentOrders">Commandes en cours</string>
     <string name="currentOrdersDetail">Voir mes commandes en cours</string>
@@ -88,7 +88,7 @@
     <string name="switchToListMode">Passer en mode "Liste"</string>
     <string name="No_orders_for_now">Pas de commandes pour le moment... </string>
     <string name="Wait_a_moment">Patientez un instant svp</string>
-    <string name="options">"Options:  "</string>
+    <string name="options">"Options: "</string>
     <string name="status">Status</string>
     <string name="enRoute">En Route</string>
     <string name="expectedTime_min">Temps d\'attente (min)</string>
