@@ -31,7 +31,7 @@ public class MainActivity extends SlideMenuActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-       /* OrderElement orderElement = new OrderElement();
+        /*OrderElement orderElement = new OrderElement();
         Orders.setActiveOrder(orderElement);*/
 
 
@@ -60,7 +60,7 @@ public class MainActivity extends SlideMenuActivity {
         tabs.setCustomTabColorizer(new SlidingTabLayout.TabColorizer() {
             @Override
             public int getIndicatorColor(int position) {
-                return getResources().getColor(R.color.tabsScrollColor);
+                return getResources().getColor(R.color.blueUdle);
             }
         });
 

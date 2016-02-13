@@ -16,6 +16,8 @@ import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import ch.epfl.sweng.udle.R;
+
 
 /*
  * Copyright 2014 Google Inc. All rights reserved.
@@ -215,7 +217,7 @@ public class SlidingTabLayout extends HorizontalScrollView {
             }
 
             tabTitleView.setText(adapter.getPageTitle(i));
-            tabTitleView.setTextColor(Color.WHITE);
+            tabTitleView.setTextColor(getResources().getColor(R.color.colorUdle));
             tabView.setOnClickListener(tabClickListener);
             String desc = mContentDescriptions.get(i, null);
             if (desc != null) {

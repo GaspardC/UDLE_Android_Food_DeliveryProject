@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ExpandableListView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -38,6 +39,9 @@ public class OptionsFragment extends Fragment {
         ExpandableListView expandableListView = (ExpandableListView) layout.findViewById(R.id.MenuElement_list);
 
         TextView infoTextView = (TextView) layout.findViewById(R.id.clickOnYourMeal);
+        ImageView dottedLIne = (ImageView) layout.findViewById(R.id.dottedLine);
+        dottedLIne.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+
         adapter = new Options_ExpandableListAdapter(inflater,infoTextView);
         expandableListView.setAdapter(adapter);
 

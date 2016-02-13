@@ -110,12 +110,10 @@ public class MyService extends Service {
 
                                     AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
                                     alarmManager.cancel(pintent);
+
                                 }
                         onDestroy();
-
-
-                        //REST OF CODE HERE//
-                        }
+                    }
                 }).start();
 
             }

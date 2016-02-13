@@ -427,11 +427,12 @@ public class CurrentOrdersActivity extends SlideMenuActivity {
     public boolean changeInWaitingOrders(){
         //Retrieve list from server
         ArrayList<OrderElement> waitingOrdersFromServe = DataManager.getWaitingOrdersForAClient();
+        ParseApplication.waitingOrders = waitingOrdersFromServe;
+
 
         if (waitingOrdersFromServe.size() == 0){
             if (waitingOrders.size() != 0){
                 waitingOrders = waitingOrdersFromServe;
-                ParseApplication.waitingOrders = waitingOrdersFromServe;
 
 
                 return true;
@@ -461,7 +462,6 @@ public class CurrentOrdersActivity extends SlideMenuActivity {
         if (waitingOrdersFromServe.size() != checkSameList){
             //Lists are not the same. Need to refresh
             waitingOrders = waitingOrdersFromServe;
-            ParseApplication.waitingOrders = waitingOrdersFromServe;
 
             return true;
         }

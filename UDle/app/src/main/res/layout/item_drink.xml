@@ -15,7 +15,7 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="16dp"
+        android:padding="@dimen/_3sdp"
         android:orientation="horizontal"
         >
         <LinearLayout
@@ -54,48 +54,45 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/_10sdp"
+                android:padding="@dimen/_7sdp"
                 android:orientation="horizontal"
+                android:layout_marginBottom="@dimen/_3sdp"
+                android:layout_marginTop="@dimen/_3sdp"
 
                 >
                 <Button
                     android:layout_marginRight="@dimen/_3sdp"
-                    android:layout_marginBottom="@dimen/_3sdp"
+                    android:layout_marginBottom="@dimen/_5sdp"
                     android:text="-"
                     android:id="@+id/minusButton_drink"
-                    android:layout_width="@dimen/_20sdp"
-                    android:layout_height="@dimen/_20sdp"
-                    android:textSize="@dimen/_15sdp"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:textSize="20sp"
                     android:textAllCaps="false"
                     android:textColor="@color/colorUdle"
                     android:background="@drawable/button_shape"
-
-
                     />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/total_item_drink"
-                    android:textSize="@dimen/_15sdp"
-                    android:text="0 CHF"
+                    android:textSize="@dimen/_10sdp"
+                    android:text="2 €"
                     android:layout_marginRight="@dimen/_2sdp"
                     android:layout_marginLeft="@dimen/_2sdp"
 
                     />
                 <Button
-
-                    android:layout_marginLeft="@dimen/_3sdp"
-                    android:layout_marginBottom="@dimen/_3sdp"
+                    android:layout_marginRight="@dimen/_3sdp"
+                    android:layout_marginBottom="@dimen/_5sdp"
                     android:text="+"
                     android:id="@+id/plusButton_drink"
-                    android:layout_width="@dimen/_20sdp"
-                    android:layout_height="@dimen/_20sdp"
-                    android:textSize="@dimen/_15sdp"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:textSize="20sp"
                     android:textAllCaps="false"
                     android:textColor="@color/colorUdle"
-
                     android:background="@drawable/button_shape"
-
                     />
 
 
@@ -107,7 +104,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/name_item_drink"
-                android:textSize="@dimen/_15sdp"
+                android:textSize="@dimen/_10sdp"
                 android:text="Coca-Cola"
                 />
 

@@ -20,7 +20,8 @@
         android:layout_height="30dp"
         android:gravity="center_vertical"
         android:id="@+id/OptionsFragment_MenuTitle"
-        android:textSize="20dp"
+        android:textSize="@dimen/_8sdp"
+        android:textColor="@color/blueUdle"
         android:textStyle="bold"
         android:paddingLeft="35dp"/>
         <LinearLayout

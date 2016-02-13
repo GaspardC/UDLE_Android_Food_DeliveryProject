@@ -15,10 +15,9 @@
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
     <!-- permission required to use Alarm Manager -->
-    <uses-permission android:name="com.android.alarm.permission.SET_ALARM"/>
+    <uses-permission android:name="com.android.alarm.permission.SET_ALARM" />
     <!-- permission required to Send SMS -->
-    <uses-permission android:name="android.permission.SEND_SMS"/>
-
+    <uses-permission android:name="android.permission.SEND_SMS" />
 
     <permission
         android:name="ch.epfl.sweng.udle.permission.C2D_MESSAGE"
@@ -31,16 +30,11 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:screenOrientation="portrait"
         android:supportsRtl="true"
         android:theme="@style/MyMaterialTheme">
 
-
         <activity android:name=".activities.DispatchActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".activities.MapActivity"
@@ -154,11 +148,18 @@
         <activity android:name=".activities.WebViewActivity" />
         <activity android:name=".activities.CreditCardActivity" />
         <activity android:name=".activities.EnterNumbersCreditCard" />
-        <activity android:name=".activities.StarActivity"></activity>
+        <activity android:name=".activities.StarActivity" />
+
         <service android:name=".network.MyService" />
 
-        <receiver android:name=".AlarmReciever"/>
+        <activity android:name=".activities.SplashScreen">
+            android:theme="@android:style/Theme.Black.NoTitleBar" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
