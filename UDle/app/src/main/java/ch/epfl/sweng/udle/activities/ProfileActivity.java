@@ -76,9 +76,11 @@ public class ProfileActivity extends SlideMenuActivity {
     titleTextView.setText(R.string.profile_title_logged_in);
 
     avatar = (ProfilePictureView) findViewById(R.id.avatar);
+
     AccessToken accessToken = AccessToken.getCurrentAccessToken();
     if (accessToken != null) {
       avatar.setProfileId(accessToken.getUserId());
+
     }
 
     loginOrLogoutButton.setOnClickListener(new OnClickListener() {

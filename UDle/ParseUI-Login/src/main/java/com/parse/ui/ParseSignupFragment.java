@@ -106,11 +106,12 @@ public class ParseSignupFragment extends ParseLoginFragmentBase implements OnCli
     usernameField.setText(username);
     passwordField.setText(password);
 
-    usernameField.getBackground().setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_IN);
-    passwordField.getBackground().setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_IN);
-    confirmPasswordField.getBackground().setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_IN);
-    telephoneField.getBackground().setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_IN);
-    nameField.getBackground().setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_IN);
+    int transparentWhite = getResources().getColor(R.color.transparentWhite);
+    usernameField.getBackground().setColorFilter(transparentWhite, PorterDuff.Mode.SRC_IN);
+    passwordField.getBackground().setColorFilter(transparentWhite, PorterDuff.Mode.SRC_IN);
+    confirmPasswordField.getBackground().setColorFilter(transparentWhite, PorterDuff.Mode.SRC_IN);
+    telephoneField.getBackground().setColorFilter(transparentWhite, PorterDuff.Mode.SRC_IN);
+    nameField.getBackground().setColorFilter(transparentWhite, PorterDuff.Mode.SRC_IN);
 
 
 
