@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.GradientDrawable;
 import android.location.Address;
 import android.location.Criteria;
 import android.location.Geocoder;
@@ -416,6 +417,8 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
                     marksRestos.add(DataManager.getAverageMarkRestaurant(resto));
                 }
                 ListView listView = (ListView) dialog.findViewById(R.id.listLogo);
+
+
                 listView.setAdapter(new ImageListAdapter(MapActivity.this, urlLogos,marksRestos,nearbyRestaurants));
                 /*Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);*/

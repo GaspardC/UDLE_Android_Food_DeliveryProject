@@ -23,6 +23,8 @@
         android:layout_width="@dimen/_100sdp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:divider="@drawable/list_driver"
+        android:dividerHeight="@dimen/_1sdp"
         android:scrollIndicators="none">
 
     </ListView>
