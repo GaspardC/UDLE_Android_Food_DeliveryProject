@@ -68,7 +68,7 @@
     <string name="help_page">"Help page "</string>
     <string name="helpDesc">Comment ça marche \?</string>
     <string name="back">Retour</string>
-    <string name="currentOrders">Commandes en cours</string>
+    <string name="currentOrders">Commandes</string>
     <string name="currentOrdersDetail">Voir mes commandes en cours</string>
     <string name="OrderNotAvailable">Oops \! Désolé mais cette commande n\'est plus disponible.</string>
     <string name="listOrderRestaurantMap">listOrderRestaurantMap</string>
