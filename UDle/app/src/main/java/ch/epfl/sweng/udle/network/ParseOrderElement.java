@@ -34,7 +34,7 @@ public class ParseOrderElement {
 
         // Convert the orderList of Menu into a list of strings.
         List<List<String>> orderList = new ArrayList<>();
-        for (Menu menu : orderElement.getOrder()) {
+        for (Menu menu : orderElement.getMenus()) {
             List<String> menuElement = new ArrayList<>();
             menuElement.add(menu.getFood().toString());
             for (OptionsTypes options : menu.getOptions()) {

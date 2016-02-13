@@ -126,7 +126,7 @@ public class Menu {
         ArrayList<Menu> menusInRecap = new ArrayList<>();
         ArrayList<Integer> menuNumbers = new ArrayList<>();
 
-        for (Menu menu : Orders.getActiveOrder().getOrder()){
+        for (Menu menu : Orders.getActiveOrder().getMenus()){
             boolean added = false;
             for (int i = 0; i < menusInRecap.size() ; i++){
                 if (menusInRecap.get(i).equals(menu)){

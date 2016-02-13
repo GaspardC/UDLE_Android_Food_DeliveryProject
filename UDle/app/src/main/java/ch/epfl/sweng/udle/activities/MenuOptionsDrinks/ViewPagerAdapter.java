@@ -8,7 +8,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -104,7 +103,7 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
     public void startUpdate(ViewGroup container) {
         View view = container.findViewById(R.id.Layout_Options);
         if (view != null){
-            if (Orders.getActiveOrder() != null && Orders.getActiveOrder().getOrder().size() == 0){ //If no menus selected
+            if (Orders.getActiveOrder() != null && Orders.getActiveOrder().getMenus().size() == 0){ //If no menus selected
                 view.findViewById(R.id.Options_noMenuSelected).setVisibility(View.VISIBLE);
             }
             else{

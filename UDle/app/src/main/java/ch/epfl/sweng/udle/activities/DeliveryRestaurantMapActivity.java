@@ -318,7 +318,7 @@ public class DeliveryRestaurantMapActivity extends SlideMenuActivity {
         int[] to = { R.id.iconListDelivery,R.id.numCommandeDeliveryRestaurant,R.id.addressDelivery};
 
         // Instantiating an adapter to store each items
-        // R.layout.listView_layout defines the layout of each item
+        // R.layout.listView_layout defines the layout of each item_drink
         SimpleAdapter adapter = new SimpleAdapter(this, aList, R.layout.list_item_restaurant_delivery, from, to);
 
         listView.setAdapter(adapter);

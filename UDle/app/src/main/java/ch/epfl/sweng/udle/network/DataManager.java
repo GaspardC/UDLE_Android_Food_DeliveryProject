@@ -453,7 +453,7 @@ public class DataManager {
     public static String getCustomerId() {
         ParseQuery<ParseObject> query = ParseQuery.getQuery("customer");
         query.whereEqualTo("parent", getUser());
-        query.orderByAscending("updatedAt");
+        query.orderByDescending("updatedAt");
 
         String customerID = null;
 

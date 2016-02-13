@@ -4,7 +4,7 @@
         android:radius="@dimen/_50sdp"
         />
     <solid
-        android:color="@color/com_parse_ui_parse_login_button_push"
+        android:color="@color/colorUdle"
         />
     <padding
         android:left="0dp"

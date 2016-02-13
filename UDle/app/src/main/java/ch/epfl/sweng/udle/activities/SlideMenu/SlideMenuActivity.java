@@ -140,7 +140,7 @@ public abstract class SlideMenuActivity extends AppCompatActivity {
 
         //items in the slide menu will use our adapter to be displayed
         slideMenuList.setAdapter(adapter);
-        //create click listeners for each menu item
+        //create click listeners for each menu item_drink
         slideMenuList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -179,12 +179,12 @@ public abstract class SlideMenuActivity extends AppCompatActivity {
     // slide menu actions
 
     /**
-     * Handle item click, depending on its position.
+     * Handle item_drink click, depending on its position.
      * <p>
-     *     If the item has a linkedActivity, the activity will be launched.
+     *     If the item_drink has a linkedActivity, the activity will be launched.
      * </p>
      * <p>
-     *     If the item has an action, the action will be run.
+     *     If the item_drink has an action, the action will be run.
      * </p>
      *
      * @param position
@@ -198,7 +198,7 @@ public abstract class SlideMenuActivity extends AppCompatActivity {
             return;
         }
 
-        Log.d(TAG, "SlideMenu item selected. N° " + position + " : " + slideMenuItems.get(position).name);
+        Log.d(TAG, "SlideMenu item_drink selected. N° " + position + " : " + slideMenuItems.get(position).name);
         //close Menu
         mDrawerLayout.closeDrawer(slideMenu_frame);
         switch (position) {

@@ -27,6 +27,14 @@
         android:layout_weight="90"        >
 
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/clickOnYourMeal"
+            android:textStyle="bold"
+            android:text="@string/clickOnYourMeal"
+            android:layout_marginTop="@dimen/_3sdp"/>
 
     <ExpandableListView
         android:id="@+id/MenuElement_list"
@@ -42,12 +50,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="@dimen/_10sdp"
             >
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/clickOnYourMeal"
-                android:textStyle="bold"
-                android:text="@string/clickOnYourMeal"/>
+
         </LinearLayout>
 
 
@@ -59,16 +62,18 @@
     <Button
         android:layout_width="fill_parent"
         android:layout_height="0dp"
-        android:text="Next"
+        android:text="@string/Next"
         android:id="@+id/optionNext"
-        android:layout_weight="10"
+        android:layout_weight="7"
         android:textAllCaps="false"
+        android:layout_margin="@dimen/_3sdp"
+        android:visibility="gone"
+
         android:textColor="#FFFFFF"
         android:textSize="25sp"
         android:background="@drawable/button_shape2"
         android:shadowColor="#A8A8A8"
         android:shadowDx="0"
-        android:layout_margin="@dimen/_3sdp"
         android:shadowDy="0"
         android:shadowRadius="5"/>
 

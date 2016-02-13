@@ -12,7 +12,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         style="@style/ParseLoginUI.EditText"
-        android:hint="@string/com_parse_ui_username_input_hint"></EditText>
+        android:hint="@string/com_parse_ui_username_input_hint">
+    </EditText>
 
     <EditText
         android:textColor="#FFFF"

@@ -36,6 +36,7 @@
         android:layout_height="@dimen/_20sdp"
         android:layout_gravity="center"
         android:text="+"
+        android:textColor="#FFFF"
         android:textStyle="bold"
         android:textSize="@dimen/_9sdp"
         android:background="@drawable/shape_round_button"

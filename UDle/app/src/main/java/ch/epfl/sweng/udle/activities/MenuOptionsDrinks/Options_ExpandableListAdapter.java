@@ -34,7 +34,7 @@ public class Options_ExpandableListAdapter extends BaseExpandableListAdapter {
     @Override
     public int getGroupCount() {
 
-        int nbrMenus = Orders.getActiveOrder().getOrder().size();
+        int nbrMenus = Orders.getActiveOrder().getMenus().size();
 
         if (nbrMenus != nbrMenusToDisplay){ //If a menu was added/removed, need to 'refresh' the options list
             nbrMenusToDisplay = nbrMenus;
@@ -48,7 +48,11 @@ public class Options_ExpandableListAdapter extends BaseExpandableListAdapter {
     //Children are the options present in the enum 'OptionsTypes'
     @Override
     public int getChildrenCount(int groupPosition) {
-        return OptionsTypes.values().length;
+
+        if(getGroup(groupPosition).toString().contains("Pizza")){
+            return 0;
+        }
+            return OptionsTypes.values().length;
     }
 
     //Return the title of the group (e.g: #2 Burger)
@@ -90,7 +94,7 @@ public class Options_ExpandableListAdapter extends BaseExpandableListAdapter {
         optionTitleTextView.setText(childTitle);
 
         //If the options is already added for the menu, need to check the checkbox
-        Menu menu = Orders.getActiveOrder().getOrder().get(groupPosition);
+        Menu menu = Orders.getActiveOrder().getMenus().get(groupPosition);
         if (menu.getOptions().contains(OptionsTypes.values()[childPosition])){
             optionTitleTextView.setChecked(true);
         }
@@ -103,7 +107,7 @@ public class Options_ExpandableListAdapter extends BaseExpandableListAdapter {
             @Override
             public void onClick(View v) {
                 infoTextView.setVisibility(View.GONE);
-                ArrayList<Menu> menu = Orders.getActiveOrder().getOrder();
+                ArrayList<Menu> menu = Orders.getActiveOrder().getMenus();
                 if (optionTitleTextView.isChecked()) {
                     menu.get(groupPosition).addToOptions(OptionsTypes.values()[childPosition]);
                 } else { //Remove from Options
@@ -141,7 +145,7 @@ public class Options_ExpandableListAdapter extends BaseExpandableListAdapter {
     //Return a list of orders name with the position on this list (e.g : #1 Burger, #2 Kebab, ...);
     public ArrayList<String> getOrdersTitle(){
 
-        ArrayList<Menu> orders = Orders.getActiveOrder().getOrder();
+        ArrayList<Menu> orders = Orders.getActiveOrder().getMenus();
         ArrayList<String> menusTitles = new ArrayList<>();
 
         int listOrdersIndex = 1;

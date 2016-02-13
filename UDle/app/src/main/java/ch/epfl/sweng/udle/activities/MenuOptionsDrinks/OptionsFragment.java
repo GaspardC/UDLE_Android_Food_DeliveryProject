@@ -19,13 +19,14 @@ public class OptionsFragment extends Fragment {
     private LinearLayout layout;
     private ViewPager pager;
     private Options_ExpandableListAdapter adapter;
+    private Button buttonNext;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
 
         layout = (LinearLayout)    inflater.inflate(R.layout.activity_options, container, false);
-        Button buttonNext = (Button) layout.findViewById(R.id.optionNext);
+        buttonNext = (Button) layout.findViewById(R.id.optionNext);
         buttonNext.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view)
@@ -50,6 +51,13 @@ public class OptionsFragment extends Fragment {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
             adapter.notifyDataSetChanged();
+            buttonNext.setVisibility(View.VISIBLE);
+        }
+        else {
+            if(layout!=null){
+                buttonNext.setVisibility(View.GONE);
+            }
+
         }
     }
 
