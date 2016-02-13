@@ -36,14 +36,11 @@
         android:layout_height="@dimen/_20sdp"
         android:layout_gravity="center"
         android:text="+"
-        android:textColor="#FFFF"
+        android:textColor="#ffffff"
         android:textStyle="bold"
         android:textSize="@dimen/_9sdp"
         android:background="@drawable/shape_round_button"
-        android:shadowColor="#A8A8A8"
-        android:shadowDx="0"
-        android:shadowDy="0"
-        android:shadowRadius="5"
+
 
         />
         </LinearLayout>

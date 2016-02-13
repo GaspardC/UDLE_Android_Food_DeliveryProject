@@ -11,7 +11,7 @@
     android:orientation="vertical"
     tools:context="ch.epfl.sweng.udle.activities.MenuOptionsDrinks.OptionsFragment"
     android:id="@+id/Layout_Options"
-    android:background="@drawable/options">
+    >
 
     <TextView
         android:layout_width="match_parent"
@@ -24,7 +24,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="90"        >
+        android:layout_weight="100"        >
 
 
         <TextView
@@ -64,18 +64,15 @@
         android:layout_height="0dp"
         android:text="@string/Next"
         android:id="@+id/optionNext"
-        android:layout_weight="7"
+        android:layout_weight="15"
         android:textAllCaps="false"
         android:layout_margin="@dimen/_3sdp"
+        android:background="@drawable/button_shape2"
+        android:textColor="@color/colorUdle"
+        android:textSize="25sp"
         android:visibility="gone"
 
-        android:textColor="#FFFFFF"
-        android:textSize="25sp"
-        android:background="@drawable/button_shape2"
-        android:shadowColor="#A8A8A8"
-        android:shadowDx="0"
-        android:shadowDy="0"
-        android:shadowRadius="5"/>
+        />
 
 
 </LinearLayout>

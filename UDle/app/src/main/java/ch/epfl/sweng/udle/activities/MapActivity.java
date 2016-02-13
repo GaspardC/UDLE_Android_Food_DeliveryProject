@@ -174,34 +174,11 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
         dialog.setCancelable(true);
         dialog.setContentView(R.layout.dialog);
 
-        /*etSearch = (EditText) dialog.findViewById(R.id.etsearch);
-        btnSearch = (Button) dialog.findViewById(R.id.btnsearch);
-        btnCancel = (Button) dialog.findViewById(R.id.btncancel);
-
-        btnSearch.setOnClickListener(this);
-        btnCancel.setOnClickListener(this);*/
 
         dialog.show();
     }
 
-    /**
-     * @return Runnable: Each 'delay' milliseconds, call the function run function. This run function check if orders need to be refresh and do it if needed.
-     */
-    private Runnable getMapRunnable() {
-        Runnable runnable = new Runnable() {
-            @Override
-            public void run() {
-                boolean waitingOrdersChange = changeInWaitingOrders();
-                boolean currentOrdersChange = changeInCurrentOrders();
 
-                if (waitingOrdersChange || currentOrdersChange) {
-                    showOrdersOnMap();
-                }
-                handler.postDelayed(this, delay);
-            }
-        };
-        return runnable;
-    }
 
 
     /**
@@ -265,98 +242,6 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
             }
         });
     }
-
-    /**
-     *
-     * Check if there was a change in the waiting orders for the restaurant.
-     * If change => refresh the display
-     * If no change => Do nothing
-     *
-     */
-    private boolean changeInWaitingOrders() {
-        //Retrieve list from server
-        ArrayList<OrderElement> waitingOrdersFromServe = DataManager.getWaitingOrdersForAClient();
-
-        if (waitingOrdersFromServe.size() == 0) {
-            if (waitingOrders.size() != 0) {
-                waitingOrders = waitingOrdersFromServe;
-                return true;
-            } else {
-                return false;
-            }
-        }
-
-        //In order to check if there was a change or not, we compare the objectID of the list retrieve from server and the one already on device.
-        //So use this int to see if the retrieved list is the same or not has the local one.
-        int checkSameList = 0;
-
-        //Putting all objectIds of local waitingOrders list into a new list
-        ArrayList<String> currentWaitingOrdersObjectID = new ArrayList<>();
-        for (OrderElement orderElement : waitingOrders) {
-            currentWaitingOrdersObjectID.add(orderElement.getUserOrderInformationsID());
-        }
-
-        //Check for all orderElements in the server list if it already present locally. If yes, add 1 to 'checkSameList'
-        for (OrderElement orderElement : waitingOrdersFromServe) {
-            if (currentWaitingOrdersObjectID.contains(orderElement.getUserOrderInformationsID())) {
-                checkSameList++;
-            }
-        }
-
-        if (waitingOrdersFromServe.size() != checkSameList) {
-            //Lists are not the same. Need to refresh
-            waitingOrders = waitingOrdersFromServe;
-            return true;
-        } else {
-            //Server list is the same as the displayed one. Do nothing.
-            return false;
-        }
-    }
-
-
-    /**
-     *
-     * Check if there was a change in the current orders for the restaurant.
-     * If change => refresh the display
-     * If no change => Do nothing
-     *
-     */
-    private boolean changeInCurrentOrders() {
-        //Retrieve list from server
-        ArrayList<OrderElement> currentOrdersFromServe = DataManager.getEnRouteOrdersForAClient();
-
-        if (currentOrdersFromServe.size() == 0) {
-            currentOrders = currentOrdersFromServe;
-            return true;
-        }
-
-        //In order to check if there was a change or not, we compare the objectID of the list retrieve from server and the one already on device.
-        //So use this int to see if the retrieved list is the same or not has the local one.
-        int checkSameList = 0;
-
-        //Putting all objectIds of local waitingOrders list into a new list
-        ArrayList<String> currentCurrentOrdersObjectID = new ArrayList<>();
-        for (OrderElement orderElement : currentOrders) {
-            currentCurrentOrdersObjectID.add(orderElement.getUserOrderInformationsID());
-        }
-
-        //Check for all orderElements in the server list if it already present locally. If yes, add 1 to 'checkSameList'
-        for (OrderElement orderElement : currentOrdersFromServe) {
-            if (currentCurrentOrdersObjectID.contains(orderElement.getUserOrderInformationsID())) {
-                checkSameList++;
-            }
-        }
-
-        if (currentOrdersFromServe.size() != checkSameList) {
-            //Lists are not the same. Need to refresh
-            currentOrders = currentOrdersFromServe;
-            return true;
-        } else {
-            //Server list is the same as the displayed one. Do nothing.
-            return false;
-        }
-    }
-
 
     public void setDeliveryAdress(String addr) {
         deliveryAddress = addr;

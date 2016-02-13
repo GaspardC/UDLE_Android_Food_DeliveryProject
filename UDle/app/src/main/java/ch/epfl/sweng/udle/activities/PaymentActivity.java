@@ -112,6 +112,7 @@ public class PaymentActivity extends SlideMenuActivity {
                         DataManager.createNewParseUserOrderInformations();
                         Intent intent =  new Intent(PaymentActivity.this, WaitingActivity.class);
                         startActivity(intent);
+                        PaymentActivity.this.finish();
                     }
                 }
             });

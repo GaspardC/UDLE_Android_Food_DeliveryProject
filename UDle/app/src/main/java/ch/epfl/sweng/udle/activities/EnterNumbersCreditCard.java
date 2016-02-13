@@ -109,7 +109,7 @@ public class EnterNumbersCreditCard extends SlideMenuActivity {
 
                             HashMap<String, Object> params = new HashMap<String, Object>();
                             params.put("cardToken", token.getId());
-                            params.put("userId", DataManager.getUser().getObjectId()+ " - " + DataManager.getUserName());
+                            params.put("userId", DataManager.getUser().getObjectId()+ "  " + DataManager.getUserName());
 
                             ParseCloud.callFunctionInBackground("registerCustomer", params, new FunctionCallback<Object>() {
                                 @Override

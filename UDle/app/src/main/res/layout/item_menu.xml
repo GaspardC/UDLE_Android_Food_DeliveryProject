@@ -5,7 +5,7 @@
     android:id="@+id/cv_menu"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    android:layout_marginTop="2dip"
+    android:layout_marginTop="@dimen/_10sdp"
     android:layout_marginBottom="2dip"
     card_view:cardUseCompatPadding="true"
     android:layout_marginLeft="10dp"
@@ -13,6 +13,7 @@
 
 
     <LinearLayout
+        android:layout_marginTop="@dimen/_5sdp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="16dp"
@@ -80,13 +81,10 @@
                     android:layout_height="30dp"
                     android:textSize="20sp"
                     android:textAllCaps="false"
-                    android:textColor="#FFFFFF"
+                    android:textColor="@color/colorUdle"
 
-                    android:background="@drawable/button_shape2"
-                    android:shadowColor="#A8A8A8"
-                    android:shadowDx="0"
-                    android:shadowDy="0"
-                    android:shadowRadius="5"
+                    android:background="@drawable/button_shape"
+
 
                     />
                 <TextView
@@ -109,13 +107,10 @@
                     android:layout_height="30dp"
                     android:textSize="20sp"
                     android:textAllCaps="false"
-                    android:textColor="#FFFFFF"
+                    android:textColor="@color/colorUdle"
 
-                    android:background="@drawable/button_shape2"
-                    android:shadowColor="#A8A8A8"
-                    android:shadowDx="0"
-                    android:shadowDy="0"
-                    android:shadowRadius="5"
+                    android:background="@drawable/button_shape"
+
                     />
 
 

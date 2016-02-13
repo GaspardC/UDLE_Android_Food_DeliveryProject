@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.widget.Toast;
 
+import ch.epfl.sweng.udle.Food.OrderElement;
 import ch.epfl.sweng.udle.Food.Orders;
 import ch.epfl.sweng.udle.HorizontalSlideLibrary.SlidingTabLayout;
 import ch.epfl.sweng.udle.R;
@@ -30,6 +31,9 @@ public class MainActivity extends SlideMenuActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+       /* OrderElement orderElement = new OrderElement();
+        Orders.setActiveOrder(orderElement);*/
+
 
 
 

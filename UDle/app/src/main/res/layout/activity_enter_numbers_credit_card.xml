@@ -19,17 +19,21 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:padding="@dimen/_3sdp"
+        android:layout_marginBottom="@dimen/_3sdp"
         >
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_weight="1"
+            android:padding="@dimen/_3sdp"
+            android:layout_marginBottom="@dimen/_3sdp"
             android:layout_height="wrap_content"
             android:text="Card number :"
             android:id="@+id/textView10" />
 
         <EditText
-            android:paddingLeft="@dimen/_5sdp"
+            android:paddingLeft="@dimen/_3sdp"
             android:inputType="numberPassword"
             android:layout_width="wrap_content"
             android:hint="enter your credit card numbers here"
@@ -102,13 +106,10 @@
         android:id="@+id/validateNewCreditCard"
         android:text="@string/Validate"
         android:textAllCaps="false"
-        android:textColor="#FFFFFF"
+        android:textColor="@color/colorUdle"
         android:textSize="25sp"
 
         android:background="@drawable/button_shape2"
-        android:shadowColor="#A8A8A8"
-        android:shadowDx="0"
-        android:shadowDy="0"
-        android:shadowRadius="5"/>
+        />
 </LinearLayout>
 </RelativeLayout>
