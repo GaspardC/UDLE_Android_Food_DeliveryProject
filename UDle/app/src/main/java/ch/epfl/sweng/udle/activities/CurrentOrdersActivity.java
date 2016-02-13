@@ -1,42 +1,38 @@
 package ch.epfl.sweng.udle.activities;
 
+import android.app.AlarmManager;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
-import android.location.Location;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.service.chooser.ChooserTargetService;
 import android.support.v4.app.NotificationCompat;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
-
-import com.google.android.gms.maps.model.LatLng;
+import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
-import ch.epfl.sweng.udle.Food.DrinkTypes;
-import ch.epfl.sweng.udle.Food.FoodTypes;
-import ch.epfl.sweng.udle.Food.Menu;
-import ch.epfl.sweng.udle.Food.OptionsTypes;
 import ch.epfl.sweng.udle.Food.OrderElement;
 import ch.epfl.sweng.udle.Food.Orders;
 import ch.epfl.sweng.udle.R;
 import ch.epfl.sweng.udle.activities.SlideMenu.SlideMenuActivity;
 import ch.epfl.sweng.udle.network.DataManager;
 import ch.epfl.sweng.udle.network.MyService;
+import ch.epfl.sweng.udle.network.ParseApplication;
 
 /**
  * Based on DeliveryRestaurantMapActivity's code.
@@ -46,7 +42,7 @@ public class CurrentOrdersActivity extends SlideMenuActivity {
     private ListView listView;
     private HashMap<Integer, OrderElement> objectIdHashMapForList; //HashMap between the index of order shown in the list view and the specific order.
     Handler handler; //The list of waiting and current Orders is refresh each 'delay' milliseconds.
-    final int delay = 20000; //60 seconds in milliseconds
+    final int delay = 60000; //60 seconds in milliseconds
     private ArrayList<OrderElement> waitingOrders = new ArrayList<>(); //Orders in the restaurant range that have no restaurant assigned to. Status of order: Waiting
     private ArrayList<OrderElement> currentOrders = new ArrayList<>(); //Orders that the restaurant already accept to deliverd. Status of order: EnRoute
     private ArrayList<OrderElement> deliveredOrders = new ArrayList<>();
@@ -67,6 +63,9 @@ public class CurrentOrdersActivity extends SlideMenuActivity {
         refreshButton = (Button) findViewById(R.id.CurrentOrders_button_refresh);
         /*stopService();
         startService();*/
+
+        stopAlarm();
+        startAlarm();
 
 
 
@@ -94,6 +93,33 @@ public class CurrentOrdersActivity extends SlideMenuActivity {
 
 
         setUpListView();
+
+    }
+
+    private void stopAlarm() {
+        Intent intent = new Intent(this, CurrentOrdersActivity.class);
+        PendingIntent sender = PendingIntent.getBroadcast(this, 0, intent, 0);
+        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+
+        alarmManager.cancel(sender);
+    }
+
+    private void startAlarm() {
+        scheduleAlarm();
+
+    }
+    public void scheduleAlarm()
+    {
+        Calendar cal = Calendar.getInstance();
+
+        Intent intent = new Intent(this, MyService.class);
+        PendingIntent pintent = PendingIntent.getService(this, 0, intent, 0);
+
+        AlarmManager alarm = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+// schedule for every 30 seconds
+        alarm.setRepeating(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), 10 * 1000, pintent);
+
+        Toast.makeText(this, "Alarm Scheduled", Toast.LENGTH_LONG).show();
 
     }
 
@@ -127,12 +153,14 @@ public class CurrentOrdersActivity extends SlideMenuActivity {
     protected void onPause() {
         super.onPause();
 //        handler.removeCallbacksAndMessages(null);
+        ParseApplication.currentActivityOnScreen = false;
         activityNotOnScreen = true;
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        ParseApplication.currentActivityOnScreen = true;
         activityNotOnScreen = false;
     }
 
@@ -260,6 +288,7 @@ public class CurrentOrdersActivity extends SlideMenuActivity {
 
         if (currentOrdersFromServe.size() == 0){
             currentOrders = currentOrdersFromServe;
+
             return true;
         }
 
@@ -402,6 +431,9 @@ public class CurrentOrdersActivity extends SlideMenuActivity {
         if (waitingOrdersFromServe.size() == 0){
             if (waitingOrders.size() != 0){
                 waitingOrders = waitingOrdersFromServe;
+                ParseApplication.waitingOrders = waitingOrdersFromServe;
+
+
                 return true;
             }
             else{
@@ -429,6 +461,8 @@ public class CurrentOrdersActivity extends SlideMenuActivity {
         if (waitingOrdersFromServe.size() != checkSameList){
             //Lists are not the same. Need to refresh
             waitingOrders = waitingOrdersFromServe;
+            ParseApplication.waitingOrders = waitingOrdersFromServe;
+
             return true;
         }
         else {

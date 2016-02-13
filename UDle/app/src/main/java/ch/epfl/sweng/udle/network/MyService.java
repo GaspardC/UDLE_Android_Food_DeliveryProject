@@ -1,5 +1,6 @@
 package ch.epfl.sweng.udle.network;
 
+import android.app.AlarmManager;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -11,9 +12,7 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.IBinder;
-import android.os.Message;
 import android.support.v4.app.NotificationCompat;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -26,7 +25,7 @@ import ch.epfl.sweng.udle.activities.CurrentOrdersActivity;
  */
 public class MyService extends Service {
 
-    private ArrayList<OrderElement> waitingOrders = new ArrayList<>(); //Orders in the restaurant range that have no restaurant assigned to. Status of order: Waiting
+    private ArrayList<OrderElement> waitingOrders = ParseApplication.waitingOrders; //Orders in the restaurant range that have no restaurant assigned to. Status of order: Waiting
     Handler mHandler=new Handler();
 
 /*
@@ -45,11 +44,8 @@ public class MyService extends Service {
         Toast.makeText(this, "Service Started", Toast.LENGTH_LONG).show();
 */
 
-        try {
             runa();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
 /*        for(int i=0;i<5;i++) {
             try {
                 Thread.sleep(10000);
@@ -99,30 +95,27 @@ public class MyService extends Service {
 //        Toast.makeText(this, "Service Destroyed", Toast.LENGTH_LONG).show();
     }
 
-    public void runa() throws Exception{
+    public void runa(){
         mHandler.post(new Runnable() {
             public void run() {
 
                 new Thread(new Runnable(){
                     public void run() {
-                        // TODO Auto-generated method stub
-                        for(int i=0;i<10;i++)
-                        {
-                            try {
-                                Thread.sleep(10000);
-                                if(changeInWaitingOrders()){
+
+                                if(changeInWaitingOrders() && !ParseApplication.currentActivityOnScreen){
                                     displayNotification();
-                                    onDestroy();
+
+                                    Intent intent = new Intent(getBaseContext(), MyService.class);
+                                    PendingIntent pintent = PendingIntent.getService(getBaseContext(), 0, intent, 0);
+
+                                    AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+                                    alarmManager.cancel(pintent);
                                 }
+                        onDestroy();
 
 
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-                            //REST OF CODE HERE//
+                        //REST OF CODE HERE//
                         }
-
-                    }
                 }).start();
 
             }
@@ -149,7 +142,15 @@ public class MyService extends Service {
                 return false;
             }
         }
+        if (waitingOrders.size() == 0) {
+            return true;
+        }
+            if (waitingOrdersFromServe.size() != waitingOrders.size()){
 
+                waitingOrders = waitingOrdersFromServe;
+                return  true;
+            }
+/*
         //In order to check if there was a change or not, we compare the objectID of the list retrieve from server and the one already on device.
         //So use this int to see if the retrieved list is the same or not has the local one.
         int checkSameList = 0;
@@ -171,11 +172,11 @@ public class MyService extends Service {
             //Lists are not the same. Need to refresh
             waitingOrders = waitingOrdersFromServe;
             return true;
-        }
-        else {
-            //Server list is the same as the displayed one. Do nothing.
-            return false;
-        }
+        }*/
+            else{
+                //Server list is the same as the displayed one. Do nothing.
+                return false;
+            }
     }
 
     private void displayNotification() {

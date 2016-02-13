@@ -29,7 +29,7 @@
         android:layout_weight="0.5"
         android:gravity="center"
         android:orientation="vertical">
-        <com.facebook.login.widget.ProfilePictureView
+        <ch.epfl.sweng.udle.activities.ProfilePictureViewRounded
             android:id="@+id/avatar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

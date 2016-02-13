@@ -94,6 +94,10 @@ public class EnterNumbersCreditCard extends SlideMenuActivity {
             //Stripe test public Key
             stripe = new Stripe("pk_test_If3q98H3IFSDM2FfjyfWMBAS");
 
+            /*//Stripe live public Key
+            stripe = new Stripe("sk_live_vq3d419mFdV6CaTpKMrSeuIe");*/
+
+
 
             stripe.createToken(
                     card,
@@ -105,7 +109,7 @@ public class EnterNumbersCreditCard extends SlideMenuActivity {
 
                             HashMap<String, Object> params = new HashMap<String, Object>();
                             params.put("cardToken", token.getId());
-                            params.put("userId", DataManager.getUser().getObjectId());
+                            params.put("userId", DataManager.getUser().getObjectId()+ " - " + DataManager.getUserName());
 
                             ParseCloud.callFunctionInBackground("registerCustomer", params, new FunctionCallback<Object>() {
                                 @Override
