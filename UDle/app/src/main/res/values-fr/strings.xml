@@ -5,14 +5,10 @@
     <string name="enterYourNumberPhone">Entre ton numéro de téléphone</string>
     <string name="Hello">Hello\!</string>
     <string name="Next">Suivant</string>
-
-
     <string name="mapActivityNoGps"></string>
     <string name="locationEnable">Géolocalisation activée</string>
     <string name="invalidAddress">Adresse non valide</string>
-
     <string name="incorrectLocation"></string>
-
     <string name="MenuMap_SearchHint">Entre une adresse de livraison</string>
     <string name="NoCardInformation"></string>
     <string name="ValidatePosition">Commander ici \!</string>
@@ -98,5 +94,4 @@
     <string name="Delievered">Livrée</string>
     <string name="noCreditCardAdded">Pas de carte de crédit enregistrée</string>
     <string name="errorInYourPhoneCall"></string>
-
 </resources>
