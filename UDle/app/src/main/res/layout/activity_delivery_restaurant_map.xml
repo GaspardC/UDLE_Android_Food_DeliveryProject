@@ -36,6 +36,7 @@
         android:layout_weight="0.1"
         android:orientation="horizontal">
         <Button
+            android:layout_margin="@dimen/_3sdp"
             android:layout_width="0dp"
             android:layout_height="fill_parent"
             android:text="@string/switchToListMode"
@@ -44,15 +45,10 @@
             android:layout_weight="0.5"
 
             android:textAllCaps="false"
-            android:textColor="#FFFFFF"
-            android:textSize="25sp"
+            android:textSize="15sp"
 
             android:background="@drawable/button_shape2"
-            android:shadowColor="#A8A8A8"
-            android:shadowDx="0"
-            android:shadowDy="0"
-            android:shadowRadius="5"
-            android:layout_margin="@dimen/_3sdp"
+            android:textColor="@color/colorUdle"
 
             />
         <Button
@@ -66,7 +62,7 @@
 
             android:textAllCaps="false"
             android:textColor="@color/colorUdle"
-            android:textSize="25sp"
+            android:textSize="15sp"
 
             android:background="@drawable/button_shape2"
 

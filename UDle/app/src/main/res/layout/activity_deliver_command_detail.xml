@@ -107,15 +107,28 @@
             android:textSize="15sp"
             android:textStyle="bold"
             android:gravity="start"
-            android:layout_weight="1"/>
+            android:layout_weight="3"/>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="end"
+            >
         <TextView
             android:id="@+id/DeliverCommandDetail_deliveryName"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:gravity="end"
-            android:layout_weight="1"/>
+            android:layout_weight="5"/>
+            <ImageView
+                android:gravity="end"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:onClick="callTheCustomer"
+                android:src="@drawable/telephone"/>
+        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
@@ -151,14 +164,10 @@
         android:layout_weight="10"
         android:onClick="acceptCommand"
         android:textAllCaps="false"
-        android:textColor="#FFFFFF"
+        android:textColor="@color/colorUdle"
         android:textSize="25sp"
-
         android:background="@drawable/button_shape2"
-        android:shadowColor="#A8A8A8"
-        android:shadowDx="0"
-        android:shadowDy="0"
-        android:shadowRadius="5"/>
+        />
     <Button
         android:id="@+id/DeliverCommandDetail_commandDelivered"
         android:layout_width="fill_parent"
