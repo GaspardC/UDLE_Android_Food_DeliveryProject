@@ -59,7 +59,6 @@
     <string name="profile_login_button_label">Log in</string>
     <string name="parse_app_id">9owjl8GmUsbfyoKtXhd5hK7QX8CUJVfuAvSLNoaY</string>
     <string name="parse_client_key">xd6XKHd9NxLfzFPbHQ5xaMHVzU1gfeLen0qCyI4F</string>
-    <string name="facebook_app_id">1483920968589089</string>
     <string name="noMenuNoOptions">Oops \! tu as oublié de choisir ton menu… Sélectionnne au moins un menu pour pouvoir continuer la commande</string>
     <string name="noOptions">Pas d\'options</string>
     <string name="orderedBy">Commandé par: </string>

@@ -37,12 +37,9 @@
             android:text="@string/com_parse_ui_parse_login_button_label"
             android:textColor="#FC363B"
             android:textAllCaps="false"
-            android:textSize="25sp"
+            android:textSize="20sp"
             android:background="@drawable/button_shape_empty"
-            android:shadowColor="#A8A8A8"
-            android:shadowDx="0"
-            android:shadowDy="0"
-            android:shadowRadius="5"/>
+           />
 
         <Button
             android:id="@+id/parse_signup_button"
@@ -52,12 +49,9 @@
             android:text="@string/com_parse_ui_parse_signup_button_label"
             android:textColor="#FC363B"
             android:textAllCaps="false"
-            android:textSize="25sp"
+            android:textSize="20sp"
             android:background="@drawable/button_shape_empty"
-            android:shadowColor="#A8A8A8"
-            android:shadowDx="0"
-            android:shadowDy="0"
-            android:shadowRadius="5"/>
+            />
     </LinearLayout>
 
     <Button

@@ -49,7 +49,7 @@ public class Options_ExpandableListAdapter extends BaseExpandableListAdapter {
     @Override
     public int getChildrenCount(int groupPosition) {
 
-        if(getGroup(groupPosition).toString().contains("Pizza")){
+        if(getGroup(groupPosition).toString().contains("Margherita")){
             return 0;
         }
             return OptionsTypes.values().length;

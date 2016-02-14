@@ -63,18 +63,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
-        android:orientation="horizontal">
+        android:orientation="vertical">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/deliveryAddress"
             android:textSize="15sp"/>
         <TextView
+            android:layout_marginTop="@dimen/_2sdp"
             android:id="@+id/RecapActivity_deliveryAddress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textStyle="bold"
-            android:textSize="18sp"
             android:layout_marginStart="10dp"
             android:layout_marginLeft="10dp"/>
     </LinearLayout>
@@ -153,7 +153,7 @@
         android:layout_marginTop="@dimen/_3sdp"
         android:text="@string/confirm"
         android:onClick="gotToPaymentActivity"
-        android:layout_weight="10"
+        android:layout_weight="15"
         android:textAllCaps="false"
         android:textColor="@color/colorUdle"
         android:textSize="@dimen/_15sdp"

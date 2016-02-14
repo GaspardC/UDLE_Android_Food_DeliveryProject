@@ -1,6 +1,5 @@
 package ch.epfl.sweng.udle.activities.MenuOptionsDrinks;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -18,11 +17,6 @@ import java.util.List;
 
 import ch.epfl.sweng.udle.Food.FoodTypes;
 import ch.epfl.sweng.udle.R;
-import ch.epfl.sweng.udle.activities.RecapActivity;
-
-
-
-
 
 
 public class MenuFragment extends Fragment {
@@ -78,7 +72,7 @@ public class MenuFragment extends Fragment {
         int number = 0;
         items.add(new Item("Burger", (int) FoodTypes.BURGER.getPrice(), R.drawable.burger,number));
         items.add(new Item("Kebab",(int) FoodTypes.KEBAB.getPrice(), R.drawable.kebab,number));
-        items.add(new Item("Pizza", (int) FoodTypes.PIZZA.getPrice(), R.drawable.pizza,number));
+        items.add(new Item("Margherita", (int) FoodTypes.MARGHERITA.getPrice(), R.drawable.pizza,number));
     }
 
     private void initializeAdapter(){

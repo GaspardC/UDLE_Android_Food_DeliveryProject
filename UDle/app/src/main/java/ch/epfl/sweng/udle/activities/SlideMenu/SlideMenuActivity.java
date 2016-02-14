@@ -106,8 +106,8 @@ public abstract class SlideMenuActivity extends AppCompatActivity {
         else{
             helloTextView.setText("Hello ");
         }
-        TextView username = (TextView) findViewById(R.id.SlideMenu_userName);
-        username.setText("yours settings");
+        /*TextView username = (TextView) findViewById(R.id.SlideMenu_userName);
+        username.setText("yours settings");*/
 
         avatar = (ProfilePictureView) findViewById(R.id.avatar);
         AccessToken accessToken = AccessToken.getCurrentAccessToken();

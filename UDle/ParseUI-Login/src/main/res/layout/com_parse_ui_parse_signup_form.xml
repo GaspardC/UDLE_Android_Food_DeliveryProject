@@ -77,15 +77,13 @@
         android:id="@+id/create_account"
         style="@style/ParseLoginUI.Button"
         android:layout_marginTop="@dimen/com_parse_ui_small_vertical_spacing"
+        android:layout_marginBottom="@dimen/com_parse_ui_small_vertical_spacing"
         android:text="@string/com_parse_ui_create_account_button_label"
         android:textAllCaps="false"
-        android:textColor="#FFFFFF"
         android:textSize="25sp"
+        android:background="@drawable/button_shape_empty"
+        android:textColor="#FC363B"
 
-        android:background="@drawable/button_shape2"
-        android:shadowColor="#A8A8A8"
-        android:shadowDx="0"
-        android:shadowDy="0"
-        android:shadowRadius="5"/>
+        />
 
 </LinearLayout>

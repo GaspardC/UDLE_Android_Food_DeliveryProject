@@ -63,9 +63,11 @@ public class CurrentOrdersActivity extends SlideMenuActivity {
         refreshButton = (Button) findViewById(R.id.CurrentOrders_button_refresh);
         /*stopService();
         startService();*/
+/*
 
         stopAlarm();
         startAlarm();
+*/
 
 
 

@@ -97,7 +97,7 @@
 
 
         <Button
-            android:layout_weight="2"
+            android:layout_weight="20"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/Refresh"
@@ -107,7 +107,7 @@
 
             android:textAllCaps="false"
             android:textColor="@color/colorUdle"
-            android:textSize="10sp"
+            android:textSize="12sp"
 
             android:background="@drawable/button_shape2"
 

@@ -236,6 +236,7 @@ public class DataManager {
             e.printStackTrace();
         }
 
+
         //Start Query
         ParseQuery<ParseObject> query = ParseQuery.getQuery("ParseUserOrderInformations");
         query.whereEqualTo("orderStatus", OrderStatus.WAITING.toString());

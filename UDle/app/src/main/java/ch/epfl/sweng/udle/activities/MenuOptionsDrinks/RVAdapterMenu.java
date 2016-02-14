@@ -17,13 +17,11 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-import ch.epfl.sweng.udle.Food.DrinkTypes;
 import ch.epfl.sweng.udle.Food.FoodTypes;
 import ch.epfl.sweng.udle.Food.Menu;
 import ch.epfl.sweng.udle.Food.OrderElement;
 import ch.epfl.sweng.udle.Food.Orders;
 import ch.epfl.sweng.udle.R;
-import ch.epfl.sweng.udle.activities.MenuOptionsDrinks.Item;
 
 
 public class RVAdapterMenu extends RecyclerView.Adapter<RVAdapterMenu.PersonViewHolder> {
@@ -140,8 +138,8 @@ public class RVAdapterMenu extends RecyclerView.Adapter<RVAdapterMenu.PersonView
         if (name.equals("Burger")){
             addOneMenu(FoodTypes.BURGER);
         }
-        if (name.equals("Pizza")){
-            addOneMenu(FoodTypes.PIZZA);
+        if (name.equals("Margherita")){
+            addOneMenu(FoodTypes.MARGHERITA);
         }
 
     }
