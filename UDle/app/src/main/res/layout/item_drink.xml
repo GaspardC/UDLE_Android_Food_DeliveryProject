@@ -41,6 +41,7 @@
                 android:id="@+id/price_item_drink"
                 android:layout_gravity="center"
                 android:text="2 CHF"
+                android:visibility="gone"
 
                 />
         </LinearLayout>
@@ -106,6 +107,7 @@
                 android:id="@+id/name_item_drink"
                 android:textSize="@dimen/_10sdp"
                 android:text="Coca-Cola"
+                android:visibility="gone"
                 />
 
 
