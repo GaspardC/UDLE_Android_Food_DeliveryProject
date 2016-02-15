@@ -10,12 +10,15 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ch.epfl.sweng.udle.Food.DrinkTypes;
+import ch.epfl.sweng.udle.Food.Menu;
 import ch.epfl.sweng.udle.Food.OrderElement;
 import ch.epfl.sweng.udle.Food.Orders;
 import ch.epfl.sweng.udle.R;
+import ch.epfl.sweng.udle.network.DataManager;
 
 public class RVAdapterDrinks extends RecyclerView.Adapter<RVAdapterDrinks.PersonViewHolder> {
 
@@ -101,6 +104,7 @@ public class RVAdapterDrinks extends RecyclerView.Adapter<RVAdapterDrinks.Person
                   items.get(i).setTotal(number);
                   items.get(i).setTotalName(number);
                   items.get(i).setText(number);
+                  removeOrder(i);
               }
           }
       });
@@ -117,6 +121,22 @@ public class RVAdapterDrinks extends RecyclerView.Adapter<RVAdapterDrinks.Person
                 addOrder(number,i);
             }
         });
+
+    }
+
+    private void removeOrder(int pos) {
+        String name  = items.get(pos).name;
+        OrderElement orderElement = Orders.getActiveOrder();
+        ArrayList<DrinkTypes> drinks = orderElement.getDrinks();
+        boolean alreadyRemove = false;
+        for(int i=0; i<drinks.size();i++){
+            if (! alreadyRemove) {
+                if (drinks.get(i).toString().equals(name)) {
+                    alreadyRemove = true;
+                    drinks.remove(drinks.get(i));
+                }
+            }
+        }
 
     }
 

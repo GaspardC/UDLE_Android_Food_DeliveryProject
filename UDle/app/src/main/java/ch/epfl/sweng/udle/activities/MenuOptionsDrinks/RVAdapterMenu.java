@@ -109,6 +109,7 @@ public class RVAdapterMenu extends RecyclerView.Adapter<RVAdapterMenu.PersonView
                     items.get(i).setTotal(number);
                     items.get(i).setTotalName(number);
                     items.get(i).setText(number);
+                    removeOneMenu(i);
                 }
             }
         });
@@ -125,6 +126,24 @@ public class RVAdapterMenu extends RecyclerView.Adapter<RVAdapterMenu.PersonView
                 addOrder(number,i);
             }
         });
+
+    }
+
+    private void removeOneMenu(int pos) {
+        String name  = items.get(pos).name;
+        OrderElement orderElement = Orders.getActiveOrder();
+        ArrayList<Menu> menus = orderElement.getMenus();
+        Boolean menuAlreadyRemoved = false;
+
+        //Start at the end of the list in order to remove the last added Kebab
+        for(int i=menus.size()-1 ; i >= 0 ; i--){
+            if (menus.get(i).getFood().toString().equals(name)){
+                if (! menuAlreadyRemoved){
+                    menuAlreadyRemoved = true;
+                    menus.remove(menus.get(i));
+                }
+            }
+        }
 
     }
 
@@ -148,6 +167,7 @@ public class RVAdapterMenu extends RecyclerView.Adapter<RVAdapterMenu.PersonView
     public int getItemCount() {
         return items.size();
     }
+
     private void addOneMenu(FoodTypes foodTypes){
         OrderElement orderElement = Orders.getActiveOrder();
         ArrayList<Menu> menus = orderElement.getMenus();

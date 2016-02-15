@@ -130,6 +130,7 @@ public class MyService extends Service {
     public boolean changeInWaitingOrders(){
         //Retrieve list from server
         ArrayList<OrderElement> waitingOrdersFromServe = DataManager.getWaitingOrdersForAClient();
+        waitingOrders = ParseApplication.waitingOrders;
 
         if (waitingOrdersFromServe.size() == 0){
             if (waitingOrders.size() != 0){

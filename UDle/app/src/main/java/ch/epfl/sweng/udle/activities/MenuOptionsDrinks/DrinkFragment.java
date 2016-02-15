@@ -69,7 +69,7 @@ public class DrinkFragment extends Fragment {
         int number = 0;
         items.add(new Item("Coca", 2, R.drawable.coca_cola,number));
         items.add(new Item("Orangina",2, R.drawable.orangina,number));
-        items.add(new Item("Water", 2, R.drawable.evian,number));
+        items.add(new Item("Water", 2, R.drawable.water,number));
     }
 
     private void initializeAdapter(){

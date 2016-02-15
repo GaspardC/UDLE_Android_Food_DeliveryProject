@@ -61,10 +61,10 @@ public class CurrentOrdersActivity extends SlideMenuActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_current_orders);
         refreshButton = (Button) findViewById(R.id.CurrentOrders_button_refresh);
-        /*stopService();
+/*        stopService();
         startService();*/
-/*
 
+/*
         stopAlarm();
         startAlarm();
 */
@@ -154,7 +154,7 @@ public class CurrentOrdersActivity extends SlideMenuActivity {
     @Override
     protected void onPause() {
         super.onPause();
-//        handler.removeCallbacksAndMessages(null);
+        handler.removeCallbacksAndMessages(null);
         ParseApplication.currentActivityOnScreen = false;
         activityNotOnScreen = true;
     }
@@ -429,7 +429,7 @@ public class CurrentOrdersActivity extends SlideMenuActivity {
     public boolean changeInWaitingOrders(){
         //Retrieve list from server
         ArrayList<OrderElement> waitingOrdersFromServe = DataManager.getWaitingOrdersForAClient();
-        ParseApplication.waitingOrders = waitingOrdersFromServe;
+        waitingOrders = ParseApplication.waitingOrders;
 
 
         if (waitingOrdersFromServe.size() == 0){

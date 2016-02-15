@@ -20,8 +20,8 @@
         android:orientation="vertical"
         >
         <ImageView
-            android:layout_width="@dimen/_200sdp"
-            android:layout_height="@dimen/_200sdp"
+            android:layout_width="@dimen/_150sdp"
+            android:layout_height="@dimen/_150sdp"
             android:id="@+id/item_photo_menu"
             android:src="@drawable/burger"
             android:layout_gravity="center"
