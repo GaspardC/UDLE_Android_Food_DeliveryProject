@@ -5,11 +5,11 @@ import android.widget.TextView;
 import ch.epfl.sweng.udle.Food.Orders;
 
 
-class Item {
-    String name;
+public class Item {
+    public String name;
     int price;
-    int photoId;
-    int number;
+    public int photoId;
+    public int number;
     private TextView totalTextView ;
     private TextView nameTextView;
     private String text;

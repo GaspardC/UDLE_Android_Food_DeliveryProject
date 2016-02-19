@@ -1,5 +1,6 @@
 package ch.epfl.sweng.udle.activities;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -56,7 +57,10 @@ public class ImageListAdapter extends ArrayAdapter {
             @Override
             public void onClick(View v) {
                 String idResto = nearbyRestaurants.get(position).getObjectId();
-                DataManager.getUser().put("ArrayOfNearRestaurant", idResto);
+                ArrayList<String> nearbyRestaurantsId = new ArrayList<>();
+                nearbyRestaurantsId.add(idResto);
+
+                DataManager.getUser().put("ArrayOfNearRestaurant", nearbyRestaurantsId);
                 Intent intent = new Intent(v.getContext(), MainActivity.class);
                 v.getContext().startActivity(intent);
 

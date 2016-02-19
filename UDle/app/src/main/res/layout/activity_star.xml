@@ -12,7 +12,7 @@
     <ImageView
         android:layout_width="@dimen/_80sdp"
         android:layout_height="@dimen/_80sdp"
-        android:src="@drawable/logoburger"
+        android:src="@drawable/pinfinal"
         android:layout_marginBottom="@dimen/_30sdp"
         android:layout_centerHorizontal="true"
         android:layout_above="@+id/textVieStartActivity"/>
@@ -39,7 +39,7 @@
         android:layout_below="@+id/ratingBar"
         android:id="@+id/StarActivityimageBelow"
         android:layout_centerHorizontal="true"
-        android:src="@drawable/logoburger"/>
+        android:src="@drawable/pinfinal"/>
     <Button
         android:layout_marginTop="@dimen/_30sdp"
         android:layout_width="@dimen/_100sdp"
@@ -50,12 +50,9 @@
         android:onClick="validateStar"
 
         android:textAllCaps="false"
-        android:textColor="#FFFFFF"
+        android:textColor="@color/colorUdle"
         android:textSize="25sp"
         android:background="@drawable/button_shape2"
-        android:shadowColor="#A8A8A8"
-        android:shadowDx="0"
-        android:shadowDy="0"
-        android:shadowRadius="5"/>
+        />
 
 </RelativeLayout>

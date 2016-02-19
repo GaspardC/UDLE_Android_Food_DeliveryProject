@@ -2,16 +2,22 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center"
-    android:orientation="vertical"    >
+    android:orientation="vertical"
+    >
 
     <EditText
+        android:textColor="#FFFF"
+        android:textColorHint="#FFFF"
         android:id="@+id/signup_username_input"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         style="@style/ParseLoginUI.EditText"
-        android:hint="@string/com_parse_ui_username_input_hint"></EditText>
+        android:hint="@string/com_parse_ui_username_input_hint">
+    </EditText>
 
     <EditText
+        android:textColor="#FFFF"
+        android:textColorHint="@color/com_parse_ui_parse_login_text_hint"
         android:id="@+id/signup_password_input"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -23,6 +29,8 @@
         android:selectAllOnFocus="true" />
 
     <EditText
+        android:textColor="#FFFF"
+        android:textColorHint="@color/com_parse_ui_parse_login_text_hint"
         android:id="@+id/signup_confirm_password_input"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -34,6 +42,8 @@
         android:selectAllOnFocus="true" />
 
     <EditText
+        android:textColor="#FFFF"
+        android:textColorHint="@color/com_parse_ui_parse_login_text_hint"
         android:id="@+id/signup_email_input"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -42,6 +52,8 @@
         android:hint="@string/com_parse_ui_email_input_hint"
         android:inputType="textEmailAddress" />
     <EditText
+        android:textColor="#FFFF"
+        android:textColorHint="@color/com_parse_ui_parse_login_text_hint"
         android:id="@+id/signup_phone_input"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -51,6 +63,8 @@
         android:inputType="phone" />
 
     <EditText
+        android:textColor="#FFFF"
+        android:textColorHint="@color/com_parse_ui_parse_login_text_hint"
         android:id="@+id/signup_name_input"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -63,6 +77,13 @@
         android:id="@+id/create_account"
         style="@style/ParseLoginUI.Button"
         android:layout_marginTop="@dimen/com_parse_ui_small_vertical_spacing"
-        android:text="@string/com_parse_ui_create_account_button_label" />
+        android:layout_marginBottom="@dimen/com_parse_ui_small_vertical_spacing"
+        android:text="@string/com_parse_ui_create_account_button_label"
+        android:textAllCaps="false"
+        android:textSize="25sp"
+        android:background="@drawable/button_shape_empty"
+        android:textColor="#FC363B"
+
+        />
 
 </LinearLayout>

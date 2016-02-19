@@ -1,6 +1,8 @@
 package ch.epfl.sweng.udle.activities;
 
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -20,7 +22,9 @@ import ch.epfl.sweng.udle.Food.Menu;
 import ch.epfl.sweng.udle.Food.OrderElement;
 import ch.epfl.sweng.udle.Food.Orders;
 import ch.epfl.sweng.udle.R;
+import ch.epfl.sweng.udle.activities.SlideMenu.SlideMenuActivity;
 import ch.epfl.sweng.udle.network.DataManager;
+import ch.epfl.sweng.udle.network.ParseUserOrderInformations;
 
 /**
  * Display a recap of the ordered click by a Restaurant user.
@@ -31,7 +35,7 @@ import ch.epfl.sweng.udle.network.DataManager;
  *
  * When the delivery was made, the Restaurant confirm it.
  */
-public class DeliverCommandDetailActivity extends AppCompatActivity {
+public class DeliverCommandDetailActivity extends SlideMenuActivity {
 
     private OrderElement order;
 
@@ -121,5 +125,28 @@ public class DeliverCommandDetailActivity extends AppCompatActivity {
 
         Intent intent = new Intent(this, DeliveryRestaurantMapActivity.class);
         startActivity(intent);
+    }
+
+    public void callTheCustomer(View view) {
+        try {
+            Intent my_callIntent = new Intent(Intent.ACTION_CALL);
+            String customerName = order.getOrderedUserName();
+
+
+            String num = DataManager.getPhoneNumber(customerName);
+            if( num == null){
+                Toast.makeText(getApplicationContext(), "Sorry no phone number available", Toast.LENGTH_LONG).show();
+                return;
+            }
+            startActivity(my_callIntent);
+            my_callIntent.setData(Uri.parse("tel:" + num));
+
+
+        } catch (ActivityNotFoundException e) {
+            Toast.makeText(getApplicationContext(), "Error in your phone call" + e.getMessage(), Toast.LENGTH_LONG).show();
+        } catch (SecurityException e){
+            Toast.makeText(getApplicationContext(), "UDle doesn't have the right to pass phone call" + e.getMessage(), Toast.LENGTH_LONG).show();
+        }
+
     }
 }

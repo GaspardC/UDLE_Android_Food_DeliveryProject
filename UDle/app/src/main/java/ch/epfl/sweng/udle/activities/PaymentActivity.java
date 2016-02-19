@@ -61,6 +61,8 @@ public class PaymentActivity extends SlideMenuActivity {
 
     public void payment_button_click(View view) {
 
+        OrderElement order = Orders.getActiveOrder();
+
         AlertDialog.Builder adb = new AlertDialog.Builder(this);
 
         adb.setTitle("Confirm the payment");
@@ -112,6 +114,7 @@ public class PaymentActivity extends SlideMenuActivity {
                         DataManager.createNewParseUserOrderInformations();
                         Intent intent =  new Intent(PaymentActivity.this, WaitingActivity.class);
                         startActivity(intent);
+                        PaymentActivity.this.finish();
                     }
                 }
             });

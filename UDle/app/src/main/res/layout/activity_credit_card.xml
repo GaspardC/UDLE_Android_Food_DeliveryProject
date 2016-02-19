@@ -16,10 +16,11 @@
 
     <ImageView
         android:layout_centerInParent="true"
-        android:layout_width="wrap_content"
+        android:layout_width="@dimen/_100sdp"
         android:id="@+id/CreditCardActivityIcon"
-        android:layout_height="wrap_content"
-        android:src="@drawable/credit_card_plus"/>
+        android:onClick="addCreditCard"
+        android:layout_height="@dimen/_100sdp"
+        android:src="@drawable/add_card_awesome_picto"/>
     <TextView
         android:id="@+id/CreditCardActivityTextViewNoCreditCard"
         android:layout_width="wrap_content"
@@ -38,14 +39,11 @@
         android:layout_height="wrap_content"
         android:text="@string/addACreditCard"
         android:textAllCaps="false"
-        android:textColor="#FFFFFF"
+        android:textColor="@color/colorUdle"
         android:textSize="25sp"
 
         android:background="@drawable/button_shape2"
-        android:shadowColor="#A8A8A8"
-        android:shadowDx="0"
-        android:shadowDy="0"
-        android:shadowRadius="5"/>
+        />
 </RelativeLayout>
 </RelativeLayout>
 

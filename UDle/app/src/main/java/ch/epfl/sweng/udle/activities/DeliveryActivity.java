@@ -37,9 +37,9 @@ public class DeliveryActivity extends SlideMenuActivity {
             startActivity(my_callIntent);
             */
         } catch (ActivityNotFoundException e) {
-            Toast.makeText(getApplicationContext(), "Error in your phone call" + e.getMessage(), Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), getString(R.string.errorInYourPhoneCall) + e.getMessage(), Toast.LENGTH_LONG).show();
         } catch (SecurityException e){
-            Toast.makeText(getApplicationContext(), "UDle doesn't have the right to pass phone call" + e.getMessage(), Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), getString(R.string.rightToPassPhoneCall) + e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
 

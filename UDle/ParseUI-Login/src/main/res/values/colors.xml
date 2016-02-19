@@ -16,7 +16,8 @@
     <color name="com_parse_ui_twitter_login_button_focus">#2788BE</color>
     <color name="com_parse_ui_parse_login_button_order_now">#fbf9cb</color>
     <color name="ColorPrimary">#e62117</color>
-
+    <color name="colorUdle">#Fc363b</color>
+    <color name="transparentWhite">#00FFFFFF</color>
 
 
 </resources>

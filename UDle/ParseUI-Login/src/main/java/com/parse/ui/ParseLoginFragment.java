@@ -158,7 +158,7 @@ public class ParseLoginFragment extends ParseLoginFragmentBase {
     parseLogin.setVisibility(View.VISIBLE);
 
     if (config.isParseLoginEmailAsUsername()) {
-      usernameField.setHint(R.string.com_parse_ui_email_input_hint);
+      usernameField.setHint(R.string.com_parse_ui_username_input_hint);
       usernameField.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
     }
 
@@ -285,9 +285,9 @@ public class ParseLoginFragment extends ParseLoginFragmentBase {
                     @Override
                     public void done(ParseException e) {
                       if (e != null) {
-                        debugLog(getString(
+                        /*debugLog(getString(
                                 R.string.com_parse_ui_login_warning_facebook_login_user_update_failed) +
-                                e.toString());
+                                e.toString());*/
                       }
                       loginSuccess();
                     }

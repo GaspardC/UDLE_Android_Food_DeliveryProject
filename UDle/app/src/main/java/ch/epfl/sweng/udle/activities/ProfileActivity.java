@@ -57,7 +57,7 @@ public class ProfileActivity extends SlideMenuActivity {
   private SeekBar seekBarRestaurantDistance;
   private ParseUser currentUser;
   private  TextView seekBarValue;
-  private static ProfilePictureView avatar;
+  private static ProfilePictureViewRounded avatar;
   private TextView phoneTextView;
 
   @Override
@@ -75,10 +75,12 @@ public class ProfileActivity extends SlideMenuActivity {
     seekBarValue = (TextView)findViewById(R.id.value_distance_restaurant);
     titleTextView.setText(R.string.profile_title_logged_in);
 
-    avatar = (ProfilePictureView) findViewById(R.id.avatar);
+
+    avatar = (ProfilePictureViewRounded) findViewById(R.id.avatar);
     AccessToken accessToken = AccessToken.getCurrentAccessToken();
     if (accessToken != null) {
       avatar.setProfileId(accessToken.getUserId());
+
     }
 
     loginOrLogoutButton.setOnClickListener(new OnClickListener() {

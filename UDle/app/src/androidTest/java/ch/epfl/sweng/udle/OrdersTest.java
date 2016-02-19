@@ -54,13 +54,13 @@ public class OrdersTest {
         orders.setActiveOrder(orderElement);
 
         OrderElement orderElem = getOrderElem();
-        ArrayList<Menu> menus = orderElem.getOrder();
+        ArrayList<Menu> menus = orderElem.getMenus();
         ArrayList<DrinkTypes> drinks = orderElem.getDrinks();
         for (int i=0 ; i < menus.size() ; i++){
-            assertEquals(menus.get(i).getFood().getMaxNbr(), orders.getActiveOrder().getOrder().get(i).getFood().getMaxNbr());
-            assertEquals(menus.get(i).getFood().getPrice(), orders.getActiveOrder().getOrder().get(i).getFood().getPrice());
-            assertEquals(menus.get(i).getFood().toString(), orders.getActiveOrder().getOrder().get(i).getFood().toString());
-            assertEquals(menus.get(i).getOptions(), orders.getActiveOrder().getOrder().get(i).getOptions());
+            assertEquals(menus.get(i).getFood().getMaxNbr(), orders.getActiveOrder().getMenus().get(i).getFood().getMaxNbr());
+            assertEquals(menus.get(i).getFood().getPrice(), orders.getActiveOrder().getMenus().get(i).getFood().getPrice());
+            assertEquals(menus.get(i).getFood().toString(), orders.getActiveOrder().getMenus().get(i).getFood().toString());
+            assertEquals(menus.get(i).getOptions(), orders.getActiveOrder().getMenus().get(i).getOptions());
         }
         for (int i=0; i < drinks.size() ; i++){
             assertEquals(drinks.get(i).toString(), orderElement.getDrinks().get(i).toString());

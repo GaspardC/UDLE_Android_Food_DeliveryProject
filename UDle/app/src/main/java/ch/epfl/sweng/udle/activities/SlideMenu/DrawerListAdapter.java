@@ -1,6 +1,7 @@
 package ch.epfl.sweng.udle.activities.SlideMenu;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +14,7 @@ import java.util.ArrayList;
 import ch.epfl.sweng.udle.R;
 
 /**
- * Created by Johan on 30.11.2015.
+ * Created by Gasp on 30.11.2015.
  */
 class DrawerListAdapter extends BaseAdapter {
     private static String TAG = DrawerListAdapter.class.getSimpleName();
@@ -60,6 +61,7 @@ class DrawerListAdapter extends BaseAdapter {
         titleView.setText( mNavItems.get(position).name);
         subtitleView.setText( mNavItems.get(position).description);
         iconView.setImageResource(mNavItems.get(position).icon);
+        Log.d("outme", " " + position);
 
         return view;
     }

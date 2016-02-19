@@ -16,6 +16,7 @@ public class CreditCardActivity extends SlideMenuActivity {
 
     private Button addACreditCard;
     private TextView infoCreditCard;
+    private boolean fromPayment = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,13 +24,24 @@ public class CreditCardActivity extends SlideMenuActivity {
         setContentView(R.layout.activity_credit_card);
         addACreditCard = (Button) findViewById(R.id.CreditCardActivityButtonAdd);
         setButtonBehavior();
+        Bundle bundle = getIntent().getExtras();
+        if( bundle!= null){
+            String from = bundle.getString("from");
+            if(from != null && from.equals("payment")){
+                fromPayment = true;
+            }
+        }
     }
 
     private void setButtonBehavior() {
         addACreditCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 Intent intent = new Intent(CreditCardActivity.this, EnterNumbersCreditCard.class);
+                if(fromPayment){
+                    intent.putExtra("from","payment");
+                }
                 startActivity(intent);
             }
         });
@@ -42,11 +54,19 @@ public class CreditCardActivity extends SlideMenuActivity {
 
         String customerId = DataManager.getCustomerId();
         if(customerId == null){
-            infoCreditCard.setText("No credit card added");
+            addACreditCard.setText("Add a credit card");
+            infoCreditCard.setText(R.string.noCreditCardAdded);
             return;
         }
         String last4 = DataManager.getLast4();
         infoCreditCard.setText("card added : **** **** **** " + last4);
+        addACreditCard.setText("Add a new credit card");
+
+    }
+
+    public void addCreditCard(View view) {
+        setButtonBehavior();
+
 
     }
 }

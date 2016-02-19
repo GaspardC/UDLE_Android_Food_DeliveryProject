@@ -48,7 +48,7 @@ public class ParseOrderElementTest {
         drinks.remove(DrinkTypes.COCA);
         assertEquals(true, drinks.isEmpty());
 
-        ArrayList<Menu> menu = orderElement.getOrder();
+        ArrayList<Menu> menu = orderElement.getMenus();
         assertEquals(2, menu.size());
         Menu menu1 = menu.get(0);
         assertEquals(FoodTypes.KEBAB.toString(),menu1.getFood().toString());
