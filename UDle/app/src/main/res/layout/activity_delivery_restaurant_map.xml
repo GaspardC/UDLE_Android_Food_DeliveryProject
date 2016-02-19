@@ -41,6 +41,16 @@
             android:id="@+id/button_list_mode"
             android:onClick="switchOrderList"
             android:layout_weight="0.5"
+
+            android:textAllCaps="false"
+            android:textColor="#FFFFFF"
+            android:textSize="25sp"
+
+            android:background="@drawable/button_shape2"
+            android:shadowColor="#A8A8A8"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:shadowRadius="5"
             />
         <Button
             android:layout_width="0dp"
@@ -49,6 +59,16 @@
             android:id="@+id/RestaurantMap_button_refresh"
             android:onClick="refreshAll"
             android:layout_weight="0.5"
+
+            android:textAllCaps="false"
+            android:textColor="#FFFFFF"
+            android:textSize="25sp"
+
+            android:background="@drawable/button_shape2"
+            android:shadowColor="#A8A8A8"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:shadowRadius="5"
             />
 
     </LinearLayout>

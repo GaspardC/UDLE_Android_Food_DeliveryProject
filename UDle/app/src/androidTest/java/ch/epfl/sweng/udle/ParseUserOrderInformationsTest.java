@@ -111,7 +111,7 @@ public class ParseUserOrderInformationsTest {
     public void testDeliveryRestaurant() throws InterruptedException, ParseException {
         ParseUserOrderInformations parseUserOrderInformations = new ParseUserOrderInformations();
 
-        parseUserOrderInformations.setParseDeliveringRestaurant("restaurant Test");
+        parseUserOrderInformations.setParseDeliveringRestaurantName("restaurant Test");
         Thread.sleep(2000);
         String restaurant = parseUserOrderInformations.getParseDeliveringRestaurant();
 
@@ -133,7 +133,7 @@ public class ParseUserOrderInformationsTest {
     public void testSetDeliveryGuyRestaurantNull(){
         ParseUserOrderInformations parseUserOrderInformations = new ParseUserOrderInformations();
         try{
-            parseUserOrderInformations.setParseDeliveringRestaurant(null);
+            parseUserOrderInformations.setParseDeliveringRestaurantName(null);
             fail("Set delivery restaurant to null doesn't throw an error.");
         } catch (Exception e){
             //Good
@@ -143,7 +143,7 @@ public class ParseUserOrderInformationsTest {
     public void testSetDeliveryGuyRestaurantEmpty(){
         ParseUserOrderInformations parseUserOrderInformations = new ParseUserOrderInformations();
         try{
-            parseUserOrderInformations.setParseDeliveringRestaurant("");
+            parseUserOrderInformations.setParseDeliveringRestaurantName("");
             fail("Set delivery restaurant to empty doesn't throw an error.");
         } catch (Exception e){
             //Good
