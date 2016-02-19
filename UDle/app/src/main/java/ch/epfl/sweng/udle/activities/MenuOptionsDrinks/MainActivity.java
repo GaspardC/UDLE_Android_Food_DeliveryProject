@@ -1,14 +1,17 @@
 package ch.epfl.sweng.udle.activities.MenuOptionsDrinks;
 
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.widget.Toast;
 
+import ch.epfl.sweng.udle.Food.OrderElement;
 import ch.epfl.sweng.udle.Food.Orders;
 import ch.epfl.sweng.udle.HorizontalSlideLibrary.SlidingTabLayout;
 import ch.epfl.sweng.udle.R;
+import ch.epfl.sweng.udle.activities.MapActivity;
 import ch.epfl.sweng.udle.activities.SlideMenu.SlideMenuActivity;
 
 
@@ -28,6 +31,9 @@ public class MainActivity extends SlideMenuActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        /*OrderElement orderElement = new OrderElement();
+        Orders.setActiveOrder(orderElement);*/
+
 
 
 
@@ -54,7 +60,7 @@ public class MainActivity extends SlideMenuActivity {
         tabs.setCustomTabColorizer(new SlidingTabLayout.TabColorizer() {
             @Override
             public int getIndicatorColor(int position) {
-                return getResources().getColor(R.color.tabsScrollColor);
+                return getResources().getColor(R.color.blueUdle);
             }
         });
 
@@ -114,8 +120,10 @@ public class MainActivity extends SlideMenuActivity {
      */
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
         Orders.setActiveOrder(null);
+        super.onBackPressed();
+        /*Intent intent = new Intent(this, MapActivity.class);
+        startActivity(intent);*/
     }
 
 

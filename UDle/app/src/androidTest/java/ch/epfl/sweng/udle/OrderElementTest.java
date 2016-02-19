@@ -44,7 +44,7 @@ public class OrderElementTest {
     public void initTest(){
         OrderElement orderElement = new OrderElement();
 
-        assertEquals(0, orderElement.getOrder().size());
+        assertEquals(0, orderElement.getMenus().size());
         assertEquals(0, orderElement.getDrinks().size());
         assertEquals(deliveryLocation, orderElement.getDeliveryLocation());
         assertEquals(deliveryAddress, orderElement.getDeliveryAddress());
@@ -61,7 +61,7 @@ public class OrderElementTest {
 
         addMenu();
 
-        ArrayList<Menu> menus = orderElmement.getOrder();
+        ArrayList<Menu> menus = orderElmement.getMenus();
         for (int i=0 ; i < menus.size() ; i++){
             Menu men = orderList.get(i);
             assertEquals(men.getFood().toString(), menus.get(i).getFood().toString());
@@ -87,7 +87,7 @@ public class OrderElementTest {
         addMenu();
         addMenu();
 
-        ArrayList<Menu> menus = orderElmement.getOrder();
+        ArrayList<Menu> menus = orderElmement.getMenus();
         for (int i=0 ; i < menus.size() ; i++){
             Menu men = orderList.get(i);
             assertEquals(men.getFood().toString(), menus.get(i).getFood().toString());
@@ -224,7 +224,7 @@ public class OrderElementTest {
         orderElement.addMenu(menu1);
         orderElement.removeToFood(menu1);
 
-        assertEquals(1, orderElement.getOrder().size());
+        assertEquals(1, orderElement.getMenus().size());
     }
     @Test
     public void removeFoodNotIn(){
@@ -236,7 +236,7 @@ public class OrderElementTest {
         Menu menu2 = new Menu();
         menu2.setFood(FoodTypes.BURGER);
         orderElement.removeToFood(menu2);
-        assertEquals(2, orderElement.getOrder().size());
+        assertEquals(2, orderElement.getMenus().size());
     }
     @Test
     public void removeFoodNull(){

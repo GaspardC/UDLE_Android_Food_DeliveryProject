@@ -5,10 +5,7 @@
     android:id="@+id/llEnterCreditCardNumber"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:padding="@dimen/_3sdp"
     tools:context="ch.epfl.sweng.udle.activities.EnterNumbersCreditCard">
 
     <LinearLayout
@@ -19,17 +16,22 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:padding="@dimen/_3sdp"
+        android:layout_marginBottom="@dimen/_3sdp"
         >
 
         <TextView
+            android:textSize="@dimen/_12sdp"
             android:layout_width="wrap_content"
             android:layout_weight="1"
+            android:padding="@dimen/_3sdp"
+            android:layout_marginBottom="@dimen/_3sdp"
             android:layout_height="wrap_content"
             android:text="Card number :"
             android:id="@+id/textView10" />
 
         <EditText
-            android:paddingLeft="@dimen/_5sdp"
+            android:paddingLeft="@dimen/_3sdp"
             android:inputType="numberPassword"
             android:layout_width="wrap_content"
             android:hint="enter your credit card numbers here"
@@ -44,7 +46,7 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingRight="@dimen/_20sdp">
+        android:paddingRight="@dimen/_1sdp">
 
         <LinearLayout
             android:layout_weight="5"
@@ -54,6 +56,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Expiracy date :"
+            android:textSize="@dimen/_12sdp"
             android:id="@+id/textView11" />
 
         <EditText
@@ -69,6 +72,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:layout_gravity="right"
         android:layout_weight="5"
         android:orientation="horizontal"
         android:layout_width="0dp"
@@ -78,6 +82,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="@dimen/_12sdp"
             android:text="Security number :"
             android:inputType="number"
             android:id="@+id/textView12" />
@@ -102,13 +107,10 @@
         android:id="@+id/validateNewCreditCard"
         android:text="@string/Validate"
         android:textAllCaps="false"
-        android:textColor="#FFFFFF"
+        android:textColor="@color/colorUdle"
         android:textSize="25sp"
 
         android:background="@drawable/button_shape2"
-        android:shadowColor="#A8A8A8"
-        android:shadowDx="0"
-        android:shadowDy="0"
-        android:shadowRadius="5"/>
+        />
 </LinearLayout>
 </RelativeLayout>

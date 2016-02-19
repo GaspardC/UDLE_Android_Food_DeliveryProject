@@ -94,6 +94,10 @@ public class EnterNumbersCreditCard extends SlideMenuActivity {
             //Stripe test public Key
             stripe = new Stripe("pk_test_If3q98H3IFSDM2FfjyfWMBAS");
 
+            /*//Stripe live public Key
+            stripe = new Stripe("sk_live_vq3d419mFdV6CaTpKMrSeuIe");*/
+
+
 
             stripe.createToken(
                     card,
@@ -106,6 +110,7 @@ public class EnterNumbersCreditCard extends SlideMenuActivity {
                             HashMap<String, Object> params = new HashMap<String, Object>();
                             params.put("cardToken", token.getId());
                             params.put("userId", DataManager.getUser().getObjectId());
+                            params.put("descrip", DataManager.getUser().getObjectId() + "  " + DataManager.getUserName());
 
                             ParseCloud.callFunctionInBackground("registerCustomer", params, new FunctionCallback<Object>() {
                                 @Override
@@ -134,12 +139,13 @@ public class EnterNumbersCreditCard extends SlideMenuActivity {
 
     @Override
     public void onBackPressed(){
-        if (directPayment){
-            Intent intent = new Intent(this,EnterNumbersCreditCard.class);
-            startActivity(intent);
+        if (!directPayment){
+            super.onBackPressed();
+
         }
         else{
-            super.onBackPressed();
+            Intent intent = new Intent(this,PaymentActivity.class);
+            startActivity(intent);
         }
     }
 }

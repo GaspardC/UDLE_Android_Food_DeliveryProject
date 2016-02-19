@@ -29,11 +29,18 @@ import com.parse.Parse;
 import com.parse.ParseFacebookUtils;
 import com.parse.ParseObject;
 
+import java.util.ArrayList;
+
+import ch.epfl.sweng.udle.Food.OrderElement;
+
 
 public class ParseApplication extends Application {
 
 
-  @Override
+    public static boolean currentActivityOnScreen;
+    public static ArrayList<OrderElement> waitingOrders = new ArrayList<>();
+
+    @Override
   public void onCreate() {
     super.onCreate();
 /*    // Required - Initialize the Parse SDK

@@ -6,16 +6,14 @@
 <!--
     <color name="ColorPrimaryDark">#c31c13</color>
 -->
-    <color name="tabsScrollColor">#f7c460</color>
+    <color name="tabsScrollColor">#212d45</color>
     <color name="validateColor">#81F781</color>
     <color name="colorHorizontalTab">#fd5244</color>
     <color name="greyColor">#d3d3d3</color>
     <color name="lightYellow">#ffffe0</color>
     <color name="colorUdle">#Fc363b</color>
-
-
-
-
+    <color name="colorBackProfile">#FC363B</color>
+    <color name="blueUdle">#212d45</color>
 
 
 </resources>

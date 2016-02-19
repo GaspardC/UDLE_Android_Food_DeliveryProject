@@ -236,6 +236,7 @@ public class DataManager {
             e.printStackTrace();
         }
 
+
         //Start Query
         ParseQuery<ParseObject> query = ParseQuery.getQuery("ParseUserOrderInformations");
         query.whereEqualTo("orderStatus", OrderStatus.WAITING.toString());
@@ -453,7 +454,7 @@ public class DataManager {
     public static String getCustomerId() {
         ParseQuery<ParseObject> query = ParseQuery.getQuery("customer");
         query.whereEqualTo("parent", getUser());
-        query.orderByAscending("updatedAt");
+        query.orderByDescending("updatedAt");
 
         String customerID = null;
 
@@ -496,7 +497,7 @@ public class DataManager {
         ParseUserOrderInformations orderInformations = getParseUserObjectWithActiveOrder();
         String restaurantId = orderInformations.getString("restaurantId");
         ParseQuery<ParseUser> query = ParseUser.getQuery();
-        query.whereEqualTo("objectId",restaurantId);
+        query.whereEqualTo("objectId", restaurantId);
         ParseUser restaurantUser = null;
 
         try {
@@ -550,6 +551,20 @@ public class DataManager {
     }
 
 
+    public static String getPhoneNumber(String customerName) {
+        //Start Query
+        String num = null;
+        ParseQuery<ParseUser> query = ParseUser.getQuery();
+        query.whereEqualTo("username", customerName);
+        try {
+            List<ParseUser> listOfUser =  query.find();
+            if(listOfUser!= null){
+                num = listOfUser.get(0).getString("phone");
+            }
 
-
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return num;
+    }
 }

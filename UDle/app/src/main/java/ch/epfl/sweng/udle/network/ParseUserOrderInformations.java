@@ -1,9 +1,12 @@
 package ch.epfl.sweng.udle.network;
 
+import android.util.Log;
+
 import com.parse.ParseClassName;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -187,10 +190,15 @@ public class ParseUserOrderInformations extends ParseObject {
      */
     public void setOrder (ParseObject orderElement) {
         if (orderElement == null){
-            throw new IllegalArgumentException("Try to set the order to a invalidl value");
+            throw new IllegalArgumentException("Try to set the order to a invalid value");
         }
         this.put("orderElementPointer", orderElement);
-        this.saveInBackground();
+        this.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                Log.d("showed", "b");
+            }
+        });
     }
 
 

@@ -46,7 +46,7 @@ public class OrderElement {
     /**
      * @return The olist of Menus
      */
-    public ArrayList<Menu> getOrder(){
+    public ArrayList<Menu> getMenus(){
         return orderList;
     }
 

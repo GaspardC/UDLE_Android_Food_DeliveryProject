@@ -1,22 +1,15 @@
 package ch.epfl.sweng.udle;
 
 import android.support.test.InstrumentationRegistry;
-import android.support.test.rule.ActivityTestRule;
 import android.test.ActivityInstrumentationTestCase2;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.action.ViewActions.scrollTo;
-import static android.support.test.espresso.action.ViewActions.swipeLeft;
-import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.matcher.RootMatchers.withDecorView;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.core.IsNot.not;
-
-import org.junit.Test;
 
 import java.util.ArrayList;
 
@@ -117,7 +110,7 @@ public class OptionsTest extends ActivityInstrumentationTestCase2<MainActivity> 
         }
 
         OrderElement orderElement = Orders.getActiveOrder();
-        for (Menu menu :orderElement.getOrder()){
+        for (Menu menu :orderElement.getMenus()){
             for(OptionsTypes optionsTypes: OptionsTypes.values()){
                 assertTrue(menu.getOptions().contains(optionsTypes));
             }
@@ -135,7 +128,7 @@ public class OptionsTest extends ActivityInstrumentationTestCase2<MainActivity> 
         OptionsTypes salad = OptionsTypes.SALAD;
         onView(withText(salad.toString())).perform(click());
         OrderElement orderElement = Orders.getActiveOrder();
-        for (Menu menu :orderElement.getOrder()){
+        for (Menu menu :orderElement.getMenus()){
             assertFalse(menu.getOptions().contains(salad));
         }
     }
@@ -152,7 +145,7 @@ public class OptionsTest extends ActivityInstrumentationTestCase2<MainActivity> 
         onView(withText("#2  Burger")).check(matches(isDisplayed()));
 
         OrderElement orderElement = Orders.getActiveOrder();
-        ArrayList<Menu> menu = orderElement.getOrder();
+        ArrayList<Menu> menu = orderElement.getMenus();
 
         for(OptionsTypes optionsTypes: OptionsTypes.values()){
             assertTrue(menu.get(0).getOptions().contains(optionsTypes));

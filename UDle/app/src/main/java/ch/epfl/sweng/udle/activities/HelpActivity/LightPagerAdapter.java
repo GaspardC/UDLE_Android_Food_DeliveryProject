@@ -126,6 +126,6 @@ public class LightPagerAdapter extends PagerAdapter {
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
         container.removeView((LinearLayout) object);
-        Log.d(TAG, "item destroyed");
+        Log.d(TAG, "item_drink destroyed");
     }
 }

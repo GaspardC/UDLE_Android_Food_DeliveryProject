@@ -4,15 +4,48 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingTop="15dp">
+    android:paddingTop="15dp"
+    android:paddingBottom="15dp"
+
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
+        android:layout_weight="10"
         android:layout_height="30dp"
         android:gravity="center_vertical"
         android:id="@+id/OptionsFragment_MenuTitle"
-        android:textSize="20dp"
+        android:textColor="@color/blueUdle"
         android:textStyle="bold"
         android:paddingLeft="35dp"/>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginRight="@dimen/_30sdp"
+            >
+
+    <Button
+        android:id="@+id/plusButtonOptionsList"
+        android:layout_width="@dimen/_20sdp"
+        android:layout_height="@dimen/_20sdp"
+        android:layout_gravity="center"
+        android:text="+"
+        android:textColor="#ffffff"
+        android:textStyle="bold"
+        android:textSize="@dimen/_9sdp"
+        android:background="@drawable/shape_round_button"
+
+
+        />
+        </LinearLayout>
+
+    </LinearLayout>
+
 
 </LinearLayout>

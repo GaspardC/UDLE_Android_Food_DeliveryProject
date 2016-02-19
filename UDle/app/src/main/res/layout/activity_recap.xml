@@ -6,17 +6,24 @@
     android:layout_height="match_parent"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingTop="@dimen/_15sdp"
+    android:paddingBottom="@dimen/_15sdp"
     tools:context="ch.epfl.sweng.udle.RecapActivity"
     >
+
 
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/imageView3"
-        android:src= "@drawable/receipt"
+        android:src= "@drawable/recap_payment_bg"
         android:scaleType="fitXY"/>
+    <ImageView
+        android:layout_marginTop="@dimen/_15sdp"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_50sdp"
+        android:src="@drawable/map_pin_final"/>
+
 
     <LinearLayout
 
@@ -25,24 +32,24 @@
         android:layout_height="match_parent"
         android:layout_marginLeft="@dimen/_30sdp"
         android:layout_marginRight="@dimen/_30sdp"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="15dp">
+        android:layout_marginBottom="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_15sdp">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/recapOfCommand"
-        android:id="@+id/RecapActivity_recapTitle"
-        android:textAlignment="center"
-        android:gravity="center"/>
+        <ImageView
+            android:layout_marginTop="@dimen/_60sdp"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_2sdp"
+            android:background="@color/colorUdle"
+            />
+
 
     <LinearLayout
         android:id="@+id/RecapActivity_deliveryUserName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="@dimen/_10sdp"
         android:orientation="horizontal">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -62,19 +69,19 @@
         android:id="@+id/RecapActivity_deliveryAdd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:orientation="horizontal">
+        android:layout_marginTop="@dimen/_10sdp"
+        android:orientation="vertical">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/deliveryAddress"
             android:textSize="15sp"/>
         <TextView
+            android:layout_marginTop="@dimen/_2sdp"
             android:id="@+id/RecapActivity_deliveryAddress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textStyle="bold"
-            android:textSize="18sp"
             android:layout_marginStart="10dp"
             android:layout_marginLeft="10dp"/>
     </LinearLayout>
@@ -96,8 +103,8 @@
             android:id="@+id/RecapActivity_deliveryCost"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="10"
-            android:layout_marginTop="10dp"
+            android:layout_weight="15"
+            android:layout_marginTop="2dp"
             android:layout_below="@id/RecapActivity_recapListView">
             <TextView
                 android:layout_width="wrap_content"
@@ -124,7 +131,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp">
+        android:layout_marginTop="@dimen/_40sdp">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -146,23 +153,25 @@
 
 
     <Button
+        android:padding="@dimen/_1sdp"
         android:id="@+id/RecapActivity_recapConfirm"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginBottom="@dimen/_5sdp"
-        android:layout_marginTop="@dimen/_3sdp"
+        android:layout_marginTop="@dimen/_5sdp"
         android:text="@string/confirm"
         android:onClick="gotToPaymentActivity"
-        android:layout_weight="7"
+        android:layout_weight="15"
         android:textAllCaps="false"
-        android:textColor="#FFFFFF"
+        android:textColor="@color/colorUdle"
         android:textSize="25sp"
         android:background="@drawable/button_shape2"
-        android:shadowColor="#A8A8A8"
-        android:shadowDx="0"
-        android:shadowDy="0"
-        android:shadowRadius="5"
         />
+        <!--android:shadowColor="#A8A8A8"-->
+        <!--android:shadowDx="0"-->
+        <!--android:shadowDy="0"-->
+        <!--android:shadowRadius="5"-->
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -193,8 +202,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
-            android:id="@+id/RecapActivity_expected_time_layout"
             android:visibility="gone"
+            android:id="@+id/RecapActivity_expected_time_layout"
             android:orientation="horizontal">
             <TextView
                 android:layout_width="0dp"
@@ -218,9 +227,9 @@
             <Button
                 android:id="@+id/RecapActivity_callThedeliveryGuy"
                 android:layout_width="0dp"
+                android:gravity="center_horizontal"
                 android:layout_marginLeft="@dimen/_2sdp"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/_2sdp"
+                android:layout_height="@dimen/_30sdp"
                 android:background="@drawable/telephone"
                 android:onClick="callDeliveryGuy"
                 android:layout_weight="3"/>

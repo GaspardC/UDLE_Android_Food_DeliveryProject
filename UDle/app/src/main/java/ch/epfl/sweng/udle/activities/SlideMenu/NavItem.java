@@ -16,10 +16,10 @@ public class NavItem {
      * If you want to launch a new activity, you may want to use
      * @see #NavItem(String, String, int, Class)
      *
-     * @param name name of the item
+     * @param name name of the item_drink
      * @param description short description, will be visible under the name
      * @param icon
-     * @param action action performed when the item is clicked. It will be run <b>synchronously</b>
+     * @param action action performed when the item_drink is clicked. It will be run <b>synchronously</b>
      */
     public NavItem(String name, String description, int icon, Runnable action){
         this.name = name;
@@ -28,10 +28,10 @@ public class NavItem {
         this.action = action;
     }
     /**
-     * @param name name of the item
+     * @param name name of the item_drink
      * @param description short description, will be visible under the name
      * @param icon
-     * @param linkedActivity Activity launched when the item is clicked
+     * @param linkedActivity Activity launched when the item_drink is clicked
      */
     public NavItem(String name, String description, int icon, Class<?> linkedActivity){
         this.name = name;
@@ -47,7 +47,7 @@ public class NavItem {
      *  @see SlideMenuActivity#selectItemFromList(int)
      * </p>
      *
-     * @param name name of the item
+     * @param name name of the item_drink
      * @param description short description, will be visible under the name
      * @param icon
      */

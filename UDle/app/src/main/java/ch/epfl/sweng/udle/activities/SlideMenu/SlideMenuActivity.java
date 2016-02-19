@@ -75,19 +75,19 @@ public abstract class SlideMenuActivity extends AppCompatActivity {
 
 
         //set menu items
-
-        //home
-        slideMenuItems.add(new NavItem(getString(R.string.home), getString(R.string.orderNow), R.mipmap.ic_launcher, MapActivity.class));
-        slideMenuItems.add(new NavItem(getString(R.string.currentOrders), getString(R.string.currentOrdersDetail), R.mipmap.ic_launcher, CurrentOrdersActivity.class));
-
-
         if(DataManager.isARestaurant()){
-            slideMenuItems.add(new NavItem(getString(R.string.restaurantMode), getString(R.string.restaurantModeDesc), R.drawable.logogreen, DeliveryRestaurantMapActivity.class));
+            slideMenuItems.add(new NavItem(getString(R.string.restaurantMode), getString(R.string.restaurantModeDesc), R.drawable.icon_resto_mode, DeliveryRestaurantMapActivity.class));
         }
 
-        slideMenuItems.add(new NavItem(getString(R.string.creditCard), getString(R.string.addACreditCard),R.mipmap.ic_launcher, CreditCardActivity.class));
-        slideMenuItems.add(new NavItem(getString(R.string.about), getString(R.string.aboutus), R.mipmap.ic_launcher, AboutActivity.class));
-        slideMenuItems.add(new NavItem(getString(R.string.help), getString(R.string.helpDesc), R.drawable.ic_help, new Runnable() {
+        //home
+        slideMenuItems.add(new NavItem(getString(R.string.home), getString(R.string.orderNow),R.drawable.icon_home1, MapActivity.class));
+        slideMenuItems.add(new NavItem(getString(R.string.currentOrders), getString(R.string.currentOrdersDetail),R.drawable.icon_current_order1, CurrentOrdersActivity.class));
+
+
+
+        slideMenuItems.add(new NavItem(getString(R.string.creditCard), getString(R.string.addACreditCard),R.drawable.icon_credit_card1, CreditCardActivity.class));
+        slideMenuItems.add(new NavItem(getString(R.string.about), getString(R.string.aboutus), R.drawable.icon_about1, AboutActivity.class));
+        slideMenuItems.add(new NavItem(getString(R.string.help), getString(R.string.helpDesc), R.drawable.icon_howtouse1, new Runnable() {
             @Override
             public void run() {
                 Intent newActivity = new Intent(getApplicationContext(), HelpActivity.class);
@@ -106,8 +106,8 @@ public abstract class SlideMenuActivity extends AppCompatActivity {
         else{
             helloTextView.setText("Hello ");
         }
-        TextView username = (TextView) findViewById(R.id.SlideMenu_userName);
-        username.setText("yours settings");
+        /*TextView username = (TextView) findViewById(R.id.SlideMenu_userName);
+        username.setText("yours settings");*/
 
         avatar = (ProfilePictureView) findViewById(R.id.avatar);
         AccessToken accessToken = AccessToken.getCurrentAccessToken();
@@ -140,7 +140,7 @@ public abstract class SlideMenuActivity extends AppCompatActivity {
 
         //items in the slide menu will use our adapter to be displayed
         slideMenuList.setAdapter(adapter);
-        //create click listeners for each menu item
+        //create click listeners for each menu item_drink
         slideMenuList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -179,12 +179,12 @@ public abstract class SlideMenuActivity extends AppCompatActivity {
     // slide menu actions
 
     /**
-     * Handle item click, depending on its position.
+     * Handle item_drink click, depending on its position.
      * <p>
-     *     If the item has a linkedActivity, the activity will be launched.
+     *     If the item_drink has a linkedActivity, the activity will be launched.
      * </p>
      * <p>
-     *     If the item has an action, the action will be run.
+     *     If the item_drink has an action, the action will be run.
      * </p>
      *
      * @param position
@@ -198,7 +198,7 @@ public abstract class SlideMenuActivity extends AppCompatActivity {
             return;
         }
 
-        Log.d(TAG, "SlideMenu item selected. N° " + position + " : " + slideMenuItems.get(position).name);
+        Log.d(TAG, "SlideMenu item_drink selected. N° " + position + " : " + slideMenuItems.get(position).name);
         //close Menu
         mDrawerLayout.closeDrawer(slideMenu_frame);
         switch (position) {

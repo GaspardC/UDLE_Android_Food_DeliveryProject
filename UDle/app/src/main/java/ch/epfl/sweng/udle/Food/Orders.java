@@ -11,7 +11,7 @@ public class Orders {
 ;
     private static ArrayList<OrderElement> currentOrders = new ArrayList<>();
     private static OrderElement            activeOrder = null;
-    private static String                  moneyDevise = " CHF";
+    private static String                  moneyDevise = " €";
 
 
     public Orders(){

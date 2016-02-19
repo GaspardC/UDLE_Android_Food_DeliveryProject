@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/cv_menu"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_marginTop="@dimen/_10sdp"
+    android:layout_marginBottom="2dip"
+    card_view:cardUseCompatPadding="true"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp">
+
+
+    <LinearLayout
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:orientation="vertical"
+        >
+        <ImageView
+            android:layout_width="@dimen/_150sdp"
+            android:layout_height="@dimen/_150sdp"
+            android:id="@+id/item_photo_menu"
+            android:src="@drawable/burger"
+            android:layout_gravity="center"
+            />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_marginTop="@dimen/_3sdp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/name_item_menu"
+                android:textSize="20sp"
+                android:text="Coca-Cola"
+                android:visibility="gone"
+
+                />
+            <TextView
+                android:gravity="center"
+                android:layout_marginRight="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/price_item_menu"
+                android:text="5 €"
+
+                />
+        </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:layout_gravity="center"
+                android:orientation="horizontal"
+
+                >
+                <Button
+                    android:layout_marginRight="@dimen/_3sdp"
+                    android:layout_marginBottom="@dimen/_3sdp"
+                    android:text="-"
+                    android:id="@+id/minusButton_menu"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:textSize="20sp"
+                    android:textAllCaps="false"
+                    android:textColor="@color/colorUdle"
+                    android:background="@drawable/button_shape"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/total_item_menu"
+                    android:text="0 CHF"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginLeft="5dp"
+
+                    />
+                <Button
+
+                    android:layout_marginLeft="@dimen/_3sdp"
+                    android:layout_marginBottom="@dimen/_3sdp"
+                    android:text="+"
+                    android:id="@+id/plusButton_menu"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:textSize="20sp"
+                    android:textAllCaps="false"
+                    android:textColor="@color/colorUdle"
+
+                    android:background="@drawable/button_shape"
+
+                    />
+
+
+            </LinearLayout>
+
+
+
+
+
+        </LinearLayout>
+
+</android.support.v7.widget.CardView>

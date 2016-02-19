@@ -70,7 +70,7 @@ public class RecapActivity extends SlideMenuActivity {
         listView = (ListView) findViewById(R.id.RecapActivity_recapListView);
         listView.setAdapter(adapter);
         update();
-        if(isFromCurrent()) {
+        if(!isFromCurrent()) {
             listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
                 @Override
                 public boolean onItemLongClick(AdapterView<?> arg0, View arg1, final int pos, long id) {
@@ -146,7 +146,7 @@ public class RecapActivity extends SlideMenuActivity {
         ParseUserOrderInformations orderInformations = DataManager.getParseUserObjectWithActiveOrder();
         Date creationDate = orderInformations.getCreatedAt();
         Date d = new Date();
-        Date currentDateMinus24h = new Date(d.getTime() - 24 * 3600 * 1000); // in milisec
+        Date currentDateMinus24h = new Date(d.getTime() - 48 * 3600 * 1000); // in milisec
         int diffDate = currentDateMinus24h.compareTo(creationDate);
         if(!orderInformations.hasBeenRated() && diffDate < 0 ){
             Intent intent = new Intent(RecapActivity.this,StarActivity.class);
@@ -237,7 +237,7 @@ public class RecapActivity extends SlideMenuActivity {
             String optionOfElemToRemove = elementToRemove.get("options");
             if (optionOfElemToRemove.equals(getResources().getString(R.string.noOptions))){
                 ArrayList<Menu> toDelete = new ArrayList<>();
-                for(Menu menu : order.getOrder()) {
+                for(Menu menu : order.getMenus()) {
                     if (elem.equals(menu.getFood().toString())){
                         if(menu.getOptions().size()==0) {
                             if (deleteAll){
@@ -265,7 +265,7 @@ public class RecapActivity extends SlideMenuActivity {
                         }
                     }
                     ArrayList<Menu> toDelete = new ArrayList<>();
-                    for(Menu menu : order.getOrder()) {
+                    for(Menu menu : order.getMenus()) {
                         if (elem.equals(menu.getFood().toString())){
                             if(compareLists(menu.getOptions(),tempListOption)) {
                                 if (deleteAll){

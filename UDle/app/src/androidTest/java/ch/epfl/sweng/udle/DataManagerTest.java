@@ -1,15 +1,12 @@
 package ch.epfl.sweng.udle;
 
 import android.location.Location;
-import android.support.test.InstrumentationRegistry;
 
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -115,9 +112,9 @@ public class DataManagerTest {
         OrderElement order = orders.get(0);
         OrderElement orderElement = getOrderElementUserTest();
 
-        assertEquals(orderElement.getOrder().get(0).getFood().toString(), order.getOrder().get(0).getFood().toString());
+        assertEquals(orderElement.getMenus().get(0).getFood().toString(), order.getMenus().get(0).getFood().toString());
         assertEquals(orderElement.getDrinks().get(0).toString(), order.getDrinks().get(0).toString());
-        assertEquals(0, order.getOrder().get(0).getOptions().size());
+        assertEquals(0, order.getMenus().get(0).getOptions().size());
     }
 
     @Test
@@ -128,9 +125,9 @@ public class DataManagerTest {
         OrderElement order = orders.get(0);
         OrderElement orderElement = getOrderElementUserTest();
 
-        assertEquals(orderElement.getOrder().get(0).getFood().toString(), order.getOrder().get(0).getFood().toString());
+        assertEquals(orderElement.getMenus().get(0).getFood().toString(), order.getMenus().get(0).getFood().toString());
         assertEquals(orderElement.getDrinks().get(0).toString(), order.getDrinks().get(0).toString());
-        assertEquals(0, order.getOrder().get(0).getOptions().size());
+        assertEquals(0, order.getMenus().get(0).getOptions().size());
     }
     @Test
     public void testCurrentOrdersRestaurant() throws ParseException {
@@ -140,9 +137,9 @@ public class DataManagerTest {
         OrderElement order = orders.get(0);
         OrderElement orderElement = getOrderElementUserTest();
 
-        assertEquals(orderElement.getOrder().get(0).getFood().toString(), order.getOrder().get(0).getFood().toString());
+        assertEquals(orderElement.getMenus().get(0).getFood().toString(), order.getMenus().get(0).getFood().toString());
         assertEquals(orderElement.getDrinks().get(0).toString(), order.getDrinks().get(0).toString());
-        assertEquals(0, order.getOrder().get(0).getOptions().size());
+        assertEquals(0, order.getMenus().get(0).getOptions().size());
     }
     @Test
     public void testIsARestaurantTrue() throws ParseException {
@@ -175,9 +172,9 @@ public class DataManagerTest {
         OrderElement order = orders.get(0);
         OrderElement orderElement = getOrderElementUserTest();
 
-        assertEquals(orderElement.getOrder().get(0).getFood().toString(), order.getOrder().get(0).getFood().toString());
+        assertEquals(orderElement.getMenus().get(0).getFood().toString(), order.getMenus().get(0).getFood().toString());
         assertEquals(orderElement.getDrinks().get(0).toString(), order.getDrinks().get(0).toString());
-        assertEquals(0, order.getOrder().get(0).getOptions().size());
+        assertEquals(0, order.getMenus().get(0).getOptions().size());
     }
 
 

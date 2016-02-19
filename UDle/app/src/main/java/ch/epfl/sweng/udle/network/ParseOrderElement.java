@@ -1,6 +1,7 @@
 package ch.epfl.sweng.udle.network;
 
 import android.location.Location;
+import android.util.Log;
 
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
@@ -34,7 +35,7 @@ public class ParseOrderElement {
 
         // Convert the orderList of Menu into a list of strings.
         List<List<String>> orderList = new ArrayList<>();
-        for (Menu menu : orderElement.getOrder()) {
+        for (Menu menu : orderElement.getMenus()) {
             List<String> menuElement = new ArrayList<>();
             menuElement.add(menu.getFood().toString());
             for (OptionsTypes options : menu.getOptions()) {
@@ -90,6 +91,7 @@ public class ParseOrderElement {
                 }
             }
 
+            Log.d("menu", menu.getFood().toString());
             orderElement.addMenu(menu);
         }
 
