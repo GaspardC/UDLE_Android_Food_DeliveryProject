@@ -1,0 +1,10 @@
+{
+  "applications": {
+    "UDLE2": {
+      "applicationId": "v22C8nu3xMqTVZUq9yeuOLD6xbTXqWpCM1XuyQ7U"
+    },
+    "_default": {
+      "link": "UDLE2"
+    }
+  }
+}
