@@ -75,15 +75,15 @@ public abstract class SlideMenuActivity extends AppCompatActivity {
 
 
         //set menu items
+        if(DataManager.isARestaurant()){
+            slideMenuItems.add(new NavItem(getString(R.string.restaurantMode), getString(R.string.restaurantModeDesc), R.drawable.icon_resto_mode, DeliveryRestaurantMapActivity.class));
+        }
 
         //home
         slideMenuItems.add(new NavItem(getString(R.string.home), getString(R.string.orderNow),R.drawable.icon_home1, MapActivity.class));
         slideMenuItems.add(new NavItem(getString(R.string.currentOrders), getString(R.string.currentOrdersDetail),R.drawable.icon_current_order1, CurrentOrdersActivity.class));
 
 
-        if(DataManager.isARestaurant()){
-            slideMenuItems.add(new NavItem(getString(R.string.restaurantMode), getString(R.string.restaurantModeDesc), R.drawable.logogreen, DeliveryRestaurantMapActivity.class));
-        }
 
         slideMenuItems.add(new NavItem(getString(R.string.creditCard), getString(R.string.addACreditCard),R.drawable.icon_credit_card1, CreditCardActivity.class));
         slideMenuItems.add(new NavItem(getString(R.string.about), getString(R.string.aboutus), R.drawable.icon_about1, AboutActivity.class));

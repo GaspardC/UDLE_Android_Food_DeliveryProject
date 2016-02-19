@@ -50,7 +50,8 @@
                 android:layout_marginTop="@dimen/_3sdp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/WaitingOrders"
+                android:text="@string/waiting"
+                android:textSize="@dimen/_10sdp"
                 android:layout_gravity="center"/>
         </LinearLayout>
         <LinearLayout
@@ -68,6 +69,7 @@
             <TextView
                 android:layout_marginBottom="@dimen/_3sdp"
                 android:layout_marginTop="@dimen/_3sdp"
+                android:textSize="@dimen/_10sdp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/enRoute"
@@ -86,6 +88,7 @@
                 android:src="@drawable/logosilver"
                 android:layout_gravity="center"/>
             <TextView
+                android:textSize="@dimen/_10sdp"
                 android:layout_marginBottom="@dimen/_3sdp"
                 android:layout_marginTop="@dimen/_3sdp"
                 android:layout_width="wrap_content"
@@ -107,8 +110,8 @@
 
             android:textAllCaps="false"
             android:textColor="@color/colorUdle"
-            android:textSize="12sp"
-
+            android:textSize="15sp"
+            android:singleLine="false"
             android:background="@drawable/button_shape2"
 
             />

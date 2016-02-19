@@ -92,6 +92,7 @@ public class DeliveryRestaurantMapActivity extends SlideMenuActivity {
         };
 
         handler.postDelayed(getMapRunnable(), 0);
+        switchDisplay();
 
     }
 
@@ -485,6 +486,9 @@ public class DeliveryRestaurantMapActivity extends SlideMenuActivity {
      *  It either display orders in a list or in the fragment
      * */
     public void switchOrderList(View view) {
+        switchDisplay();
+    }
+    public void switchDisplay(){
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         Fragment mapFrag = getSupportFragmentManager().findFragmentById(R.id.DeliveryMap_GoogleMaps);
@@ -503,6 +507,7 @@ public class DeliveryRestaurantMapActivity extends SlideMenuActivity {
 
         }
     }
+
 
     /**
      * Called when user click on the 'Refresh' button

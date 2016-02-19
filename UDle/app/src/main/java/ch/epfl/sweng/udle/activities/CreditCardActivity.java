@@ -63,4 +63,10 @@ public class CreditCardActivity extends SlideMenuActivity {
         addACreditCard.setText("Add a new credit card");
 
     }
+
+    public void addCreditCard(View view) {
+        setButtonBehavior();
+
+
+    }
 }

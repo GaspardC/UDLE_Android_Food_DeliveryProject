@@ -27,15 +27,15 @@
     <string name="infotextwaiting">Merci de patienter quelques instants, un livreur va valider ta commande</string>
     <string name="infotextwaitingConfirmed">Et hop, ta commande a été envoyée à nos partenaires</string>
 
-    <string name="WaitingOrders">En attente</string>
+    <string name="WaitingOrders">Commandes en attente</string>
     <string name="ConfirmOrders">Commandes confirmées</string>
-
+    <string name="waiting">En attente</string>
     <string name="sampleText">This is a sample text.</string>
     <string name="openSlideMenu">Open slide menu</string>
     <string name ="closeSlideMenu">Close slide menu</string>
     <string name="username">Pseudo</string>
     <string name="restaurantMode">Mode restaurateur</string>
-    <string name="restaurantModeDesc">go to restaurant map activity</string>
+    <string name="restaurantModeDesc">gérer vos commandes</string>
     <string name="about">A propos</string>
     <string name="removeMessage_1">"Remove :"</string>
     <string name="removeMessage_2">"One of the "</string>
@@ -93,4 +93,6 @@
     <string name="Delievered">Livrée</string>
     <string name="noCreditCardAdded">Pas de carte de crédit enregistrée</string>
     <string name="errorInYourPhoneCall"></string>
+    <string name="thanksToUseUdle">Merci d\'utiliser Udle</string>
+    <string name="SeeYouSoon">"A bientôt!"</string>
 </resources>

@@ -27,19 +27,81 @@ import ch.epfl.sweng.udle.activities.SlideMenu.SlideMenuActivity;
 public class WaitingActivity extends SlideMenuActivity {
 
     private static final long ANIMATION_TIME_BURGER_ROTATION = 3000;
+    private Handler hd;
+    private int countBurger = 0;
+    private ImageView Burger1;
+    private ImageView Burger2;
+    private ImageView Burger3;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_waiting);
+        hd = new Handler();
+        Burger1 = (ImageView) findViewById(R.id.waiting_burger1);
+        Burger2 = (ImageView) findViewById(R.id.waiting_burger2);
+        Burger3 = (ImageView) findViewById(R.id.waiting_burger3);
 
-        //start the rotating burger
+        startRepeatingTask();
+        /*//start the rotating burger
         ImageView burgerImage = (ImageView)findViewById(R.id.burgerImage);
-        startAnimation(burgerImage);
+        startAnimation(burgerImage);*/
 
         setLittleRecap();
     }
+    // UPDATING BTN TEXT DYNAMICALLY
+    Runnable myRunnableUpdater = new Runnable()
+    {
+        public void run() {
+            changeBurgerColor();
+            hd.postDelayed(myRunnableUpdater, 1000);
+        }
+    };
+    void startRepeatingTask()
+    {
+        myRunnableUpdater.run();
+    }
+    void stopRepeatingTask()
+    {
+        hd.removeCallbacks(myRunnableUpdater);
+    }
+
+    private void changeBurgerColor() {
+        if (countBurger == 10){
+            Burger1.setBackground(getDrawable(R.drawable.red_burger));
+            Burger2.setBackground(getDrawable(R.drawable.red_burger));
+            Burger3.setBackground(getDrawable(R.drawable.red_burger));
+            stopRepeatingTask();
+            return;
+        }
+        int i = countBurger%3;
+        switch (i){
+            case 0:{
+                Burger1.setBackground(getDrawable(R.drawable.red_burger));
+                Burger2.setBackground(getDrawable(R.drawable.burger_picto));
+                Burger3.setBackground(getDrawable(R.drawable.burger_picto));
+                break;
+
+            }
+            case 1:{
+                Burger1.setBackground(getDrawable(R.drawable.burger_picto));
+                Burger2.setBackground(getDrawable(R.drawable.red_burger));
+                Burger3.setBackground(getDrawable(R.drawable.burger_picto));
+                break;
+
+            }
+            case 2:{
+                Burger1.setBackground(getDrawable(R.drawable.burger_picto));
+                Burger2.setBackground(getDrawable(R.drawable.burger_picto));
+                Burger3.setBackground(getDrawable(R.drawable.red_burger));
+                break;
+
+            }
+        }
+        countBurger+=1;
+    }
+    //END OF UPDATING BTN TEXT DYNAMICALLY!!
 
     /**
      * Use to display a brief recap just above the payment api

@@ -39,7 +39,7 @@
     <string name="closeSlideMenu">Close slide menu</string>
     <string name="username">Username</string>
     <string name="restaurantMode">Restaurant mode</string>
-    <string name="restaurantModeDesc">go to restaurant map activity</string>
+    <string name="restaurantModeDesc">manage your orders</string>
     <string name="about">About</string>
     <string name="removeMessage_1">"Remove :"</string>
     <string name="removeMessage_2">"One of the "</string>
@@ -115,5 +115,9 @@
     <string name="noCreditCardAdded">No credit card added</string>
     <string name="errorInYourPhoneCall">Error in your phone call</string>
     <string name="rightToPassPhoneCall">UDle doesn\'t have the right to pass phone call</string>
+    <string name="recapOfTheOrder">Recap of the orderElement:</string>
+    <string name="thanksToUseUdle">Thanks for using Udle</string>
+    <string name="SeeYouSoon">see you soon!</string>
+    <string name="waiting">Waiting</string>
 
 </resources>
