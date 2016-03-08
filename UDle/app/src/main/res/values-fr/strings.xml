@@ -93,6 +93,6 @@
     <string name="Delievered">Livrée</string>
     <string name="noCreditCardAdded">Pas de carte de crédit enregistrée</string>
     <string name="errorInYourPhoneCall"></string>
-    <string name="thanksToUseUdle">Merci d\'utiliser Udle</string>
+    <string name="thanksToUseUdle">Merci de faire confiance à Udle</string>
     <string name="SeeYouSoon">"A bientôt!"</string>
 </resources>

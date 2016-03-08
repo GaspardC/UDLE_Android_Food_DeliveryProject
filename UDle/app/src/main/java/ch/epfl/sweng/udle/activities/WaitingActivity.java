@@ -3,6 +3,7 @@ package ch.epfl.sweng.udle.activities;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Bundle;
 import android.view.View;
@@ -68,38 +69,47 @@ public class WaitingActivity extends SlideMenuActivity {
     }
 
     private void changeBurgerColor() {
-        if (countBurger == 10){
-            Burger1.setBackground(getDrawable(R.drawable.red_burger));
-            Burger2.setBackground(getDrawable(R.drawable.red_burger));
-            Burger3.setBackground(getDrawable(R.drawable.red_burger));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+
+            if (countBurger == 10) {
+                Burger1.setBackground(getDrawable(R.drawable.red_burger));
+
+                Burger2.setBackground(getDrawable(R.drawable.red_burger));
+                Burger3.setBackground(getDrawable(R.drawable.red_burger));
+                stopRepeatingTask();
+                return;
+
+            }
+            int i = countBurger % 3;
+            switch (i) {
+                case 0: {
+                    Burger1.setBackground(getDrawable(R.drawable.burger_picto));
+                    Burger2.setBackground(getDrawable(R.drawable.burger_picto));
+                    Burger3.setBackground(getDrawable(R.drawable.red_burger));
+                    break;
+
+                }
+                case 1: {
+                    Burger1.setBackground(getDrawable(R.drawable.burger_picto));
+                    Burger2.setBackground(getDrawable(R.drawable.red_burger));
+                    Burger3.setBackground(getDrawable(R.drawable.burger_picto));
+                    break;
+
+                }
+                case 2: {
+                    Burger1.setBackground(getDrawable(R.drawable.red_burger));
+                    Burger2.setBackground(getDrawable(R.drawable.burger_picto));
+                    Burger3.setBackground(getDrawable(R.drawable.burger_picto));
+                    break;
+
+                }
+            }
+            countBurger += 1;
+        }
+        else{
             stopRepeatingTask();
             return;
         }
-        int i = countBurger%3;
-        switch (i){
-            case 0:{
-                Burger1.setBackground(getDrawable(R.drawable.red_burger));
-                Burger2.setBackground(getDrawable(R.drawable.burger_picto));
-                Burger3.setBackground(getDrawable(R.drawable.burger_picto));
-                break;
-
-            }
-            case 1:{
-                Burger1.setBackground(getDrawable(R.drawable.burger_picto));
-                Burger2.setBackground(getDrawable(R.drawable.red_burger));
-                Burger3.setBackground(getDrawable(R.drawable.burger_picto));
-                break;
-
-            }
-            case 2:{
-                Burger1.setBackground(getDrawable(R.drawable.burger_picto));
-                Burger2.setBackground(getDrawable(R.drawable.burger_picto));
-                Burger3.setBackground(getDrawable(R.drawable.red_burger));
-                break;
-
-            }
-        }
-        countBurger+=1;
     }
     //END OF UPDATING BTN TEXT DYNAMICALLY!!
 

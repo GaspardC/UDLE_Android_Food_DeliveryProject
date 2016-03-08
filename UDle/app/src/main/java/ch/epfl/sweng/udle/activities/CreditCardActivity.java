@@ -38,13 +38,18 @@ public class CreditCardActivity extends SlideMenuActivity {
             @Override
             public void onClick(View v) {
 
-                Intent intent = new Intent(CreditCardActivity.this, EnterNumbersCreditCard.class);
-                if(fromPayment){
-                    intent.putExtra("from","payment");
-                }
-                startActivity(intent);
+                addCreditCardCLicked();
             }
         });
+    }
+
+    private void addCreditCardCLicked() {
+        Intent intent = new Intent(CreditCardActivity.this, EnterNumbersCreditCard.class);
+        if (fromPayment) {
+            intent.putExtra("from", "payment");
+        }
+        startActivity(intent);
+
     }
 
     @Override
@@ -65,7 +70,7 @@ public class CreditCardActivity extends SlideMenuActivity {
     }
 
     public void addCreditCard(View view) {
-        setButtonBehavior();
+        addCreditCardCLicked();
 
 
     }

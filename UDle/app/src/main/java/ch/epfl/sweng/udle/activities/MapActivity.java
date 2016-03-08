@@ -17,6 +17,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
+import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -117,6 +118,7 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
         setContentView(R.layout.activity_map);
 
 
+        checkNumberPhone();
 /*        HashMap<String, Object> params = new HashMap<String, Object>();
         params.put("movie", "The Matrix");
         ParseCloud.callFunctionInBackground("hello", params, new FunctionCallback<Object>() {
@@ -147,7 +149,42 @@ public class MapActivity extends SlideMenuActivity implements AdapterView.OnItem
 
     }
 
+    private void checkNumberPhone() {
+        if(DataManager.getUser().getString("phone") == null || DataManager.getUser().getString("phone").equals("")){
+            Intent intent = new Intent(this,ProfileActivity.class);
+            startActivity(intent);
+            showAlertDialogForPhoneNumber();
+        }
+    }
+    private void showAlertDialogForPhoneNumber() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(MapActivity.this);
+        builder.setTitle("Enter your number phone before using the app");
 
+// Set up the input
+        final EditText input = new EditText(MapActivity.this);
+// Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+        input.setInputType(InputType.TYPE_CLASS_PHONE);
+        builder.setView(input);
+
+// Set up the buttons
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                ParseUser currentUser = DataManager.getUser();
+                String textInput = input.getText().toString();
+                currentUser.put("phone",textInput);
+                currentUser.saveInBackground();
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        builder.show();
+    }
 
 
     /** Called when the user clicks the MenuMap_ValidatePosition button */

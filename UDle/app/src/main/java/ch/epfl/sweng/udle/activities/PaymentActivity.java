@@ -65,15 +65,26 @@ public class PaymentActivity extends SlideMenuActivity {
 
         AlertDialog.Builder adb = new AlertDialog.Builder(this);
 
-        adb.setTitle("Confirm the payment");
+        if(DataManager.getCustomerId() == null){
+            adb.setTitle("Add a credit card");
+            adb.setPositiveButton("Add", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    processPayment();
+                }
+            });
+
+        }
+        else{
+            adb.setTitle("Confirm the payment");
+
+            adb.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    processPayment();
+                }
+            });
+        }
 
         adb.setIcon(android.R.drawable.ic_menu_send);
-
-        adb.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                processPayment();
-            }
-        });
 
         adb.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {

@@ -22,7 +22,7 @@
         android:layout_marginTop="@dimen/_15sdp"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_50sdp"
-        android:src="@drawable/map_pin_final"/>
+        android:src="@drawable/pinfinal"/>
 
 
     <LinearLayout
