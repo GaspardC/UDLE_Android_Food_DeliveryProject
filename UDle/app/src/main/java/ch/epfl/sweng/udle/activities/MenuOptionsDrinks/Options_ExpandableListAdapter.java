@@ -9,10 +9,8 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import ch.epfl.sweng.udle.Food.Menu;
 import ch.epfl.sweng.udle.Food.OptionsTypes;
@@ -28,10 +26,6 @@ public class Options_ExpandableListAdapter extends BaseExpandableListAdapter {
     LayoutInflater inflater;
     int nbrMenusToDisplay = 0;
     private boolean dontShowAlertAgain = false;
-/*
-    HashMap mapCheckbox = new HashMap(50);
-*/
-
 
     public Options_ExpandableListAdapter(LayoutInflater context, TextView infoTextView){
         this.inflater = context;
@@ -61,7 +55,7 @@ public class Options_ExpandableListAdapter extends BaseExpandableListAdapter {
         if(getGroup(groupPosition).toString().contains("Margherita")){
             return 0;
         }
-            return OptionsTypes.values().length;
+        return OptionsTypes.values().length;
     }
 
     //Return the title of the group (e.g: #2 Burger)
@@ -199,6 +193,7 @@ public class Options_ExpandableListAdapter extends BaseExpandableListAdapter {
 
         return convertView;
     }
+
 
 
     @Override
