@@ -1,3 +1,4 @@
+/*
 package ch.epfl.sweng.udle;
 
 import android.location.Location;
@@ -23,9 +24,11 @@ import ch.epfl.sweng.udle.network.ParseUserOrderInformations;
 
 import static junit.framework.Assert.assertEquals;
 
+*/
 /**
  * Created by skalli93 on 11/10/15.
- */
+ *//*
+
 public class DataManagerTest {
 
 
@@ -181,7 +184,9 @@ public class DataManagerTest {
 
 
 
-    /* HELPERS METHOD */
+    */
+/* HELPERS METHOD *//*
+
 
     public OrderElement getOrderElement (){
         Menu menu1 = new Menu();
@@ -234,3 +239,4 @@ public class DataManagerTest {
 
 
 }
+*/

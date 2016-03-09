@@ -151,14 +151,17 @@ public class RVAdapterMenu extends RecyclerView.Adapter<RVAdapterMenu.PersonView
         String name  = items.get(i).name;
         OrderElement orderElement = Orders.getActiveOrder();
 
-        if (name.equals("Kebab")){
-            addOneMenu(FoodTypes.KEBAB);
+        if (name.equals("BigMac")){
+            addOneMenu(FoodTypes.BigMac);
         }
-        if (name.equals("Burger")){
-            addOneMenu(FoodTypes.BURGER);
+        if (name.equals("McChicken")){
+            addOneMenu(FoodTypes.McChicken);
         }
-        if (name.equals("Margherita")){
-            addOneMenu(FoodTypes.MARGHERITA);
+        if (name.equals("FiletOFish")){
+            addOneMenu(FoodTypes.FiletOFish);
+        }
+        if (name.equals("RoyalCheese")){
+            addOneMenu(FoodTypes.RoyalCheese);
         }
 
     }

@@ -1,3 +1,4 @@
+/*
 package ch.epfl.sweng.udle;
 
 
@@ -37,9 +38,11 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.anything;
 
+*/
 /**
  * Created by leo on 09.12.15.
- */
+ *//*
+
 public class CurrentOrderTest extends ActivityInstrumentationTestCase2<CurrentOrdersActivity> {
 
 
@@ -49,7 +52,8 @@ public class CurrentOrderTest extends ActivityInstrumentationTestCase2<CurrentOr
         super(CurrentOrdersActivity.class);
     }
 
-    /*@Before
+    */
+/*@Before
     public void setUp() throws Exception {
 
         ParseUser.logIn("test current order", "test");
@@ -132,8 +136,10 @@ public class CurrentOrderTest extends ActivityInstrumentationTestCase2<CurrentOr
         orderElement1.setDeliveryAddress("Address test, 1022, Switwerland");
         orderElement1.setOrderedUserName("User Name 1");
         return orderElement1;
-    }*/
+    }*//*
+
 
 }
 
 
+*/

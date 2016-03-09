@@ -7,13 +7,10 @@ package ch.epfl.sweng.udle.Food;
  */
 public enum OptionsTypes {
 
-    SALAD("Salad"),
-    TOMATO("Tomato"),
-    OIGNON("Oignon"),
+    Frites("Frites"),
+    Potatoes("Potatoes"),
     KETCHUP("Ketchup"),
-    MAYO("Mayo"),
-    MUSTARD("Mustard"),
-    ALGERIENNE("Sauce Algerienne");
+    MAYO("Mayo");
 
     private String name = "";
 

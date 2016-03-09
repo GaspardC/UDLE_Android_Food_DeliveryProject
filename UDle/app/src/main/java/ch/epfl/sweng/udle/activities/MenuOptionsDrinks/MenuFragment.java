@@ -70,9 +70,11 @@ public class MenuFragment extends Fragment {
     private void initializeData(){
         items = new ArrayList<>();
         int number = 0;
-        items.add(new Item("Burger", (int) FoodTypes.BURGER.getPrice(), R.drawable.burger,number));
-        items.add(new Item("Kebab",(int) FoodTypes.KEBAB.getPrice(), R.drawable.kebab,number));
-        items.add(new Item("Margherita", (int) FoodTypes.MARGHERITA.getPrice(), R.drawable.pizza,number));
+        items.add(new Item("BigMac", (int) FoodTypes.BigMac.getPrice(), R.drawable.canva_big_mac,number));
+        items.add(new Item("McChicken",(int) FoodTypes.McChicken.getPrice(), R.drawable.canva_mac_chicken,number));
+        items.add(new Item("RoyalCheese", (int) FoodTypes.RoyalCheese.getPrice(), R.drawable.canva_menus_royal_cheese,number));
+        items.add(new Item("FiletOFish", (int) FoodTypes.FiletOFish.getPrice(), R.drawable.canva_filet_o_fish,number));
+
     }
 
     private void initializeAdapter(){

@@ -1,5 +1,7 @@
 package ch.epfl.sweng.udle.activities.MenuOptionsDrinks;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -7,8 +9,10 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import ch.epfl.sweng.udle.Food.Menu;
 import ch.epfl.sweng.udle.Food.OptionsTypes;
@@ -23,6 +27,11 @@ public class Options_ExpandableListAdapter extends BaseExpandableListAdapter {
     private final TextView infoTextView;
     LayoutInflater inflater;
     int nbrMenusToDisplay = 0;
+    private boolean dontShowAlertAgain = false;
+/*
+    HashMap mapCheckbox = new HashMap(50);
+*/
+
 
     public Options_ExpandableListAdapter(LayoutInflater context, TextView infoTextView){
         this.inflater = context;
@@ -85,16 +94,20 @@ public class Options_ExpandableListAdapter extends BaseExpandableListAdapter {
     //Call when a menu is click.
     //Display the list of child (optionTypes) and configure his listener to add/remove options for the menu.
     @Override
-    public View getChildView(final int groupPosition, final int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
+    public View getChildView(final int groupPosition, final int childPosition, boolean isLastChild, View convertView, final ViewGroup parent) {
         String childTitle = (String) getChild(groupPosition, childPosition);
         if (convertView == null){
             convertView = inflater.inflate(R.layout.activity_options_list_childs, parent, false);
         }
         final CheckBox optionTitleTextView = (CheckBox) convertView.findViewById(R.id.OptionsFragment_MenuElement);
         optionTitleTextView.setText(childTitle);
+/*
+        mapCheckbox.put(groupPosition * 100 + childPosition, optionTitleTextView);
+*/
 
         //If the options is already added for the menu, need to check the checkbox
         Menu menu = Orders.getActiveOrder().getMenus().get(groupPosition);
+
         if (menu.getOptions().contains(OptionsTypes.values()[childPosition])){
             optionTitleTextView.setChecked(true);
         }
@@ -103,13 +116,81 @@ public class Options_ExpandableListAdapter extends BaseExpandableListAdapter {
         }
 
 
+        final View finalConvertView = convertView;
         optionTitleTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 infoTextView.setVisibility(View.GONE);
                 ArrayList<Menu> menu = Orders.getActiveOrder().getMenus();
                 if (optionTitleTextView.isChecked()) {
-                    menu.get(groupPosition).addToOptions(OptionsTypes.values()[childPosition]);
+
+                    /*Delete Frites if Potatoes selected and inversely*/
+                    if( OptionsTypes.values()[childPosition].equals(OptionsTypes.Potatoes)){
+                        if(menu.get(groupPosition).getOptions().contains(OptionsTypes.Frites)){
+                            if(dontShowAlertAgain){
+                                optionTitleTextView.setChecked(false);
+
+                            }
+                            else {
+
+
+                                new AlertDialog.Builder(parent.getContext())
+                                        .setMessage("Choisissez Frites ou Potatoes, pas les deux :)")
+                                        .setPositiveButton("compris", new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                // continue with delete
+                                                optionTitleTextView.setChecked(false);
+                                                dontShowAlertAgain = true;
+
+                                            }
+                                        })
+
+                                        .setIcon(android.R.drawable.ic_dialog_info)
+                                        .show();
+                            }
+                        }
+                        else{
+                            menu.get(groupPosition).addToOptions(OptionsTypes.values()[childPosition]);
+                        }
+                    }
+                    else{
+                        menu.get(groupPosition).addToOptions(OptionsTypes.values()[childPosition]);
+                    }
+
+
+
+
+                     /*Delete Potatoes if Frites selected and inversely*/
+                    if( OptionsTypes.values()[childPosition].equals(OptionsTypes.Frites)){
+                        if(menu.get(groupPosition).getOptions().contains(OptionsTypes.Potatoes)){
+
+                            if(dontShowAlertAgain){
+                                optionTitleTextView.setChecked(false);
+
+                            }
+                            else {
+                                new AlertDialog.Builder(parent.getContext())
+                                        .setMessage("Choisissez Frites ou Potatoes, pas les deux :)")
+                                        .setPositiveButton("compris", new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                // continue with delete
+                                                optionTitleTextView.setChecked(false);
+                                                dontShowAlertAgain = true;
+                                            }
+                                        })
+                                        .setIcon(android.R.drawable.ic_dialog_info)
+                                        .show();
+                            }
+                        }
+                        else{
+                            menu.get(groupPosition).addToOptions(OptionsTypes.values()[childPosition]);
+                        }
+                    }
+                    else{
+                        menu.get(groupPosition).addToOptions(OptionsTypes.values()[childPosition]);
+                    }
+
+
                 } else { //Remove from Options
                     menu.get(groupPosition).removeFromOptions(OptionsTypes.values()[childPosition]);
                 }

@@ -1,3 +1,4 @@
+/*
 package ch.epfl.sweng.udle;
 
 import android.app.Instrumentation;
@@ -40,9 +41,11 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.core.IsNot.not;
 
+*/
 /**
  * Created by Abdes on 08/12/2015.
- */
+ *//*
+
 public class mapActivityTest extends ActivityInstrumentationTestCase2<MapActivity> {
     private MapActivity myActivity;
 
@@ -182,3 +185,4 @@ public class mapActivityTest extends ActivityInstrumentationTestCase2<MapActivit
     }
 
 }
+*/

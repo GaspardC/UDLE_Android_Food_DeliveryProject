@@ -1,3 +1,4 @@
+/*
 package ch.epfl.sweng.udle;
 
 import android.content.Intent;
@@ -28,9 +29,11 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.core.AllOf.allOf;
 
+*/
 /**
  * Created by rodri on 14/11/2015.
- */
+ *//*
+
 public class RecapTest extends ActivityInstrumentationTestCase2<RecapActivity> {
 
     public RecapTest() {
@@ -155,6 +158,7 @@ public class RecapTest extends ActivityInstrumentationTestCase2<RecapActivity> {
         onView(withText("2 Kebab")).check(matches(isDisplayed()));
         onView(withText("1 Burger")).check(matches(isDisplayed()));
         onView(withText("2 Burger")).check(matches(isDisplayed()));
+*/
 /*        onView(withText("4 Burger")).perform(ViewActions.scrollTo());
         onView(withText("4 Burger")).check(matches(isDisplayed()));
 
@@ -165,7 +169,8 @@ public class RecapTest extends ActivityInstrumentationTestCase2<RecapActivity> {
             everything += foodTypes.toString()+" ; ";
         }
         onView(withText(everything)).check(matches(isDisplayed()));
-*/
+*//*
+
     }
 
     @Test
@@ -338,3 +343,4 @@ public class RecapTest extends ActivityInstrumentationTestCase2<RecapActivity> {
     }
 
 }
+*/

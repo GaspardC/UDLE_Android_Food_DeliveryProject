@@ -1,3 +1,4 @@
+/*
 package ch.epfl.sweng.udle;
 
 import android.location.Location;
@@ -41,9 +42,11 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.anything;
 
+*/
 /**
  * Created by rodri on 06/11/2015.
- */
+ *//*
+
 public class DeliveryRestaurantMapTest  extends ActivityInstrumentationTestCase2<DeliveryRestaurantMapActivity> {
 
     private DeliveryRestaurantMapActivity mActivity;
@@ -141,4 +144,4 @@ public class DeliveryRestaurantMapTest  extends ActivityInstrumentationTestCase2
         return orderElement1;
     }
 
-}
+}*/

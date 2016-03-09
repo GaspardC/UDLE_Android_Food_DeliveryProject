@@ -1,3 +1,4 @@
+/*
 
 package ch.epfl.sweng.udle;
 
@@ -13,9 +14,11 @@ import ch.epfl.sweng.udle.Food.Orders;
 import static junit.framework.Assert.assertEquals;
 
 
+*/
 /**
  * Created by rodri on 30/10/2015.
- */
+ *//*
+
 public class DrinksTypeTest {
 
 
@@ -117,4 +120,4 @@ public class DrinksTypeTest {
 
 
     }
-}
+}*/

@@ -1,3 +1,4 @@
+/*
 package ch.epfl.sweng.udle;
 
 import android.content.Intent;
@@ -35,9 +36,11 @@ import static org.hamcrest.Matchers.is;
 
 import static org.hamcrest.Matchers.not;
 
+*/
 /**
  * Created by rodri on 06/11/2015.
- */
+ *//*
+
 public class DeliverCommandDetailTest{
 
     public ActivityTestRule<DeliverCommandDetailActivity> mActivityRule =
@@ -98,6 +101,7 @@ public class DeliverCommandDetailTest{
         onView(withText(R.string.expectedTimeTooBig)).inRoot(withDecorView(not(is(mActivityRule.getActivity().getWindow().getDecorView())))).check(matches(isDisplayed()));
     }
 
+*/
 /*    @Test
     public void clickWithExpectedTime() throws ParseException {
         String objectID = setUpIntentAndActivityForNewOrdersServer();
@@ -106,7 +110,8 @@ public class DeliverCommandDetailTest{
         onView(withId(R.id.DeliveryMap_GoogleMaps)).check(matches(isDisplayed()));
         deleteParseUserOrderInformation(objectID);
     }
-*/
+*//*
+
 
 
     @Test
@@ -218,4 +223,4 @@ public class DeliverCommandDetailTest{
         orderElement1.setOrderedUserName("User Name 1");
         return orderElement1;
     }
-}
+}*/

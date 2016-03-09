@@ -1,3 +1,4 @@
+/*
 package ch.epfl.sweng.udle;
 
 import android.location.Location;
@@ -25,9 +26,11 @@ import ch.epfl.sweng.udle.network.ParseUserOrderInformations;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.fail;
 
+*/
 /**
  * Created by rodri on 05/12/2015.
- */
+ *//*
+
 public class ParseUserOrderInformationsTest {
 
     @Test
@@ -357,3 +360,4 @@ public class ParseUserOrderInformationsTest {
         return menuList;
     }
 }
+*/

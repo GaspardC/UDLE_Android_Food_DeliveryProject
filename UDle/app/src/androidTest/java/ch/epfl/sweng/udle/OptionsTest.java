@@ -1,3 +1,4 @@
+/*
 package ch.epfl.sweng.udle;
 
 import android.support.test.InstrumentationRegistry;
@@ -19,9 +20,11 @@ import ch.epfl.sweng.udle.Food.OrderElement;
 import ch.epfl.sweng.udle.Food.Orders;
 import ch.epfl.sweng.udle.activities.MenuOptionsDrinks.MainActivity;
 
+*/
 /**
  * Created by rodri on 13/11/2015.
- */
+ *//*
+
 public class OptionsTest extends ActivityInstrumentationTestCase2<MainActivity> {
 
     public OptionsTest() {
@@ -170,3 +173,4 @@ public class OptionsTest extends ActivityInstrumentationTestCase2<MainActivity> 
     }
 
 }
+*/

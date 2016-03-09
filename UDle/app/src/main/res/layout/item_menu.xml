@@ -59,7 +59,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/price_item_menu"
-                android:text="5 €"
+                android:text="10 € le menu Maxi BestOf"
 
                 />
         </LinearLayout>
@@ -88,7 +88,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/total_item_menu"
-                    android:text="0 CHF"
+                    android:text="0 €"
                     android:layout_marginRight="5dp"
                     android:layout_marginLeft="5dp"
 

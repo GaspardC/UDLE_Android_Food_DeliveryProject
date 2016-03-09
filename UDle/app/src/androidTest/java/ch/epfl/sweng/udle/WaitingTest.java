@@ -1,3 +1,4 @@
+/*
 package ch.epfl.sweng.udle;
 
 import android.location.Location;
@@ -22,9 +23,11 @@ import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.withEffectiveVisibility;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 
+*/
 /**
  * Created by Gasp on 07/12/15.
- */
+ *//*
+
 
 public class WaitingTest extends ActivityInstrumentationTestCase2<WaitingActivity> {
 
@@ -59,4 +62,4 @@ public class WaitingTest extends ActivityInstrumentationTestCase2<WaitingActivit
         orderElement1.setOrderedUserName("User Name 1");
         return orderElement1;
     }
-}
+}*/

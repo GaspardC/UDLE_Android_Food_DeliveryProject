@@ -1,3 +1,4 @@
+/*
 package ch.epfl.sweng.udle;
 
 import android.support.test.InstrumentationRegistry;
@@ -15,9 +16,11 @@ import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+*/
 /**
  * Created by rodri on 08/12/2015.
- */
+ *//*
+
 public class MenuFragmentTest extends ActivityInstrumentationTestCase2<MainActivity> {
 
     public MenuFragmentTest(){
@@ -133,3 +136,4 @@ public class MenuFragmentTest extends ActivityInstrumentationTestCase2<MainActiv
     }
 
 }
+*/

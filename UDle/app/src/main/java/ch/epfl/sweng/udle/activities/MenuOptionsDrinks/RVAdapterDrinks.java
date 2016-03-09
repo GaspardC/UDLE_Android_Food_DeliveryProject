@@ -1,5 +1,7 @@
 package ch.epfl.sweng.udle.activities.MenuOptionsDrinks;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -21,6 +23,8 @@ import ch.epfl.sweng.udle.R;
 import ch.epfl.sweng.udle.network.DataManager;
 
 public class RVAdapterDrinks extends RecyclerView.Adapter<RVAdapterDrinks.PersonViewHolder> {
+
+    private final DrinkFragment drinkFragment;
 
     public static class PersonViewHolder extends RecyclerView.ViewHolder {
 
@@ -46,7 +50,8 @@ public class RVAdapterDrinks extends RecyclerView.Adapter<RVAdapterDrinks.Person
 
     List<Item> items;
 
-    RVAdapterDrinks(List<Item> items){
+    RVAdapterDrinks(List<Item> items, DrinkFragment drinkFragment){
+        this.drinkFragment = drinkFragment;
         this.items = items;
     }
 
@@ -144,15 +149,38 @@ public class RVAdapterDrinks extends RecyclerView.Adapter<RVAdapterDrinks.Person
         String name  = items.get(i).name;
         OrderElement orderElement = Orders.getActiveOrder();
 
-        if (name.equals("Coca")){
-            orderElement.addToDrinks(DrinkTypes.COCA);
+        ArrayList<DrinkTypes> drinks = orderElement.getDrinks();
+        ArrayList<Menu> menus = orderElement.getMenus();
+
+        if( drinks.size() == menus.size()){
+            new AlertDialog.Builder(drinkFragment.getContext())
+                    .setMessage("Choisissez Frites ou Potatoes, pas les deux :)")
+                    .setPositiveButton("compris", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            // continue with delete
+                        }
+                    })
+                    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            // do nothing
+                        }
+                    })
+                    .setIcon(android.R.drawable.ic_dialog_info)
+                    .show();
         }
-        if (name.equals("Orangina")){
-            orderElement.addToDrinks(DrinkTypes.ORANGINA);
+        else {
+
+            if (name.equals("Coca")){
+                orderElement.addToDrinks(DrinkTypes.COCA);
+            }
+            if (name.equals("Orangina")){
+                orderElement.addToDrinks(DrinkTypes.ORANGINA);
+            }
+            if (name.equals("Water")){
+                orderElement.addToDrinks(DrinkTypes.WATER);
+            }
         }
-        if (name.equals("Water")){
-            orderElement.addToDrinks(DrinkTypes.WATER);
-        }
+
 
     }
 

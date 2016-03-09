@@ -73,7 +73,7 @@ public class DrinkFragment extends Fragment {
     }
 
     private void initializeAdapter(){
-        RVAdapterDrinks adapter = new RVAdapterDrinks(items);
+        RVAdapterDrinks adapter = new RVAdapterDrinks(items,this);
         rv.setAdapter(adapter);
     }
 

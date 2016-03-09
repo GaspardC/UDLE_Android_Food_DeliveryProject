@@ -1,3 +1,4 @@
+/*
 package ch.epfl.sweng.udle;
 
 import android.app.Instrumentation;
@@ -27,9 +28,11 @@ import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
+*/
 /**
  * Created by Abdes on 07/12/2015.
- */
+ *//*
+
 public class PaymentTest extends ActivityInstrumentationTestCase2<PaymentActivity> {
 
     public PaymentTest(){
@@ -163,3 +166,4 @@ public class PaymentTest extends ActivityInstrumentationTestCase2<PaymentActivit
 
 
 }
+*/

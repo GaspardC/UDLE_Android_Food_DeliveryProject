@@ -1,3 +1,4 @@
+/*
 package ch.epfl.sweng.udle;
 
 import android.location.Location;
@@ -16,9 +17,11 @@ import ch.epfl.sweng.udle.Food.OrderElement;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.fail;
 
+*/
 /**
  * Created by rodri on 30/10/2015.
- */
+ *//*
+
 public class OrderElementTest {
 
     ArrayList<Menu> orderList = new ArrayList<>();
@@ -349,4 +352,4 @@ public class OrderElementTest {
 
         assertEquals(2.00, orderElement.getTotalCost());
     }
-}
+}*/
