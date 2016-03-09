@@ -1,5 +1,6 @@
 package ch.epfl.sweng.udle.activities.MenuOptionsDrinks;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,6 +59,13 @@ public class Options_ExpandableListAdapter extends BaseExpandableListAdapter {
     //Return the title of the group (e.g: #2 Burger)
     @Override
     public Object getGroup(int groupPosition) {
+        Log.d("grpe", "groupePosition " + groupPosition);
+        Log.d("grpe", " taille menu " + Orders.getActiveOrder().getMenus().size());
+
+        // Workaround bug
+        if(groupPosition >= Orders.getActiveOrder().getMenus().size()){
+            return "";
+        }
         return getOrdersTitle().get(groupPosition);
     }
 
