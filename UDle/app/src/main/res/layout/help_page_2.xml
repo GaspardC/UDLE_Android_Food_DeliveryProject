@@ -1,10 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    android:orientation="vertical">
 
     <ImageView
+        android:id="@+id/help_page_2_imageView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/help_page_2_imageView" />
-</LinearLayout>
+        android:layout_alignParentTop="true"
+        android:src="@drawable/how_to_use_3rd_screen"
+        android:scaleType="fitXY"
+        android:layout_height="wrap_content"
+        />
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:src="@drawable/pager_number3"
+        />
+</RelativeLayout>

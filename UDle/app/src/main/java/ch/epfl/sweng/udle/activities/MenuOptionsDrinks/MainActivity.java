@@ -24,7 +24,7 @@ public class MainActivity extends SlideMenuActivity {
     ViewPagerAdapter adapter;
     SlidingTabLayout tabs;
     CharSequence Titles[]={"Menu","Options","Drinks"};
-    int Numboftabs =3;
+    int Numboftabs = 3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

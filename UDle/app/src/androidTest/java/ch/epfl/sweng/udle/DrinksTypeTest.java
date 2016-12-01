@@ -70,13 +70,13 @@ public class DrinksTypeTest {
 
     @Test
     public void oranginaTestToString(){
-        DrinkTypes orangina = DrinkTypes.ORANGINA;
+        DrinkTypes orangina = DrinkTypes.FANTA;
 
         assertEquals("Orangina", orangina.toString());
     }
     @Test
     public void oranginaTestPrice(){
-        DrinkTypes orangina = DrinkTypes.ORANGINA;
+        DrinkTypes orangina = DrinkTypes.FANTA;
 
         assertEquals(5.00, orangina.getPrice());
     }
@@ -92,9 +92,9 @@ public class DrinksTypeTest {
         orderElement.addToDrinks(DrinkTypes.BEER);
         orderElement.addToDrinks(DrinkTypes.BEER);
         orderElement.addToDrinks(DrinkTypes.BEER);
-        orderElement.addToDrinks(DrinkTypes.ORANGINA);
-        orderElement.addToDrinks(DrinkTypes.ORANGINA);
-        orderElement.addToDrinks(DrinkTypes.ORANGINA);
+        orderElement.addToDrinks(DrinkTypes.FANTA);
+        orderElement.addToDrinks(DrinkTypes.FANTA);
+        orderElement.addToDrinks(DrinkTypes.FANTA);
         orderElement.addToDrinks(DrinkTypes.WATER);
         Orders.setActiveOrder(orderElement);
 

@@ -39,7 +39,7 @@ http://codetheory.in/android-navigation-drawer/
             android:background="@color/material_blue_grey_800"
             android:padding="8dp" >
 
-            <com.facebook.login.widget.ProfilePictureView
+            <ch.epfl.sweng.udle.activities.ProfilePictureViewRounded
                 android:id="@+id/avatar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

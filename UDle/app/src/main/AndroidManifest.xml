@@ -71,7 +71,8 @@
         <activity
             android:screenOrientation="portrait"
             android:name=".activities.HelpActivity.HelpActivity"
-            android:theme="@style/SlideMenuTheme" />
+            android:theme="@android:style/Theme.NoTitleBar"
+        />
 
         <application
             android:screenOrientation="portrait"

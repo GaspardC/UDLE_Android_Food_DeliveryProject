@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import ch.epfl.sweng.udle.R;
 
@@ -31,8 +32,15 @@ public class LightPagerAdapter extends PagerAdapter {
     LayoutInflater inflater;
 
     int[] imgResources = {
-            R.drawable.canva_big_mac,
-            R.drawable.flou2
+            R.drawable.how_to_use_1st_screen,
+            R.drawable.how_to_use_2nd_screen,
+            R.drawable.how_to_use_3rd_screen,
+            R.drawable.how_to_use_4th_screen,
+            R.drawable.how_to_use_5th_screen,
+            R.drawable.how_to_use_6th_screen
+
+
+
     };
 
     /**
@@ -103,6 +111,21 @@ public class LightPagerAdapter extends PagerAdapter {
                 imageView = (ImageView) itemView.findViewById(R.id.help_page_2_imageView);
                 imageView.setContentDescription(context.getString(R.string.help_page) + position);
                 break;
+            case 3:
+                itemView = inflater.inflate(R.layout.help_page_3, container, false);
+                imageView = (ImageView) itemView.findViewById(R.id.help_page_3_imageView);
+                imageView.setContentDescription(context.getString(R.string.help_page) + position);
+                break;
+            case 4:
+                itemView = inflater.inflate(R.layout.help_page_4, container, false);
+                imageView = (ImageView) itemView.findViewById(R.id.help_page_4_imageView);
+                imageView.setContentDescription(context.getString(R.string.help_page) + position);
+                break;
+            case 5:
+                itemView = inflater.inflate(R.layout.help_page_5, container, false);
+                imageView = (ImageView) itemView.findViewById(R.id.help_page_5_imageView);
+                imageView.setContentDescription(context.getString(R.string.help_page) + position);
+                break;
 
             default:
                 itemView = inflater.inflate(R.layout.help_page, container, false);
@@ -125,7 +148,7 @@ public class LightPagerAdapter extends PagerAdapter {
      */
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
-        container.removeView((LinearLayout) object);
+        container.removeView((RelativeLayout) object);
         Log.d(TAG, "item_drink destroyed");
     }
 }

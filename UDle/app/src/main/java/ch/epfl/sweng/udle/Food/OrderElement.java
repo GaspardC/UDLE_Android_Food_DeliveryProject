@@ -140,7 +140,7 @@ public class OrderElement {
      * @return The total cost of the order (Menus + Drinks)
      */
     public double getTotalCost(){
-        double cost = 2.00; //Delivery Cost
+        double cost = 0.00; //Delivery Cost
 
         for (Menu menu : orderList){
             cost += menu.getFood().getPrice();

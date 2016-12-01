@@ -13,6 +13,7 @@ public class DispatchActivity extends ParseLoginDispatchActivity {
 
     @Override
     protected Class<?> getTargetClass() {
+
         return MapActivity.class;
     }
 

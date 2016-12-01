@@ -2,12 +2,14 @@ package ch.epfl.sweng.udle.activities.MenuOptionsDrinks;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -26,10 +28,14 @@ public class Options_ExpandableListAdapter extends BaseExpandableListAdapter {
     LayoutInflater inflater;
     int nbrMenusToDisplay = 0;
     private boolean dontShowAlertAgain = false;
+    private boolean expandList;
 
-    public Options_ExpandableListAdapter(LayoutInflater context, TextView infoTextView){
+    public Options_ExpandableListAdapter(LayoutInflater context, TextView infoTextView, boolean expandList){
         this.inflater = context;
         this.infoTextView = infoTextView;
+        this.expandList = expandList;
+
+
     }
 
 
@@ -43,8 +49,7 @@ public class Options_ExpandableListAdapter extends BaseExpandableListAdapter {
             nbrMenusToDisplay = nbrMenus;
             this.notifyDataSetChanged();
         }
-
-        return nbrMenusToDisplay;
+        return nbrMenus;
     }
 
 
@@ -61,6 +66,11 @@ public class Options_ExpandableListAdapter extends BaseExpandableListAdapter {
     //Return the title of the group (e.g: #2 Burger)
     @Override
     public Object getGroup(int groupPosition) {
+
+        // Workaround bug
+        if(groupPosition >= Orders.getActiveOrder().getMenus().size()){
+            return "";
+        }
         return getOrdersTitle().get(groupPosition);
     }
 
@@ -108,9 +118,6 @@ public class Options_ExpandableListAdapter extends BaseExpandableListAdapter {
         else{
             optionTitleTextView.setChecked(false);
         }
-
-
-        final View finalConvertView = convertView;
         optionTitleTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -119,45 +126,10 @@ public class Options_ExpandableListAdapter extends BaseExpandableListAdapter {
                 if (optionTitleTextView.isChecked()) {
 
                     /*Delete Frites if Potatoes selected and inversely*/
-                    if( OptionsTypes.values()[childPosition].equals(OptionsTypes.Potatoes)){
-                        if(menu.get(groupPosition).getOptions().contains(OptionsTypes.Frites)){
-                            if(dontShowAlertAgain){
-                                optionTitleTextView.setChecked(false);
-
-                            }
-                            else {
-
-
-                                new AlertDialog.Builder(parent.getContext())
-                                        .setMessage("Choisissez Frites ou Potatoes, pas les deux :)")
-                                        .setPositiveButton("compris", new DialogInterface.OnClickListener() {
-                                            public void onClick(DialogInterface dialog, int which) {
-                                                // continue with delete
-                                                optionTitleTextView.setChecked(false);
-                                                dontShowAlertAgain = true;
-
-                                            }
-                                        })
-
-                                        .setIcon(android.R.drawable.ic_dialog_info)
-                                        .show();
-                            }
-                        }
-                        else{
-                            menu.get(groupPosition).addToOptions(OptionsTypes.values()[childPosition]);
-                        }
-                    }
-                    else{
-                        menu.get(groupPosition).addToOptions(OptionsTypes.values()[childPosition]);
-                    }
-
-
-
-
-                     /*Delete Potatoes if Frites selected and inversely*/
-                    if( OptionsTypes.values()[childPosition].equals(OptionsTypes.Frites)){
-                        if(menu.get(groupPosition).getOptions().contains(OptionsTypes.Potatoes)){
-
+                    if(  ((OptionsTypes.values()[childPosition].equals(OptionsTypes.Frites)) && (menu.get(groupPosition).getOptions().contains(OptionsTypes.Potatoes)))
+                            ||
+                            ((OptionsTypes.values()[childPosition].equals(OptionsTypes.Potatoes)) && (menu.get(groupPosition).getOptions().contains(OptionsTypes.Frites))))
+                    {
                             if(dontShowAlertAgain){
                                 optionTitleTextView.setChecked(false);
 
@@ -168,17 +140,16 @@ public class Options_ExpandableListAdapter extends BaseExpandableListAdapter {
                                         .setPositiveButton("compris", new DialogInterface.OnClickListener() {
                                             public void onClick(DialogInterface dialog, int which) {
                                                 // continue with delete
+                                                ArrayList<Menu> menu = Orders.getActiveOrder().getMenus();
                                                 optionTitleTextView.setChecked(false);
                                                 dontShowAlertAgain = true;
+
                                             }
                                         })
+
                                         .setIcon(android.R.drawable.ic_dialog_info)
                                         .show();
                             }
-                        }
-                        else{
-                            menu.get(groupPosition).addToOptions(OptionsTypes.values()[childPosition]);
-                        }
                     }
                     else{
                         menu.get(groupPosition).addToOptions(OptionsTypes.values()[childPosition]);
@@ -191,6 +162,7 @@ public class Options_ExpandableListAdapter extends BaseExpandableListAdapter {
             }
         });
 
+        Log.d("group ",groupPosition + " child " + childPosition);
         return convertView;
     }
 

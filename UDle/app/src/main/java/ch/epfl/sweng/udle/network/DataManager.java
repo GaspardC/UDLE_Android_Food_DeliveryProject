@@ -12,6 +12,8 @@ import com.parse.ParseUser;
 import java.util.ArrayList;
 import java.util.List;
 
+import ch.epfl.sweng.udle.Food.Menu;
+import ch.epfl.sweng.udle.Food.OptionsTypes;
 import ch.epfl.sweng.udle.Food.OrderElement;
 import ch.epfl.sweng.udle.Food.Orders;
 
@@ -566,5 +568,23 @@ public class DataManager {
             e.printStackTrace();
         }
         return num;
+    }
+
+    public static boolean checkAllMandatoryOptions() {
+        OrderElement activeOrder = Orders.getActiveOrder();
+        int count = activeOrder.getMenus().size();
+        int numberOfSelectedOptions = 0;
+        for(Menu m : activeOrder.getMenus()){
+            if(m.getOptions().contains(OptionsTypes.Frites) || m.getOptions().contains(OptionsTypes.Potatoes)){
+                numberOfSelectedOptions += 1;
+            }
+        }
+
+        if(count == numberOfSelectedOptions){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 }

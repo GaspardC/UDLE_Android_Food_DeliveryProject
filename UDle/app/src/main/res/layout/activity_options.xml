@@ -7,7 +7,7 @@
     android:orientation="vertical"
     tools:context="ch.epfl.sweng.udle.activities.MenuOptionsDrinks.OptionsFragment"
     android:id="@+id/Layout_Options"
-    android:background="@drawable/back_options"
+    android:background="@drawable/back_macdo_version"
 
     >
 

@@ -11,7 +11,7 @@
         android:layout_gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Choose a restaurant"
+        android:text="Choisis ton restaurant"
         android:textColor="#FC363B"
         android:layout_marginLeft="@dimen/_10sdp"
         android:layout_marginRight="@dimen/_10sdp"
@@ -41,16 +41,8 @@
         android:layout_height="wrap_content"
         android:background="@drawable/button_shape_empty"
         android:textColor="#FC363B"
-
-
+        android:visibility="gone"
+        android:layout_marginBottom="@dimen/_3sdp"
         />
-
-    <ProgressBar
-        android:id="@+id/progressBar1"
-        style="@android:style/Widget.ProgressBar.Small"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="@dimen/_13sdp" />
 
 </LinearLayout>

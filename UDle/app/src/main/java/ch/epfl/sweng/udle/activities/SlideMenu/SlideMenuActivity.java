@@ -41,6 +41,7 @@ import ch.epfl.sweng.udle.activities.DeliveryRestaurantMapActivity;
 import ch.epfl.sweng.udle.activities.HelpActivity.HelpActivity;
 import ch.epfl.sweng.udle.activities.MapActivity;
 import ch.epfl.sweng.udle.activities.ProfileActivity;
+import ch.epfl.sweng.udle.activities.ProfilePictureViewRounded;
 import ch.epfl.sweng.udle.network.DataManager;
 
 /**
@@ -55,7 +56,7 @@ public abstract class SlideMenuActivity extends AppCompatActivity {
     private static String TAG = SlideMenuActivity.class.getSimpleName();
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
-    private static ProfilePictureView avatar;
+    private static ProfilePictureViewRounded avatar;
     ListView slideMenuList;
     RelativeLayout slideMenu_frame;
     RelativeLayout content_frame;
@@ -109,7 +110,7 @@ public abstract class SlideMenuActivity extends AppCompatActivity {
         /*TextView username = (TextView) findViewById(R.id.SlideMenu_userName);
         username.setText("yours settings");*/
 
-        avatar = (ProfilePictureView) findViewById(R.id.avatar);
+        avatar = (ProfilePictureViewRounded) findViewById(R.id.avatar);
         AccessToken accessToken = AccessToken.getCurrentAccessToken();
         if (accessToken != null) {
             avatar.setProfileId(accessToken.getUserId());

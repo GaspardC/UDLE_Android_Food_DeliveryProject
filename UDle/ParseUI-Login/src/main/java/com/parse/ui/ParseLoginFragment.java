@@ -253,7 +253,7 @@ public class ParseLoginFragment extends ParseLoginFragmentBase {
       if (user == null) {
         loadingFinish();
         if (e != null) {
-          showToast(R.string.com_parse_ui_facebook_login_failed_toast);
+          showToast(R.string.com_parse_ui_facebook_login_failed_toast + " " + e.toString());
           debugLog(getString(R.string.com_parse_ui_login_warning_facebook_login_failed) +
                   e.toString());
         }

@@ -20,7 +20,6 @@ import ch.epfl.sweng.udle.Food.Menu;
 import ch.epfl.sweng.udle.Food.OrderElement;
 import ch.epfl.sweng.udle.Food.Orders;
 import ch.epfl.sweng.udle.R;
-import ch.epfl.sweng.udle.network.DataManager;
 
 public class RVAdapterDrinks extends RecyclerView.Adapter<RVAdapterDrinks.PersonViewHolder> {
 
@@ -78,14 +77,14 @@ public class RVAdapterDrinks extends RecyclerView.Adapter<RVAdapterDrinks.Person
 
 
         personViewHolder.name.setText(items.get(i).name);
-        items.get(i).setTotalTextView(personViewHolder.totalPrice);
+        items.get(i).setTotalPriceTextView(personViewHolder.totalPrice);
         items.get(i).setNameTextView(personViewHolder.name);
         personViewHolder.itemPhoto.setImageResource(items.get(i).photoId);
 
         if(nbr != 0) {
             items.get(i).setTotal(nbr);
-            items.get(i).setText(nbr);
             items.get(i).setTotalName(nbr);
+            items.get(i).setTotalNumber(nbr);
         }
 
         personViewHolder.itemPhoto.setOnClickListener(new View.OnClickListener() {
@@ -95,7 +94,7 @@ public class RVAdapterDrinks extends RecyclerView.Adapter<RVAdapterDrinks.Person
                 int number = items.get(i).number;
                 number++;
                 items.get(i).setTotal(number);
-                items.get(i).setText(number);
+                items.get(i).setTotalNumber(number);
                 items.get(i).setTotalName(number);
                 addOrder(number,i);
             }
@@ -108,7 +107,7 @@ public class RVAdapterDrinks extends RecyclerView.Adapter<RVAdapterDrinks.Person
                   number--;
                   items.get(i).setTotal(number);
                   items.get(i).setTotalName(number);
-                  items.get(i).setText(number);
+                  items.get(i).setTotalNumber(number);
                   removeOrder(i);
               }
           }
@@ -121,7 +120,7 @@ public class RVAdapterDrinks extends RecyclerView.Adapter<RVAdapterDrinks.Person
                 int number = items.get(i).number;
                 number++;
                 items.get(i).setTotal(number);
-                items.get(i).setText(number);
+                items.get(i).setTotalNumber(number);
                 items.get(i).setTotalName(number);
                 addOrder(number,i);
             }
@@ -154,15 +153,10 @@ public class RVAdapterDrinks extends RecyclerView.Adapter<RVAdapterDrinks.Person
 
         if( drinks.size() == menus.size()){
             new AlertDialog.Builder(drinkFragment.getContext())
-                    .setMessage("Choisissez Frites ou Potatoes, pas les deux :)")
-                    .setPositiveButton("compris", new DialogInterface.OnClickListener() {
+                    .setMessage("une seule boisson par menu :)")
+                    .setPositiveButton("ok", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             // continue with delete
-                        }
-                    })
-                    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            // do nothing
                         }
                     })
                     .setIcon(android.R.drawable.ic_dialog_info)
@@ -173,11 +167,17 @@ public class RVAdapterDrinks extends RecyclerView.Adapter<RVAdapterDrinks.Person
             if (name.equals("Coca")){
                 orderElement.addToDrinks(DrinkTypes.COCA);
             }
-            if (name.equals("Orangina")){
-                orderElement.addToDrinks(DrinkTypes.ORANGINA);
+            if (name.equals("Fanta")){
+                orderElement.addToDrinks(DrinkTypes.FANTA);
             }
-            if (name.equals("Water")){
-                orderElement.addToDrinks(DrinkTypes.WATER);
+            if (name.equals("Sprite")){
+                orderElement.addToDrinks(DrinkTypes.SPRITE);
+            }
+            if (name.equals("Ice_Tea")){
+                orderElement.addToDrinks(DrinkTypes.ICE_TEA);
+            }
+            if (name.equals("Coca_zero")){
+                orderElement.addToDrinks(DrinkTypes.COCA_ZERO);
             }
         }
 

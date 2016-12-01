@@ -10,8 +10,9 @@ public class Item {
     int price;
     public int photoId;
     public int number;
-    private TextView totalTextView ;
+    private TextView totalPriceTextView;
     private TextView nameTextView;
+    private TextView totalNumberTextView;
     private String text;
     private int totalName;
 
@@ -26,13 +27,22 @@ public class Item {
         number = i;
     }
 
-    public void setTotalTextView(TextView totalTextView) {
-        this.totalTextView = totalTextView;
+    public void setTotalPriceTextView(TextView totalTextView) {
+        this.totalPriceTextView = totalTextView;
     }
+    public void setTotalNumberTextView(TextView totalTextView) {
+        this.totalNumberTextView = totalTextView;
+    }
+
 
     public void setText(int number) {
         this.text = number*  price + Orders.getMoneyDevise();
-        this.totalTextView.setText(text);
+        this.totalPriceTextView.setText(text);
+    }
+
+    public void setTotalNumber(int totalName) {
+        Integer integer = new Integer(totalName);
+        totalPriceTextView.setText("" + integer);
     }
 
     public void setTotalName(int totalName) {

@@ -11,10 +11,13 @@ import java.util.List;
  */
 public enum DrinkTypes {
 
-    WATER("Water", 2.00),
-    COCA("Coca", 2.00),
-    BEER("Beer", 2.00),
-    ORANGINA("Orangina", 2.00);
+    WATER("Water", 0.00),
+    COCA("Coca", 0.00),
+    COCA_ZERO("Coca_Zero", 0.00),
+    ICE_TEA("Ice_tea", 0.00),
+    SPRITE("Sprite", 0.00),
+    BEER("Beer", 0.00),
+    FANTA("Fanta", 0.00);
 
     private String name = "";
     private double price = -1;

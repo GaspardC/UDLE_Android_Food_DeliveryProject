@@ -2,8 +2,8 @@
 var customerId;
 var express = require('express');
 var Stripe = require('stripe');
-Stripe.initialize('sk_test_TcSGELRBLTRiua8rQoEpP130');
-//Stripe.initialize('pk_live_UCz3mHHsfagSJJnExsa7LD0V');
+Stripe.initialize('sk_test_XXXXXXXXXXXXXXXXX');
+//Stripe.initialize('pk_live_XXXXXXXXXXXXXXXXXXXXXXXXX');
 
 
 
@@ -36,7 +36,7 @@ Stripe.Customers.create({
 
 
 	getUser(usrId).then
-    (   
+    (
         //When the promise is fulfilled function(user) fires, and now we have our USER!
         function(user)
         {
@@ -61,20 +61,20 @@ Stripe.Customers.create({
               pACL.setPublicWriteAccess(false);
               pACL.setReadAccess(Usr, true);
               pACL.setWriteAccess(Usr, true);
-        	  newUsr.set("ACL", pACL); 
-        	  newUsr.save(null, 
+        	  newUsr.set("ACL", pACL);
+        	  newUsr.save(null,
             {
-                success : function(customer) 
+                success : function(customer)
                 {
                 	console.log("customer saved :  " + request.params.userId);
-                    response.success("customer saved to parse = " +  request.params.userId ); 
+                    response.success("customer saved to parse = " +  request.params.userId );
                 },
-                error : function(error) 
+                error : function(error)
                 {
                 	console.log("eroor in saving customer");
                     response.error("Ops failed to saved customer id ");
                 }
-            }); 
+            });
         	  //response.success(results);
 
 }, function(err) {
@@ -105,5 +105,3 @@ function getUser(userId)
         }
     });
 };
-
-

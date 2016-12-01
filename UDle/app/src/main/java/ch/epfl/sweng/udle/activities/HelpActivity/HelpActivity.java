@@ -1,11 +1,16 @@
 package ch.epfl.sweng.udle.activities.HelpActivity;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 
 import ch.epfl.sweng.udle.R;
+import ch.epfl.sweng.udle.activities.MapActivity;
 import ch.epfl.sweng.udle.activities.SlideMenu.SlideMenuActivity;
 
 /**
@@ -15,7 +20,7 @@ import ch.epfl.sweng.udle.activities.SlideMenu.SlideMenuActivity;
  * https://www.bignerdranch.com/blog/viewpager-without-fragments/
  *
  */
-public class HelpActivity extends SlideMenuActivity {
+public class HelpActivity extends Activity {
     private static String TAG = HelpActivity.class.getSimpleName();
 
     ViewPager pager;
@@ -47,5 +52,11 @@ public class HelpActivity extends SlideMenuActivity {
         pager.setAdapter(null);
         pager = null;
         Log.d(TAG, "stopped");
+    }
+
+
+    public void goToOrderActivity(View view) {
+        Intent intent = new Intent(this, MapActivity.class);
+        startActivity(intent);
     }
 }

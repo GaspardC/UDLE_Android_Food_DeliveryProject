@@ -3,6 +3,8 @@ package ch.epfl.sweng.udle.activities.MenuOptionsDrinks;
 /**
  * Created by Gasp on 04/11/2015.
  */
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -55,8 +57,10 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
                 options.setPager(pager);
                 return options;
             case 2:
-                DrinkFragment drinks = new DrinkFragment();
-                return drinks;
+                    DrinkFragment drinks = new DrinkFragment();
+                    drinks.setPager(pager);
+                    return drinks;
+
             default:
                 return null;
         }

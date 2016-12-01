@@ -30,13 +30,24 @@ android {
         applicationId "ch.epfl.sweng.udle"
         minSdkVersion 19
         targetSdkVersion 23
-        versionCode 1
-        versionName "1.0"
+        versionCode 4
+        versionName "1.0.3"
         testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
+    }
+    signingConfigs {
+        release {
+            storeFile file("/Users/Gasp/.android/udle.keystore")
+            storePassword "XXXXXXX"
+            keyAlias "XXXXX"
+            keyPassword "XXXXXX"
+        }
     }
     buildTypes {
         debug {
             testCoverageEnabled false
+        }
+        release {
+            signingConfig signingConfigs.release
         }
     }
     defaultConfig {
@@ -45,7 +56,7 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'),
                     'proguard-rules.pro'
         }
@@ -92,5 +103,3 @@ dependencies {
 
 
 }
-
-

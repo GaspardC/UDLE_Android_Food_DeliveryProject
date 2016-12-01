@@ -157,7 +157,7 @@ public class DrinksTest extends ActivityInstrumentationTestCase2<MainActivity> {
         onView(withId(R.id.waterTotal)).check(matches(withText(DrinkTypes.WATER.getPrice() + Orders.getMoneyDevise())));
 
         onView(withId(R.id.orangPlus)).perform((click()));
-        onView(withId(R.id.orangTotal)).check(matches(withText(DrinkTypes.ORANGINA.getPrice()+ Orders.getMoneyDevise())));
+        onView(withId(R.id.orangTotal)).check(matches(withText(DrinkTypes.FANTA.getPrice()+ Orders.getMoneyDevise())));
     }*//*
 
 

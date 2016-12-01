@@ -23,8 +23,10 @@ package ch.epfl.sweng.udle.activities;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.text.InputType;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -39,6 +41,7 @@ import com.parse.ParseUser;
 import com.parse.ui.ParseLoginBuilder;
 
 import ch.epfl.sweng.udle.R;
+import ch.epfl.sweng.udle.activities.HelpActivity.HelpActivity;
 import ch.epfl.sweng.udle.activities.SlideMenu.SlideMenuActivity;
 import ch.epfl.sweng.udle.network.DataManager;
 
@@ -247,8 +250,18 @@ public class ProfileActivity extends SlideMenuActivity {
       showAlertBox(title,textview,fieldServer);
       return;
     }
-    Intent intent = new Intent(this, MapActivity.class);
-    startActivity(intent);
+
+    boolean first = true;
+    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+    if (prefs.getBoolean("first", first)){
+      prefs.edit().putBoolean("first", false).apply();
+      Intent intent = new Intent(this, HelpActivity.class);
+      startActivity(intent);
+    }
+    else{
+      Intent intent = new Intent(this, MapActivity.class);
+      startActivity(intent);
+    }
   }
 
   /**

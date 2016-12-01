@@ -173,7 +173,7 @@ public class OrderElementTest {
     @Test
     public void nullDrink2(){
         OrderElement orderElement = new OrderElement();
-        orderElement.addToDrinks(DrinkTypes.ORANGINA);
+        orderElement.addToDrinks(DrinkTypes.FANTA);
         try {
             orderElement.addToDrinks(null);
             fail("Null drink doesn't thrown an exception");
@@ -202,7 +202,7 @@ public class OrderElementTest {
     public void removeDrinksNotIn(){
         OrderElement orderElement = new OrderElement();
         orderElement.addToDrinks(DrinkTypes.BEER);
-        orderElement.removeToDrinks(DrinkTypes.ORANGINA);
+        orderElement.removeToDrinks(DrinkTypes.FANTA);
         assertEquals(1, orderElement.getDrinks().size());
     }
     @Test

@@ -78,7 +78,7 @@ public class RVAdapterMenu extends RecyclerView.Adapter<RVAdapterMenu.PersonView
 
 
         personViewHolder.name.setText(items.get(i).name);
-        items.get(i).setTotalTextView(personViewHolder.totalPrice);
+        items.get(i).setTotalPriceTextView(personViewHolder.totalPrice);
         items.get(i).setNameTextView(personViewHolder.name);
         personViewHolder.itemPhoto.setImageResource(items.get(i).photoId);
 
